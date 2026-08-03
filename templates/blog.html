@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block title %}{{ section.title }} — {{ config.title }}{% endblock title %}
+{% block description %}{% if section.description %}{{ section.description }}{% else %}{{ config.description }}{% endif %}{% endblock description %}
+
+{% block content %}
+<div class="mx-auto max-w-3xl px-4 sm:px-6 py-12">
+  <article class="prose">
+    {{ section.content | safe }}
+  </article>
+  <h2 class="text-2xl font-semibold text-night-50 mt-12 mb-6">Latest posts</h2>
+  <div class="flex flex-col gap-6">
+    {% for page in paginator.pages %}
+    <a href="{{ page.permalink }}" class="group block border border-night-700 rounded-xl p-6 bg-night-900 hover:border-brand-500/50 hover:bg-night-800 transition-colors">
+      <h3 class="text-xl font-semibold text-night-50 group-hover:text-brand-400">{{ page.title }}</h3>
+      <p class="mt-2 text-sm font-mono text-night-400">
+        {{ page.date | date(format="%Y-%m-%d") }}
+        {% if page.taxonomies.tag %} · {{ page.taxonomies.tag | join(sep=", ") }}{% endif %}
+      </p>
+      {% if page.description %}<p class="mt-2 text-night-300">{{ page.description }}</p>{% endif %}
+    </a>
+    {% endfor %}
+  </div>
+  {% if paginator.previous or paginator.next %}
+  <nav class="flex justify-between mt-10">
+    {% if paginator.previous %}<a class="btn btn-ghost" href="{{ paginator.previous }}">← Newer</a>{% else %}<span></span>{% endif %}
+    {% if paginator.next %}<a class="btn btn-ghost" href="{{ paginator.next }}">Older →</a>{% endif %}
+  </nav>
+  {% endif %}
+</div>
+{% endblock content %}

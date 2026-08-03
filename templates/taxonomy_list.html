@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %}Tags — {{ config.title }}{% endblock title %}
+
+{% block content %}
+<div class="mx-auto max-w-3xl px-4 sm:px-6 py-12">
+  <a href="{{ get_url(path='/blog/') }}" class="text-sm text-night-400 hover:text-brand-400 font-mono">← Back to blog</a>
+  <h1 class="text-3xl font-bold text-night-50 tracking-tight mt-4">Tags</h1>
+  <div class="mt-6 flex flex-wrap gap-2">
+    {% for tag in terms %}
+    <a href="{{ tag.permalink }}" class="badge badge-outline border-night-500 text-night-200 hover:border-brand-500 hover:text-brand-400 font-mono">
+      {{ tag.name }}
+    </a>
+    {% endfor %}
+  </div>
+</div>
+{% endblock content %}

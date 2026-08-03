@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block title %}{{ page.title }} — {{ config.title }} Blog{% endblock title %}
+{% block description %}{% if page.description %}{{ page.description }}{% else %}{{ config.description }}{% endif %}{% endblock description %}
+
+{% block content %}
+<div class="mx-auto max-w-3xl px-4 sm:px-6 py-12">
+  <a href="{{ get_url(path='/blog/') }}" class="text-sm text-night-400 hover:text-brand-400 font-mono">← Back to blog</a>
+  <article class="mt-6">
+    <h1 class="text-3xl font-bold text-night-50 tracking-tight">{{ page.title }}</h1>
+    <div class="mt-3 text-sm font-mono text-night-400">
+      {{ page.date | date(format="%Y-%m-%d") }}
+      {% if page.taxonomies.tag %} · {{ page.taxonomies.tag | join(sep=", ") }}{% endif %}
+    </div>
+    <div class="prose mt-8">
+      {{ page.content | safe }}
+    </div>
+  </article>
+</div>
+{% endblock content %}

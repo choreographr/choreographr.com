@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block title %}#{{ term.name }} — {{ config.title }} Blog{% endblock title %}
+
+{% block content %}
+<div class="mx-auto max-w-3xl px-4 sm:px-6 py-12">
+  <a href="{{ get_url(path='/blog/') }}" class="text-sm text-night-400 hover:text-brand-400 font-mono">← Back to blog</a>
+  <h1 class="text-3xl font-bold text-night-50 tracking-tight mt-4">Posts tagged <span class="text-brand-400 font-mono">#{{ term.name }}</span></h1>
+  <div class="mt-8 flex flex-col gap-6">
+    {% for page in term.pages %}
+    <a href="{{ page.permalink }}" class="group block border border-night-700 rounded-xl p-6 bg-night-900 hover:border-brand-500/50 hover:bg-night-800 transition-colors">
+      <h3 class="text-xl font-semibold text-night-50 group-hover:text-brand-400">{{ page.title }}</h3>
+      <p class="mt-2 text-sm font-mono text-night-400">{{ page.date | date(format="%Y-%m-%d") }}</p>
+      {% if page.description %}<p class="mt-2 text-night-300">{{ page.description }}</p>{% endif %}
+    </a>
+    {% endfor %}
+  </div>
+</div>
+{% endblock content %}

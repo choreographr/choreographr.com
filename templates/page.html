@@ -1,0 +1,34 @@
+{% import "macros/docs.html" as docs %}
+
+{% extends "base.html" %}
+
+{% block title %}{{ page.title }} — {{ config.title }}{% endblock title %}
+{% block description %}{% if page.description %}{{ page.description }}{% else %}{{ config.description }}{% endif %}{% endblock description %}
+
+{% block content %}
+{% if page.components is containing("docs") %}
+<div class="mx-auto max-w-7xl px-4 sm:px-6 py-8 lg:py-12">
+  <div class="flex flex-col lg:flex-row gap-10">
+    <aside class="lg:w-60 shrink-0">
+      <div class="lg:sticky lg:top-24">
+        {{ docs::sidebar(current_path=page.path) }}
+      </div>
+    </aside>
+    <article class="prose min-w-0 flex-1 max-w-3xl">
+      <h1>{{ page.title }}</h1>
+      <div class="text-sm text-night-400 font-mono mb-6">
+        {% if page.date %}{{ page.date | date(format="%Y-%m-%d") }} · {% endif %}{{ page.path }}
+      </div>
+      {{ page.content | safe }}
+    </article>
+  </div>
+</div>
+{% else %}
+<div class="mx-auto max-w-3xl px-4 sm:px-6 py-12">
+  <article class="prose">
+    <h1>{{ page.title }}</h1>
+    {{ page.content | safe }}
+  </article>
+</div>
+{% endif %}
+{% endblock content %}

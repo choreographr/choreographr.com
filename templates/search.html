@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block title %}Search — {{ config.title }}{% endblock title %}
+
+{% block content %}
+<div class="mx-auto max-w-2xl px-4 sm:px-6 py-12">
+  <h1 class="text-3xl font-bold text-night-50 tracking-tight">Search the site</h1>
+  <p class="mt-2 text-night-300">Search the docs and blog. Client-side only — your query never leaves your browser.</p>
+  <div class="form-control mt-6">
+    <input id="search" type="search" placeholder="Search… e.g. accounts, sandbox, RISC-V"
+           class="input input-bordered bg-night-900 border-night-600 focus:border-brand-500 font-mono"
+           autocomplete="off">
+  </div>
+
+  <div class="search-results mt-6" style="display:none">
+    <ul class="search-results__items space-y-3"></ul>
+  </div>
+</div>
+{% endblock content %}
+
+{% block extra_js %}
+<script src="{{ get_url(path='elasticlunr.min.js') | safe }}"></script>
+<script src="{{ get_url(path='js/search.js') | safe }}"></script>
+{% endblock extra_js %}

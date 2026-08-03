@@ -1,0 +1,17 @@
+{
+  "name": "choreographr.com",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Choreographr website — Zola + Tailwind CSS v4 + daisyUI",
+  "scripts": {
+    "css": "tailwindcss -i styles/main.css -o static/css/main.css --minify",
+    "css:watch": "tailwindcss -i styles/main.css -o static/css/main.css --watch",
+    "build": "pnpm css && zola build",
+    "serve": "pnpm css && zola serve"
+  },
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.1.0",
+    "daisyui": "^5.0.0",
+    "tailwindcss": "^4.1.0"
+  }
+}

@@ -1,0 +1,40 @@
+# Choreographr website configuration
+base_url = "https://choreographr.com"
+title = "Choreographr"
+description = "Your all-purpose AI agent, written in Rust. A daemon with many clients, a sandboxed RISC-V VM, and support for 70+ model providers."
+generate_feeds = true
+feed_filenames = ["atom.xml"]
+build_search_index = true
+
+# Whether to automatically compile all Sass files in the sass directory
+compile_sass = false
+
+[markdown.highlighting]
+theme = "catppuccin-mocha"
+
+[[taxonomies]]
+name = "tag"
+path = "blog/tags"
+paginate_by = 10
+feed = true
+
+[search]
+# The official search.js snippet loads the JSON format.
+# Zola auto-copies elasticlunr.min.js to the output root.
+index_format = "elasticlunr_json"
+
+[extra]
+# Community / project links
+github = "https://github.com/ethernomad/choreographr"
+telegram = "https://t.me/choreographr"
+license = "Apache-2.0"
+msrv = "1.91"
+
+# Navigation — items are shown on the right of the navbar.
+# `href` is a site-relative path.
+nav = [
+  { name = "Docs", href = "/docs/" },
+  { name = "Blog", href = "/blog/" },
+  { name = "GitHub", href = "https://github.com/ethernomad/choreographr", external = true },
+  { name = "Telegram", href = "https://t.me/choreographr", external = true },
+]

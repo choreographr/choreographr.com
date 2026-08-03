@@ -1,0 +1,36 @@
+<header class="sticky top-0 z-40 w-full border-b border-night-700 bg-night-950/90 backdrop-blur">
+  <nav class="navbar mx-auto max-w-7xl px-4 sm:px-6">
+    <div class="navbar-start">
+      <div class="dropdown lg:hidden">
+        <div tabindex="0" role="button" class="btn btn-ghost btn-square" aria-label="Menu">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </div>
+        <ul tabindex="0" class="dropdown-content menu bg-night-900 border border-night-700 rounded-box z-50 mt-3 w-52 p-2 shadow-2xl">
+          {% for item in config.extra.nav %}
+          <li>
+            <a href="{{ item.href }}" {% if item.external %}target="_blank" rel="noopener"{% endif %} class="{% if item.external %}{% else %}{% if current_path and item.href != "/" and current_path is starting_with(item.href) %}text-brand-500{% endif %}{% endif %}">
+              {{ item.name }}{% if item.external %}<span class="text-night-400 text-xs">↗</span>{% endif %}
+            </a>
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+      <a href="{{ get_url(path='/') }}" class="font-mono text-lg font-bold tracking-tight select-none">
+        <span class="text-brand-500">choreo</span><span class="text-night-50">graphr</span>
+      </a>
+    </div>
+    <div class="navbar-end hidden lg:flex">
+      <ul class="menu menu-horizontal px-1 gap-1 text-sm">
+        {% for item in config.extra.nav %}
+        <li>
+          <a href="{{ item.href }}"
+             {% if item.external %}target="_blank" rel="noopener"{% endif %}
+             class="{% if item.external %}{% else %}{% if current_path and item.href != "/" and current_path is starting_with(item.href) %}text-brand-500 font-semibold{% else %}text-night-200 hover:text-night-50{% endif %}{% endif %}">
+            {{ item.name }}{% if item.external %}<span class="text-night-400 text-xs">↗</span>{% endif %}
+          </a>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </nav>
+</header>

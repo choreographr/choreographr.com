@@ -1,0 +1,17 @@
+{# Docs sidebar — lists all pages in the docs section, sorted by weight. #}
+{% macro sidebar(current_path) %}
+{% set docs = get_section(path="docs/_index.md") %}
+<nav class="w-full">
+  <p class="px-3 mb-2 text-xs font-semibold uppercase tracking-wider text-night-400">Documentation</p>
+  <ul class="menu menu-sm w-full p-0 gap-0.5">
+    {% for p in docs.pages %}
+    <li>
+      <a href="{{ p.permalink }}"
+         class="{% if current_path == p.path %}bg-night-700 text-night-50 font-semibold{% else %}text-night-200 hover:text-night-50{% endif %}">
+        {{ p.title }}
+      </a>
+    </li>
+    {% endfor %}
+  </ul>
+</nav>
+{% endmacro sidebar %}
