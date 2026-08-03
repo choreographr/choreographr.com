@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="night">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Configuration — Choreographr</title>
+  <meta name="description" content="config.toml, environment variables, paths, and the security model for keys.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <link rel="icon" type="image/svg+xml" href="https://choreographr.com/favicon.svg">
+  <link rel="stylesheet" href="https://choreographr.com/css/main.css">
+
+  
+  <link rel="alternate" type="application/atom+xml" title="Choreographr Blog" href="https://choreographr.com/atom.xml">
+  
+
+  
+</head>
+<body class="min-h-screen flex flex-col">
+
+  <header class="sticky top-0 z-40 w-full border-b border-night-700 bg-night-950/90 backdrop-blur">
+  <nav class="navbar mx-auto max-w-7xl px-4 sm:px-6">
+    <div class="navbar-start">
+      <div class="dropdown lg:hidden">
+        <div tabindex="0" role="button" class="btn btn-ghost btn-square" aria-label="Menu">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </div>
+        <ul tabindex="0" class="dropdown-content menu bg-night-900 border border-night-700 rounded-box z-50 mt-3 w-52 p-2 shadow-2xl">
+          
+          <li>
+            <a href="&#x2F;docs&#x2F;"  class="text-brand-500">
+              Docs
+            </a>
+          </li>
+          
+          <li>
+            <a href="&#x2F;blog&#x2F;"  class="">
+              Blog
+            </a>
+          </li>
+          
+          <li>
+            <a href="https:&#x2F;&#x2F;github.com&#x2F;ethernomad&#x2F;choreographr" target="_blank" rel="noopener" class="">
+              GitHub<span class="text-night-400 text-xs">↗</span>
+            </a>
+          </li>
+          
+          <li>
+            <a href="https:&#x2F;&#x2F;t.me&#x2F;choreographr" target="_blank" rel="noopener" class="">
+              Telegram<span class="text-night-400 text-xs">↗</span>
+            </a>
+          </li>
+          
+        </ul>
+      </div>
+      <a href="https://choreographr.com" class="font-mono text-lg font-bold tracking-tight select-none">
+        <span class="text-brand-500">choreo</span><span class="text-night-50">graphr</span>
+      </a>
+    </div>
+    <div class="navbar-end hidden lg:flex">
+      <ul class="menu menu-horizontal px-1 gap-1 text-sm">
+        
+        <li>
+          <a href="&#x2F;docs&#x2F;"
+             
+             class="text-brand-500 font-semibold">
+            Docs
+          </a>
+        </li>
+        
+        <li>
+          <a href="&#x2F;blog&#x2F;"
+             
+             class="text-night-200 hover:text-night-50">
+            Blog
+          </a>
+        </li>
+        
+        <li>
+          <a href="https:&#x2F;&#x2F;github.com&#x2F;ethernomad&#x2F;choreographr"
+             target="_blank" rel="noopener"
+             class="">
+            GitHub<span class="text-night-400 text-xs">↗</span>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https:&#x2F;&#x2F;t.me&#x2F;choreographr"
+             target="_blank" rel="noopener"
+             class="">
+            Telegram<span class="text-night-400 text-xs">↗</span>
+          </a>
+        </li>
+        
+      </ul>
+    </div>
+  </nav>
+</header>
+
+
+  <main class="flex-1">
+    
+
+<div class="mx-auto max-w-7xl px-4 sm:px-6 py-8 lg:py-12">
+  <div class="flex flex-col lg:flex-row gap-10">
+    <aside class="lg:w-60 shrink-0">
+      <div class="lg:sticky lg:top-24">
+        
+
+<nav class="w-full">
+  <p class="px-3 mb-2 text-xs font-semibold uppercase tracking-wider text-night-400">Documentation</p>
+  <ul class="menu menu-sm w-full p-0 gap-0.5">
+    
+    <li>
+      <a href="https:&#x2F;&#x2F;choreographr.com&#x2F;docs&#x2F;quick-start&#x2F;"
+         class="text-night-200 hover:text-night-50">
+        Quick start
+      </a>
+    </li>
+    
+    <li>
+      <a href="https:&#x2F;&#x2F;choreographr.com&#x2F;docs&#x2F;installation&#x2F;"
+         class="text-night-200 hover:text-night-50">
+        Installation
+      </a>
+    </li>
+    
+    <li>
+      <a href="https:&#x2F;&#x2F;choreographr.com&#x2F;docs&#x2F;configuration&#x2F;"
+         class="bg-night-700 text-night-50 font-semibold">
+        Configuration
+      </a>
+    </li>
+    
+    <li>
+      <a href="https:&#x2F;&#x2F;choreographr.com&#x2F;docs&#x2F;accounts-and-providers&#x2F;"
+         class="text-night-200 hover:text-night-50">
+        Accounts &amp; providers
+      </a>
+    </li>
+    
+    <li>
+      <a href="https:&#x2F;&#x2F;choreographr.com&#x2F;docs&#x2F;slash-commands&#x2F;"
+         class="text-night-200 hover:text-night-50">
+        Slash commands
+      </a>
+    </li>
+    
+    <li>
+      <a href="https:&#x2F;&#x2F;choreographr.com&#x2F;docs&#x2F;concepts&#x2F;"
+         class="text-night-200 hover:text-night-50">
+        Concepts
+      </a>
+    </li>
+    
+    <li>
+      <a href="https:&#x2F;&#x2F;choreographr.com&#x2F;docs&#x2F;architecture&#x2F;"
+         class="text-night-200 hover:text-night-50">
+        Architecture
+      </a>
+    </li>
+    
+    <li>
+      <a href="https:&#x2F;&#x2F;choreographr.com&#x2F;docs&#x2F;security&#x2F;"
+         class="text-night-200 hover:text-night-50">
+        Security
+      </a>
+    </li>
+    
+    <li>
+      <a href="https:&#x2F;&#x2F;choreographr.com&#x2F;docs&#x2F;monitoring&#x2F;"
+         class="text-night-200 hover:text-night-50">
+        Monitoring
+      </a>
+    </li>
+    
+    <li>
+      <a href="https:&#x2F;&#x2F;choreographr.com&#x2F;docs&#x2F;testing&#x2F;"
+         class="text-night-200 hover:text-night-50">
+        Testing &amp; development
+      </a>
+    </li>
+    
+    <li>
+      <a href="https:&#x2F;&#x2F;choreographr.com&#x2F;docs&#x2F;troubleshooting&#x2F;"
+         class="text-night-200 hover:text-night-50">
+        Troubleshooting
+      </a>
+    </li>
+    
+    <li>
+      <a href="https:&#x2F;&#x2F;choreographr.com&#x2F;docs&#x2F;faq&#x2F;"
+         class="text-night-200 hover:text-night-50">
+        FAQ
+      </a>
+    </li>
+    
+  </ul>
+</nav>
+
+      </div>
+    </aside>
+    <article class="prose min-w-0 flex-1 max-w-3xl">
+      <h1>Configuration</h1>
+      <div class="text-sm text-night-400 font-mono mb-6">
+        &#x2F;docs&#x2F;configuration&#x2F;
+      </div>
+      <p>The daemon reads config from <code>~/.config/choreographr/config.toml</code>. All fields
+are optional.</p>
+<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;"><code data-lang="toml"><span class="giallo-l"><span>max_turns</span><span style="color: #94E2D5;"> =</span><span style="color: #FAB387;"> 0</span><span style="color: #9399B2;font-style: italic;">      # daemon-wide tool-loop budget; 0 = unlimited (default)</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #9399B2;">[</span><span>context</span><span style="color: #9399B2;">]</span></span>
+<span class="giallo-l"><span>context_file_names</span><span style="color: #94E2D5;"> =</span><span style="color: #9399B2;"> [</span><span style="color: #A6E3A1;">&quot;AGENTS.md&quot;</span><span style="color: #9399B2;">,</span><span style="color: #A6E3A1;"> &quot;CLAUDE.md&quot;</span><span style="color: #9399B2;">]</span></span>
+<span class="giallo-l"><span>context_file_max_bytes</span><span style="color: #94E2D5;"> =</span><span style="color: #FAB387;"> 32768</span></span>
+<span class="giallo-l"><span>disable_claude_code_prompt</span><span style="color: #94E2D5;"> =</span><span style="color: #FAB387;"> false</span></span></code></pre>
+<blockquote>
+<p><strong>Note:</strong> Provider-level settings (<code>base_url</code>, <code>streaming</code>, <code>retry_*</code>,
+timeouts, endpoint paths, request format, etc.) have moved to per-account
+overrides in <code>accounts.toml</code>. They are no longer read from <code>config.toml</code>.</p>
+</blockquote>
+<h2 id="environment-variables">Environment variables</h2>
+<table><thead><tr><th>Variable</th><th>Purpose</th></tr></thead><tbody>
+<tr><td><code>CHOREOGRAPHR_SOCKET_PATH</code></td><td>Override the Unix socket path (default <code>/tmp/Choreographr.sock</code>)</td></tr>
+<tr><td><code>CHOREOGRAPHR_DB_PATH</code></td><td>Override the database path (default <code>~/.local/share/choreographr/state.redb</code>)</td></tr>
+<tr><td><code>CHOREOGRAPHR_MAX_TURNS</code></td><td>Override <code>max_turns</code> (resolution chain: env → config.toml → default <code>0</code>)</td></tr>
+<tr><td><code>RUST_LOG</code></td><td>Log level (takes precedence over <code>-v</code>/<code>-vv</code>/<code>-q</code> flags)</td></tr>
+</tbody></table>
+<p>A <code>max_turns</code> value of <code>0</code> means <strong>unlimited</strong> — the agent loop runs until the
+model produces a final answer, is cancelled, or hits an error. This is a
+daemon-wide cap; individual sessions do not carry their own <code>max_turns</code>.</p>
+<h2 id="identity-keys">Identity keys</h2>
+<p>Identity keys live in <code>~/.config/choreographr/</code>:</p>
+<ul>
+<li><code>identity.pk</code> — the private key</li>
+<li><code>public.pk</code> — the public key</li>
+<li><code>identity.pk.enc</code> — optional passphrase-encrypted private key</li>
+</ul>
+<p>Credentials are encrypted per-credential with the daemon's X25519 public key and
+stored in the <code>redb</code> database. See <a href="https://choreographr.com/docs/security/">Security</a> for details.</p>
+<h2 id="slash-command-reference">Slash command reference</h2>
+<p>See the <a href="https://choreographr.com/docs/slash-commands/">Slash commands</a> page for the full list of
+commands available in <code>choreo-tui</code>.</p>
+
+    </article>
+  </div>
+</div>
+
+
+  </main>
+
+  <footer class="border-t border-night-700 bg-night-900">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 py-12">
+    <div class="grid gap-10 md:grid-cols-3">
+      <div>
+        <div class="font-mono text-lg font-bold tracking-tight">
+          <span class="text-brand-500">choreo</span><span class="text-night-50">graphr</span>
+        </div>
+        <p class="mt-3 text-sm text-night-300 max-w-xs">
+          An all-purpose, extensible AI agent written in Rust. Runs locally or in the cloud. Open source under Apache-2.0.
+        </p>
+      </div>
+      <div>
+        <h3 class="text-sm font-semibold text-night-50 uppercase tracking-wider mb-3">Explore</h3>
+        <ul class="space-y-2 text-sm text-night-300">
+          <li><a href="https://choreographr.com/docs" class="hover:text-brand-400">Documentation</a></li>
+          <li><a href="https://choreographr.com/blog" class="hover:text-brand-400">Blog</a></li>
+          <li><a href="https://choreographr.com/search" class="hover:text-brand-400">Search</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3 class="text-sm font-semibold text-night-50 uppercase tracking-wider mb-3">Community</h3>
+        <ul class="space-y-2 text-sm text-night-300">
+          <li><a href="https:&#x2F;&#x2F;github.com&#x2F;ethernomad&#x2F;choreographr" target="_blank" rel="noopener" class="hover:text-brand-400">GitHub</a></li>
+          <li><a href="https:&#x2F;&#x2F;t.me&#x2F;choreographr" target="_blank" rel="noopener" class="hover:text-brand-400">Telegram</a></li>
+          <li><a href="https://choreographr.com/atom.xml" class="hover:text-brand-400">RSS Feed</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="mt-10 border-t border-night-700 pt-6 flex flex-col sm:flex-row justify-between gap-3 text-xs text-night-400">
+      <p>© 2026 Choreographr. Released under the Apache-2.0 license.</p>
+      <p class="font-mono">100% Rust · written by <a href="https:&#x2F;&#x2F;github.com&#x2F;ethernomad&#x2F;choreographr" target="_blank" rel="noopener" class="text-night-300 hover:text-brand-400">ethernomad</a></p>
+    </div>
+  </div>
+</footer>
+
+
+  
+</body>
+</html>

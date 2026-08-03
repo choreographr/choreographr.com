@@ -1,10 +1,16 @@
 # Choreographr website configuration
-base_url = "https://choreographr.com"
+# Relative base URL in the config; the justfile overrides it with the
+# canonical URL at build time (and "/" when serving locally).
+base_url = "/"
 title = "Choreographr"
 description = "Your all-purpose AI agent, written in Rust. A daemon with many clients, a sandboxed RISC-V VM, and support for 70+ model providers."
 generate_feeds = true
 feed_filenames = ["atom.xml"]
 build_search_index = true
+
+# Build into docs/ — committed to the repo and served by GitHub Pages
+# (Settings → Pages → Deploy from a branch → master /docs).
+output_dir = "docs"
 
 # Whether to automatically compile all Sass files in the sass directory
 compile_sass = false
