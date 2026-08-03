@@ -5,10 +5,25 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Troubleshooting — Choreographr</title>
   <meta name="description" content="Diagnostics, logs, and common problems.">
+  <meta name="theme-color" content="#06080b">
+
+  <!-- Critical inline CSS: paint the dark theme immediately, before
+       main.css (or the webfont stylesheet) finishes loading, so the
+       page never flashes white on navigation. -->
+  <style>
+    html { background-color: #06080b; color-scheme: dark; }
+    body { background-color: #06080b; color: #d3dae3; }
+  </style>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <!-- Load webfonts asynchronously so they can't delay first paint.
+       The Google CSS ships font-display: swap, so text renders in a
+       fallback font and quietly swaps once the fonts load. -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  </noscript>
 
   <link rel="icon" type="image/svg+xml" href="https://choreographr.com/favicon.svg">
   <link rel="stylesheet" href="https://choreographr.com/css/main.css">
