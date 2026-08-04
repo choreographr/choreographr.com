@@ -11,7 +11,7 @@ or jump straight to a topic:
 - **Getting started** — [quick start](@/docs/quick-start.md), [installation](@/docs/installation.md)
 - **Configuration** — [configuration](@/docs/configuration.md), [accounts & providers](@/docs/accounts-and-providers.md)
 - **Using the client** — [slash commands](@/docs/slash-commands.md)
-- **Under the hood** — [concepts](@/docs/concepts.md), [architecture](@/docs/architecture.md)
+- **Under the hood** — [concepts](@/docs/concepts.md), [why Rust](@/docs/why-rust.md), [architecture](@/docs/architecture.md)
 - **Operations** — [security](@/docs/security.md), [monitoring](@/docs/monitoring.md), [testing](@/docs/testing.md), [troubleshooting](@/docs/troubleshooting.md)
 - **Reference** — [FAQ](@/docs/faq.md)
 

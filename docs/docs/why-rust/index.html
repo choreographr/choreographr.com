@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Quick start — Choreographr</title>
-  <meta name="description" content="Build Choreographr from source and run your first conversation.">
+  <title>Why Rust? — Choreographr</title>
+  <meta name="description" content="Why Rust is a fantastic choice for writing an AI agent and its terminal UI.">
   <meta name="theme-color" content="#06080b">
 
   <!-- Critical inline CSS: paint the dark theme immediately, before
@@ -126,7 +126,7 @@
     
     <li>
       <a href="https:&#x2F;&#x2F;choreographr.com&#x2F;docs&#x2F;quick-start&#x2F;"
-         class="bg-night-700 text-night-50 font-semibold">
+         class="text-night-200 hover:text-night-50">
         Quick start
       </a>
     </li>
@@ -168,7 +168,7 @@
     
     <li>
       <a href="https:&#x2F;&#x2F;choreographr.com&#x2F;docs&#x2F;why-rust&#x2F;"
-         class="text-night-200 hover:text-night-50">
+         class="bg-night-700 text-night-50 font-semibold">
         Why Rust?
       </a>
     </li>
@@ -221,46 +221,118 @@
       </div>
     </aside>
     <article class="prose min-w-0 flex-1 max-w-3xl">
-      <h1>Quick start</h1>
+      <h1>Why Rust?</h1>
       <div class="text-sm text-night-400 font-mono mb-6">
-        &#x2F;docs&#x2F;quick-start&#x2F;
+        &#x2F;docs&#x2F;why-rust&#x2F;
       </div>
-      <p>Choreographr requires a <a rel="external" href="https://rustup.rs/">Rust toolchain</a> — the minimum supported
-Rust version (MSRV) is <strong>1.91</strong>.</p>
-<h2 id="1-build">1. Build</h2>
-<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">rustup</span><span style="color: #A6E3A1;"> install stable</span></span>
-<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">cargo</span><span style="color: #A6E3A1;"> build --release</span></span></code></pre><h2 id="2-start-the-daemon">2. Start the daemon</h2>
-<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">cargo</span><span style="color: #A6E3A1;"> run --release -p choreo-daemon</span><span style="color: #9399B2;font-style: italic;">         # default log level: info</span></span>
-<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">cargo</span><span style="color: #A6E3A1;"> run --release -p choreo-daemon -- -v</span><span style="color: #9399B2;font-style: italic;">   # debug</span></span>
-<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">cargo</span><span style="color: #A6E3A1;"> run --release -p choreo-daemon -- -vv</span><span style="color: #9399B2;font-style: italic;">  # trace</span></span>
-<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">cargo</span><span style="color: #A6E3A1;"> run --release -p choreo-daemon -- -q</span><span style="color: #9399B2;font-style: italic;">   # warnings only</span></span></code></pre>
-<p><code>RUST_LOG</code> takes precedence over the CLI flags:</p>
-<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;"><code data-lang="shellscript"><span class="giallo-l"><span>RUST_LOG</span><span style="color: #94E2D5;">=</span><span style="color: #A6E3A1;">debug</span><span style="color: #89B4FA;font-style: italic;"> cargo</span><span style="color: #A6E3A1;"> run --release -p choreo-daemon</span></span></code></pre><h2 id="3-attach-a-client">3. Attach a client</h2>
-<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">cargo</span><span style="color: #A6E3A1;"> run --release -p choreo-tui</span><span style="color: #9399B2;font-style: italic;">     # terminal UI</span></span>
-<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">cargo</span><span style="color: #A6E3A1;"> run --release -p choreo-gui</span><span style="color: #9399B2;font-style: italic;">     # desktop app</span></span>
-<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">cargo</span><span style="color: #A6E3A1;"> run --release -p choreo-im</span><span style="color: #9399B2;font-style: italic;">      # IM bridge</span></span>
-<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">cargo</span><span style="color: #A6E3A1;"> run --release -p choreo-acp</span><span style="color: #9399B2;font-style: italic;">     # ACP bridge for editors</span></span></code></pre><h2 id="your-first-conversation">Your first conversation</h2>
-<ol>
-<li><strong>Configure an account</strong> in <code>~/.config/choreographr/accounts.toml</code> (see
-<a href="https://choreographr.com/docs/accounts-and-providers/">Accounts &amp; providers</a>) and add an API key
-with <code>/add-key &lt;service&gt; &lt;api_key&gt;</code>.</li>
-<li>Select the account with <code>/account &lt;name&gt;</code>.</li>
-<li>Start prompting!</li>
-</ol>
-<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;"><code data-lang="plain"><span class="giallo-l"><span>┌──────────────┐   Unix socket /     ┌──────────────┐   HTTP/SSE     ┌────────────────────┐</span></span>
-<span class="giallo-l"><span>│  choreo-tui  │◄───────────────────►│              │◄──────────────►│  OpenAI-compatible │</span></span>
-<span class="giallo-l"><span>│  (terminal)  │                     │              │                ├────────────────────┤</span></span>
-<span class="giallo-l"><span>├──────────────┤                     │              │◄──────────────►│  Anthropic Messages│</span></span>
-<span class="giallo-l"><span>│  choreo-gui  │◄───────────────────►│ choreographr │                ├────────────────────┤</span></span>
-<span class="giallo-l"><span>│  (desktop)   │   Noise-IK TCP      │  (daemon)    │◄──────────────►│  Google Gemini     │</span></span>
-<span class="giallo-l"><span>├──────────────┤                     │              │                └────────────────────┘</span></span>
-<span class="giallo-l"><span>│  choreo-im   │◄───────────────────►│              │</span></span>
-<span class="giallo-l"><span>│  (IM bridge) │                     │              │</span></span>
-<span class="giallo-l"><span>├──────────────┤                     │              │</span></span>
-<span class="giallo-l"><span>│ choreo-acp   │◄───────────────────►│              │   MCP subprocess servers</span></span>
-<span class="giallo-l"><span>│  (ACP bridge)│                     └──────────────┘   RISC-V VM sandbox</span></span>
-<span class="giallo-l"><span>└──────────────┘                                        redb database</span></span></code></pre>
-<p>That's it — you're chatting with your agent.</p>
+      <p>Rust is not the most common language for AI agents today — most agent
+frameworks are written in TypeScript or Python, and for good reasons those
+languages make sense in many contexts. But Choreographr is written entirely in
+Rust, and this page explains why that is a deliberate, structural choice rather
+than a stylistic one: for an <em>agent that must run for a long time, hold your
+credentials, execute untrusted code, and stay responsive across many
+simultaneous sessions</em>, Rust's properties line up almost exactly with what the
+job demands.</p>
+<h2 id="a-daemon-you-can-trust-with-your-keys">A daemon you can trust with your keys</h2>
+<p>An agent is not a script — it is a <strong>long-lived daemon</strong> that holds API keys,
+writes to your filesystem, runs shell commands, and talks to the network. The
+worst failure mode is a memory-safety bug that lets a crafted model response or
+a misbehaving tool corrupt memory. In Rust, that entire class of bug is
+<em>impossible by construction</em>: no null pointer dereferences, no use-after-free,
+no buffer overflows, no data races — the compiler rejects them at build time.</p>
+<p>This is not theoretical. Choreographr encrypts every credential at rest with
+X25519/ECDH + AES-256-GCM, stores keys in a keystore that zeroizes secrets from
+memory on lock, and exposes them only to the daemon process. Memory safety is
+the foundation that makes it reasonable to concentrate that much trust in one
+process.</p>
+<h2 id="concurrency-without-async-complexity">Concurrency without async complexity</h2>
+<p>Agents are inherently concurrent: many sessions running at once, tool calls
+executing in parallel, streaming output being fanned out to connected clients.
+Most modern agent codebases reach for an async runtime to handle this — and
+then spend enormous effort debugging the state that async code shares.</p>
+<p>Choreographr does something simpler. The daemon uses <strong>pure OS threads with
+message passing</strong> — an actor model, in the classic sense:</p>
+<ul>
+<li>each session runs on its own thread and <em>owns</em> its state;</li>
+<li>threads communicate only through typed channels (<code>mpsc</code>);</li>
+<li>there is no <code>Arc&lt;Mutex&gt;</code> shared state anywhere in the daemon's own logic.</li>
+</ul>
+<p>This is only feasible because the Rust compiler <em>enforces</em> it: you cannot move
+a piece of state into two threads, or share it without synchronization, without
+the borrow checker stopping you. The result is a threading model you can hold
+in your head — each thread owns its data, period — with none of the
+cancellation and <code>Send</code>-bound complexity that async runtimes impose. When a
+third-party crate (such as an Ethereum library) insists on async, a tokio
+runtime exists as a sidecar; the daemon itself never needs one.</p>
+<h2 id="the-compiler-as-your-agent-loop-auditor">The compiler as your agent-loop auditor</h2>
+<p>The heart of an agent is the <strong>tool-calling loop</strong>: send the conversation to
+the model, execute whatever tools it requests, feed the results back, repeat
+until the model produces a final answer. An LLM's output is untrusted,
+semi-structured, and frequently malformed — truncated JSON, dropped tool calls,
+unexpected event types.</p>
+<p>Rust turns this hostile input into a <em>compile-time contract</em>. The streaming
+response is parsed into a typed enum (<code>TextDelta</code>, <code>FunctionCallArgumentsDone</code>,
+<code>ResponseCompleted</code>, …) and the agent loop <code>match</code>es on it exhaustively:</p>
+<ul>
+<li>a new event type added upstream is a <strong>compile error</strong> until the loop decides
+what to do with it — it can never be silently ignored;</li>
+<li>a required field missing from a model event is a <strong>hard, classified error</strong>,
+not a silently-<code>null</code>ed default that confuses the next turn;</li>
+<li>the result of each turn is a typed enum (<code>FinalText</code> vs <code>ToolUse</code>), and
+<code>#[non_exhaustive]</code> forces every consumer to keep thinking about future
+variants.</li>
+</ul>
+<p>The LLM will always produce weird output. In Rust, "weird" is a type you have
+to handle — not a crash waiting to happen.</p>
+<h2 id="types-that-become-the-wire-protocol">Types that become the wire protocol</h2>
+<p>Agents are glued together with JSON: tool definitions, tool-call arguments,
+provider APIs, streaming events. Every boundary where data crosses a wire or a
+process is a place where types can silently diverge from reality.</p>
+<p>In Choreographr, a tool's JSON Schema is <strong>auto-derived from its Rust types</strong>
+via <code>schemars</code>. You declare:</p>
+<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;"><code data-lang="rust"><span class="giallo-l"><span style="color: #CBA6F7;">struct</span><span style="color: #F9E2AF;font-style: italic;"> ReadFileArgs</span><span style="color: #9399B2;"> {</span></span>
+<span class="giallo-l"><span>    path</span><span style="color: #94E2D5;">:</span><span style="color: #F9E2AF;font-style: italic;"> String</span><span style="color: #9399B2;">,</span></span>
+<span class="giallo-l"><span>    offset</span><span style="color: #94E2D5;">:</span><span style="color: #F9E2AF;font-style: italic;"> Option</span><span style="color: #89DCEB;">&lt;</span><span style="color: #CBA6F7;">u32</span><span style="color: #89DCEB;">&gt;</span><span style="color: #9399B2;">,</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">}</span></span></code></pre>
+<p>…and you get the advertised schema, the argument deserialization, and
+compile-time field access for free. The schema sent to the model can <em>never</em>
+drift from the types the tool actually parses, because they are the same thing.
+The same philosophy extends to the client/daemon protocol, which is a framed
+binary format with typed message enums instead of ad-hoc JSON.</p>
+<h2 id="security-by-construction-and-a-sandbox-that-is-real">Security by construction — and a sandbox that is real</h2>
+<p>An agent that can run arbitrary LLM-generated code needs a hard boundary.
+Choreographr's answer is the <strong>RISC-V VM</strong>: the model writes a small Rust
+snippet, it is compiled to a RISC-V ELF, and executed inside an isolated VM
+with its own flat memory — no host syscalls, no host memory, no filesystem
+access except through registered tools.</p>
+<p>Rust is the natural host for this for two reasons. First, the tool ABI the
+guest calls into is the same typed <code>ToolRegistry</code> the host uses, so the
+sandbox's surface is defined by types, not by string conventions. Second, the
+VM's own tooling — compilation of guest code, bytecode loading, memory
+management — is memory-safe by construction, which is exactly what you want in
+the security-critical component.</p>
+<h2 id="a-tui-that-stays-smooth-under-load">A TUI that stays smooth under load</h2>
+<p>Agents stream. Token by token, reasoning and answers flow into the terminal,
+and the UI must keep up without stuttering or stealing CPU from the model
+calls. Choreographr's TUI is <strong>event-driven and immediate mode</strong>: it redraws
+the instant a keystroke or network event arrives, with no maximum framerate,
+no polling, and O(1) scrolling and streaming.</p>
+<p>Rust's performance makes this trivial, and its ownership model makes
+the render/event split safe: the renderer never mutates state, so drawing and
+input handling can't race.</p>
+<h2 id="rust-and-the-ai-loop-the-compiler-as-a-second-model">Rust and the AI loop — the compiler as a second model</h2>
+<p>Here is the argument that matters most in 2026: <strong>agents write code, and
+increasingly agents are written <em>with</em> code written by LLMs</strong>. Choreographr is
+partly LLM-generated, like most modern software.</p>
+<p>For an LLM writing code, Rust is the language that <em>fights back least
+dangerously</em>. A model writing TypeScript or Python can produce code that looks
+right and fails at runtime, in production, on a user's machine. A model
+writing Rust gets told, at compile time, exactly what it got wrong — the
+borrow checker and the type system are a relentless, specific, infinitely
+patient reviewer. Every <code>cargo check</code> cycle that catches a mistake is a bug
+that never reaches your terminal. For a codebase that an AI will keep
+modifying, that is not overhead — it is the highest-leverage safety net
+available.</p>
 
     </article>
   </div>
