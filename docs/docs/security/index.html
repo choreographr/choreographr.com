@@ -2,6 +2,12 @@
 <html lang="en" data-theme="night">
 <head>
   <meta charset="UTF-8">
+  <!-- color-scheme hint: lets the browser paint the dark canvas background
+       as soon as the head is parsed, before ANY CSS has been applied.
+       This is the one thing that closes the residual flash on Firefox/Zen,
+       which paints its default (white) canvas frame during navigation,
+       unlike Chromium which defers first paint until the inline CSS exists. -->
+  <meta name="color-scheme" content="dark">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Security — Choreographr</title>
   <meta name="description" content="Lock&#x2F;unlock, encrypted credentials, and the RISC-V sandbox.">
