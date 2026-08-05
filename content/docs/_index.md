@@ -5,10 +5,10 @@ sort_by = "weight"
 weight = 1
 +++
 
-Welcome to the Choreographr documentation. Start with the [quick start](@/docs/quick-start.md),
-or jump straight to a topic:
+Welcome to the Choreographr documentation. Start with the [installation](@/docs/installation.md)
+guide, then the [quick start](@/docs/quick-start.md), or jump straight to a topic:
 
-- **Getting started** — [quick start](@/docs/quick-start.md), [installation](@/docs/installation.md)
+- **Getting started** — [installation](@/docs/installation.md), [quick start](@/docs/quick-start.md)
 - **Configuration** — [configuration](@/docs/configuration.md), [accounts & providers](@/docs/accounts-and-providers.md)
 - **Using the client** — [slash commands](@/docs/slash-commands.md)
 - **Under the hood** — [concepts](@/docs/concepts.md), [tools](@/docs/tools.md), [why Rust](@/docs/why-rust.md), [architecture](@/docs/architecture.md)

@@ -142,16 +142,16 @@
   <ul class="menu menu-sm w-full p-0 gap-0.5">
     
     <li>
-      <a href="https:&#x2F;&#x2F;choreographr.com&#x2F;docs&#x2F;quick-start&#x2F;"
+      <a href="https:&#x2F;&#x2F;choreographr.com&#x2F;docs&#x2F;installation&#x2F;"
          class="text-night-200 hover:text-night-50">
-        Quick start
+        Installation
       </a>
     </li>
     
     <li>
-      <a href="https:&#x2F;&#x2F;choreographr.com&#x2F;docs&#x2F;installation&#x2F;"
+      <a href="https:&#x2F;&#x2F;choreographr.com&#x2F;docs&#x2F;quick-start&#x2F;"
          class="text-night-200 hover:text-night-50">
-        Installation
+        Quick start
       </a>
     </li>
     
@@ -251,6 +251,32 @@
       </div>
       <p>The full architecture deep-dive lives in the repository at <code>ARCHITECTURE.md</code>.
 This page is a short orientation.</p>
+<h2 id="client-server-topology">Client/server topology</h2>
+<p>Choreographr separates the daemon that runs sessions from the clients that
+connect and disconnect at any time.</p>
+<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;"><code data-lang="plain"><span class="giallo-l"><span>┌──────────────┐   Unix socket /     ┌──────────────┐   HTTP/SSE     ┌────────────────────┐</span></span>
+<span class="giallo-l"><span>│  choreo-tui  │◄───────────────────►│              │◄──────────────►│  OpenAI-compatible │</span></span>
+<span class="giallo-l"><span>│  (terminal)  │                     │              │                ├────────────────────┤</span></span>
+<span class="giallo-l"><span>├──────────────┤                     │              │◄──────────────►│  Anthropic Messages│</span></span>
+<span class="giallo-l"><span>│  choreo-gui  │◄───────────────────►│ choreographr │                ├────────────────────┤</span></span>
+<span class="giallo-l"><span>│  (desktop)   │   Noise-IK TCP      │  (daemon)    │◄──────────────►│  Google Gemini     │</span></span>
+<span class="giallo-l"><span>├──────────────┤                     │              │                └────────────────────┘</span></span>
+<span class="giallo-l"><span>│  choreo-im   │◄───────────────────►│              │</span></span>
+<span class="giallo-l"><span>│  (IM bridge) │                     │              │</span></span>
+<span class="giallo-l"><span>├──────────────┤                     │              │</span></span>
+<span class="giallo-l"><span>│ choreo-acp   │◄───────────────────►│              │   MCP subprocess servers</span></span>
+<span class="giallo-l"><span>│  (ACP bridge)│                     └──────────────┘   RISC-V VM sandbox</span></span>
+<span class="giallo-l"><span>└──────────────┘                                        redb database</span></span></code></pre>
+<ul>
+<li>The client can run on the same computer as the daemon (via a local Unix
+socket), or the daemon can live anywhere on your local network or the
+Internet.</li>
+<li>When connecting remotely, clients use <strong>Noise-IK</strong> encrypted TCP.</li>
+<li>Because the daemon can live anywhere and is reachable over encrypted TCP, it
+can also be reached from mobile devices — for example, chatting with your
+agent on the go via the <code>choreo-im</code> Telegram bridge.</li>
+</ul>
+<p>Client/server communication is encoded via <a rel="external" href="https://postcard.jamesmunns.com/">Postcard</a>.</p>
 <h2 id="threading-model">Threading model</h2>
 <p>The daemon uses <strong>pure OS threads with message passing</strong> (actor model) — no
 async code in its own logic, and no <code>Arc&lt;Mutex&gt;</code> shared state. All I/O uses
@@ -280,11 +306,24 @@ sidecar for crates (e.g. alloy) that require it.</p>
 session-config tools (<code>load_tools</code>, <code>unload_tools</code>, <code>set_working_dir</code>) run
 serially to preserve ordering.</p>
 <h2 id="workspace-topology">Workspace topology</h2>
-<p>Twelve crates in a single Cargo workspace (resolver = "3"). See
-<a href="https://choreographr.com/docs/installation/">Installation</a> for the crate table. The dependency
+<p>Twelve crates in a single Cargo workspace (resolver = "3"). The dependency
 spine is <code>choreo-proto</code> → <code>choreo-keystore</code> / <code>choreo-transport</code>, with
 <code>choreo-client-core</code> and the daemon on top, and clients (<code>choreo-tui</code>,
 <code>choreo-gui</code>, <code>choreo-im</code>, <code>choreo-acp</code>) as leaves.</p>
+<table><thead><tr><th>Crate</th><th>Description</th></tr></thead><tbody>
+<tr><td><code>choreo-daemon</code></td><td>The core engine — binary <code>choreographr</code>. Unix socket server that validates credentials, manages persistent sessions (with sub-sessions and working directories), runs requests with a tool-call loop, and streams responses</td></tr>
+<tr><td><code>choreo-ai-protocols</code></td><td>Provider protocols — OpenAI-compatible, Anthropic Messages, and Google Gemini clients, the <code>ProviderClient</code> trait, and the provider catalog (70+ providers)</td></tr>
+<tr><td><code>choreo-proto</code></td><td>Framed binary protocol (postcard + length prefix) shared between clients and daemon</td></tr>
+<tr><td><code>choreo-keystore</code></td><td>X25519 keypair + ECDH/AES-256-GCM crypto library for encrypted credentials</td></tr>
+<tr><td><code>choreo-transport</code></td><td>Noise-IK encrypted transport over TCP</td></tr>
+<tr><td><code>choreo-mcp</code></td><td>MCP (Model Context Protocol) client — spawns subprocess servers, discovers tools, dispatches calls over JSON-RPC stdio</td></tr>
+<tr><td><code>choreo-acp</code></td><td>ACP (Agent Communication Protocol) bridge — translates JSON-RPC 2.0 over stdin/stdout into <code>choreo-proto</code> messages so ACP-compatible editors can drive sessions</td></tr>
+<tr><td><code>choreo-tui</code></td><td>Full-screen terminal UI client (ratatui + crossterm)</td></tr>
+<tr><td><code>choreo-gui</code></td><td>Desktop GUI client (Dioxus)</td></tr>
+<tr><td><code>choreo-im</code></td><td>Instant messaging bridge (Telegram)</td></tr>
+<tr><td><code>choreo-client-core</code></td><td>Shared parsing, markdown, image assembly, and daemon-message dispatch for UI clients</td></tr>
+<tr><td><code>choreo-markdown</code></td><td>Markdown parser and HTML renderer (pulldown-cmark + ammonia)</td></tr>
+</tbody></table>
 <h2 id="wire-protocol">Wire protocol</h2>
 <p>Client/daemon communication is a framed binary protocol (postcard + length
 prefix), defined in <code>choreo-proto</code>. Remote connections are wrapped in the
