@@ -1,7 +1,7 @@
 +++
 title = "Testing & development"
 description = "Running the test suite, lints, and formatting."
-weight = 10
+weight = 12
 +++
 
 ```bash

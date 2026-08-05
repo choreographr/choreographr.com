@@ -1,7 +1,7 @@
 +++
 title = "Architecture"
 description = "Threading model, workspace topology, and where to find the deep dive."
-weight = 7
+weight = 9
 +++
 
 The full architecture deep-dive lives in the repository at `ARCHITECTURE.md`.

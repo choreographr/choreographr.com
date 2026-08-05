@@ -1,7 +1,7 @@
 +++
 title = "Troubleshooting"
 description = "Diagnostics, logs, and common problems."
-weight = 11
+weight = 13
 +++
 
 ## Logs

@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="night">
+<head>
+  <meta charset="UTF-8">
+  <!-- color-scheme hint: lets the browser paint the dark canvas background
+       as soon as the head is parsed, before ANY CSS has been applied.
+       This is the one thing that closes the residual flash on Firefox/Zen,
+       which paints its default (white) canvas frame during navigation,
+       unlike Chromium which defers first paint until the inline CSS exists. -->
+  <meta name="color-scheme" content="dark">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tools — Choreographr</title>
+  <meta name="description" content="The complete reference for every built-in tool and tool group.">
+  <meta name="theme-color" content="#06080b">
+
+  <!-- Critical inline CSS: paint the dark theme immediately, before
+       main.css (or the webfont stylesheet) finishes loading, so the
+       page never flashes white on navigation. -->
+  <style>
+    html { background-color: #06080b; color-scheme: dark; }
+    body { background-color: #06080b; color: #d3dae3; }
+  </style>
+
+  <!-- Self-hosted fonts (same-origin): preload the two variable woff2
+       files so they're available at first paint — no visible swap. -->
+  <link rel="preload" href="https://choreographr.com/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="https://choreographr.com/fonts/jetbrains-mono.woff2" as="font" type="font/woff2" crossorigin>
+
+  <link rel="icon" type="image/svg+xml" href="https://choreographr.com/favicon.svg">
+  <link rel="stylesheet" href="https://choreographr.com/css/main.css">
+
+  <!-- Firefox/Zen can paint a frame before this stylesheet has been
+       applied if a layout flush happens while it loads (Bugzilla
+       1459305) — unlike Chromium, which blocks the parser on the
+       <link>. This synchronous script is the standard workaround: it
+       cannot execute until main.css is ready, and while it is pending
+       the <body> has not been parsed, so nothing unstyled can paint.
+       Result: same first-paint behaviour as Chromium, no FOUC. -->
+  <script>
+    // No-op: exists only to hold first paint until main.css is applied.
+  </script>
+
+  
+  <link rel="alternate" type="application/atom+xml" title="Choreographr Blog" href="https://choreographr.com/atom.xml">
+  
+
+  
+</head>
+<body class="min-h-screen flex flex-col">
+
+  <header class="sticky top-0 z-40 w-full border-b border-night-700 bg-night-950/90 backdrop-blur">
+  <nav class="navbar mx-auto max-w-7xl px-4 sm:px-6">
+    <div class="navbar-start">
+      <div class="dropdown lg:hidden">
+        <div tabindex="0" role="button" class="btn btn-ghost btn-square" aria-label="Menu">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </div>
+        <ul tabindex="0" class="dropdown-content menu bg-night-900 border border-night-700 rounded-box z-50 mt-3 w-52 p-2 shadow-2xl">
+          
+          <li>
+            <a href="&#x2F;docs&#x2F;"  class="text-brand-500">
+              Docs
+            </a>
+          </li>
+          
+          <li>
+            <a href="&#x2F;blog&#x2F;"  class="">
+              Blog
+            </a>
+          </li>
+          
+          <li>
+            <a href="https:&#x2F;&#x2F;github.com&#x2F;ethernomad&#x2F;choreographr" target="_blank" rel="noopener" class="">
+              GitHub<span class="text-night-400 text-xs">↗</span>
+            </a>
+          </li>
+          
+          <li>
+            <a href="https:&#x2F;&#x2F;t.me&#x2F;choreographr" target="_blank" rel="noopener" class="">
+              Telegram<span class="text-night-400 text-xs">↗</span>
+            </a>
+          </li>
+          
+        </ul>
+      </div>
+      <a href="/" class="font-mono text-lg font-bold tracking-tight select-none">
+        <span class="text-brand-500">choreo</span><span class="text-night-50">graphr</span>
+      </a>
+    </div>
+    <div class="navbar-end hidden lg:flex">
+      <ul class="menu menu-horizontal px-1 gap-1 text-sm">
+        
+        <li>
+          <a href="&#x2F;docs&#x2F;"
+             
+             class="text-brand-500 font-semibold">
+            Docs
+          </a>
+        </li>
+        
+        <li>
+          <a href="&#x2F;blog&#x2F;"
+             
+             class="text-night-200 hover:text-night-50">
+            Blog
+          </a>
+        </li>
+        
+        <li>
+          <a href="https:&#x2F;&#x2F;github.com&#x2F;ethernomad&#x2F;choreographr"
+             target="_blank" rel="noopener"
+             class="">
+            GitHub<span class="text-night-400 text-xs">↗</span>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https:&#x2F;&#x2F;t.me&#x2F;choreographr"
+             target="_blank" rel="noopener"
+             class="">
+            Telegram<span class="text-night-400 text-xs">↗</span>
+          </a>
+        </li>
+        
+      </ul>
+    </div>
+  </nav>
+</header>
+
+
+  <main class="flex-1">
+    
+
+<div class="mx-auto max-w-7xl px-4 sm:px-6 py-8 lg:py-12">
+  <div class="flex flex-col lg:flex-row gap-10">
+    <aside class="lg:w-60 shrink-0">
+      <div class="lg:sticky lg:top-24">
+        
+
+<nav class="w-full">
+  <p class="px-3 mb-2 text-xs font-semibold uppercase tracking-wider text-night-400">Documentation</p>
+  <ul class="menu menu-sm w-full p-0 gap-0.5">
+    
+    <li>
+      <a href="https:&#x2F;&#x2F;choreographr.com&#x2F;docs&#x2F;quick-start&#x2F;"
+         class="text-night-200 hover:text-night-50">
+        Quick start
+      </a>
+    </li>
+    
+    <li>
+      <a href="https:&#x2F;&#x2F;choreographr.com&#x2F;docs&#x2F;installation&#x2F;"
+         class="text-night-200 hover:text-night-50">
+        Installation
+      </a>
+    </li>
+    
+    <li>
+      <a href="https:&#x2F;&#x2F;choreographr.com&#x2F;docs&#x2F;configuration&#x2F;"
+         class="text-night-200 hover:text-night-50">
+        Configuration
+      </a>
+    </li>
+    
+    <li>
+      <a href="https:&#x2F;&#x2F;choreographr.com&#x2F;docs&#x2F;accounts-and-providers&#x2F;"
+         class="text-night-200 hover:text-night-50">
+        Accounts &amp; providers
+      </a>
+    </li>
+    
+    <li>
+      <a href="https:&#x2F;&#x2F;choreographr.com&#x2F;docs&#x2F;slash-commands&#x2F;"
+         class="text-night-200 hover:text-night-50">
+        Slash commands
+      </a>
+    </li>
+    
+    <li>
+      <a href="https:&#x2F;&#x2F;choreographr.com&#x2F;docs&#x2F;concepts&#x2F;"
+         class="text-night-200 hover:text-night-50">
+        Concepts
+      </a>
+    </li>
+    
+    <li>
+      <a href="https:&#x2F;&#x2F;choreographr.com&#x2F;docs&#x2F;tools&#x2F;"
+         class="bg-night-700 text-night-50 font-semibold">
+        Tools
+      </a>
+    </li>
+    
+    <li>
+      <a href="https:&#x2F;&#x2F;choreographr.com&#x2F;docs&#x2F;why-rust&#x2F;"
+         class="text-night-200 hover:text-night-50">
+        Why Rust?
+      </a>
+    </li>
+    
+    <li>
+      <a href="https:&#x2F;&#x2F;choreographr.com&#x2F;docs&#x2F;architecture&#x2F;"
+         class="text-night-200 hover:text-night-50">
+        Architecture
+      </a>
+    </li>
+    
+    <li>
+      <a href="https:&#x2F;&#x2F;choreographr.com&#x2F;docs&#x2F;security&#x2F;"
+         class="text-night-200 hover:text-night-50">
+        Security
+      </a>
+    </li>
+    
+    <li>
+      <a href="https:&#x2F;&#x2F;choreographr.com&#x2F;docs&#x2F;monitoring&#x2F;"
+         class="text-night-200 hover:text-night-50">
+        Monitoring
+      </a>
+    </li>
+    
+    <li>
+      <a href="https:&#x2F;&#x2F;choreographr.com&#x2F;docs&#x2F;testing&#x2F;"
+         class="text-night-200 hover:text-night-50">
+        Testing &amp; development
+      </a>
+    </li>
+    
+    <li>
+      <a href="https:&#x2F;&#x2F;choreographr.com&#x2F;docs&#x2F;troubleshooting&#x2F;"
+         class="text-night-200 hover:text-night-50">
+        Troubleshooting
+      </a>
+    </li>
+    
+    <li>
+      <a href="https:&#x2F;&#x2F;choreographr.com&#x2F;docs&#x2F;faq&#x2F;"
+         class="text-night-200 hover:text-night-50">
+        FAQ
+      </a>
+    </li>
+    
+  </ul>
+</nav>
+
+      </div>
+    </aside>
+    <article class="prose min-w-0 flex-1 max-w-3xl">
+      <h1>Tools</h1>
+      <div class="text-sm text-night-400 font-mono mb-6">
+        &#x2F;docs&#x2F;tools&#x2F;
+      </div>
+      <p>Tools are the functions the LLM — and the RISC-V VM — can call to interact
+with the outside world: reading and writing files, running shell commands,
+making HTTP requests, managing Git repositories, querying a persistent
+database, posting to X, and more. This page is the complete reference: how
+tools work, how they are grouped, and what each one does.</p>
+<h2 id="how-tools-work">How tools work</h2>
+<p>Every tool implements the <code>Tool</code> trait (name, group, description, JSON Schema,
+and <code>execute</code>) and is registered in a <code>ToolRegistry</code> at daemon startup. Before
+each model call, the daemon advertises the JSON Schemas of the tools in the
+session's <strong>active groups</strong>; the model can call any of them, and the daemon
+executes the call and returns the result. The JSON Schema <em>is</em> the interface —
+the model learns exactly what arguments each tool expects.</p>
+<h3 id="tool-call-lifecycle">Tool call lifecycle</h3>
+<ol>
+<li>The model emits a tool call: a name plus arguments as JSON.</li>
+<li>The daemon validates the arguments against the tool's schema and executes
+the tool with the session's working directory and credentials.</li>
+<li>Streaming tools (<code>sh</code>, <code>exec</code>, <code>find</code>, <code>grep</code>, <code>run_series</code>, <code>run_riscv</code>)
+deliver output in chunks as it is produced; other tools return their result
+in the next turn append.</li>
+<li>The result is appended to the conversation and the agent loop continues.</li>
+</ol>
+<p>Every tool also produces a human-readable <strong>invocation description</strong>
+(e.g. "Reading <code>src/main.rs</code>.") that the client displays while the call runs,
+and tools with structured return types expose an <code>output_schema</code> for
+<a rel="external" href="https://developers.openai.com/api/docs/guides/tools-programmatic-tool-calling">programmatic tool calling</a>
+(Responses API, gpt-5.6+ models).</p>
+<h3 id="tool-groups">Tool groups</h3>
+<p>Tools are organized into <strong>groups</strong> to keep the model's context small. Only
+<strong><code>core</code></strong>, <strong><code>git</code></strong>, and <strong><code>shell</code></strong> are active by default. The model can
+activate additional groups with <code>load_tools</code> and deactivate them with
+<code>unload_tools</code>; <code>core</code> is always active and cannot be unloaded.</p>
+<blockquote>
+<p>Groups are a <strong>discovery mechanism, not access control</strong> — the RISC-V VM
+always has access to all tools.</p>
+</blockquote>
+<table><thead><tr><th>Group</th><th>Description</th><th>Active by default</th></tr></thead><tbody>
+<tr><td><code>core</code></td><td>Filesystem, HTTP, images, PDF, search, random, time, sessions, series</td><td>✅ always</td></tr>
+<tr><td><code>git</code></td><td>Local Git operations (status, diff, log, add, commit, push, show)</td><td>✅</td></tr>
+<tr><td><code>shell</code></td><td>Shell execution (bash, nushell, fish, exec)</td><td>✅</td></tr>
+<tr><td><code>desktop</code></td><td>Desktop notifications via <code>notify-send</code></td><td>—</td></tr>
+<tr><td><code>db</code></td><td>Session-scoped key-value database (redb)</td><td>—</td></tr>
+<tr><td><code>x</code></td><td>X/Twitter API (post, search, user lookup)</td><td>—</td></tr>
+<tr><td><code>vm</code></td><td>RISC-V sandboxed code execution</td><td>—</td></tr>
+<tr><td><code>mcp/&lt;server&gt;</code></td><td>One dynamic group per configured MCP server</td><td>—</td></tr>
+</tbody></table>
+<p>Activate a group from the model side:</p>
+<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;"><code data-lang="json"><span class="giallo-l"><span style="color: #9399B2;">{ &quot;</span><span style="color: #89B4FA;">name</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;load_tools&quot;</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">arguments</span><span style="color: #9399B2;">&quot;: { &quot;</span><span style="color: #89B4FA;">groups</span><span style="color: #9399B2;">&quot;: [</span><span style="color: #A6E3A1;">&quot;db&quot;</span><span style="color: #9399B2;">,</span><span style="color: #A6E3A1;"> &quot;x&quot;</span><span style="color: #9399B2;">] } }</span></span></code></pre>
+<p>and deactivate it with <code>unload_tools</code>. Groups can also be passed to
+<code>spawn_subsession</code> via its <code>categories</code> argument so a subsession starts with
+exactly the tools it needs.</p>
+<h2 id="core-tools">Core tools</h2>
+<p><code>core</code> is always active. It covers file operations, HTTP, images, PDFs,
+search, randomness, time, session management, and orchestration.</p>
+<table><thead><tr><th>Tool</th><th>What it does</th></tr></thead><tbody>
+<tr><td><code>read_file</code></td><td>Read a UTF-8 text file; rejects binary files; output is capped and truncation is reported</td></tr>
+<tr><td><code>read_file_range</code></td><td>Read a line range from a UTF-8 text file (max 500 lines per call)</td></tr>
+<tr><td><code>list_files</code></td><td>List files in a directory with sizes, symlink targets, and subdirectory entry counts</td></tr>
+<tr><td><code>write_file</code></td><td>Write a UTF-8 text file to the workspace</td></tr>
+<tr><td><code>edit_file</code></td><td>Apply one or more exact text replacements to a file</td></tr>
+<tr><td><code>delete_files</code></td><td>Delete files or directories; supports literal paths and glob patterns</td></tr>
+<tr><td><code>line_count</code></td><td>Count the lines in a UTF-8 text file</td></tr>
+<tr><td><code>grep</code></td><td>Search file contents for a literal or regex pattern</td></tr>
+<tr><td><code>find</code></td><td>Find files and directories by name (substring or glob)</td></tr>
+<tr><td><code>http_request</code></td><td>Make an HTTP request; returns status, headers, and body text</td></tr>
+<tr><td><code>display_image</code></td><td>Display a PNG, JPEG, or SVG image in the client UI</td></tr>
+<tr><td><code>pdf_classify</code></td><td>Classify a PDF as text, scanned, image-based, or mixed (fast, no OCR)</td></tr>
+<tr><td><code>pdf_to_markdown</code></td><td>Convert a text-based PDF to Markdown (headings, tables, code blocks)</td></tr>
+<tr><td><code>random</code></td><td>Generate random integers, floats, booleans, bytes, or UUID v4 (seedable)</td></tr>
+<tr><td><code>get_current_time</code></td><td>Get the current Unix timestamp in milliseconds</td></tr>
+<tr><td><code>run_series</code></td><td>Execute a sequence of tool calls one at a time in order</td></tr>
+<tr><td><code>load_tools</code> / <code>unload_tools</code></td><td>Activate / deactivate tool groups</td></tr>
+<tr><td><code>load_skill</code></td><td>Load a skill's full instructions by name</td></tr>
+<tr><td><code>set_working_dir</code></td><td>Change the session's working directory</td></tr>
+<tr><td><code>set_session_title</code></td><td>Set the session's display title</td></tr>
+<tr><td><code>spawn_subsession</code></td><td>Spawn a child session to work autonomously on a task</td></tr>
+<tr><td><code>list_sessions</code></td><td>List all sessions known to the daemon</td></tr>
+<tr><td><code>get_session</code></td><td>Read the full message history of a session by ID</td></tr>
+</tbody></table>
+<h3 id="file-tools">File tools</h3>
+<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;"><code data-lang="json"><span class="giallo-l"><span style="color: #9399B2;">{ &quot;</span><span style="color: #89B4FA;">name</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;read_file&quot;</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">arguments</span><span style="color: #9399B2;">&quot;: { &quot;</span><span style="color: #89B4FA;">path</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;src/main.rs&quot;</span><span style="color: #9399B2;"> } }</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">{ &quot;</span><span style="color: #89B4FA;">name</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;edit_file&quot;</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">arguments</span><span style="color: #9399B2;">&quot;: {</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">    &quot;</span><span style="color: #89B4FA;">path</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;src/main.rs&quot;</span><span style="color: #9399B2;">,</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">    &quot;</span><span style="color: #89B4FA;">edits</span><span style="color: #9399B2;">&quot;: [</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">      { &quot;</span><span style="color: #89B4FA;">old_text</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;old&quot;</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">new_text</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;new&quot;</span><span style="color: #9399B2;"> },</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">      { &quot;</span><span style="color: #89B4FA;">old_text</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;x&quot;</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">new_text</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;y&quot;</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">replace_all</span><span style="color: #9399B2;">&quot;:</span><span style="color: #FAB387;"> true</span><span style="color: #9399B2;"> }</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">    ] } }</span></span></code></pre>
+<ul>
+<li><code>read_file</code> resolves relative paths against the session's working directory
+and streams output through a bounded reader, so memory use stays capped even
+for very large files. <code>read_file_range</code> reads a specific 1-based line range
+(<code>start_line</code>, <code>max_lines</code>) — the right tool for big files.</li>
+<li><code>edit_file</code> takes a list of exact <code>old_text</code> → <code>new_text</code> replacements. Each
+edit must match at least once; edits without <code>replace_all</code> must match exactly
+once. This keeps the model from guessing at file contents.</li>
+<li><code>delete_files</code> auto-detects glob patterns (<code>*</code>, <code>?</code>, <code>[</code>). Patterns without
+<code>/</code> match against the file's basename; patterns with <code>/</code> match full paths
+from the working directory.</li>
+</ul>
+<h3 id="search-tools">Search tools</h3>
+<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;"><code data-lang="json"><span class="giallo-l"><span style="color: #9399B2;">{ &quot;</span><span style="color: #89B4FA;">name</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;grep&quot;</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">arguments</span><span style="color: #9399B2;">&quot;: { &quot;</span><span style="color: #89B4FA;">pattern</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;fn main&quot;</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">include</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;*.rs&quot;</span><span style="color: #9399B2;"> } }</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">{ &quot;</span><span style="color: #89B4FA;">name</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;grep&quot;</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">arguments</span><span style="color: #9399B2;">&quot;: { &quot;</span><span style="color: #89B4FA;">pattern</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;pub fn </span><span style="color: #F5C2E7;">\\</span><span style="color: #A6E3A1;">w+&quot;</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">regex</span><span style="color: #9399B2;">&quot;:</span><span style="color: #FAB387;"> true</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">path</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;src&quot;</span><span style="color: #9399B2;"> } }</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">{ &quot;</span><span style="color: #89B4FA;">name</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;find&quot;</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">arguments</span><span style="color: #9399B2;">&quot;: { &quot;</span><span style="color: #89B4FA;">pattern</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;*.md&quot;</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">path</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;docs&quot;</span><span style="color: #9399B2;"> } }</span></span></code></pre>
+<ul>
+<li><code>grep</code> treats the pattern as a literal substring by default — set
+<code>regex: true</code> for regular expressions (required if your pattern contains
+<code>|</code>, <code>(</code>, <code>^</code>, <code>$</code>, <code>+</code>, etc.). <code>include</code> filters files by glob; results are
+returned as <code>file:line:content</code>. Both tools respect <code>.gitignore</code>, hidden
+files, and binary files, and cap results to protect the model's context.</li>
+<li><code>find</code> searches by file name. Glob mode is auto-detected when the pattern
+contains wildcards; set <code>glob</code> explicitly to force or disable it.</li>
+</ul>
+<h3 id="http-images">HTTP &amp; images</h3>
+<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;"><code data-lang="json"><span class="giallo-l"><span style="color: #9399B2;">{ &quot;</span><span style="color: #89B4FA;">name</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;http_request&quot;</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">arguments</span><span style="color: #9399B2;">&quot;: {</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">    &quot;</span><span style="color: #89B4FA;">method</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;GET&quot;</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">url</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;https://api.example.com/items&quot;</span><span style="color: #9399B2;">,</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">    &quot;</span><span style="color: #89B4FA;">headers</span><span style="color: #9399B2;">&quot;: { &quot;</span><span style="color: #89B4FA;">Range</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;bytes=0-1023&quot;</span><span style="color: #9399B2;"> } } }</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">{ &quot;</span><span style="color: #89B4FA;">name</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;display_image&quot;</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">arguments</span><span style="color: #9399B2;">&quot;: { &quot;</span><span style="color: #89B4FA;">mime_type</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;image/png&quot;</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">path</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;chart.png&quot;</span><span style="color: #9399B2;"> } }</span></span></code></pre>
+<ul>
+<li><code>http_request</code> supports GET, POST, PUT, DELETE, PATCH, and HEAD, custom
+headers (including <code>Range</code> for partial content), an optional body, and a
+configurable timeout (default 30 s).</li>
+<li><code>display_image</code> accepts exactly one source: <code>path</code>, <code>url</code>, <code>base64_data</code>, or
+raw <code>svg_text</code>, with an optional <code>alt</code> description. Supported types are PNG,
+JPEG, and SVG (SVG is rendered to a bitmap first).</li>
+</ul>
+<h3 id="pdf-tools">PDF tools</h3>
+<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;"><code data-lang="json"><span class="giallo-l"><span style="color: #9399B2;">{ &quot;</span><span style="color: #89B4FA;">name</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;pdf_classify&quot;</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">arguments</span><span style="color: #9399B2;">&quot;: { &quot;</span><span style="color: #89B4FA;">path</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;report.pdf&quot;</span><span style="color: #9399B2;"> } }</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">{ &quot;</span><span style="color: #89B4FA;">name</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;pdf_to_markdown&quot;</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">arguments</span><span style="color: #9399B2;">&quot;: { &quot;</span><span style="color: #89B4FA;">path</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;report.pdf&quot;</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">pages</span><span style="color: #9399B2;">&quot;: [</span><span style="color: #FAB387;">1</span><span style="color: #9399B2;">,</span><span style="color: #FAB387;"> 2</span><span style="color: #9399B2;">,</span><span style="color: #FAB387;"> 3</span><span style="color: #9399B2;">], &quot;</span><span style="color: #89B4FA;">compact</span><span style="color: #9399B2;">&quot;:</span><span style="color: #FAB387;"> true</span><span style="color: #9399B2;"> } }</span></span></code></pre>
+<p><code>pdf_classify</code> is fast (~10–50 ms) and needs no OCR: it reports whether a PDF
+is text-based, scanned, image-based, or mixed, with per-page OCR routing, so
+you can decide whether to extract locally or route to OCR/vision.
+<code>pdf_to_markdown</code> extracts headings, lists, code blocks, tables, and
+multi-column reading order from text-based PDFs. It wraps extracted text in an
+<strong>UNTRUSTED-content</strong> delimiter — treat PDF content as data, not instructions.</p>
+<h3 id="orchestration-tools">Orchestration tools</h3>
+<ul>
+<li>
+<p><code>run_series</code> — runs an ordered list of tool calls, one at a time, stopping
+on the first error. Steps can reference earlier results with <code>{{step_1}}</code>,
+<code>{{step_2}}</code>, … inside their argument strings:</p>
+<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;"><code data-lang="json"><span class="giallo-l"><span style="color: #9399B2;">{ &quot;</span><span style="color: #89B4FA;">name</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;run_series&quot;</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">arguments</span><span style="color: #9399B2;">&quot;: { &quot;</span><span style="color: #89B4FA;">steps</span><span style="color: #9399B2;">&quot;: [</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">    { &quot;</span><span style="color: #89B4FA;">tool</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;line_count&quot;</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">arguments</span><span style="color: #9399B2;">&quot;: { &quot;</span><span style="color: #89B4FA;">path</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;src/main.rs&quot;</span><span style="color: #9399B2;"> } },</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">    { &quot;</span><span style="color: #89B4FA;">tool</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;read_file_range&quot;</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">arguments</span><span style="color: #9399B2;">&quot;: { &quot;</span><span style="color: #89B4FA;">path</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;src/main.rs&quot;</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">start_line</span><span style="color: #9399B2;">&quot;:</span><span style="color: #FAB387;"> 1</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">max_lines</span><span style="color: #9399B2;">&quot;:</span><span style="color: #FAB387;"> 20</span><span style="color: #9399B2;"> } }</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">] } }</span></span></code></pre>
+<p>This lets the model batch dependent operations into a single turn instead of
+round-tripping through the LLM for every step.</p>
+</li>
+<li>
+<p><code>spawn_subsession</code> — spawns a child session that inherits the parent's
+working directory, runs its own full agent loop (with optional
+<code>categories</code> of tool groups), and returns its output as the tool result.
+Subsessions persist and can spawn their own subsessions.</p>
+</li>
+<li>
+<p><code>load_skill</code> / <code>set_working_dir</code> / <code>set_session_title</code> / <code>list_sessions</code> /
+<code>get_session</code> — session management. <code>set_working_dir</code> redirects all
+subsequent file operations, shell commands, and context discovery
+(<code>AGENTS.md</code>, <code>CLAUDE.md</code>, skills) for the session.</p>
+</li>
+</ul>
+<h2 id="git-tools">Git tools</h2>
+<p><code>git</code> is active by default. All git tools operate on the repository containing
+the given path (defaulting to the working directory). They are implemented
+with <code>gix</code> and require no shell.</p>
+<table><thead><tr><th>Tool</th><th>What it does</th></tr></thead><tbody>
+<tr><td><code>git_status</code></td><td>Show the status of the repository containing the given path</td></tr>
+<tr><td><code>git_diff</code></td><td>Show the line-by-line unified diff for a file or repository</td></tr>
+<tr><td><code>git_log</code></td><td>Show recent commits (<code>limit</code>)</td></tr>
+<tr><td><code>git_add</code></td><td>Stage a file or pathspec</td></tr>
+<tr><td><code>git_commit</code></td><td>Create a commit from the current index (<code>message</code>, <code>allow_empty</code>)</td></tr>
+<tr><td><code>git_push</code></td><td>Push to a remote branch (<code>remote</code>, <code>branch</code>, <code>set_upstream</code>, <code>dry_run</code>, <code>force_with_lease</code>)</td></tr>
+<tr><td><code>git_show</code></td><td>Show a Git object (commit, tree, blob, tag) or a file at a revision</td></tr>
+</tbody></table>
+<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;"><code data-lang="json"><span class="giallo-l"><span style="color: #9399B2;">{ &quot;</span><span style="color: #89B4FA;">name</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;git_diff&quot;</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">arguments</span><span style="color: #9399B2;">&quot;: { &quot;</span><span style="color: #89B4FA;">pathspec</span><span style="color: #9399B2;">&quot;: [</span><span style="color: #A6E3A1;">&quot;src/main.rs&quot;</span><span style="color: #9399B2;">] } }</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">{ &quot;</span><span style="color: #89B4FA;">name</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;git_commit&quot;</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">arguments</span><span style="color: #9399B2;">&quot;: { &quot;</span><span style="color: #89B4FA;">message</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;Fix off-by-one in the parser&quot;</span><span style="color: #9399B2;"> } }</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">{ &quot;</span><span style="color: #89B4FA;">name</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;git_push&quot;</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">arguments</span><span style="color: #9399B2;">&quot;: { &quot;</span><span style="color: #89B4FA;">remote</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;origin&quot;</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">branch</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;main&quot;</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">set_upstream</span><span style="color: #9399B2;">&quot;:</span><span style="color: #FAB387;"> true</span><span style="color: #9399B2;"> } }</span></span></code></pre><h2 id="shell-tools">Shell tools</h2>
+<p><code>shell</code> is active by default. All shell tools are <strong>non-interactive</strong> —
+commands that read from stdin will hang — and share a common timeout
+(default 30 s) and <code>workdir</code>.</p>
+<table><thead><tr><th>Tool</th><th>What it does</th></tr></thead><tbody>
+<tr><td><code>exec</code></td><td>Execute a single program directly, no shell parsing (e.g. <code>cargo build</code>)</td></tr>
+<tr><td><code>sh</code></td><td>Execute a command with a POSIX-compatible shell (<code>bash</code>, <code>dash</code>, or <code>zsh</code>), with pipes, redirects, globs, and env vars</td></tr>
+<tr><td><code>nushell</code></td><td>Execute a nushell command (registered only if <code>nu</code> is installed)</td></tr>
+<tr><td><code>fish</code></td><td>Execute a fish shell command (registered only if <code>fish</code> is installed)</td></tr>
+</tbody></table>
+<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;"><code data-lang="json"><span class="giallo-l"><span style="color: #9399B2;">{ &quot;</span><span style="color: #89B4FA;">name</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;exec&quot;</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">arguments</span><span style="color: #9399B2;">&quot;: { &quot;</span><span style="color: #89B4FA;">command</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;cargo&quot;</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">args</span><span style="color: #9399B2;">&quot;: [</span><span style="color: #A6E3A1;">&quot;build&quot;</span><span style="color: #9399B2;">], &quot;</span><span style="color: #89B4FA;">timeout</span><span style="color: #9399B2;">&quot;:</span><span style="color: #FAB387;"> 120000</span><span style="color: #9399B2;"> } }</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">{ &quot;</span><span style="color: #89B4FA;">name</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;sh&quot;</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">arguments</span><span style="color: #9399B2;">&quot;: { &quot;</span><span style="color: #89B4FA;">command</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;cargo test | tail -20&quot;</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">shell</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;bash&quot;</span><span style="color: #9399B2;"> } }</span></span></code></pre>
+<p>Rule of thumb: use <code>exec</code> when you are certain the program exists and needs no
+shell features; use <code>sh</code> (or <code>nushell</code>/<code>fish</code>) for anything that needs pipes,
+globs, or environment variables.</p>
+<h2 id="database-tools">Database tools</h2>
+<p>The <code>db</code> group provides a persistent, session-scoped key-value store backed by
+<code>redb</code>. Data survives daemon restarts. Values are arbitrary binary (<code>Vec&lt;u8&gt;</code>);
+<code>db_get</code> returns a lossy UTF-8 conversion.</p>
+<table><thead><tr><th>Tool</th><th>What it does</th></tr></thead><tbody>
+<tr><td><code>db_set</code></td><td>Insert or overwrite a key-value pair</td></tr>
+<tr><td><code>db_get</code></td><td>Retrieve a value by key</td></tr>
+<tr><td><code>db_delete</code></td><td>Remove a single key</td></tr>
+<tr><td><code>db_delete_range</code></td><td>Delete all keys in <code>[start, end)</code></td></tr>
+<tr><td><code>db_get_range</code></td><td>Retrieve all key-value pairs in <code>[start, end)</code></td></tr>
+<tr><td><code>db_list</code></td><td>List key names in <code>[start, end)</code></td></tr>
+<tr><td><code>db_count</code></td><td>Count keys, optionally filtered by <code>prefix</code></td></tr>
+</tbody></table>
+<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;"><code data-lang="json"><span class="giallo-l"><span style="color: #9399B2;">{ &quot;</span><span style="color: #89B4FA;">name</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;db_set&quot;</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">arguments</span><span style="color: #9399B2;">&quot;: { &quot;</span><span style="color: #89B4FA;">key</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;todo&quot;</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">value</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;review PR #42&quot;</span><span style="color: #9399B2;"> } }</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">{ &quot;</span><span style="color: #89B4FA;">name</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;db_get&quot;</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">arguments</span><span style="color: #9399B2;">&quot;: { &quot;</span><span style="color: #89B4FA;">key</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;todo&quot;</span><span style="color: #9399B2;"> } }</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">{ &quot;</span><span style="color: #89B4FA;">name</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;db_list&quot;</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">arguments</span><span style="color: #9399B2;">&quot;: {} }</span></span></code></pre>
+<p>Use the database to remember facts, notes, and state across turns and sessions.</p>
+<h2 id="x-twitter-tools">X (Twitter) tools</h2>
+<p>The <code>x</code> group wraps the X API v2. Each tool requires X credentials in the
+keystore (add them with <code>/add-x &lt;service&gt; &lt;api_key&gt; &lt;api_key_secret&gt; &lt;access_token&gt; &lt;access_token_secret&gt; &lt;bearer_or_-&gt;_</code> in <code>choreo-tui</code>).</p>
+<table><thead><tr><th>Tool</th><th>What it does</th></tr></thead><tbody>
+<tr><td><code>x_post</code></td><td>Post a tweet (<code>text</code>)</td></tr>
+<tr><td><code>x_search_recent</code></td><td>Search recent tweets (<code>query</code>, <code>max_results</code>)</td></tr>
+<tr><td><code>x_user_lookup</code></td><td>Look up a user by username or ID</td></tr>
+</tbody></table>
+<h2 id="desktop-tools">Desktop tools</h2>
+<p>The <code>desktop</code> group contains a single tool:</p>
+<ul>
+<li><code>notify_send</code> — sends a desktop notification (<code>summary</code>, optional <code>body</code>,
+<code>urgency</code>, <code>timeout</code>, <code>icon</code>) via <code>notify-send</code>. Use it to alert the user,
+e.g. when a long-running task completes.</li>
+</ul>
+<h2 id="risc-v-vm-tool">RISC-V VM tool</h2>
+<p>The <code>vm</code> group contains <code>run_riscv</code>, which compiles and runs Rust code in a
+sandboxed RISC-V VM (powered by <a rel="external" href="https://github.com/nervosnetwork/ckb-vm">CKB VM</a>) —
+either a <code>source</code> snippet or pre-compiled bytecode:</p>
+<table><thead><tr><th>Argument</th><th>Meaning</th></tr></thead><tbody>
+<tr><td><code>source</code></td><td>A <code>fn main()</code> body; the tool auto-generates <code>#![no_std]</code>, <code>#[panic_handler]</code>, <code>_start</code>, and the <code>choreo</code> module</td></tr>
+<tr><td><code>program</code></td><td>Base64-encoded ELF compiled with the choreographr syscall ABI</td></tr>
+<tr><td><code>program_path</code></td><td>Path to an ELF file on disk (same ABI)</td></tr>
+<tr><td><code>args</code></td><td>Program arguments passed to the guest</td></tr>
+<tr><td><code>max_cycles</code></td><td>Cycle budget (default is documented in the tool schema)</td></tr>
+<tr><td><code>memory_size</code></td><td>Guest memory size</td></tr>
+</tbody></table>
+<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;"><code data-lang="json"><span class="giallo-l"><span style="color: #9399B2;">{ &quot;</span><span style="color: #89B4FA;">name</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;run_riscv&quot;</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">arguments</span><span style="color: #9399B2;">&quot;: { &quot;</span><span style="color: #89B4FA;">source</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;let n = 40; let r = choreo::http_request(</span><span style="color: #F5C2E7;">\&quot;</span><span style="color: #A6E3A1;">GET</span><span style="color: #F5C2E7;">\&quot;</span><span style="color: #A6E3A1;">, </span><span style="color: #F5C2E7;">\&quot;</span><span style="color: #A6E3A1;">https://api.example.com</span><span style="color: #F5C2E7;">\&quot;</span><span style="color: #A6E3A1;">, &amp;[], None, None); choreo::write(r.as_bytes());&quot;</span><span style="color: #9399B2;"> } }</span></span></code></pre>
+<p>The VM is a complete, observable replacement for the shell: all tool access
+goes through the same <code>ToolRegistry</code> as the host agent, with the same
+credentials and working directory — but inside an isolated single-hart VM with
+no host memory, syscalls, or filesystem access except through registered
+tools. Guests use the <code>choreo</code> convenience wrappers (which handle postcard
+encoding automatically):</p>
+<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;"><code data-lang="rust"><span class="giallo-l"><span style="color: #F9E2AF;">choreo</span><span style="color: #94E2D5;">::</span><span style="color: #89B4FA;font-style: italic;">read_file</span><span style="color: #9399B2;">(</span><span>path</span><span style="color: #9399B2;">)</span><span style="color: #9399B2;font-style: italic;">                          // -&gt; String</span></span>
+<span class="giallo-l"><span style="color: #F9E2AF;">choreo</span><span style="color: #94E2D5;">::</span><span style="color: #89B4FA;font-style: italic;">write_file</span><span style="color: #9399B2;">(</span><span>path</span><span style="color: #9399B2;">,</span><span> content</span><span style="color: #9399B2;">,</span><span> overwrite</span><span style="color: #9399B2;">)</span></span>
+<span class="giallo-l"><span style="color: #F9E2AF;">choreo</span><span style="color: #94E2D5;">::</span><span style="color: #89B4FA;font-style: italic;">db_get</span><span style="color: #9399B2;">(</span><span>key</span><span style="color: #9399B2;">)</span><span style="color: #9399B2;font-style: italic;">                              // -&gt; Vec&lt;u8&gt;</span></span>
+<span class="giallo-l"><span style="color: #F9E2AF;">choreo</span><span style="color: #94E2D5;">::</span><span style="color: #89B4FA;font-style: italic;">db_set</span><span style="color: #9399B2;">(</span><span>key</span><span style="color: #9399B2;">,</span><span> value</span><span style="color: #9399B2;">)</span><span style="color: #9399B2;font-style: italic;">                       // value: &amp;[u8]</span></span>
+<span class="giallo-l"><span style="color: #F9E2AF;">choreo</span><span style="color: #94E2D5;">::</span><span style="color: #89B4FA;font-style: italic;">db_delete</span><span style="color: #9399B2;">(</span><span>key</span><span style="color: #9399B2;">)</span><span style="color: #9399B2;font-style: italic;">                           // -&gt; bool</span></span>
+<span class="giallo-l"><span style="color: #F9E2AF;">choreo</span><span style="color: #94E2D5;">::</span><span style="color: #89B4FA;font-style: italic;">sh</span><span style="color: #9399B2;">(</span><span>command</span><span style="color: #9399B2;">,</span><span> shell</span><span style="color: #9399B2;">,</span><span> workdir</span><span style="color: #9399B2;">,</span><span> timeout_ms</span><span style="color: #9399B2;">)</span><span style="color: #9399B2;font-style: italic;">  // -&gt; String</span></span>
+<span class="giallo-l"><span style="color: #F9E2AF;">choreo</span><span style="color: #94E2D5;">::</span><span style="color: #89B4FA;font-style: italic;">exec</span><span style="color: #9399B2;">(</span><span>command</span><span style="color: #9399B2;">,</span><span> args</span><span style="color: #9399B2;">,</span><span> workdir</span><span style="color: #9399B2;">,</span><span> timeout_ms</span><span style="color: #9399B2;">)</span><span style="color: #9399B2;font-style: italic;"> // -&gt; String</span></span>
+<span class="giallo-l"><span style="color: #F9E2AF;">choreo</span><span style="color: #94E2D5;">::</span><span style="color: #89B4FA;font-style: italic;">grep</span><span style="color: #9399B2;">(</span><span>pattern</span><span style="color: #9399B2;">,</span><span> regex</span><span style="color: #9399B2;">,</span><span> include</span><span style="color: #9399B2;">,</span><span> path</span><span style="color: #9399B2;">,</span><span> max_results</span><span style="color: #9399B2;">)</span></span>
+<span class="giallo-l"><span style="color: #F9E2AF;">choreo</span><span style="color: #94E2D5;">::</span><span style="color: #89B4FA;font-style: italic;">find</span><span style="color: #9399B2;">(</span><span>pattern</span><span style="color: #9399B2;">,</span><span> glob</span><span style="color: #9399B2;">,</span><span> path</span><span style="color: #9399B2;">,</span><span> max_results</span><span style="color: #9399B2;">)</span></span>
+<span class="giallo-l"><span style="color: #F9E2AF;">choreo</span><span style="color: #94E2D5;">::</span><span style="color: #89B4FA;font-style: italic;">http_request</span><span style="color: #9399B2;">(</span><span>method</span><span style="color: #9399B2;">,</span><span> url</span><span style="color: #9399B2;">,</span><span> headers</span><span style="color: #9399B2;">,</span><span> body</span><span style="color: #9399B2;">,</span><span> timeout_secs</span><span style="color: #9399B2;">)</span></span>
+<span class="giallo-l"><span style="color: #F9E2AF;">choreo</span><span style="color: #94E2D5;">::</span><span style="color: #89B4FA;font-style: italic;">write</span><span style="color: #9399B2;">(</span><span>bytes</span><span style="color: #9399B2;">)</span><span style="color: #9399B2;font-style: italic;">                             // VM stdout</span></span>
+<span class="giallo-l"><span style="color: #F9E2AF;">choreo</span><span style="color: #94E2D5;">::</span><span style="color: #89B4FA;font-style: italic;">exit</span><span style="color: #9399B2;">(</span><span>code</span><span style="color: #9399B2;">)</span></span></code></pre>
+<blockquote>
+<p>Notes: the A (atomic) extension is disabled, so guests must not use
+<code>core::sync::atomic</code> read-modify-write operations. For <code>grep</code>, set
+<code>regex: true</code> when using regex patterns (the default is literal matching).
+Use <code>choreo::write(...)</code> for VM output and <code>choreo::exit(code)</code> to finish.</p>
+</blockquote>
+<h2 id="mcp-servers">MCP servers</h2>
+<p>Choreographr is an MCP <strong>client</strong>. Configure servers in <code>mcp_servers.json</code>
+(the daemon's config directory); at startup the daemon spawns each server,
+discovers its tools, and registers them as a dynamic group <code>mcp/&lt;slug&gt;</code>. Tools
+appear as <code>mcp/&lt;slug&gt;/&lt;tool-name&gt;</code> and are callable once the group is loaded
+with <code>load_tools</code> — exactly like built-in tools, but dispatched to the MCP
+server over JSON-RPC stdio.</p>
+<h2 id="security-model">Security model</h2>
+<ul>
+<li><strong>Groups are discovery, not access control.</strong> Loading <code>git</code> or <code>shell</code> just
+adds tool definitions to the model's context; it does not enforce what the
+model may do. The VM always has access to all tools.</li>
+<li><strong>Callers.</strong> Tools declare which callers may invoke them (<code>Direct</code> — the
+model — and/or <code>Programmatic</code> — a VM guest). Session-config mutations like
+<code>set_working_dir</code>, <code>load_tools</code>, and <code>unload_tools</code> are model-only, so a VM
+program cannot silently redirect the session mid-task.</li>
+<li><strong>Credentials.</strong> Tools that need them (X, model APIs) pull credentials from
+the encrypted keystore — never from prompt context.</li>
+</ul>
+
+    </article>
+  </div>
+</div>
+
+
+  </main>
+
+  <footer class="border-t border-night-700 bg-night-900">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 py-12">
+    <div class="grid gap-10 md:grid-cols-3">
+      <div>
+        <div class="font-mono text-lg font-bold tracking-tight">
+          <span class="text-brand-500">choreo</span><span class="text-night-50">graphr</span>
+        </div>
+        <p class="mt-3 text-sm text-night-300 max-w-xs">
+          An all-purpose, extensible AI agent written in Rust. Runs locally or in the cloud. Open source under Apache-2.0.
+        </p>
+      </div>
+      <div>
+        <h3 class="text-sm font-semibold text-night-50 uppercase tracking-wider mb-3">Explore</h3>
+        <ul class="space-y-2 text-sm text-night-300">
+          <li><a href="https://choreographr.com/docs" class="hover:text-brand-400">Documentation</a></li>
+          <li><a href="https://choreographr.com/blog" class="hover:text-brand-400">Blog</a></li>
+          <li><a href="https://choreographr.com/search" class="hover:text-brand-400">Search</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3 class="text-sm font-semibold text-night-50 uppercase tracking-wider mb-3">Community</h3>
+        <ul class="space-y-2 text-sm text-night-300">
+          <li><a href="https:&#x2F;&#x2F;github.com&#x2F;ethernomad&#x2F;choreographr" target="_blank" rel="noopener" class="hover:text-brand-400">GitHub</a></li>
+          <li><a href="https:&#x2F;&#x2F;t.me&#x2F;choreographr" target="_blank" rel="noopener" class="hover:text-brand-400">Telegram</a></li>
+          <li><a href="https://choreographr.com/atom.xml" class="hover:text-brand-400">RSS Feed</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="mt-10 border-t border-night-700 pt-6 flex flex-col sm:flex-row justify-between gap-3 text-xs text-night-400">
+      <p>© 2026 Choreographr. Released under the Apache-2.0 license.</p>
+      <p class="font-mono">100% Rust · written by <a href="https:&#x2F;&#x2F;github.com&#x2F;ethernomad&#x2F;choreographr" target="_blank" rel="noopener" class="text-night-300 hover:text-brand-400">ethernomad</a></p>
+    </div>
+  </div>
+</footer>
+
+
+  
+</body>
+</html>

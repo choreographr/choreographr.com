@@ -1,7 +1,7 @@
 +++
 title = "Why Rust?"
 description = "Why Rust is a fantastic choice for writing an AI agent and its terminal UI."
-weight = 6
+weight = 8
 +++
 
 Rust is not the most common language for AI agents today — most agent

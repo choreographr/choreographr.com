@@ -1,7 +1,7 @@
 +++
 title = "Security"
 description = "Lock/unlock, encrypted credentials, and the RISC-V sandbox."
-weight = 8
+weight = 10
 +++
 
 Choreographr takes a defense-in-depth approach to security.

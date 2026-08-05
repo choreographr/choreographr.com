@@ -1,7 +1,7 @@
 +++
 title = "FAQ"
 description = "Frequently asked questions about Choreographr."
-weight = 12
+weight = 14
 +++
 
 ### What is Choreographr?

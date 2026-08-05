@@ -1,7 +1,7 @@
 +++
 title = "Monitoring"
 description = "Prometheus / OpenMetrics endpoint and the exposed metrics."
-weight = 9
+weight = 11
 +++
 
 The daemon can expose an OpenMetrics (Prometheus) endpoint:

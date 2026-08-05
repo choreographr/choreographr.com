@@ -40,6 +40,9 @@ and so on. Tools implement the `Tool` trait (name, group, description, JSON
 Schema, `execute`) and are registered in a `ToolRegistry` at daemon startup.
 Every tool also provides a human-readable invocation description.
 
+See the [tools reference](@/docs/tools.md) for the complete, up-to-date list
+of every built-in tool and how to call it.
+
 Available tool groups include **core** (filesystem, HTTP, images, PDF
 classification, search, random, time), **git**, **shell**, **vm**, **x**,
 **db**, and **desktop**. Only `core`, `git`, and `shell` are active by default.
