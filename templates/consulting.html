@@ -1,0 +1,310 @@
+{% extends "base.html" %}
+
+{% block title %}Consulting — {{ config.title }}{% endblock title %}
+{% block description %}{{ page.description }}{% endblock description %}
+
+{% block content %}
+
+{# ============================== HERO ============================== #}
+<section class="relative overflow-hidden">
+  <div class="absolute inset-0 bg-grid"></div>
+  <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(222,165,132,0.10),transparent_55%)]"></div>
+
+  <div class="relative mx-auto max-w-7xl px-4 sm:px-6 py-16 lg:py-20">
+    <div class="grid gap-10 lg:grid-cols-[auto_1fr] lg:items-center">
+      <div class="flex justify-center lg:justify-start">
+        <div class="relative">
+          <img src="{{ get_url(path='me.jpg') }}" alt="Jonathan Brown"
+               class="w-44 h-44 lg:w-56 lg:h-56 rounded-full object-cover border-4 border-brand-500/60 shadow-[0_0_60px_rgba(222,165,132,0.25)]" />
+          <div class="absolute -bottom-2 -right-2 rounded-full bg-success p-2 shadow-lg border border-night-950">
+            <svg class="h-5 w-5 text-night-950" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+        </div>
+      </div>
+      <div class="space-y-4 text-center lg:text-left">
+        <p class="text-sm font-semibold tracking-wide text-brand-500/90 font-mono">Consulting</p>
+        <h1 class="text-4xl font-extrabold tracking-tight text-night-50 md:text-5xl">Jonathan Brown</h1>
+        <p class="text-xl text-night-200">Backend Engineer &middot; Event-Driven Systems &middot; AI-Augmented Development</p>
+        <div class="flex flex-wrap justify-center lg:justify-start gap-4 text-sm text-night-300">
+          <span class="flex items-center gap-1.5">
+            <svg class="h-4 w-4 shrink-0 text-brand-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            Da Nang, Vietnam
+          </span>
+          <span class="flex items-center gap-1.5">
+            <svg class="h-4 w-4 shrink-0 text-brand-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+            <a href="mailto:jbrown@acuity.network" class="hover:text-brand-400 transition-colors">jbrown@acuity.network</a>
+          </span>
+        </div>
+        {% if page.extra.social %}
+        <div class="flex flex-wrap justify-center lg:justify-start gap-3 pt-2">
+          {% for link in page.extra.social %}
+          <a href="{{ link.url }}" target="_blank" rel="noopener noreferrer"
+             class="btn btn-outline btn-sm gap-2 border-night-600 text-night-200 hover:border-brand-500/50 hover:text-brand-400 transition-colors">
+            {% if link.icon == "github" %}
+            <svg class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+            {% elif link.icon == "linkedin" %}
+            <svg class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+            {% endif %}
+            {{ link.name }}
+          </a>
+          {% endfor %}
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+
+{# ============================== METRICS ============================== #}
+<section class="border-t border-night-700">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 py-16">
+    <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+      <div class="rounded-2xl border border-night-700 bg-night-900 p-6 text-center hover:border-brand-500/40 transition-colors">
+        <p class="text-3xl font-extrabold text-brand-500 font-mono">20+</p>
+        <p class="mt-1 text-sm text-night-300">years building production systems</p>
+      </div>
+      <div class="rounded-2xl border border-night-700 bg-night-900 p-6 text-center hover:border-secondary/40 transition-colors">
+        <p class="text-3xl font-extrabold text-secondary font-mono">10+</p>
+        <p class="mt-1 text-sm text-night-300">years as a digital nomad</p>
+      </div>
+      <div class="rounded-2xl border border-night-700 bg-night-900 p-6 text-center hover:border-accent/40 transition-colors">
+        <p class="text-3xl font-extrabold text-accent font-mono">2×</p>
+        <p class="mt-1 text-sm text-night-300">Web3 Foundation grants</p>
+      </div>
+      <div class="rounded-2xl border border-night-700 bg-night-900 p-6 text-center hover:border-info/40 transition-colors">
+        <p class="text-3xl font-extrabold text-info font-mono">6+</p>
+        <p class="mt-1 text-sm text-night-300">programming languages</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+{# ============================== CAREER TIMELINE ============================== #}
+<section class="border-t border-night-700 bg-night-900/50">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 py-16">
+    <div class="text-center mb-12">
+      <p class="text-sm font-semibold tracking-wide text-brand-500/90 font-mono">Career Journey</p>
+      <h2 class="mt-2 text-3xl font-bold text-night-50 tracking-tight">Two Decades of Engineering</h2>
+      <p class="mt-2 text-night-300 max-w-2xl mx-auto">From game engines to enterprise platforms, blockchain infrastructure to AI-augmented tooling — a consistent thread of event-driven, test-first systems thinking.</p>
+    </div>
+
+    <div class="relative mx-auto max-w-3xl">
+      <!-- Vertical gradient line -->
+      <div class="absolute left-6 top-0 h-full w-0.5 bg-gradient-to-b from-brand-500 via-secondary to-accent opacity-30"></div>
+
+      <!-- Era 1: Game Development -->
+      <div class="relative pl-16 pb-12 group">
+        <div class="absolute left-4 top-1 h-4 w-4 rounded-full bg-brand-500 shadow-[0_0_16px_rgba(222,165,132,0.5)] group-hover:scale-125 transition-transform duration-300"></div>
+        <div class="rounded-2xl border border-night-700 bg-night-900 p-6 group-hover:border-brand-500/40 transition-all duration-300">
+          <span class="inline-block text-xs font-bold tracking-wider text-brand-400 uppercase bg-brand-500/10 px-3 py-1 rounded-full font-mono">2003 – 2008</span>
+          <h3 class="mt-3 text-xl font-bold text-night-50">Game Development</h3>
+          <p class="text-sm font-medium text-secondary">C++ &middot; Multiplayer &middot; Systems Programming</p>
+          <p class="mt-2 text-night-300 leading-relaxed">Built a complete multiplayer 2D game from scratch — BSP trees for visibility, UDP networking with dead reckoning, event-stream demo recording (event sourcing before the term existed).</p>
+        </div>
+      </div>
+
+      <!-- Era 2: Enterprise Web -->
+      <div class="relative pl-16 pb-12 group">
+        <div class="absolute left-4 top-1 h-4 w-4 rounded-full bg-secondary shadow-[0_0_16px_rgba(121,192,255,0.5)] group-hover:scale-125 transition-transform duration-300"></div>
+        <div class="rounded-2xl border border-night-700 bg-night-900 p-6 group-hover:border-secondary/40 transition-all duration-300">
+          <span class="inline-block text-xs font-bold tracking-wider text-secondary uppercase bg-secondary/10 px-3 py-1 rounded-full font-mono">2008 – 2015</span>
+          <h3 class="mt-3 text-xl font-bold text-night-50">Enterprise Web</h3>
+          <p class="text-sm font-medium text-accent">Drupal &middot; SQL &middot; AIG &middot; NAB &middot; Flight Centre</p>
+          <p class="mt-2 text-night-300 leading-relaxed">Built and maintained enterprise Drupal platforms for Fortune 500 companies. Contributed patches to Drupal Core, ran the Berlin Drupal community for three years, and spoke at conferences across Europe.</p>
+        </div>
+      </div>
+
+      <!-- Era 3: Blockchain / Rust -->
+      <div class="relative pl-16 pb-12 group">
+        <div class="absolute left-4 top-1 h-4 w-4 rounded-full bg-accent shadow-[0_0_16px_rgba(63,185,80,0.5)] group-hover:scale-125 transition-transform duration-300"></div>
+        <div class="rounded-2xl border border-night-700 bg-night-900 p-6 group-hover:border-accent/40 transition-all duration-300">
+          <span class="inline-block text-xs font-bold tracking-wider text-accent uppercase bg-accent/10 px-3 py-1 rounded-full font-mono">2015 – 2023</span>
+          <h3 class="mt-3 text-xl font-bold text-night-50">Blockchain &middot; Rust</h3>
+          <p class="text-sm font-medium text-info">Acuity Index &middot; Substrate &middot; Web3 Foundation</p>
+          <p class="mt-2 text-night-300 leading-relaxed">Moved to Vietnam and authored <strong class="text-night-50">Acuity Index</strong> — a config-driven event indexer for Substrate blockchains. Awarded <strong class="text-night-50">two Web3 Foundation grants</strong> and Kusama Treasury funding. Pure Rust with an embedded database and resumable span tracking.</p>
+        </div>
+      </div>
+
+      <!-- Era 4: AI-Augmented Development -->
+      <div class="relative pl-16 pb-4 group">
+        <div class="absolute left-4 top-1 h-4 w-4 rounded-full bg-success shadow-[0_0_16px_rgba(63,185,80,0.5)] group-hover:scale-125 transition-transform duration-300"></div>
+        <div class="rounded-2xl border border-success/30 bg-night-900 p-6 group-hover:border-success/60 transition-all duration-300">
+          <span class="inline-block text-xs font-bold tracking-wider text-success uppercase bg-success/10 px-3 py-1 rounded-full font-mono">2023 – Present</span>
+          <h3 class="mt-3 text-xl font-bold text-night-50">AI-Augmented Development</h3>
+          <p class="text-sm font-medium text-brand-400">Agentic Tools &middot; tai &middot; AI Workflows</p>
+          <p class="mt-2 text-night-300 leading-relaxed">Pioneering AI-agentic development with Claude Code, Pi, OpenCode, and Hermes Agent. Building <strong class="text-night-50">tai</strong>, a custom long-running agent in Rust that emphasises read-only planning, invariant enforcement, and full test coverage.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{# ============================== CORE EXPERTISE ============================== #}
+<section class="border-t border-night-700">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 py-16">
+    <div class="rounded-3xl border border-night-700 bg-night-900 p-8 lg:p-10">
+      <div class="text-center mb-8">
+        <p class="text-sm font-semibold tracking-wide text-brand-500/90 font-mono">Expertise</p>
+        <h2 class="mt-2 text-3xl font-bold text-night-50 tracking-tight">Core Skills &amp; Technologies</h2>
+      </div>
+      {% if page.extra.skills %}
+      <div class="flex flex-wrap justify-center gap-3">
+        {% for skill in page.extra.skills %}
+        <span class="inline-flex items-center gap-1.5 rounded-full border border-night-600 bg-night-800 px-4 py-2 text-sm font-medium text-night-200 transition-colors duration-200 hover:border-brand-500/40 hover:text-night-50">
+          <span class="text-lg leading-none">{{ skill.icon }}</span>
+          {{ skill.name }}
+        </span>
+        {% endfor %}
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+{# ============================== KEY PROJECTS ============================== #}
+<section class="border-t border-night-700 bg-night-900/50">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 py-16">
+    <div class="text-center mb-12">
+      <p class="text-sm font-semibold tracking-wide text-brand-500/90 font-mono">Notable Work</p>
+      <h2 class="mt-2 text-3xl font-bold text-night-50 tracking-tight">Key Projects</h2>
+      <p class="mt-2 text-night-300 max-w-2xl mx-auto">A selection of open-source work, funded projects, and tools that define Jonathan's engineering approach.</p>
+    </div>
+
+    <div class="grid gap-6 md:grid-cols-3">
+      <!-- Acuity Index -->
+      <div class="card bg-night-900 border border-night-700 hover:border-brand-500/40 transition-colors">
+        <div class="card-body">
+          <div class="flex items-center gap-3 mb-2">
+            <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-brand-500/10 text-brand-500">
+              <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg>
+            </div>
+            <h3 class="text-lg font-bold text-night-50">Acuity Index</h3>
+          </div>
+          <p class="text-sm text-night-300 leading-relaxed flex-1">Config-driven event indexer for Substrate blockchains. Resumable indexing with span tracking, concurrent backfill and live-head catch-up with out-of-order resolution.</p>
+          <div class="mt-4 flex flex-wrap gap-2">
+            <span class="badge badge-outline badge-sm border-brand-500/40 text-brand-400 font-mono">Rust</span>
+            <span class="badge badge-outline badge-sm border-secondary/40 text-secondary font-mono">Blockchain</span>
+            <span class="badge badge-outline badge-sm border-accent/40 text-accent font-mono">Web3 Grant</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- tai -->
+      <div class="card bg-night-900 border border-night-700 hover:border-secondary/40 transition-colors">
+        <div class="card-body">
+          <div class="flex items-center gap-3 mb-2">
+            <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-secondary/10 text-secondary">
+              <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2H2v10l9.29 9.29c.94.94 2.48.94 3.42 0l6.58-6.58c.94-.94.94-2.48 0-3.42L12 2Z"/><path d="M7 7h.01"/></svg>
+            </div>
+            <h3 class="text-lg font-bold text-night-50">tai</h3>
+          </div>
+          <p class="text-sm text-night-300 leading-relaxed flex-1">Custom long-running AI agent in Rust. Implements read-only planning phase, AGENTS.md invariant enforcement, and automated test-first workflows for high-quality code generation.</p>
+          <div class="mt-4 flex flex-wrap gap-2">
+            <span class="badge badge-outline badge-sm border-brand-500/40 text-brand-400 font-mono">Rust</span>
+            <span class="badge badge-outline badge-sm border-secondary/40 text-secondary font-mono">AI Agent</span>
+            <span class="badge badge-outline badge-sm border-night-500 text-night-300 font-mono">In Development</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Drupal Core -->
+      <div class="card bg-night-900 border border-night-700 hover:border-accent/40 transition-colors">
+        <div class="card-body">
+          <div class="flex items-center gap-3 mb-2">
+            <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-accent/10 text-accent">
+              <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/><path d="M12 18V6"/></svg>
+            </div>
+            <h3 class="text-lg font-bold text-night-50">Drupal Core</h3>
+          </div>
+          <p class="text-sm text-night-300 leading-relaxed flex-1">Core contributor to one of the largest open-source CMS platforms. Built enterprise-grade solutions for AIG, NAB, and Flight Centre. Led the Berlin Drupal community for three years.</p>
+          <div class="mt-4 flex flex-wrap gap-2">
+            <span class="badge badge-outline badge-sm border-brand-500/40 text-brand-400 font-mono">PHP</span>
+            <span class="badge badge-outline badge-sm border-secondary/40 text-secondary font-mono">Open Source</span>
+            <span class="badge badge-outline badge-sm border-accent/40 text-accent font-mono">Community Lead</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{# ============================== NARRATIVE CONTENT (from consulting.md) ============================== #}
+<section class="border-t border-night-700">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 py-16">
+    <div class="rounded-3xl border border-night-700 bg-night-900 p-8 lg:p-10">
+      <div class="prose max-w-3xl">
+        {{ page.content | safe }}
+      </div>
+    </div>
+  </div>
+</section>
+
+{# ============================== ENGINEERING PHILOSOPHY ============================== #}
+<section class="border-t border-night-700 bg-night-900/50">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 py-16">
+    <div class="text-center mb-12">
+      <p class="text-sm font-semibold tracking-wide text-brand-500/90 font-mono">Principles</p>
+      <h2 class="mt-2 text-3xl font-bold text-night-50 tracking-tight">Engineering Philosophy</h2>
+      <p class="mt-2 text-night-300 max-w-2xl mx-auto">The values that guide every system Jonathan builds — from game engines to AI agents.</p>
+    </div>
+
+    <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+      <div class="rounded-2xl border border-night-700 bg-night-900 p-6 text-center hover:border-brand-500/40 transition-colors">
+        <div class="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-brand-500/10 text-brand-500">
+          <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" x2="8" y1="13" y2="13"/><line x1="16" x2="8" y1="17" y2="17"/></svg>
+        </div>
+        <h3 class="mt-4 font-bold text-night-50">Event-Driven</h3>
+        <p class="mt-2 text-sm text-night-300 leading-relaxed">Systems built around event streams are inherently decoupled, auditable, and resumable — from game replays to blockchain indexers.</p>
+      </div>
+
+      <div class="rounded-2xl border border-night-700 bg-night-900 p-6 text-center hover:border-secondary/40 transition-colors">
+        <div class="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-secondary/10 text-secondary">
+          <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        </div>
+        <h3 class="mt-4 font-bold text-night-50">Test-First</h3>
+        <p class="mt-2 text-sm text-night-300 leading-relaxed">Tests are not an afterthought — they define the contract. Every project has comprehensive, human-reviewed test coverage that makes refactoring safe.</p>
+      </div>
+
+      <div class="rounded-2xl border border-night-700 bg-night-900 p-6 text-center hover:border-accent/40 transition-colors">
+        <div class="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-accent/10 text-accent">
+          <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg>
+        </div>
+        <h3 class="mt-4 font-bold text-night-50">Pragmatic</h3>
+        <p class="mt-2 text-sm text-night-300 leading-relaxed">The best system is the one that ships and stays reliable. Pragmatism over purity — but never at the expense of correctness in critical paths.</p>
+      </div>
+
+      <div class="rounded-2xl border border-night-700 bg-night-900 p-6 text-center hover:border-info/40 transition-colors">
+        <div class="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-info/10 text-info">
+          <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/></svg>
+        </div>
+        <h3 class="mt-4 font-bold text-night-50">Deterministic</h3>
+        <p class="mt-2 text-sm text-night-300 leading-relaxed">Given the same inputs, the same outputs — always. Determinism in architecture enables replay, debugging, and confidence in production.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+{# ============================== CALL TO ACTION ============================== #}
+<section class="border-t border-night-700">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 py-16 lg:pb-24">
+    <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-brand-500/10 via-night-800 to-accent/10 p-8 lg:p-10 border border-night-700">
+      <div class="pointer-events-none absolute -top-24 -right-24 h-64 w-64 rounded-full bg-brand-500/10 blur-3xl"></div>
+      <div class="pointer-events-none absolute -bottom-24 -left-24 h-64 w-64 rounded-full bg-accent/10 blur-3xl"></div>
+      <div class="relative text-center">
+        <h2 class="text-3xl font-bold text-night-50 tracking-tight">Let's build something together</h2>
+        <p class="mx-auto mt-4 max-w-2xl text-lg text-night-200">
+          Whether you need AI strategy, a custom software system, or an automation pipeline — Jonathan brings deep technical experience and a practical, delivery-focused approach.
+        </p>
+        <div class="mt-8 flex flex-wrap justify-center gap-4">
+          <a href="mailto:jbrown@acuity.network" class="btn btn-primary btn-lg">Email me</a>
+          <a href="https://linkedin.com/in/jbrown" target="_blank" rel="noopener" class="btn btn-outline btn-lg border-night-500 text-night-100 hover:border-brand-500 hover:text-brand-400">LinkedIn</a>
+        </div>
+        <p class="mt-6 text-sm text-night-400">
+          Prefer email? <a href="mailto:jbrown@acuity.network" class="text-brand-400 hover:text-brand-300 underline underline-offset-2">jbrown@acuity.network</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock content %}

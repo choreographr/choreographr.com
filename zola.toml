@@ -41,6 +41,7 @@ msrv = "1.91"
 nav = [
   { name = "Docs", href = "/docs/" },
   { name = "Blog", href = "/blog/" },
+  { name = "Consulting", href = "/consulting/" },
   { name = "GitHub", href = "https://github.com/ethernomad/choreographr", external = true },
   { name = "Telegram", href = "https://t.me/choreographr", external = true },
 ]
