@@ -5,13 +5,13 @@ template = "consulting.html"
 
 [[extra.social]]
 name = "GitHub"
-url = "https://github.com/jbrown"
+url = "https://github.com/ethernomad"
 icon = "github"
 
 [[extra.social]]
-name = "LinkedIn"
-url = "https://linkedin.com/in/jbrown"
-icon = "linkedin"
+name = "X"
+url = "https://x.com/jbrown_acuity"
+icon = "x"
 
 [[extra.skills]]
 name = "Rust"
@@ -58,7 +58,7 @@ icon = "✅"
 
 Jonathan started his career building a complete multiplayer 2D game in C++ — implementing BSP trees, UDP networking with dead reckoning, and event-stream demo recording and playback, an early form of event sourcing. This foundation in systems programming shaped his approach to software: rigorous, deterministic, and pragmatic.
 
-Over the following decade he built and maintained enterprise Drupal platforms for AIG, NAB, and Flight Centre — working with large SQL databases, complex migrations, and payment integrations. He contributed patches to Drupal Core, ran the Berlin Drupal community for three years, and spoke at conferences across Europe.
+Over the following decade he built and maintained enterprise Drupal platforms for AIG, NAB, and Flight Centre — working with large SQL databases, complex migrations, and payment integrations. He contributed patches to Drupal, ran the Berlin Drupal community for three years, and spoke at conferences across Europe.
 
 In 2015 he moved to Vietnam and transitioned into blockchain and Rust development. He authored **Acuity Index**, a config-driven event indexer for Substrate blockchains, which received [two Web3 Foundation grants](https://github.com/acuity-network/acuity-index) and Kusama Treasury funding. The project features resumable indexing with span tracking, concurrent backfill and live-head catch-up with out-of-order resolution, and an embedded database — all in safe Rust.
 
@@ -66,7 +66,7 @@ Today Jonathan focuses on AI-augmented development, using agentic tools daily to
 
 ## AI-Augmented Development
 
-Jonathan was an early adopter of AI-agentic development tools. He uses Claude Code, Pi, OpenCode, and Hermes Agent for feature development, refactoring, and testing — and is building **tai**, a custom long-running agent in Rust. His workflows emphasise:
+Jonathan was an early adopter of AI-agentic development tools. He uses Claude Code, Pi, OpenCode, and Hermes Agent for feature development, refactoring, and testing — and is building **Choreographr**, a custom long-running agent in Rust. His workflows emphasise:
 
 - **Read-only planning** — exploring codebases and producing a plan before writing a single line of code.
 - **Invariant enforcement** — AGENTS.md files that encode structural rules the AI must follow.
