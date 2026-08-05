@@ -284,6 +284,21 @@ then check out the project from GitHub:</p>
 <span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">cargo</span><span style="color: #A6E3A1;"> install --path choreo-tui --locked</span></span></code></pre>
 <p>This puts <code>choreographr</code> (the daemon) and <code>choreo-tui</code> (the terminal client)
 on your <code>PATH</code>, typically in <code>~/.cargo/bin</code>.</p>
+<h2 id="risc-v-vm-tooling">RISC-V VM tooling
+<a class="zola-anchor" href="#risc-v-vm-tooling" aria-label="Anchor link for: risc-v-vm-tooling">
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+</a>
+</h2>
+<p>The <a href="https://choreographr.com/docs/tools/#risc-v-vm-tool"><code>run_riscv</code></a> tool compiles guest Rust
+programs <strong>at runtime</strong>, so the daemon needs the RISC-V bare-metal target
+installed for its stable toolchain:</p>
+<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;" ><code data-lang="shellscript"><span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">rustup</span><span style="color: #A6E3A1;"> target add riscv64imac-unknown-none-elf</span></span></code></pre>
+<p>If your default toolchain isn't <code>stable</code>, add it explicitly:</p>
+<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;" ><code data-lang="shellscript"><span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">rustup</span><span style="color: #A6E3A1;"> target add riscv64imac-unknown-none-elf --toolchain stable</span></span></code></pre>
+<p>The daemon invokes <code>rustc +stable --target riscv64imac-unknown-none-elf</code>
+whenever a <code>run_riscv</code> call passes a <code>source</code> snippet, so the target must be
+installed wherever the daemon runs. Passing pre-compiled bytecode
+(<code>program</code> / <code>program_path</code>) doesn't require it.</p>
 <p>Ready to chat? Head over to the <a href="https://choreographr.com/docs/quick-start/">quick start</a>.</p>
 
     </article>

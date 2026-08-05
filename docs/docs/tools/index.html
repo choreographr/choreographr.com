@@ -587,8 +587,14 @@ encoding automatically):</p>
 <blockquote>
 <p>Notes: the A (atomic) extension is disabled, so guests must not use
 <code>core::sync::atomic</code> read-modify-write operations. For <code>grep</code>, set
-<code>regex: true</code> when using regex patterns (the default is literal matching).
-Use <code>choreo::write(...)</code> for VM output and <code>choreo::exit(code)</code> to finish.</p>
+<code>regex: true</code> when using regex patterns (the default is literal matching).</p>
+</blockquote>
+<p>To compile a <code>source</code> snippet, the daemon shells out to
+<code>rustc +stable --target riscv64imac-unknown-none-elf</code>, so the RISC-V
+bare-metal target must be installed on the host (<code>rustup target add riscv64imac-unknown-none-elf</code> — see
+<a href="https://choreographr.com/docs/installation/#risc-v-vm-tooling">Installation</a>).</p>
+<blockquote>
+<p>Use <code>choreo::write(...)</code> for VM output and <code>choreo::exit(code)</code> to finish.</p>
 </blockquote>
 <h2 id="mcp-servers">MCP servers
 <a class="zola-anchor" href="#mcp-servers" aria-label="Anchor link for: mcp-servers">

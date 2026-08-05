@@ -327,6 +327,13 @@ choreo::exit(code)
 > Notes: the A (atomic) extension is disabled, so guests must not use
 > `core::sync::atomic` read-modify-write operations. For `grep`, set
 > `regex: true` when using regex patterns (the default is literal matching).
+
+To compile a `source` snippet, the daemon shells out to
+`rustc +stable --target riscv64imac-unknown-none-elf`, so the RISC-V
+bare-metal target must be installed on the host (`rustup target add
+riscv64imac-unknown-none-elf` — see
+[Installation](@/docs/installation.md#risc-v-vm-tooling)).
+
 > Use `choreo::write(...)` for VM output and `choreo::exit(code)` to finish.
 
 ## MCP servers
