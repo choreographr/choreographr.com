@@ -50,6 +50,11 @@ Yes — Apache-2.0.
 
 1.91.
 
+### What else do I need to build it?
+
+A [Zig](https://ziglang.org/) toolchain in addition to Rust — the build uses
+Zig to compile the RISC-V VM components.
+
 ### How is Choreographr different from other agents?
 
 Its daemon + multi-client architecture, sandboxed RISC-V VM, subsessions

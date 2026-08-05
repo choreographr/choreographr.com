@@ -7,9 +7,12 @@ weight = 1
 ## Build from source
 
 Requires a [Rust toolchain](https://rustup.rs/) — the minimum supported Rust
-version (MSRV) is **1.91**.
+version (MSRV) is **1.91** — and a [Zig](https://ziglang.org/) toolchain, which
+is needed to build the RISC-V VM components.
 
-Check out the project from GitHub:
+Install Zig from [ziglang.org](https://ziglang.org/) (or your package manager
+— e.g. `brew install zig`, `apt install zig`, `pacman -S zig`), then check out
+the project from GitHub:
 
 ```bash
 git clone https://github.com/ethernomad/choreographr
