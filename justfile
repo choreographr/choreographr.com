@@ -46,7 +46,3 @@ clean:
 # Open the local dev server after starting it
 open:
     zola serve --open -u "/" -o public --force
-
-# Create a new page: just new content/my-page.md
-new path:
-    zola new {{path}}

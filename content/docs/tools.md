@@ -169,8 +169,8 @@ multi-column reading order from text-based PDFs. It wraps extracted text in an
 ### Orchestration tools
 
 - `run_series` — runs an ordered list of tool calls, one at a time, stopping
-  on the first error. Steps can reference earlier results with `{{step_1}}`,
-  `{{step_2}}`, … inside their argument strings:
+  on the first error. Steps can reference earlier results with {% raw %}`{{step_1}}`{% endraw %},
+  {% raw %}`{{step_2}}`{% endraw %}, … inside their argument strings:
 
   ```json
   { "name": "run_series", "arguments": { "steps": [

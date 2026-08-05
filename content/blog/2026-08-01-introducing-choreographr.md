@@ -4,7 +4,7 @@ description = "An all-purpose, extensible AI agent written in Rust — daemon + 
 date = 2026-08-01
 template = "blog-page.html"
 [taxonomies]
-tag = ["announcement", "rust"]
+tags = ["announcement", "rust"]
 +++
 
 Choreographr is an all-purpose, extensible AI agent system written entirely in

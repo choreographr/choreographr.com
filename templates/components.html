@@ -1,5 +1,7 @@
-{# Docs sidebar — lists all pages in the docs section, sorted by weight. #}
-{% macro sidebar(current_path) %}
+{# Docs sidebar component — lists all pages in the docs section, sorted by
+   weight. Components are registered globally by Tera v2, so any template
+   can call {{<docs.sidebar current_path=... />}} without an import. #}
+{% component docs.sidebar(current_path) %}
 {% set docs = get_section(path="docs/_index.md") %}
 <nav class="w-full">
   <p class="px-3 mb-2 text-xs font-semibold uppercase tracking-wider text-night-400">Documentation</p>
@@ -14,4 +16,4 @@
     {% endfor %}
   </ul>
 </nav>
-{% endmacro sidebar %}
+{% endcomponent docs.sidebar %}

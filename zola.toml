@@ -15,12 +15,29 @@ output_dir = "docs"
 # Whether to automatically compile all Sass files in the sass directory
 compile_sass = false
 
+# Taxonomy URLs live under /blog/ (e.g. /blog/tags/rust/). This is the
+# documented replacement for the old per-taxonomy `path` key, which Zola
+# silently ignored (the tags previously ended up at /tag/).
+taxonomy_root = "blog"
+
+[markdown]
+# Deep-linkable heading anchors (🔗 after each heading, shown on hover).
+insert_anchor_links = "right"
+# GitHub-style callouts in docs/blog: > [!NOTE], > [!WARNING], ...
+github_alerts = true
+# External markdown links open in a new tab, like the navbar/footer ones.
+external_links_target_blank = true
+# Lazy-load the site's raster images (me.jpg on the consulting page).
+lazy_async_image = true
+
 [markdown.highlighting]
 theme = "catppuccin-mocha"
+# Fail the build on a mistyped code-fence language instead of silently
+# rendering it unhighlighted.
+error_on_missing_language = true
 
 [[taxonomies]]
-name = "tag"
-path = "blog/tags"
+name = "tags"
 paginate_by = 10
 feed = true
 

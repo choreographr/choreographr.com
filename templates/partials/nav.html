@@ -8,7 +8,7 @@
         <ul tabindex="0" class="dropdown-content menu bg-night-900 border border-night-700 rounded-box z-50 mt-3 w-52 p-2 shadow-2xl">
           {% for item in config.extra.nav %}
           <li>
-            <a href="{{ item.href }}" {% if item.external %}target="_blank" rel="noopener"{% endif %} class="{% if item.external %}{% else %}{% if current_path and item.href != "/" and current_path is starting_with(item.href) %}text-brand-500{% endif %}{% endif %}">
+            <a href="{{ item.href }}" {% if item.external %}target="_blank" rel="noopener"{% endif %} class="{% if item.external %}{% else %}{% if current_path and item.href != "/" and current_path is starting_with(pat=item.href) %}text-brand-500{% endif %}{% endif %}">
               {{ item.name }}{% if item.external %}<span class="text-night-400 text-xs">↗</span>{% endif %}
             </a>
           </li>
@@ -25,7 +25,7 @@
         <li>
           <a href="{{ item.href }}"
              {% if item.external %}target="_blank" rel="noopener"{% endif %}
-             class="{% if item.external %}{% else %}{% if current_path and item.href != "/" and current_path is starting_with(item.href) %}text-brand-500 font-semibold{% else %}text-night-200 hover:text-night-50{% endif %}{% endif %}">
+             class="{% if item.external %}{% else %}{% if current_path and item.href != "/" and current_path is starting_with(pat=item.href) %}text-brand-500 font-semibold{% else %}text-night-200 hover:text-night-50{% endif %}{% endif %}">
             {{ item.name }}{% if item.external %}<span class="text-night-400 text-xs">↗</span>{% endif %}
           </a>
         </li>

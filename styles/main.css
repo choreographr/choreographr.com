@@ -155,6 +155,49 @@ body {
 }
 .prose hr { @apply border-night-700 my-8; }
 
+/* ---- Heading anchors (insert_anchor_links = "right") ---- */
+/* Replaces the default 🔗 emoji with a subtle # link icon that fades in
+   on hover. Headings already have scroll-margin-top for the sticky nav. */
+.prose .zola-anchor {
+  @apply inline-flex items-center ml-2 align-middle text-night-400 no-underline opacity-40 transition-opacity;
+  font-size: 0.75em;
+}
+.prose .zola-anchor:hover { @apply text-brand-400 opacity-100; }
+.prose h1:hover .zola-anchor,
+.prose h2:hover .zola-anchor,
+.prose h3:hover .zola-anchor,
+.prose h4:hover .zola-anchor,
+.prose h5:hover .zola-anchor,
+.prose h6:hover .zola-anchor {
+  @apply opacity-100;
+}
+
+/* ---- GitHub-style alerts (> [!NOTE], > [!WARNING], …) ---- */
+.prose blockquote.markdown-alert-note,
+.prose blockquote.markdown-alert-tip,
+.prose blockquote.markdown-alert-important,
+.prose blockquote.markdown-alert-warning,
+.prose blockquote.markdown-alert-caution {
+  @apply not-italic border-l-4;
+}
+.prose blockquote.markdown-alert-note      { @apply border-info; }
+.prose blockquote.markdown-alert-tip       { @apply border-success; }
+.prose blockquote.markdown-alert-important { @apply border-secondary; }
+.prose blockquote.markdown-alert-warning   { @apply border-warning; }
+.prose blockquote.markdown-alert-caution   { @apply border-error; }
+.prose blockquote.markdown-alert-note::before,
+.prose blockquote.markdown-alert-tip::before,
+.prose blockquote.markdown-alert-important::before,
+.prose blockquote.markdown-alert-warning::before,
+.prose blockquote.markdown-alert-caution::before {
+  @apply block mb-1 text-xs font-bold uppercase tracking-wider;
+}
+.prose blockquote.markdown-alert-note::before      { content: "Note";     color: var(--color-info); }
+.prose blockquote.markdown-alert-tip::before       { content: "Tip";      color: var(--color-success); }
+.prose blockquote.markdown-alert-important::before { content: "Important"; color: var(--color-secondary); }
+.prose blockquote.markdown-alert-warning::before   { content: "Warning";  color: var(--color-warning); }
+.prose blockquote.markdown-alert-caution::before   { content: "Caution";  color: var(--color-error); }
+
 /* ---- Search results ---- */
 .search-results__items { @apply list-none p-0; }
 .search-results__item {

@@ -14,6 +14,21 @@
         <loc>https://choreographr.com/blog/page/1/</loc>
     </url>
     <url>
+        <loc>https://choreographr.com/blog/tags/</loc>
+    </url>
+    <url>
+        <loc>https://choreographr.com/blog/tags/announcement/</loc>
+    </url>
+    <url>
+        <loc>https://choreographr.com/blog/tags/announcement/page/1/</loc>
+    </url>
+    <url>
+        <loc>https://choreographr.com/blog/tags/rust/</loc>
+    </url>
+    <url>
+        <loc>https://choreographr.com/blog/tags/rust/page/1/</loc>
+    </url>
+    <url>
         <loc>https://choreographr.com/consulting/</loc>
     </url>
     <url>
@@ -63,20 +78,5 @@
     </url>
     <url>
         <loc>https://choreographr.com/search/</loc>
-    </url>
-    <url>
-        <loc>https://choreographr.com/tag/</loc>
-    </url>
-    <url>
-        <loc>https://choreographr.com/tag/announcement/</loc>
-    </url>
-    <url>
-        <loc>https://choreographr.com/tag/announcement/page/1/</loc>
-    </url>
-    <url>
-        <loc>https://choreographr.com/tag/rust/</loc>
-    </url>
-    <url>
-        <loc>https://choreographr.com/tag/rust/page/1/</loc>
     </url>
 </urlset>
