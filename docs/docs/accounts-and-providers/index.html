@@ -250,7 +250,12 @@
         &#x2F;docs&#x2F;accounts-and-providers&#x2F;
       </div>
       <h2 id="accounts">Accounts</h2>
-<p>Accounts are configured via <code>~/.config/choreographr/accounts.toml</code>. Account
+<p>Accounts can be managed either in the TUI or via <code>~/.config/choreographr/accounts.toml</code>.</p>
+<p>In the TUI, press <code>Ctrl+A</code> to open the <strong>accounts</strong> page, then <code>n</code> to add an
+account (choose a provider, name it, and paste its API credential). See the
+<a href="https://choreographr.com/docs/quick-start/">quick start</a> for the full walkthrough.</p>
+<p>If you prefer to edit the file directly, accounts are configured via
+<code>~/.config/choreographr/accounts.toml</code>. Account
 names must be lowercase alphanumeric with hyphens or underscores
 (<code>[a-z0-9_-]</code>). Each session may have its own account, set via
 <code>/account &lt;name&gt;</code>; there is no global default account.</p>
@@ -306,7 +311,10 @@ overridden per-account:</p>
 effort slugs, multi-turn chaining via <code>previous_response_id</code>, and
 <strong>programmatic tool calling</strong> (gpt-5.6+ models).</p>
 <h2 id="adding-api-keys">Adding API keys</h2>
-<p>Add a key for the service the account uses:</p>
+<p>Keys can be managed in the TUI — on the accounts page (<code>Ctrl+A</code>), select an
+account and press <code>c</code> to enter its API credential.</p>
+<p>Alternatively, add a key for the service the account uses with the slash
+command:</p>
 <pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;"><code data-lang="plain"><span class="giallo-l"><span>/add-key openai sk-...</span></span></code></pre>
 <p>Keys are encrypted per-credential with the daemon's public key before being
 stored. The daemon starts <strong>locked</strong> — use <code>/unlock</code> to decrypt credentials

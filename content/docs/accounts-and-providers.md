@@ -6,7 +6,14 @@ weight = 4
 
 ## Accounts
 
-Accounts are configured via `~/.config/choreographr/accounts.toml`. Account
+Accounts can be managed either in the TUI or via `~/.config/choreographr/accounts.toml`.
+
+In the TUI, press `Ctrl+A` to open the **accounts** page, then `n` to add an
+account (choose a provider, name it, and paste its API credential). See the
+[quick start](@/docs/quick-start.md) for the full walkthrough.
+
+If you prefer to edit the file directly, accounts are configured via
+`~/.config/choreographr/accounts.toml`. Account
 names must be lowercase alphanumeric with hyphens or underscores
 (`[a-z0-9_-]`). Each session may have its own account, set via
 `/account <name>`; there is no global default account.
@@ -74,7 +81,11 @@ effort slugs, multi-turn chaining via `previous_response_id`, and
 
 ## Adding API keys
 
-Add a key for the service the account uses:
+Keys can be managed in the TUI — on the accounts page (`Ctrl+A`), select an
+account and press `c` to enter its API credential.
+
+Alternatively, add a key for the service the account uses with the slash
+command:
 
 ```
 /add-key openai sk-...
