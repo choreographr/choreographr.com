@@ -251,25 +251,31 @@
       </div>
       <p>Choreographr requires a <a rel="external" href="https://rustup.rs/">Rust toolchain</a> — the minimum supported
 Rust version (MSRV) is <strong>1.91</strong>.</p>
-<h2 id="1-build">1. Build</h2>
+<h2 id="1-check-out-the-project-from-github">1. Check out the project from GitHub</h2>
+<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">git</span><span style="color: #A6E3A1;"> clone https://github.com/ethernomad/choreographr</span></span>
+<span class="giallo-l"><span style="color: #F38BA8;font-style: italic;">cd</span><span style="color: #A6E3A1;"> choreographr</span></span></code></pre><h2 id="2-build">2. Build</h2>
 <pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">rustup</span><span style="color: #A6E3A1;"> install stable</span></span>
-<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">cargo</span><span style="color: #A6E3A1;"> build --release</span></span></code></pre><h2 id="2-start-the-daemon">2. Start the daemon</h2>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">cargo</span><span style="color: #A6E3A1;"> build --release</span></span></code></pre><h2 id="3-start-the-daemon">3. Start the daemon</h2>
 <pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">cargo</span><span style="color: #A6E3A1;"> run --release -p choreo-daemon</span><span style="color: #9399B2;font-style: italic;">         # default log level: info</span></span>
 <span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">cargo</span><span style="color: #A6E3A1;"> run --release -p choreo-daemon -- -v</span><span style="color: #9399B2;font-style: italic;">   # debug</span></span>
 <span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">cargo</span><span style="color: #A6E3A1;"> run --release -p choreo-daemon -- -vv</span><span style="color: #9399B2;font-style: italic;">  # trace</span></span>
 <span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">cargo</span><span style="color: #A6E3A1;"> run --release -p choreo-daemon -- -q</span><span style="color: #9399B2;font-style: italic;">   # warnings only</span></span></code></pre>
 <p><code>RUST_LOG</code> takes precedence over the CLI flags:</p>
-<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;"><code data-lang="shellscript"><span class="giallo-l"><span>RUST_LOG</span><span style="color: #94E2D5;">=</span><span style="color: #A6E3A1;">debug</span><span style="color: #89B4FA;font-style: italic;"> cargo</span><span style="color: #A6E3A1;"> run --release -p choreo-daemon</span></span></code></pre><h2 id="3-attach-a-client">3. Attach a client</h2>
-<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">cargo</span><span style="color: #A6E3A1;"> run --release -p choreo-tui</span><span style="color: #9399B2;font-style: italic;">     # terminal UI</span></span>
-<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">cargo</span><span style="color: #A6E3A1;"> run --release -p choreo-gui</span><span style="color: #9399B2;font-style: italic;">     # desktop app</span></span>
-<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">cargo</span><span style="color: #A6E3A1;"> run --release -p choreo-im</span><span style="color: #9399B2;font-style: italic;">      # IM bridge</span></span>
-<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">cargo</span><span style="color: #A6E3A1;"> run --release -p choreo-acp</span><span style="color: #9399B2;font-style: italic;">     # ACP bridge for editors</span></span></code></pre><h2 id="your-first-conversation">Your first conversation</h2>
+<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;"><code data-lang="shellscript"><span class="giallo-l"><span>RUST_LOG</span><span style="color: #94E2D5;">=</span><span style="color: #A6E3A1;">debug</span><span style="color: #89B4FA;font-style: italic;"> cargo</span><span style="color: #A6E3A1;"> run --release -p choreo-daemon</span></span></code></pre><h2 id="4-attach-a-client">4. Attach a client</h2>
+<p>Open a new terminal tab and run the TUI:</p>
+<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">cargo</span><span style="color: #A6E3A1;"> run --release -p choreo-tui</span></span></code></pre><h2 id="your-first-conversation">Your first conversation</h2>
+<p>Accounts are managed right in the TUI — no config files needed.</p>
 <ol>
-<li><strong>Configure an account</strong> in <code>~/.config/choreographr/accounts.toml</code> (see
-<a href="https://choreographr.com/docs/accounts-and-providers/">Accounts &amp; providers</a>) and add an API key
-with <code>/add-key &lt;service&gt; &lt;api_key&gt;</code>.</li>
+<li>Press <code>Ctrl+A</code> to open the <strong>accounts</strong> page.</li>
+<li>Press <code>n</code> to start a new account.</li>
+<li>Select a provider and press <code>Enter</code>.</li>
+<li>Enter a custom name for the account and press <code>Enter</code>.</li>
+<li>Paste the API credential and press <code>Enter</code>.</li>
+<li>Press <code>Esc</code> (or <code>q</code>) to go back to the chat.</li>
 <li>Select the account with <code>/account &lt;name&gt;</code>.</li>
-<li>Start prompting!</li>
+<li>Press <code>Ctrl+M</code> to select the model.</li>
+<li>Press <code>Ctrl+R</code> to select the reasoning effort.</li>
+<li>Send your first prompt!</li>
 </ol>
 <pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;"><code data-lang="plain"><span class="giallo-l"><span>┌──────────────┐   Unix socket /     ┌──────────────┐   HTTP/SSE     ┌────────────────────┐</span></span>
 <span class="giallo-l"><span>│  choreo-tui  │◄───────────────────►│              │◄──────────────►│  OpenAI-compatible │</span></span>
