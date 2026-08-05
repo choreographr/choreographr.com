@@ -391,13 +391,21 @@ from the working directory.</li>
 <span class="giallo-l"><span style="color: #9399B2;">{ &quot;</span><span style="color: #89B4FA;">name</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;grep&quot;</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">arguments</span><span style="color: #9399B2;">&quot;: { &quot;</span><span style="color: #89B4FA;">pattern</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;pub fn </span><span style="color: #F5C2E7;">\\</span><span style="color: #A6E3A1;">w+&quot;</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">regex</span><span style="color: #9399B2;">&quot;:</span><span style="color: #FAB387;"> true</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">path</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;src&quot;</span><span style="color: #9399B2;"> } }</span></span>
 <span class="giallo-l"><span style="color: #9399B2;">{ &quot;</span><span style="color: #89B4FA;">name</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;find&quot;</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">arguments</span><span style="color: #9399B2;">&quot;: { &quot;</span><span style="color: #89B4FA;">pattern</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;*.md&quot;</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">path</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;docs&quot;</span><span style="color: #9399B2;"> } }</span></span></code></pre>
 <ul>
-<li><code>grep</code> treats the pattern as a literal substring by default — set
+<li>
+<p><code>grep</code> treats the pattern as a literal substring by default — set
 <code>regex: true</code> for regular expressions (required if your pattern contains
 <code>|</code>, <code>(</code>, <code>^</code>, <code>$</code>, <code>+</code>, etc.). <code>include</code> filters files by glob; results are
 returned as <code>file:line:content</code>. Both tools respect <code>.gitignore</code>, hidden
-files, and binary files, and cap results to protect the model's context.</li>
-<li><code>find</code> searches by file name. Glob mode is auto-detected when the pattern
-contains wildcards; set <code>glob</code> explicitly to force or disable it.</li>
+files, and binary files, and cap results to protect the model's context.</p>
+</li>
+<li>
+<p><code>find</code> searches by file name. Glob mode is auto-detected when the pattern
+contains wildcards; set <code>glob</code> explicitly to force or disable it.</p>
+<p>Both tools run on the <a rel="noopener external" target="_blank" href="https://crates.io/crates/zlob"><code>zlob</code></a> globbing and
+file-walking engine — SIMD-accelerated, with <code>.gitignore</code> support — which is
+also why building Choreographr requires a Zig toolchain: zlob is written in
+Zig and is compiled at build time (see <a href="https://choreographr.com/docs/installation/">Installation</a>).</p>
+</li>
 </ul>
 <h3 id="http-images">HTTP &amp; images
 <a class="zola-anchor" href="#http-images" aria-label="Anchor link for: http-images">

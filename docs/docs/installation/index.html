@@ -269,11 +269,14 @@
 </a>
 </h2>
 <p>Requires a <a rel="noopener external" target="_blank" href="https://rustup.rs/">Rust toolchain</a> — the minimum supported Rust
-version (MSRV) is <strong>1.91</strong> — and a <a rel="noopener external" target="_blank" href="https://ziglang.org/">Zig</a> toolchain, which
-is needed to build the RISC-V VM components.</p>
-<p>Install Zig from <a rel="noopener external" target="_blank" href="https://ziglang.org/">ziglang.org</a> (or your package manager
-— e.g. <code>brew install zig</code>, <code>apt install zig</code>, <code>pacman -S zig</code>), then check out
-the project from GitHub:</p>
+version (MSRV) is <strong>1.91</strong> — and a <strong>Zig 0.16.0</strong> toolchain. Zig is needed to
+compile the <a rel="noopener external" target="_blank" href="https://crates.io/crates/zlob"><code>zlob</code></a> crate, a SIMD-accelerated
+globbing and file-walking library written in Zig that powers the agent's
+<code>find</code>, <code>grep</code>, and related file tools. Its build script compiles Zig source
+at build time, so <code>zig</code> must be on your <code>PATH</code>.</p>
+<p>Install Zig 0.16.0 from <a rel="noopener external" target="_blank" href="https://ziglang.org/download/">ziglang.org</a> (or your
+package manager — e.g. <code>brew install zig</code>, <code>apt install zig</code>, <code>pacman -S zig</code>),
+then check out the project from GitHub:</p>
 <pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;" ><code data-lang="shellscript"><span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">git</span><span style="color: #A6E3A1;"> clone https://github.com/ethernomad/choreographr</span></span>
 <span class="giallo-l"><span style="color: #F38BA8;font-style: italic;">cd</span><span style="color: #A6E3A1;"> choreographr</span></span></code></pre>
 <p>Build and install the binaries with Cargo:</p>

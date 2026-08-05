@@ -52,8 +52,11 @@ Yes — Apache-2.0.
 
 ### What else do I need to build it?
 
-A [Zig](https://ziglang.org/) toolchain in addition to Rust — the build uses
-Zig to compile the RISC-V VM components.
+A **Zig 0.16.0** toolchain in addition to Rust. The
+[`zlob`](https://crates.io/crates/zlob) dependency — a fast globbing and
+file-walking library written in Zig — is compiled from Zig source at build
+time, so `zig` must be on your `PATH`. Choreographr uses zlob for the glob
+matching and gitignore-aware walking behind the `find` and `grep` tools.
 
 ### How is Choreographr different from other agents?
 

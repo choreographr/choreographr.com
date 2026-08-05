@@ -136,6 +136,11 @@ search, randomness, time, session management, and orchestration.
 - `find` searches by file name. Glob mode is auto-detected when the pattern
   contains wildcards; set `glob` explicitly to force or disable it.
 
+  Both tools run on the [`zlob`](https://crates.io/crates/zlob) globbing and
+  file-walking engine — SIMD-accelerated, with `.gitignore` support — which is
+  also why building Choreographr requires a Zig toolchain: zlob is written in
+  Zig and is compiled at build time (see [Installation](@/docs/installation.md)).
+
 ### HTTP & images
 
 ```json
