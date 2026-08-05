@@ -138,7 +138,14 @@ body {
   @apply bg-transparent p-0 text-night-100 text-[0.85rem] leading-relaxed;
 }
 .prose table {
-  @apply w-full my-6 text-sm border-collapse;
+  @apply my-6 text-sm;
+  /* Keep markdown tables inside the viewport: wide tables scroll
+     horizontally instead of blowing out the page on small screens. */
+  display: block;
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border-collapse: collapse;
 }
 .prose th {
   @apply text-left bg-night-800 text-night-100 font-semibold px-3 py-2 border border-night-700;
@@ -173,4 +180,12 @@ body {
 .terminal-cursor::after {
   content: "▊";
   @apply text-brand-500 animate-pulse;
+}
+
+/* ---- Terminal mockups (daisyUI) ----
+   daisyUI sizes mockup-code <pre> lines to max-content. In flex/grid
+   layouts that can blow the page out horizontally on mobile; cap the
+   element at its container so it scrolls internally instead. */
+.mockup-code {
+  max-width: 100%;
 }
