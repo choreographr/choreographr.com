@@ -457,9 +457,6 @@
   <div class="mx-auto max-w-7xl px-4 sm:px-6 py-20">
     <div class="max-w-2xl">
       <h2 class="text-3xl font-bold text-night-50 tracking-tight">How Choreographr compares</h2>
-      <p class="mt-4 text-night-300">
-        A quick look at where Choreographr sits in the agent landscape. Maintained alongside the codebase in the README.
-      </p>
     </div>
 
     <div class="mt-10 overflow-x-auto border border-night-700 rounded-2xl">
@@ -467,28 +464,40 @@
         <thead>
           <tr class="bg-night-800 text-night-50">
             <th class="text-left font-semibold px-4 py-3">Feature</th>
-            <th class="text-left font-semibold px-4 py-3 text-brand-400 font-mono">Choreo</th>
-            <th class="text-left font-semibold px-4 py-3">zero</th>
-            <th class="text-left font-semibold px-4 py-3">goose</th>
-            <th class="text-left font-semibold px-4 py-3">pi</th>
-            <th class="text-left font-semibold px-4 py-3">opencode</th>
-            <th class="text-left font-semibold px-4 py-3">hermes</th>
+            <th class="text-left font-semibold px-4 py-3 text-brand-400 font-mono">Choreographr</th>
+            <th class="text-left font-semibold px-4 py-3">Openclaw</th>
+            <th class="text-left font-semibold px-4 py-3">Hermes</th>
+            <th class="text-left font-semibold px-4 py-3">Opencode</th>
+            <th class="text-left font-semibold px-4 py-3">Codex</th>
+            <th class="text-left font-semibold px-4 py-3">Pi</th>
           </tr>
         </thead>
         <tbody class="text-night-200">
-          <tr class="border-t border-night-700"><td class="px-4 py-2.5">Daemon + multi-client</td><td class="px-4 py-2.5 text-brand-400">✅</td><td class="px-4 py-2.5">—</td><td class="px-4 py-2.5">server</td><td class="px-4 py-2.5">—</td><td class="px-4 py-2.5">—</td><td class="px-4 py-2.5">—</td></tr>
-          <tr class="border-t border-night-700"><td class="px-4 py-2.5">Sandbox</td><td class="px-4 py-2.5 text-brand-400">RISC-V VM</td><td class="px-4 py-2.5">seccomp eng.</td><td class="px-4 py-2.5">—</td><td class="px-4 py-2.5">—</td><td class="px-4 py-2.5">—</td><td class="px-4 py-2.5">Docker/SSH</td></tr>
-          <tr class="border-t border-night-700"><td class="px-4 py-2.5">Providers</td><td class="px-4 py-2.5 text-brand-400">~70 / 3 proto</td><td class="px-4 py-2.5">36</td><td class="px-4 py-2.5">35+</td><td class="px-4 py-2.5">38/9 proto</td><td class="px-4 py-2.5">15</td><td class="px-4 py-2.5">29+</td></tr>
-          <tr class="border-t border-night-700"><td class="px-4 py-2.5">Subagents</td><td class="px-4 py-2.5 text-brand-400">subsessions</td><td class="px-4 py-2.5">specialists</td><td class="px-4 py-2.5">—</td><td class="px-4 py-2.5">—</td><td class="px-4 py-2.5">—</td><td class="px-4 py-2.5">delegation</td></tr>
-          <tr class="border-t border-night-700"><td class="px-4 py-2.5">MCP client</td><td class="px-4 py-2.5 text-brand-400">✅</td><td class="px-4 py-2.5">✅</td><td class="px-4 py-2.5">✅</td><td class="px-4 py-2.5">—</td><td class="px-4 py-2.5">✅</td><td class="px-4 py-2.5">—</td></tr>
-          <tr class="border-t border-night-700"><td class="px-4 py-2.5">ACP</td><td class="px-4 py-2.5 text-brand-400">bridge</td><td class="px-4 py-2.5">—</td><td class="px-4 py-2.5">server</td><td class="px-4 py-2.5">—</td><td class="px-4 py-2.5">—</td><td class="px-4 py-2.5">—</td></tr>
-          <tr class="border-t border-night-700"><td class="px-4 py-2.5">Encrypted creds</td><td class="px-4 py-2.5 text-brand-400">✅ unique</td><td class="px-4 py-2.5">✅</td><td class="px-4 py-2.5">✅ keyring</td><td class="px-4 py-2.5">—</td><td class="px-4 py-2.5">—</td><td class="px-4 py-2.5">—</td></tr>
-          <tr class="border-t border-night-700"><td class="px-4 py-2.5">Undo/redo</td><td class="px-4 py-2.5 text-brand-400">✅</td><td class="px-4 py-2.5">rewind</td><td class="px-4 py-2.5">—</td><td class="px-4 py-2.5">branch</td><td class="px-4 py-2.5">—</td><td class="px-4 py-2.5">—</td></tr>
-          <tr class="border-t border-night-700"><td class="px-4 py-2.5">Storage</td><td class="px-4 py-2.5 text-brand-400">redb</td><td class="px-4 py-2.5">fs JSONL</td><td class="px-4 py-2.5">SQLite</td><td class="px-4 py-2.5">JSONL</td><td class="px-4 py-2.5">event src</td><td class="px-4 py-2.5">SQLite</td></tr>
+          <tr class="border-t border-night-700"><td class="px-4 py-2.5">Daemon + multi-client</td><td class="px-4 py-2.5 text-brand-400">✅</td><td class="px-4 py-2.5">✅</td><td class="px-4 py-2.5">—</td><td class="px-4 py-2.5">server</td><td class="px-4 py-2.5">—</td><td class="px-4 py-2.5">—</td></tr>
+          <tr class="border-t border-night-700"><td class="px-4 py-2.5">Concurrent sessions</td><td class="px-4 py-2.5 text-brand-400">✅ daemon</td><td class="px-4 py-2.5">✅ gateway</td><td class="px-4 py-2.5">✅ capped</td><td class="px-4 py-2.5">✅ server</td><td class="px-4 py-2.5">✅ threads</td><td class="px-4 py-2.5">—</td></tr>
+          <tr class="border-t border-night-700"><td class="px-4 py-2.5">Providers</td><td class="px-4 py-2.5 text-brand-400">79/3 proto</td><td class="px-4 py-2.5">40+</td><td class="px-4 py-2.5">34</td><td class="px-4 py-2.5">15</td><td class="px-4 py-2.5">1 (OpenAI)</td><td class="px-4 py-2.5">42/9 proto</td></tr>
+          <tr class="border-t border-night-700"><td class="px-4 py-2.5">OAuth</td><td class="px-4 py-2.5 text-brand-400">coming soon</td><td class="px-4 py-2.5">✅</td><td class="px-4 py-2.5">✅ 6×</td><td class="px-4 py-2.5">✅</td><td class="px-4 py-2.5">✅ ChatGPT</td><td class="px-4 py-2.5">✅</td></tr>
+          <tr class="border-t border-night-700"><td class="px-4 py-2.5">Tool permission gating</td><td class="px-4 py-2.5 text-brand-400">coming soon</td><td class="px-4 py-2.5">✅</td><td class="px-4 py-2.5">env-only</td><td class="px-4 py-2.5">✅</td><td class="px-4 py-2.5">✅</td><td class="px-4 py-2.5">—</td></tr>
+          <tr class="border-t border-night-700"><td class="px-4 py-2.5">Compaction</td><td class="px-4 py-2.5 text-brand-400">coming soon</td><td class="px-4 py-2.5">✅</td><td class="px-4 py-2.5">✅</td><td class="px-4 py-2.5">✅</td><td class="px-4 py-2.5">✅</td><td class="px-4 py-2.5">✅</td></tr>
+          <tr class="border-t border-night-700"><td class="px-4 py-2.5">Sandbox</td><td class="px-4 py-2.5 text-brand-400">✅ RISC-V VM · Landlock/Seatbelt coming soon</td><td class="px-4 py-2.5">Docker/SSH</td><td class="px-4 py-2.5">Docker/SSH</td><td class="px-4 py-2.5">—</td><td class="px-4 py-2.5">✅ sandbox</td><td class="px-4 py-2.5">—</td></tr>
+          <tr class="border-t border-night-700"><td class="px-4 py-2.5">Subagents</td><td class="px-4 py-2.5 text-brand-400">✅ subsessions</td><td class="px-4 py-2.5">swarm</td><td class="px-4 py-2.5">delegation</td><td class="px-4 py-2.5">✅</td><td class="px-4 py-2.5">✅</td><td class="px-4 py-2.5">—</td></tr>
+          <tr class="border-t border-night-700"><td class="px-4 py-2.5">Skills (SKILL.md)</td><td class="px-4 py-2.5 text-brand-400">✅</td><td class="px-4 py-2.5">✅</td><td class="px-4 py-2.5">✅</td><td class="px-4 py-2.5">✅</td><td class="px-4 py-2.5">✅</td><td class="px-4 py-2.5">✅</td></tr>
+          <tr class="border-t border-night-700"><td class="px-4 py-2.5">MCP client</td><td class="px-4 py-2.5 text-brand-400">✅</td><td class="px-4 py-2.5">✅</td><td class="px-4 py-2.5">✅</td><td class="px-4 py-2.5">✅</td><td class="px-4 py-2.5">✅</td><td class="px-4 py-2.5">—</td></tr>
+          <tr class="border-t border-night-700"><td class="px-4 py-2.5">ACP</td><td class="px-4 py-2.5 text-brand-400">✅</td><td class="px-4 py-2.5">bridge</td><td class="px-4 py-2.5">✅</td><td class="px-4 py-2.5">✅</td><td class="px-4 py-2.5">—</td><td class="px-4 py-2.5">—</td></tr>
+          <tr class="border-t border-night-700"><td class="px-4 py-2.5">IM surfaces</td><td class="px-4 py-2.5 text-brand-400">Telegram - more coming soon</td><td class="px-4 py-2.5">25+</td><td class="px-4 py-2.5">20+</td><td class="px-4 py-2.5">—</td><td class="px-4 py-2.5">—</td><td class="px-4 py-2.5">—</td></tr>
+          <tr class="border-t border-night-700"><td class="px-4 py-2.5">Web search</td><td class="px-4 py-2.5 text-brand-400">coming soon</td><td class="px-4 py-2.5">✅</td><td class="px-4 py-2.5">✅</td><td class="px-4 py-2.5">✅</td><td class="px-4 py-2.5">✅</td><td class="px-4 py-2.5">—</td></tr>
+          <tr class="border-t border-night-700"><td class="px-4 py-2.5">Hooks/lifecycle</td><td class="px-4 py-2.5 text-brand-400">coming soon</td><td class="px-4 py-2.5">✅</td><td class="px-4 py-2.5">✅</td><td class="px-4 py-2.5">✅</td><td class="px-4 py-2.5">✅</td><td class="px-4 py-2.5">✅</td></tr>
+          <tr class="border-t border-night-700"><td class="px-4 py-2.5">Plugins</td><td class="px-4 py-2.5 text-brand-400">coming soon</td><td class="px-4 py-2.5">✅</td><td class="px-4 py-2.5">✅</td><td class="px-4 py-2.5">✅</td><td class="px-4 py-2.5">✅</td><td class="px-4 py-2.5">✅</td></tr>
+          <tr class="border-t border-night-700"><td class="px-4 py-2.5">Cron/scheduling</td><td class="px-4 py-2.5 text-brand-400">coming soon</td><td class="px-4 py-2.5">—</td><td class="px-4 py-2.5">✅</td><td class="px-4 py-2.5">—</td><td class="px-4 py-2.5">—</td><td class="px-4 py-2.5">✅</td></tr>
+          <tr class="border-t border-night-700"><td class="px-4 py-2.5">Long-term memory</td><td class="px-4 py-2.5 text-brand-400">coming soon</td><td class="px-4 py-2.5">✅</td><td class="px-4 py-2.5">✅</td><td class="px-4 py-2.5">—</td><td class="px-4 py-2.5">✅</td><td class="px-4 py-2.5">—</td></tr>
+          <tr class="border-t border-night-700"><td class="px-4 py-2.5">Encrypted creds</td><td class="px-4 py-2.5 text-brand-400">✅ ECDH (X25519) + HKDF + AES-256-GCM</td><td class="px-4 py-2.5">✅</td><td class="px-4 py-2.5">—</td><td class="px-4 py-2.5">—</td><td class="px-4 py-2.5">✅ keyring</td><td class="px-4 py-2.5">—</td></tr>
+          <tr class="border-t border-night-700"><td class="px-4 py-2.5">Storage</td><td class="px-4 py-2.5 text-brand-400">redb</td><td class="px-4 py-2.5">SQLite</td><td class="px-4 py-2.5">SQLite</td><td class="px-4 py-2.5">event src</td><td class="px-4 py-2.5">SQLite</td><td class="px-4 py-2.5">JSONL</td></tr>
+          <tr class="border-t border-night-700"><td class="px-4 py-2.5">Metrics</td><td class="px-4 py-2.5 text-brand-400">✅</td><td class="px-4 py-2.5">✅ OTel</td><td class="px-4 py-2.5">—</td><td class="px-4 py-2.5">—</td><td class="px-4 py-2.5">✅ OTel</td><td class="px-4 py-2.5">telemetry</td></tr>
+          <tr class="border-t border-night-700"><td class="px-4 py-2.5">Undo/redo</td><td class="px-4 py-2.5 text-brand-400">✅</td><td class="px-4 py-2.5">—</td><td class="px-4 py-2.5">✅</td><td class="px-4 py-2.5">—</td><td class="px-4 py-2.5">—</td><td class="px-4 py-2.5">branch</td></tr>
+          <tr class="border-t border-night-700"><td class="px-4 py-2.5">Context fingerprints</td><td class="px-4 py-2.5 text-brand-400">✅</td><td class="px-4 py-2.5">—</td><td class="px-4 py-2.5">—</td><td class="px-4 py-2.5">—</td><td class="px-4 py-2.5">—</td><td class="px-4 py-2.5">—</td></tr>
         </tbody>
       </table>
     </div>
-    <p class="mt-4 text-xs text-night-400">Table maintained in <a href="https://github.com/ethernomad/choreographr" target="_blank" rel="noopener" class="text-night-300 hover:text-brand-400">README.md</a>. Not exhaustive — see the repo for the full comparison.</p>
   </div>
 </section>
 
