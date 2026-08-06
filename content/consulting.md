@@ -18,7 +18,7 @@ name = "Rust"
 icon = "🦀"
 
 [[extra.skills]]
-name = "C++"
+name = "C"
 icon = "⚡"
 
 [[extra.skills]]
@@ -26,8 +26,8 @@ name = "TypeScript"
 icon = "📘"
 
 [[extra.skills]]
-name = "Python"
-icon = "🐍"
+name = "PHP"
+icon = "🐘"
 
 [[extra.skills]]
 name = "SQL"
@@ -36,6 +36,14 @@ icon = "🗄️"
 [[extra.skills]]
 name = "Solidity"
 icon = "🔗"
+
+[[extra.skills]]
+name = "Ethereum"
+icon = "⬡"
+
+[[extra.skills]]
+name = "Polkadot"
+icon = "🪂"
 
 [[extra.skills]]
 name = "Event-Driven Architecture"
@@ -50,17 +58,21 @@ name = "AI Agent Workflows"
 icon = "🤖"
 
 [[extra.skills]]
+name = "Choreographr"
+icon = "🎭"
+
+[[extra.skills]]
 name = "Test-First Engineering"
 icon = "✅"
 +++
 
 ## Background
 
-Jonathan started his career building a complete multiplayer 2D game in C++ — implementing BSP trees, UDP networking with dead reckoning, and event-stream demo recording and playback, an early form of event sourcing. This foundation in systems programming shaped his approach to software: rigorous, deterministic, and pragmatic.
+Jonathan started his career building a complete multiplayer 2D game in C — implementing BSP trees, UDP networking with dead reckoning, and event-stream demo recording and playback. This foundation in systems programming shaped his approach to software: rigorous, deterministic, and pragmatic.
 
 Over the following decade he built and maintained enterprise Drupal platforms for AIG, NAB, and Flight Centre — working with large SQL databases, complex migrations, and payment integrations. He contributed patches to Drupal, ran the Berlin Drupal community for three years, and spoke at conferences across Europe.
 
-In 2015 he moved to Vietnam and transitioned into blockchain and Rust development. He authored **Acuity Index**, a config-driven event indexer for Substrate blockchains, which received [two Web3 Foundation grants](https://github.com/acuity-network/acuity-index) and Kusama Treasury funding. The project features resumable indexing with span tracking, concurrent backfill and live-head catch-up with out-of-order resolution, and an embedded database — all in safe Rust.
+In 2015 he transitioned into blockchain and Rust development. He authored **Acuity Index**, a config-driven event indexer for Substrate blockchains, which received [two Web3 Foundation grants](https://github.com/acuity-network/acuity-index) and Kusama Treasury funding. The project features resumable indexing, concurrent backfill and live-head catch-up with out-of-order resolution, and an embedded database — all in safe Rust.
 
 Today Jonathan focuses on AI-augmented development, using agentic tools daily to deliver high-quality software faster. The throughline across his entire career is **event-driven architecture**, **test-first engineering**, and building systems that work reliably in production.
 
@@ -76,6 +88,6 @@ He has demonstrated that AI-augmented workflows can dramatically accelerate deli
 
 ## Personal
 
-Jonathan has been a digital nomad in Vietnam since 2015, based in Da Nang. He is an async-first communicator comfortable working across European and Southeast Asian time zones. Outside of code he enjoys road cycling, yoga, swing dancing, and exploring the central highlands by motorbike.
+Jonathan has been in Vietnam since 2015, based in Da Nang. He is an async-first communicator comfortable working across European and Southeast Asian time zones. Outside of code he enjoys road cycling, yoga, swing dancing, and exploring the central highlands by motorbike.
 
 If you would like to discuss a project or explore how Jonathan's experience applies to your business, [get in touch](mailto:jbrown@acuity.network).
