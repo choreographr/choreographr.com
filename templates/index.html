@@ -45,7 +45,7 @@
             <p class="text-xs text-night-400">model providers</p>
           </div>
           <div>
-            <p class="text-2xl font-bold text-night-50 font-mono">4</p>
+            <p class="text-2xl font-bold text-night-50 font-mono">5</p>
             <p class="text-xs text-night-400">native clients</p>
           </div>
           <div>
@@ -180,92 +180,7 @@
 
     <div class="mt-12 border border-night-700 rounded-2xl bg-night-900/60 p-4 sm:p-8 overflow-x-auto">
       <div class="min-w-[720px]">
-      <svg viewBox="0 0 760 480" xmlns="http://www.w3.org/2000/svg" class="w-full h-auto">
-        <defs>
-          <style>
-            .box { fill: #11161d; stroke: #2d3846; stroke-width: 1.5; rx: 10; }
-            .box-accent { fill: #1a0d05; stroke: #dea584; stroke-width: 1.5; rx: 10; }
-            .label { fill: #eef1f5; font-family: 'JetBrains Mono', monospace; font-size: 13px; }
-            .label-sub { fill: #7d8b9d; font-family: 'JetBrains Mono', monospace; font-size: 10px; }
-            .edge { stroke: #4b5a6b; stroke-width: 1.5; fill: none; }
-            .edge-accent { stroke: #dea584; stroke-width: 1.5; fill: none; }
-            .grp-title { fill: #7d8b9d; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 2px; }
-          </style>
-        </defs>
-
-        <!-- Clients group -->
-        <text x="20" y="30" class="grp-title">CLIENTS</text>
-        <rect x="20" y="45" width="180" height="40" class="box"/>
-        <text x="32" y="63" class="label">choreo-tui</text>
-        <text x="32" y="78" class="label-sub">terminal UI · ratatui</text>
-
-        <rect x="20" y="105" width="180" height="40" class="box"/>
-        <text x="32" y="123" class="label">choreo-gui</text>
-        <text x="32" y="138" class="label-sub">desktop · dioxus</text>
-
-        <rect x="20" y="165" width="180" height="40" class="box"/>
-        <text x="32" y="183" class="label">choreo-im</text>
-        <text x="32" y="198" class="label-sub">telegram bridge</text>
-
-        <rect x="20" y="225" width="180" height="40" class="box"/>
-        <text x="32" y="243" class="label">choreo-acp</text>
-        <text x="32" y="258" class="label-sub">editors · JSON-RPC</text>
-
-        <!-- Daemon -->
-        <rect x="290" y="120" width="220" height="130" class="box-accent"/>
-        <text x="310" y="150" class="label" fill="#dea584">choreographr</text>
-        <text x="310" y="168" class="label-sub">daemon · the core engine</text>
-        <text x="310" y="190" class="label-sub">persistent sessions</text>
-        <text x="310" y="206" class="label-sub">tool-call loop · undo/redo</text>
-        <text x="310" y="222" class="label-sub">lock/unlock · credentials</text>
-
-        <!-- Daemon internals -->
-        <rect x="290" y="280" width="220" height="40" class="box"/>
-        <text x="302" y="299" class="label" font-size="11px">MCP subprocess servers</text>
-        <text x="302" y="313" class="label-sub">tools over stdio JSON-RPC</text>
-
-        <rect x="290" y="330" width="220" height="40" class="box"/>
-        <text x="302" y="349" class="label" font-size="11px">RISC-V VM sandbox</text>
-        <text x="302" y="363" class="label-sub">ckb-vm · 4 MB flat memory</text>
-
-        <rect x="290" y="380" width="220" height="40" class="box"/>
-        <text x="302" y="399" class="label" font-size="11px">redb database</text>
-        <text x="302" y="413" class="label-sub">sessions · credentials · KV</text>
-
-        <!-- Providers group -->
-        <text x="560" y="30" class="grp-title">MODEL PROVIDERS</text>
-        <rect x="560" y="45" width="180" height="40" class="box"/>
-        <text x="572" y="63" class="label" font-size="11px">OpenAI-compatible</text>
-        <text x="572" y="78" class="label-sub">60+ providers</text>
-
-        <rect x="560" y="105" width="180" height="40" class="box"/>
-        <text x="572" y="123" class="label" font-size="11px">Anthropic Messages</text>
-        <text x="572" y="138" class="label-sub">Claude &amp; more</text>
-
-        <rect x="560" y="165" width="180" height="40" class="box"/>
-        <text x="572" y="183" class="label" font-size="11px">Google Gemini</text>
-        <text x="572" y="198" class="label-sub">Generative AI API</text>
-
-        <!-- Edges: clients -> daemon -->
-        <line x1="200" y1="65" x2="288" y2="150" class="edge"/>
-        <line x1="200" y1="125" x2="288" y2="165" class="edge"/>
-        <line x1="200" y1="185" x2="288" y2="180" class="edge"/>
-        <line x1="200" y1="245" x2="288" y2="195" class="edge"/>
-
-        <!-- Edges: daemon -> providers -->
-        <line x1="510" y1="150" x2="558" y2="65" class="edge-accent"/>
-        <line x1="510" y1="170" x2="558" y2="125" class="edge-accent"/>
-        <line x1="510" y1="190" x2="558" y2="185" class="edge-accent"/>
-
-        <!-- Edges: daemon internals -->
-        <line x1="400" y1="250" x2="400" y2="278" class="edge"/>
-        <line x1="400" y1="320" x2="400" y2="328" class="edge"/>
-        <line x1="400" y1="370" x2="400" y2="378" class="edge"/>
-
-        <!-- Caption -->
-        <text x="20" y="450" class="label-sub">Clients connect over a local Unix socket, or Noise-IK encrypted TCP from anywhere.</text>
-        <text x="20" y="468" class="label-sub">Sessions are stored in the embedded redb database and survive daemon restarts.</text>
-      </svg>
+      <img src="{{ get_url(path='architecture.svg') }}" alt="Architecture diagram: daemon with TUI, GUI, IM, ACP and daemon clients, model providers, and the RISC-V VM sandbox" class="w-full h-auto">
       </div>
     </div>
   </div>
@@ -313,6 +228,15 @@
             <span class="badge badge-ghost badge-sm font-mono">in development</span>
           </div>
           <p class="text-sm text-night-300">An Agent Communication Protocol bridge so ACP-compatible editors — Claude Code, Cline — can drive Choreographr sessions.</p>
+        </div>
+      </div>
+      <div class="card bg-night-900 border border-night-700">
+        <div class="card-body">
+          <div class="flex items-center justify-between">
+            <h3 class="card-title text-night-50">choreo-daemon</h3>
+            <span class="badge badge-ghost badge-sm font-mono">in development</span>
+          </div>
+          <p class="text-sm text-night-300">Daemons can handoff to sessions on other daemons via Noise — connect servers together and deploy work elsewhere.</p>
         </div>
       </div>
     </div>
