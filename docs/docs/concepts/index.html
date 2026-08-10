@@ -27,7 +27,7 @@
   <link rel="preload" href="https://choreographr.com/fonts/jetbrains-mono.woff2" as="font" type="font/woff2" crossorigin>
 
   <link rel="icon" type="image/svg+xml" href="https://choreographr.com/favicon.svg">
-  <link rel="stylesheet" href="https://choreographr.com/css/main.css?h=aee323110a5605b56754">
+  <link rel="stylesheet" href="https://choreographr.com/css/main.css?h=c8961737d04d91d76544">
 
   <!-- Firefox/Zen can paint a frame before this stylesheet has been
        applied if a layout flush happens while it loads (Bugzilla
@@ -420,5 +420,68 @@ own context files.</p>
 
 
   
+
+  <script>
+    // Click-to-copy buttons for every code block. Wraps each <pre> in a
+    // .code-block container and adds a corner button that copies the block's
+    // text via the async Clipboard API, with an execCommand fallback for
+    // non-secure contexts. The button sits OUTSIDE the <pre> so it stays in
+    // the corner while horizontally-overflowing code scrolls inside the block.
+    (function () {
+      var COPY_ICON =
+        '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
+      var CHECK_ICON =
+        '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
+
+      function fallbackCopy(text) {
+        var ta = document.createElement('textarea');
+        ta.value = text;
+        ta.setAttribute('readonly', '');
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        try { document.execCommand('copy'); } catch (e) { /* ignore */ }
+        document.body.removeChild(ta);
+      }
+
+      document.querySelectorAll('pre').forEach(function (pre) {
+        // Idempotent: don't re-wrap if the script runs more than once.
+        if (pre.parentElement && pre.parentElement.classList.contains('code-block')) return;
+
+        var wrap = document.createElement('div');
+        wrap.className = 'code-block';
+        pre.parentNode.insertBefore(wrap, pre);
+        wrap.appendChild(pre);
+
+        var btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'code-copy';
+        btn.setAttribute('aria-label', 'Copy code to clipboard');
+        btn.innerHTML = COPY_ICON;
+        wrap.appendChild(btn);
+
+        btn.addEventListener('click', function () {
+          var text = pre.innerText;
+          var done = function () {
+            btn.classList.add('copied');
+            btn.innerHTML = CHECK_ICON;
+            btn.setAttribute('aria-label', 'Copied');
+            setTimeout(function () {
+              btn.classList.remove('copied');
+              btn.innerHTML = COPY_ICON;
+              btn.setAttribute('aria-label', 'Copy code to clipboard');
+            }, 1500);
+          };
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(text).then(done, function () { fallbackCopy(text); done(); });
+          } else {
+            fallbackCopy(text);
+            done();
+          }
+        });
+      });
+    })();
+  </script>
 </body>
 </html>

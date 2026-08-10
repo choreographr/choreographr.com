@@ -10,7 +10,7 @@
   <meta name="color-scheme" content="dark">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Installation — Choreographr</title>
-  <meta name="description" content="Build Choreographr from source and install the binaries with Cargo.">
+  <meta name="description" content="Install Choreographr with Homebrew, a .deb or .rpm, a manual tarball download, or a Cargo build.">
   <meta name="theme-color" content="#06080b">
 
   <!-- Critical inline CSS: paint the dark theme immediately, before
@@ -27,7 +27,7 @@
   <link rel="preload" href="https://choreographr.com/fonts/jetbrains-mono.woff2" as="font" type="font/woff2" crossorigin>
 
   <link rel="icon" type="image/svg+xml" href="https://choreographr.com/favicon.svg">
-  <link rel="stylesheet" href="https://choreographr.com/css/main.css?h=aee323110a5605b56754">
+  <link rel="stylesheet" href="https://choreographr.com/css/main.css?h=c8961737d04d91d76544">
 
   <!-- Firefox/Zen can paint a frame before this stylesheet has been
        applied if a layout flush happens while it loads (Bugzilla
@@ -263,27 +263,85 @@
       <div class="text-sm text-night-400 font-mono mb-6">
         /docs/installation/
       </div>
-      <h2 id="build-from-source">Build from source
-<a class="zola-anchor" href="#build-from-source" aria-label="Anchor link for: build-from-source">
+      <p>Every release ships <strong>four prebuilt binaries</strong> — <code>choreographr</code> (the daemon),
+<code>choreo-tui</code> (the terminal client), <code>choreo-im</code> (the IM bridge), and
+<code>choreo-acp</code> (the ACP bridge) — for <strong>Linux x86_64</strong> and <strong>macOS (Apple
+Silicon)</strong>. All install routes below use these binaries except the Cargo
+source build; none of them need a Rust toolchain at install time.</p>
+<h2 id="macos">macOS
+<a class="zola-anchor" href="#macos" aria-label="Anchor link for: macos">
   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
 </a>
 </h2>
-<p>Requires a <a rel="noopener external" target="_blank" href="https://rustup.rs/">Rust toolchain</a> — the minimum supported Rust
-version (MSRV) is <strong>1.91</strong> — and a <strong>Zig 0.16.0</strong> toolchain. Zig is needed to
-compile the <a rel="noopener external" target="_blank" href="https://crates.io/crates/zlob"><code>zlob</code></a> crate, a SIMD-accelerated
-globbing and file-walking library written in Zig that powers the agent's
-<code>find</code>, <code>grep</code>, and related file tools. Its build script compiles Zig source
-at build time, so <code>zig</code> must be on your <code>PATH</code>.</p>
-<p>Install Zig 0.16.0 from <a rel="noopener external" target="_blank" href="https://ziglang.org/download/">ziglang.org</a> (or your
-package manager — e.g. <code>brew install zig</code>, <code>apt install zig</code>, <code>pacman -S zig</code>),
-then check out the project from GitHub:</p>
-<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;" ><code data-lang="shellscript"><span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">git</span><span style="color: #A6E3A1;"> clone https://github.com/choreographr/choreographr</span></span>
-<span class="giallo-l"><span style="color: #F38BA8;font-style: italic;">cd</span><span style="color: #A6E3A1;"> choreographr</span></span></code></pre>
-<p>Build and install the binaries with Cargo:</p>
-<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;" ><code data-lang="shellscript"><span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">cargo</span><span style="color: #A6E3A1;"> install --path choreo-daemon --locked</span></span>
-<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">cargo</span><span style="color: #A6E3A1;"> install --path choreo-tui --locked</span></span></code></pre>
-<p>This puts <code>choreographr</code> (the daemon) and <code>choreo-tui</code> (the terminal client)
-on your <code>PATH</code>, typically in <code>~/.cargo/bin</code>.</p>
+<h3 id="homebrew">Homebrew
+<a class="zola-anchor" href="#homebrew" aria-label="Anchor link for: homebrew">
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+</a>
+</h3>
+<p>The <code>choreographr/choreographr</code> tap provides a prebuilt formula — no
+toolchain needed:</p>
+<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;" ><code data-lang="shellscript"><span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">brew</span><span style="color: #A6E3A1;"> tap choreographr/choreographr</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">brew</span><span style="color: #A6E3A1;"> trust choreographr/choreographr</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">brew</span><span style="color: #A6E3A1;"> install choreographr</span></span></code></pre>
+<p>Homebrew 6.0 and later refuse to load non-official taps until they are
+explicitly trusted (loading a tap can run Ruby code from it) — that's what
+the <code>brew trust</code> step is for.</p>
+<h3 id="manual-tarball">Manual tarball
+<a class="zola-anchor" href="#manual-tarball" aria-label="Anchor link for: manual-tarball">
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+</a>
+</h3>
+<p>Download and extract the Apple Silicon tarball, then put the four binaries
+on your <code>PATH</code>:</p>
+<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;" ><code data-lang="shellscript"><span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">curl</span><span style="color: #A6E3A1;"> -fL -O https://github.com/choreographr/choreographr/releases/download/v0.1.0/choreographr-0.1.0-aarch64-apple-darwin.tar.gz</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">tar</span><span style="color: #A6E3A1;"> xzf choreographr-0.1.0-aarch64-apple-darwin.tar.gz</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">sudo</span><span style="color: #A6E3A1;"> cp choreographr choreo-tui choreo-im choreo-acp /usr/local/bin/</span></span></code></pre>
+<p>The binaries are unsigned, so Gatekeeper quarantines them — clear the
+attribute after extracting:</p>
+<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;" ><code data-lang="shellscript"><span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">xattr</span><span style="color: #A6E3A1;"> -dr com.apple.quarantine /path/to/choreographr</span></span></code></pre><h2 id="linux">Linux
+<a class="zola-anchor" href="#linux" aria-label="Anchor link for: linux">
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+</a>
+</h2>
+<h3 id="debian-ubuntu-deb">Debian / Ubuntu — .deb
+<a class="zola-anchor" href="#debian-ubuntu-deb" aria-label="Anchor link for: debian-ubuntu-deb">
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+</a>
+</h3>
+<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;" ><code data-lang="shellscript"><span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">curl</span><span style="color: #A6E3A1;"> -fL -O https://github.com/choreographr/choreographr/releases/download/v0.1.0/choreographr-0.1.0-x86_64.deb</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">sudo</span><span style="color: #A6E3A1;"> apt install ./choreographr-0.1.0-x86_64.deb</span></span></code></pre><h3 id="fedora-rhel-opensuse-rpm">Fedora / RHEL / openSUSE — .rpm
+<a class="zola-anchor" href="#fedora-rhel-opensuse-rpm" aria-label="Anchor link for: fedora-rhel-opensuse-rpm">
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+</a>
+</h3>
+<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;" ><code data-lang="shellscript"><span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">curl</span><span style="color: #A6E3A1;"> -fL -O https://github.com/choreographr/choreographr/releases/download/v0.1.0/choreographr-0.1.0-x86_64.rpm</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">sudo</span><span style="color: #A6E3A1;"> dnf install ./choreographr-0.1.0-x86_64.rpm</span></span></code></pre>
+<p>Both packages install the four binaries and the systemd user unit
+(<code>~/.config/systemd/user/choreographr.service</code>).</p>
+<h3 id="any-distro-manual-tarball">Any distro — manual tarball
+<a class="zola-anchor" href="#any-distro-manual-tarball" aria-label="Anchor link for: any-distro-manual-tarball">
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+</a>
+</h3>
+<p>The Linux tarball is a <strong>fully static musl build</strong>, so one artifact runs on
+any Linux distribution regardless of glibc version:</p>
+<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;" ><code data-lang="shellscript"><span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">curl</span><span style="color: #A6E3A1;"> -fL -O https://github.com/choreographr/choreographr/releases/download/v0.1.0/choreographr-0.1.0-x86_64-unknown-linux-musl.tar.gz</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">tar</span><span style="color: #A6E3A1;"> xzf choreographr-0.1.0-x86_64-unknown-linux-musl.tar.gz</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">sudo</span><span style="color: #A6E3A1;"> cp choreographr choreo-tui choreo-im choreo-acp /usr/local/bin/</span></span></code></pre><h2 id="from-source-with-cargo">From source with Cargo
+<a class="zola-anchor" href="#from-source-with-cargo" aria-label="Anchor link for: from-source-with-cargo">
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+</a>
+</h2>
+<p><code>cargo install choreographr --locked</code> builds the whole suite from crates.io:</p>
+<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;" ><code data-lang="shellscript"><span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">cargo</span><span style="color: #A6E3A1;"> install choreographr --locked</span></span></code></pre>
+<p>Requirements: a <a rel="noopener external" target="_blank" href="https://rustup.rs/">Rust toolchain</a> — minimum supported Rust
+version (MSRV) is <strong>1.91</strong> — and a <strong>Zig 0.16.0</strong> toolchain on your <code>PATH</code>.
+Zig compiles the <a rel="noopener external" target="_blank" href="https://crates.io/crates/zlob"><code>zlob</code></a> crate, a
+SIMD-accelerated globbing and file-walking library that powers the agent's
+<code>find</code>, <code>grep</code>, and related file tools; its build script compiles Zig source
+at build time. Install Zig 0.16.0 from <a rel="noopener external" target="_blank" href="https://ziglang.org/download/">ziglang.org</a>
+(or your package manager — e.g. <code>brew install zig</code>, <code>apt install zig</code>,
+<code>pacman -S zig</code>).</p>
 <h2 id="risc-v-vm-tooling">RISC-V VM tooling
 <a class="zola-anchor" href="#risc-v-vm-tooling" aria-label="Anchor link for: risc-v-vm-tooling">
   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
@@ -346,5 +404,68 @@ installed wherever the daemon runs. Passing pre-compiled bytecode
 
 
   
+
+  <script>
+    // Click-to-copy buttons for every code block. Wraps each <pre> in a
+    // .code-block container and adds a corner button that copies the block's
+    // text via the async Clipboard API, with an execCommand fallback for
+    // non-secure contexts. The button sits OUTSIDE the <pre> so it stays in
+    // the corner while horizontally-overflowing code scrolls inside the block.
+    (function () {
+      var COPY_ICON =
+        '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
+      var CHECK_ICON =
+        '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
+
+      function fallbackCopy(text) {
+        var ta = document.createElement('textarea');
+        ta.value = text;
+        ta.setAttribute('readonly', '');
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        try { document.execCommand('copy'); } catch (e) { /* ignore */ }
+        document.body.removeChild(ta);
+      }
+
+      document.querySelectorAll('pre').forEach(function (pre) {
+        // Idempotent: don't re-wrap if the script runs more than once.
+        if (pre.parentElement && pre.parentElement.classList.contains('code-block')) return;
+
+        var wrap = document.createElement('div');
+        wrap.className = 'code-block';
+        pre.parentNode.insertBefore(wrap, pre);
+        wrap.appendChild(pre);
+
+        var btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'code-copy';
+        btn.setAttribute('aria-label', 'Copy code to clipboard');
+        btn.innerHTML = COPY_ICON;
+        wrap.appendChild(btn);
+
+        btn.addEventListener('click', function () {
+          var text = pre.innerText;
+          var done = function () {
+            btn.classList.add('copied');
+            btn.innerHTML = CHECK_ICON;
+            btn.setAttribute('aria-label', 'Copied');
+            setTimeout(function () {
+              btn.classList.remove('copied');
+              btn.innerHTML = COPY_ICON;
+              btn.setAttribute('aria-label', 'Copy code to clipboard');
+            }, 1500);
+          };
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(text).then(done, function () { fallbackCopy(text); done(); });
+          } else {
+            fallbackCopy(text);
+            done();
+          }
+        });
+      });
+    })();
+  </script>
 </body>
 </html>
