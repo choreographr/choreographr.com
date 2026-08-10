@@ -18,7 +18,7 @@ package manager — e.g. `brew install zig`, `apt install zig`, `pacman -S zig`)
 then check out the project from GitHub:
 
 ```bash
-git clone https://github.com/ethernomad/choreographr
+git clone https://github.com/choreographr/choreographr
 cd choreographr
 ```
 

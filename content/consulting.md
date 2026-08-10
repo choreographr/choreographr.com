@@ -5,7 +5,7 @@ template = "consulting.html"
 
 [[extra.social]]
 name = "GitHub"
-url = "https://github.com/ethernomad"
+url = "https://github.com/choreographr"
 icon = "github"
 
 [[extra.social]]

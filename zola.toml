@@ -48,7 +48,7 @@ index_format = "elasticlunr_json"
 
 [extra]
 # Community / project links
-github = "https://github.com/ethernomad/choreographr"
+github = "https://github.com/choreographr/choreographr"
 telegram = "https://t.me/choreographr"
 license = "Apache-2.0"
 msrv = "1.91"
@@ -59,6 +59,6 @@ nav = [
   { name = "Docs", href = "/docs/" },
   { name = "Blog", href = "/blog/" },
   { name = "Consulting", href = "/consulting/" },
-  { name = "GitHub", href = "https://github.com/ethernomad/choreographr", external = true },
+  { name = "GitHub", href = "https://github.com/choreographr/choreographr", external = true },
   { name = "Telegram", href = "https://t.me/choreographr", external = true },
 ]

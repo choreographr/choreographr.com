@@ -42,4 +42,4 @@ that the client has the server's public key.
 ## Getting help
 
 Ask in the [Telegram community](https://t.me/choreographr), or open an issue
-on [GitHub](https://github.com/ethernomad/choreographr).
+on [GitHub](https://github.com/choreographr/choreographr).
