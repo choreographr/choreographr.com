@@ -225,6 +225,21 @@ body {
   @apply text-brand-500 animate-pulse;
 }
 
+/* ---- Copy-to-clipboard buttons on code blocks ---- */
+/* A small script in templates/base.html wraps every <pre> in a .code-block
+   container and injects a .code-copy button. The button lives OUTSIDE the
+   <pre> so it stays fixed in the corner while horizontally-overflowing code
+   scrolls inside the block. */
+.code-block { @apply relative; }
+.code-copy {
+  @apply absolute top-2 right-2 inline-flex h-7 w-7 items-center justify-center
+         rounded-md border border-night-600 bg-night-800 text-night-300
+         transition-colors cursor-pointer;
+}
+.code-copy:hover { @apply border-brand-500/50 bg-night-700 text-night-100; }
+.code-copy:focus-visible { @apply outline-none ring-2 ring-brand-500/60; }
+.code-copy.copied { @apply border-success text-success; }
+
 /* ---- Terminal mockups (daisyUI) ----
    daisyUI sizes mockup-code <pre> lines to max-content. In flex/grid
    layouts that can blow the page out horizontally on mobile; cap the
