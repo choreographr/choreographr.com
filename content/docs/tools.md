@@ -50,7 +50,6 @@ activate additional groups with `load_tools` and deactivate them with
 | `core` | Filesystem, HTTP, images, PDF, search, random, time, sessions, series | ✅ always |
 | `git` | Local Git operations (status, diff, log, add, commit, push, show) | ✅ |
 | `shell` | Shell execution (bash, nushell, fish, exec) | ✅ |
-| `desktop` | Desktop notifications via `notify-send` | — |
 | `db` | Session-scoped key-value database (redb) | — |
 | `x` | X/Twitter API (post, search, user lookup) | — |
 | `vm` | RISC-V sandboxed code execution | — |
@@ -341,14 +340,6 @@ defaults to the public Polkadot RPC, `wss://rpc.polkadot.io`.
 > All blockchain tools are **read-only** — they query nodes over HTTP/WebSocket
 > and never sign transactions or move funds. The RPC endpoint is passed per
 > call as an argument; no credentials are required.
-
-## Desktop tools
-
-The `desktop` group contains a single tool:
-
-- `notify_send` — sends a desktop notification (`summary`, optional `body`,
-  `urgency`, `timeout`, `icon`) via `notify-send`. Use it to alert the user,
-  e.g. when a long-running task completes.
 
 ## RISC-V VM tool
 

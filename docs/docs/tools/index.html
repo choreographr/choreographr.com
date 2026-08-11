@@ -27,7 +27,7 @@
   <link rel="preload" href="https://choreographr.com/fonts/jetbrains-mono.woff2" as="font" type="font/woff2" crossorigin>
 
   <link rel="icon" type="image/svg+xml" href="https://choreographr.com/favicon.svg">
-  <link rel="stylesheet" href="https://choreographr.com/css/main.css?h=d8f57224c44380b6ee81">
+  <link rel="stylesheet" href="https://choreographr.com/css/main.css?h=b9123aac10d72955404e">
 
   <!-- Firefox/Zen can paint a frame before this stylesheet has been
        applied if a layout flush happens while it loads (Bugzilla
@@ -315,7 +315,6 @@ always has access to all tools.</p>
 <tr><td><code>core</code></td><td>Filesystem, HTTP, images, PDF, search, random, time, sessions, series</td><td>✅ always</td></tr>
 <tr><td><code>git</code></td><td>Local Git operations (status, diff, log, add, commit, push, show)</td><td>✅</td></tr>
 <tr><td><code>shell</code></td><td>Shell execution (bash, nushell, fish, exec)</td><td>✅</td></tr>
-<tr><td><code>desktop</code></td><td>Desktop notifications via <code>notify-send</code></td><td>—</td></tr>
 <tr><td><code>db</code></td><td>Session-scoped key-value database (redb)</td><td>—</td></tr>
 <tr><td><code>x</code></td><td>X/Twitter API (post, search, user lookup)</td><td>—</td></tr>
 <tr><td><code>vm</code></td><td>RISC-V sandboxed code execution</td><td>—</td></tr>
@@ -603,17 +602,6 @@ defaults to the public Polkadot RPC, <code>wss://rpc.polkadot.io</code>.</p>
 and never sign transactions or move funds. The RPC endpoint is passed per
 call as an argument; no credentials are required.</p>
 </blockquote>
-<h2 id="desktop-tools">Desktop tools
-<a class="zola-anchor" href="#desktop-tools" aria-label="Anchor link for: desktop-tools">
-  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
-</a>
-</h2>
-<p>The <code>desktop</code> group contains a single tool:</p>
-<ul>
-<li><code>notify_send</code> — sends a desktop notification (<code>summary</code>, optional <code>body</code>,
-<code>urgency</code>, <code>timeout</code>, <code>icon</code>) via <code>notify-send</code>. Use it to alert the user,
-e.g. when a long-running task completes.</li>
-</ul>
 <h2 id="risc-v-vm-tool">RISC-V VM tool
 <a class="zola-anchor" href="#risc-v-vm-tool" aria-label="Anchor link for: risc-v-vm-tool">
   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>

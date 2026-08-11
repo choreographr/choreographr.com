@@ -58,6 +58,9 @@ github = "https://github.com/choreographr/choreographr"
 telegram = "https://t.me/choreographr"
 license = "Apache-2.0"
 msrv = "1.91"
+# Total built-in tools registered by the release daemon (see the
+# ToolRegistry in choreo-daemon/src/tools/mod.rs).
+tool_count = 60
 
 # Navigation — items are shown on the right of the navbar.
 # `href` is a site-relative path.

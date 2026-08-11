@@ -27,7 +27,7 @@
   <link rel="preload" href="https://choreographr.com/fonts/jetbrains-mono.woff2" as="font" type="font/woff2" crossorigin>
 
   <link rel="icon" type="image/svg+xml" href="https://choreographr.com/favicon.svg">
-  <link rel="stylesheet" href="https://choreographr.com/css/main.css?h=d8f57224c44380b6ee81">
+  <link rel="stylesheet" href="https://choreographr.com/css/main.css?h=b9123aac10d72955404e">
 
   <!-- Firefox/Zen can paint a frame before this stylesheet has been
        applied if a layout flush happens while it loads (Bugzilla
@@ -190,8 +190,8 @@
             <p class="text-xs text-night-400">native clients</p>
           </div>
           <div>
-            <p class="text-2xl font-bold text-night-50 font-mono">0</p>
-            <p class="text-xs text-night-400">unsandboxed shell by default</p>
+            <p class="text-2xl font-bold text-night-50 font-mono">60</p>
+            <p class="text-xs text-night-400">built-in tools</p>
           </div>
         </div>
       </div>
@@ -333,63 +333,6 @@
 </section>
 
 
-<section class="border-t border-night-700 bg-night-900/50">
-  <div class="mx-auto max-w-7xl px-4 sm:px-6 py-20">
-    <div class="max-w-2xl">
-      <h2 class="text-3xl font-bold text-night-50 tracking-tight">Pick your surface</h2>
-      <p class="mt-4 text-night-300">All clients talk to the same daemon, so you can switch mid-conversation — start in the terminal, continue on your phone.</p>
-    </div>
-    <div class="mt-12 grid gap-6 md:grid-cols-2">
-      <div class="card bg-night-900 border border-night-700">
-        <div class="card-body">
-          <div class="flex items-center justify-between">
-            <h3 class="card-title text-night-50">choreo-tui</h3>
-            <span class="badge badge-success badge-sm font-mono">primary</span>
-          </div>
-          <p class="text-sm text-night-300">A full-screen terminal UI with O(1) scrolling and streaming, markdown rendering, syntax highlighting, and a model selector. Built with ratatui + crossterm.</p>
-        </div>
-      </div>
-      <div class="card bg-night-900 border border-night-700">
-        <div class="card-body">
-          <div class="flex items-center justify-between">
-            <h3 class="card-title text-night-50">choreo-gui</h3>
-            <span class="badge badge-ghost badge-sm font-mono">in development</span>
-          </div>
-          <p class="text-sm text-night-300">A desktop GUI built with Dioxus. Targets Linux, macOS, Windows, Android and iOS.</p>
-        </div>
-      </div>
-      <div class="card bg-night-900 border border-night-700">
-        <div class="card-body">
-          <div class="flex items-center justify-between">
-            <h3 class="card-title text-night-50">choreo-im</h3>
-            <span class="badge badge-ghost badge-sm font-mono">in development</span>
-          </div>
-          <p class="text-sm text-night-300">An instant-messaging bridge — chat with your agent on the go from Telegram (more platforms coming).</p>
-        </div>
-      </div>
-      <div class="card bg-night-900 border border-night-700">
-        <div class="card-body">
-          <div class="flex items-center justify-between">
-            <h3 class="card-title text-night-50">choreo-acp</h3>
-            <span class="badge badge-ghost badge-sm font-mono">in development</span>
-          </div>
-          <p class="text-sm text-night-300">An Agent Communication Protocol bridge so ACP-compatible editors — Claude Code, Cline — can drive Choreographr sessions.</p>
-        </div>
-      </div>
-      <div class="card bg-night-900 border border-night-700">
-        <div class="card-body">
-          <div class="flex items-center justify-between">
-            <h3 class="card-title text-night-50">choreo-daemon</h3>
-            <span class="badge badge-ghost badge-sm font-mono">in development</span>
-          </div>
-          <p class="text-sm text-night-300">Daemons can handoff to sessions on other daemons via Noise — connect servers together and deploy work elsewhere.</p>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-
 <section class="border-t border-night-700">
   <div class="mx-auto max-w-7xl px-4 sm:px-6 py-20">
     <div class="grid lg:grid-cols-2 gap-12 items-center">
@@ -435,24 +378,24 @@
       <div>
         <h2 class="text-3xl font-bold text-night-50 tracking-tight">Up and running in minutes</h2>
         <p class="mt-4 text-night-300">
-          Requires a Rust toolchain (MSRV 1.91) and <a href="https://ziglang.org/" target="_blank" rel="noopener" class="text-brand-500 underline underline-offset-2 hover:text-brand-400">Zig</a>. Build once, then start the daemon and attach a client.
+          Install a prebuilt binary with <a href="https://choreographr.com/docs/installation" class="text-brand-500 underline underline-offset-2 hover:text-brand-400">Homebrew, a .deb or .rpm, or a static tarball</a> — no Rust toolchain needed. Then start the daemon and attach a client.
         </p>
         <div class="mt-6 space-y-3 text-sm text-night-200">
-          <p class="flex gap-3"><span class="text-brand-500 font-mono">01</span> Build the workspace</p>
+          <p class="flex gap-3"><span class="text-brand-500 font-mono">01</span> Install the binaries</p>
           <p class="flex gap-3"><span class="text-brand-500 font-mono">02</span> Start the daemon</p>
           <p class="flex gap-3"><span class="text-brand-500 font-mono">03</span> Attach a terminal client and start prompting</p>
         </div>
         <div class="mt-8 flex flex-wrap gap-3">
           <a href="https://choreographr.com/docs/quick-start" class="btn btn-primary">Read the quick start</a>
-          <a href="https://github.com/choreographr/choreographr" target="_blank" rel="noopener" class="btn btn-outline border-night-500 text-night-100 hover:border-brand-500 hover:text-brand-400">Clone from GitHub</a>
+          <a href="https://choreographr.com/docs/installation" class="btn btn-outline border-night-500 text-night-100 hover:border-brand-500 hover:text-brand-400">See install options</a>
         </div>
       </div>
       <div class="mockup-code bg-night-900 border border-night-600 text-sm shadow-xl">
-        <pre data-prefix="$"><code>git clone git@github.com:choreographr/choreographr.git</code></pre>
-        <pre data-prefix="$"><code>cd choreographr &amp;&amp; cargo build --release</code></pre>
-        <pre data-prefix="$"><code>cargo run --release -p choreo-daemon</code></pre>
+        <pre data-prefix="$"><code>brew tap choreographr/choreographr</code></pre>
+        <pre data-prefix="$"><code>brew install choreographr</code></pre>
+        <pre data-prefix="$"><code>choreographr</code></pre>
         <pre data-prefix=" "><code></code></pre>
-        <pre data-prefix="$"><code>cargo run --release -p choreo-tui</code></pre>
+        <pre data-prefix="$"><code>choreo-tui</code></pre>
         <pre data-prefix=">"><code>/add-key openai sk-…</code></pre>
         <pre data-prefix=">"><code>hello, choreo!</code></pre>
       </div>
