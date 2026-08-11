@@ -31,10 +31,11 @@ did. The first release, v0.1.0, is out now.
 
 > [!TIP]
 > **Try it now — no Rust toolchain needed.** Prebuilt binaries ship for macOS
-> (Apple Silicon) and Linux x86_64 as Homebrew, `.deb`/`.rpm`, and static
-> tarballs. Then it's two commands to your first conversation:
+> and Linux: Homebrew on macOS, `.deb`/`.rpm` or a static tarball on Linux.
+> Then it's two commands to your first conversation:
 
 ```bash
+# macOS — Homebrew
 brew tap choreographr/choreographr
 brew install choreographr
 choreographr   # terminal 1 — the daemon

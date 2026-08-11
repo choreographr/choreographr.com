@@ -185,10 +185,11 @@ lets clients — terminal, desktop, Telegram, editor — come and go, written in
 did. The first release, v0.1.0, is out now.</p>
 <blockquote class="markdown-alert-tip">
 <p><strong>Try it now — no Rust toolchain needed.</strong> Prebuilt binaries ship for macOS
-(Apple Silicon) and Linux x86_64 as Homebrew, <code>.deb</code>/<code>.rpm</code>, and static
-tarballs. Then it's two commands to your first conversation:</p>
+and Linux: Homebrew on macOS, <code>.deb</code>/<code>.rpm</code> or a static tarball on Linux.
+Then it's two commands to your first conversation:</p>
 </blockquote>
-<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;" ><code data-lang="shellscript"><span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">brew</span><span style="color: #A6E3A1;"> tap choreographr/choreographr</span></span>
+<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;" ><code data-lang="shellscript"><span class="giallo-l"><span style="color: #9399B2;font-style: italic;"># macOS — Homebrew</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">brew</span><span style="color: #A6E3A1;"> tap choreographr/choreographr</span></span>
 <span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">brew</span><span style="color: #A6E3A1;"> install choreographr</span></span>
 <span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">choreographr</span><span style="color: #9399B2;font-style: italic;">   # terminal 1 — the daemon</span></span>
 <span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">choreo-tui</span><span style="color: #9399B2;font-style: italic;">     # terminal 2 — the terminal client</span></span></code></pre>
