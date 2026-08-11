@@ -11,17 +11,23 @@ tags = ["announcement", "rust"]
 authors = ["Jonathan Brown"]
 +++
 
-AI agents are moving into the terminal — and that is exactly the problem. An
-LLM with shell access can do almost anything, which is precisely why only
-careful power users feel comfortable handing it the keys. And even then, most
-agents feel disposable: one process you close, a wall of RAM and fan noise, no
-real record of what the model actually did.
+Giving an LLM shell access is a perfectly valid choice — for developers and
+power users. You understand what the model is doing, you can review its
+commands, and a coding agent with a terminal is genuinely useful.
 
-Choreographr is built to run for months, not minutes. A **persistent daemon**
-owns your sessions while clients — terminal, desktop, Telegram, editor — come
-and go. LLM-generated code runs in a **sandboxed RISC-V VM** instead of your
-shell. And the core is written in **Rust**, so it stays lean, memory-safe, and
-honest about everything the agent did. The first release, v0.1.0, is out now.
+The problem comes when there is no one to review. Autonomous agents prompted by
+regular users — research agents, personal assistants, business agents — need
+the complete protection of a sandbox, because no one is watching what the model
+does between prompts.
+
+Choreographr is built for both. Developers and power users can give it shell
+access and work the way they always have; for everyone else, LLM-generated code
+runs in a **sandboxed RISC-V VM** instead — an isolated environment with no
+host memory, no raw syscalls, and no filesystem access except through
+registered, logged tools. Around that core sits a **persistent daemon** that
+lets clients — terminal, desktop, Telegram, editor — come and go, written in
+**Rust** so it stays lean, memory-safe, and honest about everything the agent
+did. The first release, v0.1.0, is out now.
 
 > [!TIP]
 > **Try it now — no Rust toolchain needed.** Prebuilt binaries ship for macOS
@@ -56,10 +62,11 @@ The rest of this post digs into those three, and there's a
 
 ## A sandbox, not a shell
 
-The most dangerous thing you can give an agent is a shell. It can do anything —
-and for anyone who isn't a careful power user, that is a recipe for disaster,
-no matter the safeguards. You can't easily see what the model is doing, and
-there is no reliable log of what it has done.
+An agent with shell access can do anything — and with a careful developer in
+the loop, that is exactly what makes it useful. It only works because someone
+is watching. Hand the same agent to a regular user who can't review every
+command, and "it can do anything" becomes a recipe for disaster: no easy way to
+see what the model is doing, no reliable log of what it has done.
 
 Choreographr replaces the shell with a **RISC-V virtual machine**. Instead of
 issuing tool calls at the end of each turn, the model writes a small script (in

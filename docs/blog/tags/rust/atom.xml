@@ -21,16 +21,21 @@
         <link rel="alternate" type="text/html" href="https://choreographr.com/blog/choreographr-0-1-0/"/>
         <id>https://choreographr.com/blog/choreographr-0-1-0/</id>
         
-        <content type="html" xml:base="https://choreographr.com/blog/choreographr-0-1-0/">&lt;p&gt;AI agents are moving into the terminal — and that is exactly the problem. An
-LLM with shell access can do almost anything, which is precisely why only
-careful power users feel comfortable handing it the keys. And even then, most
-agents feel disposable: one process you close, a wall of RAM and fan noise, no
-real record of what the model actually did.&lt;/p&gt;
-&lt;p&gt;Choreographr is built to run for months, not minutes. A &lt;strong&gt;persistent daemon&lt;/strong&gt;
-owns your sessions while clients — terminal, desktop, Telegram, editor — come
-and go. LLM-generated code runs in a &lt;strong&gt;sandboxed RISC-V VM&lt;/strong&gt; instead of your
-shell. And the core is written in &lt;strong&gt;Rust&lt;/strong&gt;, so it stays lean, memory-safe, and
-honest about everything the agent did. The first release, v0.1.0, is out now.&lt;/p&gt;
+        <content type="html" xml:base="https://choreographr.com/blog/choreographr-0-1-0/">&lt;p&gt;Giving an LLM shell access is a perfectly valid choice — for developers and
+power users. You understand what the model is doing, you can review its
+commands, and a coding agent with a terminal is genuinely useful.&lt;/p&gt;
+&lt;p&gt;The problem comes when there is no one to review. Autonomous agents prompted by
+regular users — research agents, personal assistants, business agents — need
+the complete protection of a sandbox, because no one is watching what the model
+does between prompts.&lt;/p&gt;
+&lt;p&gt;Choreographr is built for both. Developers and power users can give it shell
+access and work the way they always have; for everyone else, LLM-generated code
+runs in a &lt;strong&gt;sandboxed RISC-V VM&lt;/strong&gt; instead — an isolated environment with no
+host memory, no raw syscalls, and no filesystem access except through
+registered, logged tools. Around that core sits a &lt;strong&gt;persistent daemon&lt;/strong&gt; that
+lets clients — terminal, desktop, Telegram, editor — come and go, written in
+&lt;strong&gt;Rust&lt;/strong&gt; so it stays lean, memory-safe, and honest about everything the agent
+did. The first release, v0.1.0, is out now.&lt;/p&gt;
 &lt;blockquote class=&quot;markdown-alert-tip&quot;&gt;
 &lt;p&gt;&lt;strong&gt;Try it now — no Rust toolchain needed.&lt;/strong&gt; Prebuilt binaries ship for macOS
 (Apple Silicon) and Linux x86_64 as Homebrew, &lt;code&gt;.deb&lt;/code&gt;/&lt;code&gt;.rpm&lt;/code&gt;, and static
@@ -65,10 +70,11 @@ construction, and light enough on CPU and RAM that you stop noticing it.&lt;/li&
   &lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;16&quot; height=&quot;16&quot; viewBox=&quot;0 0 24 24&quot; fill=&quot;none&quot; stroke=&quot;currentColor&quot; stroke-width=&quot;2.5&quot; stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot; aria-hidden=&quot;true&quot;&gt;&lt;path d=&quot;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&quot;/&gt;&lt;path d=&quot;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&quot;/&gt;&lt;/svg&gt;
 &lt;/a&gt;
 &lt;/h2&gt;
-&lt;p&gt;The most dangerous thing you can give an agent is a shell. It can do anything —
-and for anyone who isn&#39;t a careful power user, that is a recipe for disaster,
-no matter the safeguards. You can&#39;t easily see what the model is doing, and
-there is no reliable log of what it has done.&lt;/p&gt;
+&lt;p&gt;An agent with shell access can do anything — and with a careful developer in
+the loop, that is exactly what makes it useful. It only works because someone
+is watching. Hand the same agent to a regular user who can&#39;t review every
+command, and &quot;it can do anything&quot; becomes a recipe for disaster: no easy way to
+see what the model is doing, no reliable log of what it has done.&lt;/p&gt;
 &lt;p&gt;Choreographr replaces the shell with a &lt;strong&gt;RISC-V virtual machine&lt;/strong&gt;. Instead of
 issuing tool calls at the end of each turn, the model writes a small script (in
 Rust, compiled to RISC-V) that runs inside an isolated VM with its own flat
