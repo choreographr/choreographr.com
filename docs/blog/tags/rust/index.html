@@ -27,7 +27,7 @@
   <link rel="preload" href="https://choreographr.com/fonts/jetbrains-mono.woff2" as="font" type="font/woff2" crossorigin>
 
   <link rel="icon" type="image/svg+xml" href="https://choreographr.com/favicon.svg">
-  <link rel="stylesheet" href="https://choreographr.com/css/main.css?h=c8961737d04d91d76544">
+  <link rel="stylesheet" href="https://choreographr.com/css/main.css?h=d8f57224c44380b6ee81">
 
   <!-- Firefox/Zen can paint a frame before this stylesheet has been
        applied if a layout flush happens while it loads (Bugzilla
@@ -149,9 +149,9 @@
   <h1 class="text-3xl font-bold text-night-50 tracking-tight mt-4">Posts tagged <span class="text-brand-400 font-mono">#rust</span></h1>
   <div class="mt-8 flex flex-col gap-6">
     
-    <a href="https://choreographr.com/blog/introducing-choreographr/" class="group block border border-night-700 rounded-xl p-6 bg-night-900 hover:border-brand-500/50 hover:bg-night-800 transition-colors">
-      <h3 class="text-xl font-semibold text-night-50 group-hover:text-brand-400">Introducing Choreographr</h3>
-      <p class="mt-2 text-sm font-mono text-night-400">2026-08-01</p>
+    <a href="https://choreographr.com/blog/choreographr-0-1-0/" class="group block border border-night-700 rounded-xl p-6 bg-night-900 hover:border-brand-500/50 hover:bg-night-800 transition-colors">
+      <h3 class="text-xl font-semibold text-night-50 group-hover:text-brand-400">Choreographr v0.1.0 Released</h3>
+      <p class="mt-2 text-sm font-mono text-night-400">2026-08-11</p>
       <p class="mt-2 text-night-300">An all-purpose, extensible AI agent written in Rust — daemon + multi-client, a sandboxed RISC-V VM, and 70+ model providers.</p>
     </a>
     
@@ -224,6 +224,11 @@
       }
 
       document.querySelectorAll('pre').forEach(function (pre) {
+        // Skip daisyUI terminal mockups (mockup-code): every line is its
+        // own <pre>, so per-line copy buttons would be noise. Real code
+        // blocks are a single <pre> that is not inside a .mockup-code.
+        if (pre.closest('.mockup-code')) return;
+
         // Idempotent: don't re-wrap if the script runs more than once.
         if (pre.parentElement && pre.parentElement.classList.contains('code-block')) return;
 

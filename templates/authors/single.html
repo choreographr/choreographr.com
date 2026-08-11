@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block title %}{{ term.name }} — {{ config.title }} Blog{% endblock title %}
+
+{% block content %}
+{% set all_authors = load_data(path="data/authors.toml") %}
+{% set author = all_authors | get(key=term.slug, default={"name": term.name}) %}
+<div class="mx-auto max-w-3xl px-4 sm:px-6 py-12">
+  <a href="{{ get_url(path='/blog/') }}" class="text-sm text-night-400 hover:text-brand-400 font-mono">← Back to blog</a>
+
+  <div class="mt-6 flex items-center gap-5">
+    {% if author.avatar %}
+    <img src="{{ get_url(path=author.avatar) }}" alt="{{ author.name }}"
+         class="h-20 w-20 rounded-full object-cover border-2 border-brand-500/60 shadow-[0_0_30px_rgba(222,165,132,0.2)]" />
+    {% endif %}
+    <div>
+      <h1 class="text-3xl font-bold text-night-50 tracking-tight">{{ author.name }}</h1>
+      {% if author.bio %}<p class="mt-1 text-night-300">{{ author.bio }}</p>{% endif %}
+      {% if author.links %}
+      <div class="mt-3 flex flex-wrap gap-4 text-sm font-mono">
+        {% if author.links.github %}
+        <a href="{{ author.links.github }}" target="_blank" rel="noopener noreferrer" class="text-night-400 hover:text-brand-400 transition-colors">GitHub</a>
+        {% endif %}
+        {% if author.links.telegram %}
+        <a href="{{ author.links.telegram }}" target="_blank" rel="noopener noreferrer" class="text-night-400 hover:text-brand-400 transition-colors">Telegram</a>
+        {% endif %}
+        {% if author.links.email %}
+        <a href="mailto:{{ author.links.email }}" class="text-night-400 hover:text-brand-400 transition-colors">Email</a>
+        {% endif %}
+      </div>
+      {% endif %}
+    </div>
+  </div>
+
+  <h2 class="text-2xl font-semibold text-night-50 mt-10 mb-6">Posts by {{ author.name }}</h2>
+  <div class="flex flex-col gap-6">
+    {% for page in term.pages %}
+    <a href="{{ page.permalink }}" class="group block border border-night-700 rounded-xl p-6 bg-night-900 hover:border-brand-500/50 hover:bg-night-800 transition-colors">
+      <h3 class="text-xl font-semibold text-night-50 group-hover:text-brand-400">{{ page.title }}</h3>
+      <p class="mt-2 text-sm font-mono text-night-400">{{ page.date | date(format="%Y-%m-%d") }}</p>
+      {% if page.description %}<p class="mt-2 text-night-300">{{ page.description }}</p>{% endif %}
+    </a>
+    {% endfor %}
+  </div>
+</div>
+{% endblock content %}

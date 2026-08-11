@@ -163,6 +163,14 @@
           <p class="text-sm text-night-300">Persistent, session-scoped key-value stores the agent can write to and read back later. Survives restarts in the embedded <span class="font-mono text-brand-300">redb</span> database.</p>
         </div>
       </div>
+
+      <div class="card bg-night-900 border border-night-700 hover:border-brand-500/40 transition-colors">
+        <div class="card-body">
+          <div class="text-2xl text-brand-500">⛓️</div>
+          <h3 class="card-title text-night-50 text-lg">Blockchain native</h3>
+          <p class="text-sm text-night-300">Built-in EVM and Substrate/Polkadot tools — balances, blocks, transactions, contract calls, ENS resolution, and storage queries — activated with <span class="font-mono text-brand-300">load_tools blockchain</span>.</p>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -346,6 +354,7 @@
           <tr class="border-t border-night-700"><td class="px-4 py-2.5">Subagents</td><td class="px-4 py-2.5 text-brand-400">✅ subsessions</td><td class="px-4 py-2.5">swarm</td><td class="px-4 py-2.5">delegation</td><td class="px-4 py-2.5">✅</td><td class="px-4 py-2.5">✅</td><td class="px-4 py-2.5">—</td></tr>
           <tr class="border-t border-night-700"><td class="px-4 py-2.5">Skills (SKILL.md)</td><td class="px-4 py-2.5 text-brand-400">✅</td><td class="px-4 py-2.5">✅</td><td class="px-4 py-2.5">✅</td><td class="px-4 py-2.5">✅</td><td class="px-4 py-2.5">✅</td><td class="px-4 py-2.5">✅</td></tr>
           <tr class="border-t border-night-700"><td class="px-4 py-2.5">MCP client</td><td class="px-4 py-2.5 text-brand-400">✅</td><td class="px-4 py-2.5">✅</td><td class="px-4 py-2.5">✅</td><td class="px-4 py-2.5">✅</td><td class="px-4 py-2.5">✅</td><td class="px-4 py-2.5">—</td></tr>
+          <tr class="border-t border-night-700"><td class="px-4 py-2.5">Blockchain tools*</td><td class="px-4 py-2.5 text-brand-400">✅ native — EVM + Polkadot</td><td class="px-4 py-2.5">—</td><td class="px-4 py-2.5">—</td><td class="px-4 py-2.5">—</td><td class="px-4 py-2.5">—</td><td class="px-4 py-2.5">—</td></tr>
           <tr class="border-t border-night-700"><td class="px-4 py-2.5">ACP</td><td class="px-4 py-2.5 text-brand-400">✅</td><td class="px-4 py-2.5">bridge</td><td class="px-4 py-2.5">✅</td><td class="px-4 py-2.5">✅</td><td class="px-4 py-2.5">—</td><td class="px-4 py-2.5">—</td></tr>
           <tr class="border-t border-night-700"><td class="px-4 py-2.5">IM surfaces</td><td class="px-4 py-2.5 text-brand-400">Telegram - more coming soon</td><td class="px-4 py-2.5">25+</td><td class="px-4 py-2.5">20+</td><td class="px-4 py-2.5">—</td><td class="px-4 py-2.5">—</td><td class="px-4 py-2.5">—</td></tr>
           <tr class="border-t border-night-700"><td class="px-4 py-2.5">Web search</td><td class="px-4 py-2.5 text-brand-400">coming soon</td><td class="px-4 py-2.5">✅</td><td class="px-4 py-2.5">✅</td><td class="px-4 py-2.5">✅</td><td class="px-4 py-2.5">✅</td><td class="px-4 py-2.5">—</td></tr>
@@ -360,6 +369,7 @@
           <tr class="border-t border-night-700"><td class="px-4 py-2.5">Context fingerprints</td><td class="px-4 py-2.5 text-brand-400">✅</td><td class="px-4 py-2.5">—</td><td class="px-4 py-2.5">—</td><td class="px-4 py-2.5">—</td><td class="px-4 py-2.5">—</td><td class="px-4 py-2.5">—</td></tr>
         </tbody>
       </table>
+      <p class="mt-3 text-xs text-night-400">* None of the other agents ship native blockchain functionality — Choreographr's EVM and Substrate/Polkadot tools are built in, not bolted on via plugins.</p>
     </div>
   </div>
 </section>
@@ -372,7 +382,7 @@
       <p class="mt-4 text-night-300">Choreographr is under active development. A taste of what's planned:</p>
     </div>
     <div class="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-      <div class="card bg-night-900 border border-night-700"><div class="card-body"><h3 class="card-title text-night-50 text-base">🧩 Extensions</h3><p class="text-sm text-night-300">Hook into the server over a local socket to expose new tools — including blockchain extensions for EVM, Solana and Polkadot.</p></div></div>
+      <div class="card bg-night-900 border border-night-700"><div class="card-body"><h3 class="card-title text-night-50 text-base">🧩 Extensions</h3><p class="text-sm text-night-300">Hook into the server over a local socket to expose new tools and plugins.</p></div></div>
       <div class="card bg-night-900 border border-night-700"><div class="card-body"><h3 class="card-title text-night-50 text-base">⏰ Cron</h3><p class="text-sm text-night-300">Run programs automatically at designated times.</p></div></div>
       <div class="card bg-night-900 border border-night-700"><div class="card-body"><h3 class="card-title text-night-50 text-base">🌿 Git worktree support</h3><p class="text-sm text-night-300">Parallel subsessions on their own branches with CoW filesystems to avoid rebuilding gigabytes of artifacts.</p></div></div>
       <div class="card bg-night-900 border border-night-700"><div class="card-body"><h3 class="card-title text-night-50 text-base">🔄 Looping</h3><p class="text-sm text-night-300">Automate the "review → fix → review" loop until a goal is met, unattended.</p></div></div>

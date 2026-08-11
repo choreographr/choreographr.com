@@ -45,7 +45,9 @@ of every built-in tool and how to call it.
 
 Available tool groups include **core** (filesystem, HTTP, images, PDF
 classification, search, random, time), **git**, **shell**, **vm**, **x**,
-**db**, and **desktop**. Only `core`, `git`, and `shell` are active by default.
+**db**, **desktop**, and **blockchain** (EVM and Substrate/Polkadot queries,
+when the daemon is built with the `blockchain` feature). Only `core`,
+`git`, and `shell` are active by default.
 
 ### Tool groups
 

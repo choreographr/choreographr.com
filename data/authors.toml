@@ -1,0 +1,12 @@
+# Author profiles for the `authors` taxonomy (see zola.toml).
+#
+# Each key is the slugified taxonomy term: a post listing `authors =
+# ["Jonathan Brown"]` produces the term "Jonathan Brown" (slug
+# "jonathan-brown"), which maps to the [jonathan-brown] profile below.
+# Templates look these up via load_data(path="data/authors.toml").
+
+[jonathan-brown]
+name = "Jonathan Brown"
+avatar = "me.jpg"
+bio = "Backend engineer and AI-augmented development specialist. Author of Acuity Index, now building Choreographr."
+links = { github = "https://github.com/choreographr", telegram = "https://t.me/choreographr", email = "jbrown@acuity.network" }

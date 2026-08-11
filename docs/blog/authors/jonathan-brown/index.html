@@ -9,8 +9,8 @@
        unlike Chromium which defers first paint until the inline CSS exists. -->
   <meta name="color-scheme" content="dark">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Introducing Choreographr — Choreographr Blog</title>
-  <meta name="description" content="An all-purpose, extensible AI agent written in Rust — daemon + multi-client, a sandboxed RISC-V VM, and 70+ model providers.">
+  <title>Jonathan Brown — Choreographr Blog</title>
+  <meta name="description" content="Your all-purpose AI agent, written in Rust. A daemon with many clients, a sandboxed RISC-V VM, and support for 70+ model providers.">
   <meta name="theme-color" content="#06080b">
 
   <!-- Critical inline CSS: paint the dark theme immediately, before
@@ -27,7 +27,7 @@
   <link rel="preload" href="https://choreographr.com/fonts/jetbrains-mono.woff2" as="font" type="font/woff2" crossorigin>
 
   <link rel="icon" type="image/svg+xml" href="https://choreographr.com/favicon.svg">
-  <link rel="stylesheet" href="https://choreographr.com/css/main.css?h=c8961737d04d91d76544">
+  <link rel="stylesheet" href="https://choreographr.com/css/main.css?h=d8f57224c44380b6ee81">
 
   <!-- Firefox/Zen can paint a frame before this stylesheet has been
        applied if a layout flush happens while it loads (Bugzilla
@@ -144,75 +144,45 @@
 
   <main class="flex-1">
     
+
+
 <div class="mx-auto max-w-3xl px-4 sm:px-6 py-12">
   <a href="https://choreographr.com/blog" class="text-sm text-night-400 hover:text-brand-400 font-mono">← Back to blog</a>
-  <article class="mt-6">
-    <h1 class="text-3xl font-bold text-night-50 tracking-tight">Introducing Choreographr</h1>
-    <div class="mt-3 text-sm font-mono text-night-400">
-      2026-08-01
-       · announcement, rust
-    </div>
-    <div class="prose mt-8">
-      <p>Choreographr is an all-purpose, extensible AI agent system written entirely in
-Rust. It's early, it's open source (Apache-2.0), and it takes a few opinions
-that we think are worth sharing.</p>
-<h2 id="one-daemon-many-clients">One daemon, many clients
-<a class="zola-anchor" href="#one-daemon-many-clients" aria-label="Anchor link for: one-daemon-many-clients">
-  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
-</a>
-</h2>
-<p>Most agents are a single process with a single UI. Choreographr is built the
-other way around: a <strong>daemon</strong> owns your sessions, and clients connect and
-disconnect whenever they want.</p>
-<ul>
-<li><strong><code>choreo-tui</code></strong> — a full-screen terminal UI with O(1) scrolling and streaming.</li>
-<li><strong><code>choreo-gui</code></strong> — a desktop app (Dioxus), in development.</li>
-<li><strong><code>choreo-im</code></strong> — chat with your agent from Telegram, in development.</li>
-<li><strong><code>choreo-acp</code></strong> — drive sessions from ACP-compatible editors like Claude Code.</li>
-</ul>
-<p>Because sessions live in the daemon, you can start a task in the terminal and
-check on it from your phone. Everything persists in an embedded <code>redb</code>
-database and survives restarts.</p>
-<h2 id="llm-generated-code-runs-in-a-sandbox">LLM-generated code runs in a sandbox
-<a class="zola-anchor" href="#llm-generated-code-runs-in-a-sandbox" aria-label="Anchor link for: llm-generated-code-runs-in-a-sandbox">
-  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
-</a>
-</h2>
-<p>Giving an agent direct shell access is one of the riskiest things you can do.
-Choreographr offers a different default: generated code is compiled to RISC-V
-and executed in an isolated VM with a 4 MB flat memory space and a
-configurable cycle budget. The guest can only interact with the world through
-registered tools — same registry, same credentials, same working directory.</p>
-<p>That VM is also a tool-call scripting language: the agent can quickly write a
-little Rust snippet to orchestrate tools with custom logic.</p>
-<h2 id="70-providers-one-catalog">70+ providers, one catalog
-<a class="zola-anchor" href="#70-providers-one-catalog" aria-label="Anchor link for: 70-providers-one-catalog">
-  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
-</a>
-</h2>
-<p>Choreographr speaks OpenAI-compatible, Anthropic Messages, and Google Gemini.
-Each provider is a data file in a TOML catalog — curated models, context
-windows, reasoning levels. Adding a new OpenAI-compatible provider is a data
-edit, not a code change.</p>
-<h2 id="high-performance-by-construction">High-performance by construction
-<a class="zola-anchor" href="#high-performance-by-construction" aria-label="Anchor link for: high-performance-by-construction">
-  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
-</a>
-</h2>
-<p>The daemon uses pure OS threads and message passing — no async runtime, no
-shared mutable state. Every thread owns its data. It's simple to reason about
-and fast.</p>
-<h2 id="what-s-next">What's next
-<a class="zola-anchor" href="#what-s-next" aria-label="Anchor link for: what-s-next">
-  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
-</a>
-</h2>
-<p>Subsessions (hierarchical subagents) already exist; git worktrees, cron,
-extensions, and OS-level sandboxing are on the roadmap. We'd love your help —
-star the repo, open issues, and join the <a rel="noopener external" target="_blank" href="https://t.me/choreographr">Telegram community</a>.</p>
 
+  <div class="mt-6 flex items-center gap-5">
+    
+    <img src="https://choreographr.com/me.jpg" alt="Jonathan Brown"
+         class="h-20 w-20 rounded-full object-cover border-2 border-brand-500/60 shadow-[0_0_30px_rgba(222,165,132,0.2)]" />
+    
+    <div>
+      <h1 class="text-3xl font-bold text-night-50 tracking-tight">Jonathan Brown</h1>
+      <p class="mt-1 text-night-300">Backend engineer and AI-augmented development specialist. Author of Acuity Index, now building Choreographr.</p>
+      
+      <div class="mt-3 flex flex-wrap gap-4 text-sm font-mono">
+        
+        <a href="https://github.com/choreographr" target="_blank" rel="noopener noreferrer" class="text-night-400 hover:text-brand-400 transition-colors">GitHub</a>
+        
+        
+        <a href="https://t.me/choreographr" target="_blank" rel="noopener noreferrer" class="text-night-400 hover:text-brand-400 transition-colors">Telegram</a>
+        
+        
+        <a href="mailto:jbrown@acuity.network" class="text-night-400 hover:text-brand-400 transition-colors">Email</a>
+        
+      </div>
+      
     </div>
-  </article>
+  </div>
+
+  <h2 class="text-2xl font-semibold text-night-50 mt-10 mb-6">Posts by Jonathan Brown</h2>
+  <div class="flex flex-col gap-6">
+    
+    <a href="https://choreographr.com/blog/choreographr-0-1-0/" class="group block border border-night-700 rounded-xl p-6 bg-night-900 hover:border-brand-500/50 hover:bg-night-800 transition-colors">
+      <h3 class="text-xl font-semibold text-night-50 group-hover:text-brand-400">Choreographr v0.1.0 Released</h3>
+      <p class="mt-2 text-sm font-mono text-night-400">2026-08-11</p>
+      <p class="mt-2 text-night-300">An all-purpose, extensible AI agent written in Rust — daemon + multi-client, a sandboxed RISC-V VM, and 70+ model providers.</p>
+    </a>
+    
+  </div>
 </div>
 
   </main>
@@ -281,6 +251,11 @@ star the repo, open issues, and join the <a rel="noopener external" target="_bla
       }
 
       document.querySelectorAll('pre').forEach(function (pre) {
+        // Skip daisyUI terminal mockups (mockup-code): every line is its
+        // own <pre>, so per-line copy buttons would be noise. Real code
+        // blocks are a single <pre> that is not inside a .mockup-code.
+        if (pre.closest('.mockup-code')) return;
+
         // Idempotent: don't re-wrap if the script runs more than once.
         if (pre.parentElement && pre.parentElement.classList.contains('code-block')) return;
 

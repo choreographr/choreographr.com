@@ -4,13 +4,28 @@
 {% block description %}{% if page.description %}{{ page.description }}{% else %}{{ config.description }}{% endif %}{% endblock description %}
 
 {% block content %}
+{% set all_authors = load_data(path="data/authors.toml") %}
 <div class="mx-auto max-w-3xl px-4 sm:px-6 py-12">
   <a href="{{ get_url(path='/blog/') }}" class="text-sm text-night-400 hover:text-brand-400 font-mono">← Back to blog</a>
   <article class="mt-6">
     <h1 class="text-3xl font-bold text-night-50 tracking-tight">{{ page.title }}</h1>
-    <div class="mt-3 text-sm font-mono text-night-400">
-      {{ page.date | date(format="%Y-%m-%d") }}
-      {% if page.taxonomies.tags %} · {{ page.taxonomies.tags | join(sep=", ") }}{% endif %}
+    <div class="mt-4 flex flex-wrap items-center gap-x-5 gap-y-3">
+      {% if page.taxonomies.authors %}
+      {% for author in page.taxonomies.authors %}
+      {% set author_key = author | slugify %}
+      {% set author_info = all_authors | get(key=author_key, default={"name": author}) %}
+      <a href="{{ get_taxonomy_url(kind="authors", name=author) }}" class="flex items-center gap-2 group/author">
+        {% if author_info.avatar %}
+        <img src="{{ get_url(path=author_info.avatar) }}" alt="{{ author_info.name }}" class="h-9 w-9 rounded-full object-cover border border-brand-500/40" />
+        {% endif %}
+        <span class="text-sm font-medium text-night-200 group-hover/author:text-brand-400">{{ author_info.name }}</span>
+      </a>
+      {% endfor %}
+      {% endif %}
+      <span class="text-sm font-mono text-night-400">
+        {{ page.date | date(format="%Y-%m-%d") }}
+        {% if page.taxonomies.tags %} · {{ page.taxonomies.tags | join(sep=", ") }}{% endif %}
+      </span>
     </div>
     <div class="prose mt-8">
       {{ page.content | safe }}

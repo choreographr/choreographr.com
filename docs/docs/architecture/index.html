@@ -27,7 +27,7 @@
   <link rel="preload" href="https://choreographr.com/fonts/jetbrains-mono.woff2" as="font" type="font/woff2" crossorigin>
 
   <link rel="icon" type="image/svg+xml" href="https://choreographr.com/favicon.svg">
-  <link rel="stylesheet" href="https://choreographr.com/css/main.css?h=c8961737d04d91d76544">
+  <link rel="stylesheet" href="https://choreographr.com/css/main.css?h=d8f57224c44380b6ee81">
 
   <!-- Firefox/Zen can paint a frame before this stylesheet has been
        applied if a layout flush happens while it loads (Bugzilla
@@ -304,8 +304,10 @@ blocking <code>std</code> APIs on dedicated threads:</p>
 <span class="giallo-l"><span>│   └── owns SessionState (exclusive access)</span></span>
 <span class="giallo-l"><span>└── main thread — polls shutdown flag, orchestrates exit</span></span></code></pre>
 <p>This keeps the mental model simple — each thread owns its data — and avoids the
-complexity of async cancellation. A global tokio runtime exists only as a
-sidecar for crates (e.g. alloy) that require it.</p>
+complexity of async cancellation. The one exception is the optional
+<code>blockchain</code> feature: the <code>choreo-blockchain</code> crate (linked only then) holds a
+tokio sidecar runtime for the async alloy/subxt clients, and the daemon calls
+its synchronous <code>execute_*</code> entry points (which <code>block_on</code> internally).</p>
 <h2 id="request-flow">Request flow
 <a class="zola-anchor" href="#request-flow" aria-label="Anchor link for: request-flow">
   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
@@ -327,7 +329,7 @@ serially to preserve ordering.</p>
   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
 </a>
 </h2>
-<p>Twelve crates in a single Cargo workspace (resolver = "3"). The dependency
+<p>Fourteen crates in a single Cargo workspace (resolver = "3"). The dependency
 spine is <code>choreo-proto</code> → <code>choreo-keystore</code> / <code>choreo-transport</code>, with
 <code>choreo-client-core</code> and the daemon on top, and clients (<code>choreo-tui</code>,
 <code>choreo-gui</code>, <code>choreo-im</code>, <code>choreo-acp</code>) as leaves. The daemon itself also
@@ -336,6 +338,7 @@ sessions.</p>
 <table><thead><tr><th>Crate</th><th>Description</th></tr></thead><tbody>
 <tr><td><code>choreo-daemon</code></td><td>The core engine — binary <code>choreographr</code>. Unix socket server that validates credentials, manages persistent sessions (with sub-sessions and working directories), runs requests with a tool-call loop, and streams responses. Also connects to other daemons over Noise-IK to handoff sessions and deploy work elsewhere</td></tr>
 <tr><td><code>choreo-ai-protocols</code></td><td>Provider protocols — OpenAI-compatible, Anthropic Messages, and Google Gemini clients, the <code>ProviderClient</code> trait, and the provider catalog (70+ providers)</td></tr>
+<tr><td><code>choreo-blockchain</code></td><td>Blockchain tools — EVM (alloy) and Substrate/Polkadot (subxt) read-only queries plus the tokio sidecar runtime they run on; pulled in by the daemon's <code>blockchain</code> feature (off by default)</td></tr>
 <tr><td><code>choreo-proto</code></td><td>Framed binary protocol (postcard + length prefix) shared between clients and daemon</td></tr>
 <tr><td><code>choreo-keystore</code></td><td>X25519 keypair + ECDH/AES-256-GCM crypto library for encrypted credentials</td></tr>
 <tr><td><code>choreo-transport</code></td><td>Noise-IK encrypted transport over TCP</td></tr>

@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}Authors — {{ config.title }} Blog{% endblock title %}
+
+{% block content %}
+{% set all_authors = load_data(path="data/authors.toml") %}
+<div class="mx-auto max-w-3xl px-4 sm:px-6 py-12">
+  <a href="{{ get_url(path='/blog/') }}" class="text-sm text-night-400 hover:text-brand-400 font-mono">← Back to blog</a>
+  <h1 class="text-3xl font-bold text-night-50 tracking-tight mt-4">Authors</h1>
+  <div class="mt-8 flex flex-col gap-6">
+    {% for term in terms %}
+    {% set author = all_authors | get(key=term.slug, default={"name": term.name}) %}
+    <a href="{{ term.permalink }}" class="group flex items-center gap-4 border border-night-700 rounded-xl p-6 bg-night-900 hover:border-brand-500/50 hover:bg-night-800 transition-colors">
+      {% if author.avatar %}
+      <img src="{{ get_url(path=author.avatar) }}" alt="{{ author.name }}" class="h-14 w-14 rounded-full object-cover border-2 border-brand-500/60" />
+      {% endif %}
+      <div>
+        <h3 class="text-xl font-semibold text-night-50 group-hover:text-brand-400">{{ author.name }}</h3>
+        {% if author.bio %}<p class="mt-1 text-sm text-night-300">{{ author.bio }}</p>{% endif %}
+      </div>
+    </a>
+    {% endfor %}
+  </div>
+</div>
+{% endblock content %}

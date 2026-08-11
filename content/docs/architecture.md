@@ -46,8 +46,10 @@ main()
 ```
 
 This keeps the mental model simple — each thread owns its data — and avoids the
-complexity of async cancellation. A global tokio runtime exists only as a
-sidecar for crates (e.g. alloy) that require it.
+complexity of async cancellation. The one exception is the optional
+`blockchain` feature: the `choreo-blockchain` crate (linked only then) holds a
+tokio sidecar runtime for the async alloy/subxt clients, and the daemon calls
+its synchronous `execute_*` entry points (which `block_on` internally).
 
 ## Request flow
 
@@ -68,7 +70,7 @@ serially to preserve ordering.
 
 ## Workspace topology
 
-Twelve crates in a single Cargo workspace (resolver = "3"). The dependency
+Fourteen crates in a single Cargo workspace (resolver = "3"). The dependency
 spine is `choreo-proto` → `choreo-keystore` / `choreo-transport`, with
 `choreo-client-core` and the daemon on top, and clients (`choreo-tui`,
 `choreo-gui`, `choreo-im`, `choreo-acp`) as leaves. The daemon itself also
@@ -79,6 +81,7 @@ sessions.
 |---|---|
 | `choreo-daemon` | The core engine — binary `choreographr`. Unix socket server that validates credentials, manages persistent sessions (with sub-sessions and working directories), runs requests with a tool-call loop, and streams responses. Also connects to other daemons over Noise-IK to handoff sessions and deploy work elsewhere |
 | `choreo-ai-protocols` | Provider protocols — OpenAI-compatible, Anthropic Messages, and Google Gemini clients, the `ProviderClient` trait, and the provider catalog (70+ providers) |
+| `choreo-blockchain` | Blockchain tools — EVM (alloy) and Substrate/Polkadot (subxt) read-only queries plus the tokio sidecar runtime they run on; pulled in by the daemon's `blockchain` feature (off by default) |
 | `choreo-proto` | Framed binary protocol (postcard + length prefix) shared between clients and daemon |
 | `choreo-keystore` | X25519 keypair + ECDH/AES-256-GCM crypto library for encrypted credentials |
 | `choreo-transport` | Noise-IK encrypted transport over TCP |

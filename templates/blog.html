@@ -4,6 +4,7 @@
 {% block description %}{% if section.description %}{{ section.description }}{% else %}{{ config.description }}{% endif %}{% endblock description %}
 
 {% block content %}
+{% set all_authors = load_data(path="data/authors.toml") %}
 <div class="mx-auto max-w-3xl px-4 sm:px-6 py-12">
   <article class="prose">
     {{ section.content | safe }}
@@ -12,7 +13,19 @@
   <div class="flex flex-col gap-6">
     {% for page in paginator.pages %}
     <a href="{{ page.permalink }}" class="group block border border-night-700 rounded-xl p-6 bg-night-900 hover:border-brand-500/50 hover:bg-night-800 transition-colors">
-      <h3 class="text-xl font-semibold text-night-50 group-hover:text-brand-400">{{ page.title }}</h3>
+      {% if page.taxonomies.authors %}
+      <div class="flex items-center gap-2.5">
+        {% for author in page.taxonomies.authors %}
+        {% set author_key = author | slugify %}
+        {% set author_info = all_authors | get(key=author_key, default={"name": author}) %}
+        {% if author_info.avatar %}
+        <img src="{{ get_url(path=author_info.avatar) }}" alt="{{ author_info.name }}" class="h-7 w-7 rounded-full object-cover" />
+        {% endif %}
+        <span class="text-sm font-medium text-night-200">{{ author_info.name }}</span>
+        {% endfor %}
+      </div>
+      {% endif %}
+      <h3 class="text-xl font-semibold text-night-50 group-hover:text-brand-400 mt-3">{{ page.title }}</h3>
       <p class="mt-2 text-sm font-mono text-night-400">
         {{ page.date | date(format="%Y-%m-%d") }}
         {% if page.taxonomies.tags %} · {{ page.taxonomies.tags | join(sep=", ") }}{% endif %}

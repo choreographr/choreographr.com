@@ -27,7 +27,7 @@
   <link rel="preload" href="https://choreographr.com/fonts/jetbrains-mono.woff2" as="font" type="font/woff2" crossorigin>
 
   <link rel="icon" type="image/svg+xml" href="https://choreographr.com/favicon.svg">
-  <link rel="stylesheet" href="https://choreographr.com/css/main.css?h=c8961737d04d91d76544">
+  <link rel="stylesheet" href="https://choreographr.com/css/main.css?h=d8f57224c44380b6ee81">
 
   <!-- Firefox/Zen can paint a frame before this stylesheet has been
        applied if a layout flush happens while it loads (Bugzilla
@@ -342,6 +342,20 @@ SIMD-accelerated globbing and file-walking library that powers the agent's
 at build time. Install Zig 0.16.0 from <a rel="noopener external" target="_blank" href="https://ziglang.org/download/">ziglang.org</a>
 (or your package manager — e.g. <code>brew install zig</code>, <code>apt install zig</code>,
 <code>pacman -S zig</code>).</p>
+<h2 id="blockchain-tools">Blockchain tools
+<a class="zola-anchor" href="#blockchain-tools" aria-label="Anchor link for: blockchain-tools">
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+</a>
+</h2>
+<p>The EVM and Substrate/Polkadot blockchain tools (<code>evm_*</code>, <code>subxt_*</code> — see the
+<a href="https://choreographr.com/docs/tools/#blockchain-tools">tools reference</a>) are compiled in behind the
+<code>blockchain</code> cargo feature. The release binaries enable it; when building from
+source, opt in explicitly:</p>
+<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;" ><code data-lang="shellscript"><span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">cargo</span><span style="color: #A6E3A1;"> install choreographr --locked --features blockchain</span></span></code></pre>
+<p>The tools live in the optional <a rel="noopener external" target="_blank" href="https://github.com/choreographr/choreographr/tree/master/choreo-blockchain"><code>choreo-blockchain</code></a>
+crate — the only workspace crate that depends on <code>tokio</code> — so a build without
+the feature compiles the whole alloy/subxt/tokio tree out. Once the daemon is
+running, activate the group per session with <code>load_tools blockchain</code>.</p>
 <h2 id="risc-v-vm-tooling">RISC-V VM tooling
 <a class="zola-anchor" href="#risc-v-vm-tooling" aria-label="Anchor link for: risc-v-vm-tooling">
   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>

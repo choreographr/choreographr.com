@@ -41,6 +41,12 @@ name = "tags"
 paginate_by = 10
 feed = true
 
+# Blog authorship. Terms are author display names (e.g. "Jonathan Brown")
+# slugified to "jonathan-brown"; rich profiles live in data/authors.toml and
+# are looked up by slug from the author templates.
+[[taxonomies]]
+name = "authors"
+
 [search]
 # The official search.js snippet loads the JSON format.
 # Zola auto-copies elasticlunr.min.js to the output root.

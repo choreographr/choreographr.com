@@ -39,8 +39,19 @@ sandboxing for tools that must run outside the VM is on the roadmap.
 ### Does it require an async runtime?
 
 No — the daemon uses pure OS threads with message passing. No async code in its
-own logic, no `Arc<Mutex>` shared state. A tokio runtime exists only as a
-sidecar for third-party crates that require it.
+own logic, no `Arc<Mutex>` shared state. The one exception is the optional
+`blockchain` feature: the `choreo-blockchain` crate holds a tokio sidecar
+runtime for its async alloy/subxt clients, and the daemon calls into it through
+synchronous `execute_*` entry points. Without that feature, tokio isn't linked
+at all.
+
+### Can it talk to blockchains?
+
+Yes — the `blockchain` tool group adds read-only EVM and Substrate/Polkadot
+tools (balances, blocks, transactions, contract calls, ENS, storage queries).
+It's compiled in when the daemon is built with the `blockchain` cargo feature
+(enabled in the release binaries) and activated per session with
+`load_tools blockchain`. See the [tools reference](@/docs/tools.md#blockchain-tools).
 
 ### Is it open source?
 

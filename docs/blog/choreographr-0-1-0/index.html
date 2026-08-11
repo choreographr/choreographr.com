@@ -9,8 +9,8 @@
        unlike Chromium which defers first paint until the inline CSS exists. -->
   <meta name="color-scheme" content="dark">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Troubleshooting — Choreographr</title>
-  <meta name="description" content="Diagnostics, logs, and common problems.">
+  <title>Choreographr v0.1.0 Released — Choreographr Blog</title>
+  <meta name="description" content="An all-purpose, extensible AI agent written in Rust — daemon + multi-client, a sandboxed RISC-V VM, and 70+ model providers.">
   <meta name="theme-color" content="#06080b">
 
   <!-- Critical inline CSS: paint the dark theme immediately, before
@@ -58,13 +58,13 @@
         <ul tabindex="0" class="dropdown-content menu bg-night-900 border border-night-700 rounded-box z-50 mt-3 w-52 p-2 shadow-2xl">
           
           <li>
-            <a href="/docs/"  class="text-brand-500">
+            <a href="/docs/"  class="">
               Docs
             </a>
           </li>
           
           <li>
-            <a href="/blog/"  class="">
+            <a href="/blog/"  class="text-brand-500">
               Blog
             </a>
           </li>
@@ -99,7 +99,7 @@
         <li>
           <a href="/docs/"
              
-             class="text-brand-500 font-semibold">
+             class="text-night-200 hover:text-night-50">
             Docs
           </a>
         </li>
@@ -107,7 +107,7 @@
         <li>
           <a href="/blog/"
              
-             class="text-night-200 hover:text-night-50">
+             class="text-brand-500 font-semibold">
             Blog
           </a>
         </li>
@@ -145,170 +145,122 @@
   <main class="flex-1">
     
 
-<div class="mx-auto max-w-7xl px-4 sm:px-6 py-8 lg:py-12">
-  <div class="flex flex-col lg:flex-row gap-10">
-    <aside class="lg:w-60 shrink-0">
-      <div class="lg:sticky lg:top-24">
+<div class="mx-auto max-w-3xl px-4 sm:px-6 py-12">
+  <a href="https://choreographr.com/blog" class="text-sm text-night-400 hover:text-brand-400 font-mono">← Back to blog</a>
+  <article class="mt-6">
+    <h1 class="text-3xl font-bold text-night-50 tracking-tight">Choreographr v0.1.0 Released</h1>
+    <div class="mt-4 flex flex-wrap items-center gap-x-5 gap-y-3">
+      
+      
+      
+      
+      <a href="https://choreographr.com/blog/authors/jonathan-brown/" class="flex items-center gap-2 group/author">
         
-
-<nav class="w-full">
-  <p class="px-3 mb-2 text-xs font-semibold uppercase tracking-wider text-night-400">Documentation</p>
-  <ul class="menu menu-sm w-full p-0 gap-0.5">
-    
-    <li>
-      <a href="https://choreographr.com/docs/installation/"
-         class="text-night-200 hover:text-night-50">
-        Installation
+        <img src="https://choreographr.com/me.jpg" alt="Jonathan Brown" class="h-9 w-9 rounded-full object-cover border border-brand-500/40" />
+        
+        <span class="text-sm font-medium text-night-200 group-hover/author:text-brand-400">Jonathan Brown</span>
       </a>
-    </li>
-    
-    <li>
-      <a href="https://choreographr.com/docs/quick-start/"
-         class="text-night-200 hover:text-night-50">
-        Quick start
-      </a>
-    </li>
-    
-    <li>
-      <a href="https://choreographr.com/docs/configuration/"
-         class="text-night-200 hover:text-night-50">
-        Configuration
-      </a>
-    </li>
-    
-    <li>
-      <a href="https://choreographr.com/docs/accounts-and-providers/"
-         class="text-night-200 hover:text-night-50">
-        Accounts &amp; providers
-      </a>
-    </li>
-    
-    <li>
-      <a href="https://choreographr.com/docs/slash-commands/"
-         class="text-night-200 hover:text-night-50">
-        Slash commands
-      </a>
-    </li>
-    
-    <li>
-      <a href="https://choreographr.com/docs/concepts/"
-         class="text-night-200 hover:text-night-50">
-        Concepts
-      </a>
-    </li>
-    
-    <li>
-      <a href="https://choreographr.com/docs/tools/"
-         class="text-night-200 hover:text-night-50">
-        Tools
-      </a>
-    </li>
-    
-    <li>
-      <a href="https://choreographr.com/docs/why-rust/"
-         class="text-night-200 hover:text-night-50">
-        Why Rust?
-      </a>
-    </li>
-    
-    <li>
-      <a href="https://choreographr.com/docs/architecture/"
-         class="text-night-200 hover:text-night-50">
-        Architecture
-      </a>
-    </li>
-    
-    <li>
-      <a href="https://choreographr.com/docs/security/"
-         class="text-night-200 hover:text-night-50">
-        Security
-      </a>
-    </li>
-    
-    <li>
-      <a href="https://choreographr.com/docs/monitoring/"
-         class="text-night-200 hover:text-night-50">
-        Monitoring
-      </a>
-    </li>
-    
-    <li>
-      <a href="https://choreographr.com/docs/testing/"
-         class="text-night-200 hover:text-night-50">
-        Testing &amp; development
-      </a>
-    </li>
-    
-    <li>
-      <a href="https://choreographr.com/docs/troubleshooting/"
-         class="bg-night-700 text-night-50 font-semibold">
-        Troubleshooting
-      </a>
-    </li>
-    
-    <li>
-      <a href="https://choreographr.com/docs/faq/"
-         class="text-night-200 hover:text-night-50">
-        FAQ
-      </a>
-    </li>
-    
-  </ul>
-</nav>
-
-      </div>
-    </aside>
-    <article class="prose min-w-0 flex-1 max-w-3xl">
-      <h1>Troubleshooting</h1>
-      <div class="text-sm text-night-400 font-mono mb-6">
-        /docs/troubleshooting/
-      </div>
-      <h2 id="logs">Logs
-<a class="zola-anchor" href="#logs" aria-label="Anchor link for: logs">
+      
+      
+      <span class="text-sm font-mono text-night-400">
+        2026-08-11
+         · announcement, rust
+      </span>
+    </div>
+    <div class="prose mt-8">
+      <p>I've spent the past two months working on a new AI agent called Choreographr and the first version has just been released.</p>
+<p>So why make another agent? We already have very successful agents such as Codex, Claude Code, OpenCode, Pi, Openclaw, Hermes, and many more.</p>
+<p>There are a few things that Choreographr does differently:</p>
+<h2 id="rust">Rust
+<a class="zola-anchor" href="#rust" aria-label="Anchor link for: rust">
   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
 </a>
 </h2>
+<p>Many agents are written in JavaScript or Python and are starting to show the limits of what an agent written in these languages can do.</p>
+<p>Choreographr has:</p>
 <ul>
-<li><code>choreo-tui</code> writes its diagnostics to <code>/tmp/choreo-tui.log</code> — check there for
-client-side issues.</li>
-<li>The daemon logs to stderr; use <code>-v</code>/<code>-vv</code> for more detail, or set
-<code>RUST_LOG</code> (which takes precedence over the CLI flags).</li>
+<li><strong>no async code in core components</strong> — it is built with real threads that communicate via messaging, and each session runs in its own thread. The optional blockchain tools run on a small tokio sidecar; everything else is thread-only.</li>
+<li><strong>high CPU efficiency</strong> — agents are inherently I/O bound and don't really need much CPU, but agents in other languages use a lot of CPU, wasting laptop battery, heating up your laptop and causing fans to produce noise. Choreographr is so CPU efficient you will not notice it. Your software builds, of course, are another story.</li>
+<li><strong>high RAM efficiency</strong> — other agents consume a huge amount of RAM. Choreographr is extremely lean.</li>
+<li><strong>robustness</strong> — Rust's memory safety makes a long-lived daemon that holds your API keys and runs untrusted model output a much safer proposition.</li>
 </ul>
-<h2 id="common-issues">Common issues
-<a class="zola-anchor" href="#common-issues" aria-label="Anchor link for: common-issues">
+<p>Check out our <a href="https://choreographr.com/docs/why-rust/">Why Rust?</a> page for more information.</p>
+<h2 id="client-server">Client / Server
+<a class="zola-anchor" href="#client-server" aria-label="Anchor link for: client-server">
   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
 </a>
 </h2>
-<p><strong>The daemon won't accept prompts</strong>
-The daemon starts locked and credentials are only decrypted after <code>/unlock</code>.
-If a request fails with a locked error, run <code>/unlock [passphrase]</code> and make
-sure a credential exists for the session's account (<code>/add-key &lt;service&gt; &lt;api_key&gt;</code>).</p>
-<p><strong>No model responds</strong>
-Check that the session has an account set (<code>/account &lt;name&gt;</code>) and that the
-account name matches an entry in <code>~/.config/choreographr/accounts.toml</code>.
-Account names must match <code>[a-z0-9_-]</code>.</p>
-<p><strong>Provider errors on a custom gateway</strong>
-Override the base URL per-account in <code>accounts.toml</code>:</p>
-<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;" ><code data-lang="toml"><span class="giallo-l"><span style="color: #9399B2;">[[</span><span>account</span><span style="color: #9399B2;">]]</span></span>
-<span class="giallo-l"><span>name</span><span style="color: #94E2D5;"> =</span><span style="color: #A6E3A1;"> &quot;local&quot;</span></span>
-<span class="giallo-l"><span>provider</span><span style="color: #94E2D5;"> =</span><span style="color: #A6E3A1;"> &quot;ollama&quot;</span></span>
-<span class="giallo-l"><span>base_url</span><span style="color: #94E2D5;"> =</span><span style="color: #A6E3A1;"> &quot;http://localhost:11434/v1&quot;</span></span></code></pre>
-<p><strong>Remote clients can't connect</strong>
-Remote connections use the Noise IK handshake; make sure the daemon is
-listening on TCP (see <code>choreo-gui</code>'s <code>--tcp-addr</code> / <code>--server-pk</code> flags) and
-that the client has the server's public key.</p>
-<h2 id="getting-help">Getting help
-<a class="zola-anchor" href="#getting-help" aria-label="Anchor link for: getting-help">
+<p>Most agents are a single process with a single UI. Choreographr is built the
+other way around: a <strong>daemon</strong> owns your sessions, and clients connect and
+disconnect whenever they want.</p>
+<ul>
+<li><strong><code>choreo-tui</code></strong> — a full-screen terminal UI with O(1) scrolling and streaming.</li>
+<li><strong><code>choreo-gui</code></strong> — a desktop app (Dioxus), in development.</li>
+<li><strong><code>choreo-im</code></strong> — chat with your agent from Telegram.</li>
+<li><strong><code>choreo-acp</code></strong> — drive sessions from ACP-compatible editors like Claude Code.</li>
+</ul>
+<p>Because sessions live in the daemon, you can start a task in the terminal and
+check on it from your phone. Everything persists in an embedded <code>redb</code>
+database and survives restarts.</p>
+<p><img src="/architecture.svg" alt="Choreographr architecture: clients (TUI, GUI, IM, ACP) and the daemon handoff connect to the choreographr daemon, which talks to model providers and runs MCP servers, a RISC-V VM sandbox, and a redb database" loading="lazy" decoding="async" /></p>
+<h2 id="risc-v-vm">RISC-V VM
+<a class="zola-anchor" href="#risc-v-vm" aria-label="Anchor link for: risc-v-vm">
   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
 </a>
 </h2>
-<p>Ask in the <a rel="noopener external" target="_blank" href="https://t.me/choreographr">Telegram community</a>, or open an issue
-on <a rel="noopener external" target="_blank" href="https://github.com/choreographr/choreographr">GitHub</a>.</p>
+<p>Anyone who has used a coding agent knows the value of giving an LLM access to a terminal. It can do anything, but this configuration is not for everyone. Only developers and power users really understand what the LLM is doing in a shell, and even then it can be hard to track.</p>
+<p>AI agents have huge use cases beyond coding. Research agents, personal agents, and business agents will all be used extensively by non-developers. In this situation, giving the LLM access to the shell is a recipe for disaster, no matter the safeguards put in place. It can find a way to do anything, and there is no log of what has happened.</p>
+<p>A virtual machine is a much better environment for an LLM to run in. It is secure by design rather than bolted on later. Rather than issuing tool calls at the end of each turn, the LLM can quickly write a script (for example in Rust) that gets compiled to RISC-V. The script then makes tool calls as necessary (including subsessions), but not shell calls. Every tool call is logged, so there is no ambiguity about what the LLM has done.</p>
+<p>In the future, RISC-V programs can be saved to run later or on a schedule via cron.</p>
+<h2 id="concurrent-sessions">Concurrent Sessions
+<a class="zola-anchor" href="#concurrent-sessions" aria-label="Anchor link for: concurrent-sessions">
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+</a>
+</h2>
+<p>The server can run an arbitrary number of sessions concurrently, taking full advantage of multithreading, rather than having a single async process managing everything. Sessions can invoke multiple "subsessions" via a tool call. Sessions will also be able to be handed off to other agents via inter-agent communication.</p>
+<h2 id="encrypted-credentials">Encrypted credentials
+<a class="zola-anchor" href="#encrypted-credentials" aria-label="Anchor link for: encrypted-credentials">
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+</a>
+</h2>
+<p>Credentials for LLMs and other cloud services are encrypted at rest. The decryption key is only provided by the client as necessary.</p>
+<h2 id="agent-db">Agent DB
+<a class="zola-anchor" href="#agent-db" aria-label="Anchor link for: agent-db">
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+</a>
+</h2>
+<p>A key/value database is exposed directly to the agent, so LLMs can store data persistently.</p>
+<h2 id="blockchain-native">Blockchain Native
+<a class="zola-anchor" href="#blockchain-native" aria-label="Anchor link for: blockchain-native">
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+</a>
+</h2>
+<p>Choreographr has native tool calling for <strong>Ethereum (EVM)</strong> and <strong>Polkadot (Substrate)</strong> blockchains, behind the optional <code>blockchain</code> feature (enabled in the release binaries). From any session you can read balances, inspect blocks and transactions, make read-only contract calls, resolve ENS names, and query Substrate storage. Solana support is on the roadmap.</p>
+<p>This is important for a number of reasons:</p>
+<ul>
+<li>Using AI to read and write to the blockchain is incredibly powerful. For example, a DeFi trading bot.</li>
+<li>Agent coordination — currently agents collaborate via centralized entities such as GitHub, but this is proving unreliable.</li>
+<li>Existing on-chain publishing technologies such as my other project <a rel="noopener external" target="_blank" href="https://acuity.network">Acuity</a> are a perfect fit for agents.</li>
+</ul>
+<p>It will be possible to pay for model access with cryptocurrencies directly in the TUI/GUI.</p>
+<h2 id="what-s-next">What's next
+<a class="zola-anchor" href="#what-s-next" aria-label="Anchor link for: what-s-next">
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+</a>
+</h2>
+<p>Subsessions (hierarchical subagents) already exist. Next up, each session will
+be able to work on its own git branch in its own worktree, so parallel
+subsessions can work on the same codebase without colliding. Cron,
+extensions, and OS-level sandboxing are also on the roadmap.</p>
+<p>Ready to give it a spin? See the <a href="https://choreographr.com/docs/installation/">installation guide</a>
+and <a href="https://choreographr.com/docs/quick-start/">quick start</a>.</p>
+<p>We'd love your help — star the <a rel="noopener external" target="_blank" href="https://github.com/choreographr/choreographr">repo</a>,
+open <a rel="noopener external" target="_blank" href="https://github.com/choreographr/choreographr/issues">issues</a>, and join
+the <a rel="noopener external" target="_blank" href="https://t.me/choreographr">Telegram community</a>.</p>
 
-    </article>
-  </div>
+    </div>
+  </article>
 </div>
-
 
   </main>
 

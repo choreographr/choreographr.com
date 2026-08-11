@@ -27,7 +27,7 @@
   <link rel="preload" href="https://choreographr.com/fonts/jetbrains-mono.woff2" as="font" type="font/woff2" crossorigin>
 
   <link rel="icon" type="image/svg+xml" href="https://choreographr.com/favicon.svg">
-  <link rel="stylesheet" href="https://choreographr.com/css/main.css?h=c8961737d04d91d76544">
+  <link rel="stylesheet" href="https://choreographr.com/css/main.css?h=d8f57224c44380b6ee81">
 
   <!-- Firefox/Zen can paint a frame before this stylesheet has been
        applied if a layout flush happens while it loads (Bugzilla
@@ -319,8 +319,15 @@ always has access to all tools.</p>
 <tr><td><code>db</code></td><td>Session-scoped key-value database (redb)</td><td>—</td></tr>
 <tr><td><code>x</code></td><td>X/Twitter API (post, search, user lookup)</td><td>—</td></tr>
 <tr><td><code>vm</code></td><td>RISC-V sandboxed code execution</td><td>—</td></tr>
+<tr><td><code>blockchain</code></td><td>EVM and Substrate/Polkadot blockchain queries (alloy/subxt)</td><td>—</td></tr>
 <tr><td><code>mcp/&lt;server&gt;</code></td><td>One dynamic group per configured MCP server</td><td>—</td></tr>
 </tbody></table>
+<blockquote>
+<p>The <code>blockchain</code> group exists only when the daemon is built with the
+<code>blockchain</code> cargo feature (the release binaries enable it). The tools live
+in the <code>choreo-blockchain</code> crate, which also owns the tokio sidecar runtime
+the alloy/subxt clients run on.</p>
+</blockquote>
 <p>Activate a group from the model side:</p>
 <pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;" ><code data-lang="json"><span class="giallo-l"><span style="color: #9399B2;">{ &quot;</span><span style="color: #89B4FA;">name</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;load_tools&quot;</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">arguments</span><span style="color: #9399B2;">&quot;: { &quot;</span><span style="color: #89B4FA;">groups</span><span style="color: #9399B2;">&quot;: [</span><span style="color: #A6E3A1;">&quot;db&quot;</span><span style="color: #9399B2;">,</span><span style="color: #A6E3A1;"> &quot;x&quot;</span><span style="color: #9399B2;">] } }</span></span></code></pre>
 <p>and deactivate it with <code>unload_tools</code>. Groups can also be passed to
@@ -538,6 +545,64 @@ keystore (add them with <code>/add-x &lt;service&gt; &lt;api_key&gt; &lt;api_key
 <tr><td><code>x_search_recent</code></td><td>Search recent tweets (<code>query</code>, <code>max_results</code>)</td></tr>
 <tr><td><code>x_user_lookup</code></td><td>Look up a user by username or ID</td></tr>
 </tbody></table>
+<h2 id="blockchain-tools">Blockchain tools
+<a class="zola-anchor" href="#blockchain-tools" aria-label="Anchor link for: blockchain-tools">
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+</a>
+</h2>
+<p>The <code>blockchain</code> group adds read-only query tools for EVM
+(Ethereum-compatible) and Substrate/Polkadot chains, built on <code>alloy</code> and
+<code>subxt</code>. It is not active by default — activate it with
+<code>load_tools blockchain</code>. The group is compiled in only when the daemon is
+built with the <code>blockchain</code> cargo feature (enabled in the release binaries);
+see <a href="https://choreographr.com/docs/installation/#blockchain-tools">Installation</a>.</p>
+<h3 id="evm-tools">EVM tools
+<a class="zola-anchor" href="#evm-tools" aria-label="Anchor link for: evm-tools">
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+</a>
+</h3>
+<p>Every EVM tool takes the node's JSON-RPC URL as <code>rpc_url</code> (any public or
+private Ethereum-compatible endpoint works, e.g.
+<code>https://ethereum-rpc.publicnode.com</code>).</p>
+<table><thead><tr><th>Tool</th><th>What it does</th></tr></thead><tbody>
+<tr><td><code>evm_chain</code></td><td>Chain ID, latest block number, gas price, max priority fee, and client version</td></tr>
+<tr><td><code>evm_balance</code></td><td>Native ETH/coin balance of an address</td></tr>
+<tr><td><code>evm_token_balance</code></td><td>ERC-20 token balance for an address (<code>token_address</code>, <code>address</code>), plus the token symbol</td></tr>
+<tr><td><code>evm_block</code></td><td>Block details: number, hash, timestamp, transaction count, gas used/limit, base fee</td></tr>
+<tr><td><code>evm_transaction</code></td><td>Transaction details by hash: block number, from/to, gas used, effective gas price, log count</td></tr>
+<tr><td><code>evm_call</code></td><td>Read-only contract call (<code>to</code>, <code>data</code>, optional <code>block_tag</code>) — returns raw hex result bytes</td></tr>
+<tr><td><code>evm_gas</code></td><td>Gas fee estimates: gas price, max priority fee, EIP-1559 fee estimation</td></tr>
+<tr><td><code>evm_logs</code></td><td>Event logs, optionally filtered by <code>address</code>, <code>topic0</code>, and <code>from_block</code>/<code>to_block</code></td></tr>
+<tr><td><code>evm_nonce</code></td><td>Transaction count (nonce) for an address</td></tr>
+<tr><td><code>evm_resolve</code></td><td>Resolve an ENS name to an address, or reverse-resolve an address to a name</td></tr>
+</tbody></table>
+<p>Block numbers and <code>block_tag</code>s accept a decimal number, <code>0x</code>-hex, or the
+named tags <code>latest</code>, <code>finalized</code>, <code>safe</code>, <code>pending</code>, and <code>earliest</code>.</p>
+<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;" ><code data-lang="json"><span class="giallo-l"><span style="color: #9399B2;">{ &quot;</span><span style="color: #89B4FA;">name</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;evm_chain&quot;</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">arguments</span><span style="color: #9399B2;">&quot;: { &quot;</span><span style="color: #89B4FA;">rpc_url</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;https://ethereum-rpc.publicnode.com&quot;</span><span style="color: #9399B2;"> } }</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">{ &quot;</span><span style="color: #89B4FA;">name</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;evm_balance&quot;</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">arguments</span><span style="color: #9399B2;">&quot;: { &quot;</span><span style="color: #89B4FA;">rpc_url</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;https://ethereum-rpc.publicnode.com&quot;</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">address</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045&quot;</span><span style="color: #9399B2;"> } }</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">{ &quot;</span><span style="color: #89B4FA;">name</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;evm_call&quot;</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">arguments</span><span style="color: #9399B2;">&quot;: { &quot;</span><span style="color: #89B4FA;">rpc_url</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;https://ethereum-rpc.publicnode.com&quot;</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">to</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;0x6B175474E89094C44Da98b954EedeAC495271d0F&quot;</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">data</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;0x70a08231000000000000000000000000d8dA6BF26964aF9D7eEd9e03E53415D37aA96045&quot;</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">block_tag</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;latest&quot;</span><span style="color: #9399B2;"> } }</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">{ &quot;</span><span style="color: #89B4FA;">name</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;evm_resolve&quot;</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">arguments</span><span style="color: #9399B2;">&quot;: { &quot;</span><span style="color: #89B4FA;">rpc_url</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;https://ethereum-rpc.publicnode.com&quot;</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">name_or_address</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;vitalik.eth&quot;</span><span style="color: #9399B2;"> } }</span></span></code></pre><h3 id="substrate-polkadot-tools">Substrate/Polkadot tools
+<a class="zola-anchor" href="#substrate-polkadot-tools" aria-label="Anchor link for: substrate-polkadot-tools">
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+</a>
+</h3>
+<p>Each Substrate tool takes an optional <code>ws_url</code> (WebSocket endpoint); it
+defaults to the public Polkadot RPC, <code>wss://rpc.polkadot.io</code>.</p>
+<table><thead><tr><th>Tool</th><th>What it does</th></tr></thead><tbody>
+<tr><td><code>subxt_chain</code></td><td>Chain name, chain type, node name/version, genesis hash, best/finalized block, system properties, and health</td></tr>
+<tr><td><code>subxt_balance</code></td><td>Account balance for an SS58 address — <code>System.Account</code> info (free, reserved, frozen)</td></tr>
+<tr><td><code>subxt_query</code></td><td>Decode a storage value by <code>pallet</code> and <code>storage_item</code> name (e.g. <code>System</code> / <code>Account</code>), with optional hex <code>key</code> bytes — returns JSON</td></tr>
+<tr><td><code>subxt_block</code></td><td>Block details: number, hash, parent hash, state root, extrinsics root, and full block JSON</td></tr>
+</tbody></table>
+<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;" ><code data-lang="json"><span class="giallo-l"><span style="color: #9399B2;">{ &quot;</span><span style="color: #89B4FA;">name</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;subxt_chain&quot;</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">arguments</span><span style="color: #9399B2;">&quot;: {} }</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">{ &quot;</span><span style="color: #89B4FA;">name</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;subxt_balance&quot;</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">arguments</span><span style="color: #9399B2;">&quot;: { &quot;</span><span style="color: #89B4FA;">address</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;15oF4uVJwmo4TdGW7VfQxNLavjCXviqxT9S1MgbjMNHr6Sp5&quot;</span><span style="color: #9399B2;"> } }</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">{ &quot;</span><span style="color: #89B4FA;">name</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;subxt_query&quot;</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">arguments</span><span style="color: #9399B2;">&quot;: { &quot;</span><span style="color: #89B4FA;">pallet</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;System&quot;</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">storage_item</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;TotalIssuance&quot;</span><span style="color: #9399B2;"> } }</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">{ &quot;</span><span style="color: #89B4FA;">name</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;subxt_block&quot;</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">arguments</span><span style="color: #9399B2;">&quot;: { &quot;</span><span style="color: #89B4FA;">block_number</span><span style="color: #9399B2;">&quot;:</span><span style="color: #FAB387;"> 20</span><span>_</span><span style="color: #FAB387;">000</span><span>_</span><span style="color: #FAB387;">000</span><span style="color: #9399B2;"> } }</span></span></code></pre>
+<blockquote>
+<p>All blockchain tools are <strong>read-only</strong> — they query nodes over HTTP/WebSocket
+and never sign transactions or move funds. The RPC endpoint is passed per
+call as an argument; no credentials are required.</p>
+</blockquote>
 <h2 id="desktop-tools">Desktop tools
 <a class="zola-anchor" href="#desktop-tools" aria-label="Anchor link for: desktop-tools">
   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>

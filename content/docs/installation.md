@@ -92,6 +92,22 @@ at build time. Install Zig 0.16.0 from [ziglang.org](https://ziglang.org/downloa
 (or your package manager — e.g. `brew install zig`, `apt install zig`,
 `pacman -S zig`).
 
+## Blockchain tools
+
+The EVM and Substrate/Polkadot blockchain tools (`evm_*`, `subxt_*` — see the
+[tools reference](@/docs/tools.md#blockchain-tools)) are compiled in behind the
+`blockchain` cargo feature. The release binaries enable it; when building from
+source, opt in explicitly:
+
+```bash
+cargo install choreographr --locked --features blockchain
+```
+
+The tools live in the optional [`choreo-blockchain`](https://github.com/choreographr/choreographr/tree/master/choreo-blockchain)
+crate — the only workspace crate that depends on `tokio` — so a build without
+the feature compiles the whole alloy/subxt/tokio tree out. Once the daemon is
+running, activate the group per session with `load_tools blockchain`.
+
 ## RISC-V VM tooling
 
 The [`run_riscv`](@/docs/tools.md#risc-v-vm-tool) tool compiles guest Rust
