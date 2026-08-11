@@ -351,6 +351,11 @@ request construction, catalog lookups), and the TUI/GUI app state.</p>
       }
 
       document.querySelectorAll('pre').forEach(function (pre) {
+        // Skip daisyUI terminal mockups (mockup-code): every line is its
+        // own <pre>, so per-line copy buttons would be noise. Real code
+        // blocks are a single <pre> that is not inside a .mockup-code.
+        if (pre.closest('.mockup-code')) return;
+
         // Idempotent: don't re-wrap if the script runs more than once.
         if (pre.parentElement && pre.parentElement.classList.contains('code-block')) return;
 
