@@ -21,95 +21,177 @@
         <link rel="alternate" type="text/html" href="https://choreographr.com/blog/choreographr-0-1-0/"/>
         <id>https://choreographr.com/blog/choreographr-0-1-0/</id>
         
-        <content type="html" xml:base="https://choreographr.com/blog/choreographr-0-1-0/">&lt;p&gt;I&#39;ve spent the past two months working on a new AI agent called Choreographr and the first version has just been released.&lt;/p&gt;
-&lt;p&gt;So why make another agent? We already have very successful agents such as Codex, Claude Code, OpenCode, Pi, Openclaw, Hermes, and many more.&lt;/p&gt;
-&lt;p&gt;There are a few things that Choreographr does differently:&lt;/p&gt;
-&lt;h2 id=&quot;rust&quot;&gt;Rust
-&lt;a class=&quot;zola-anchor&quot; href=&quot;#rust&quot; aria-label=&quot;Anchor link for: rust&quot;&gt;
+        <content type="html" xml:base="https://choreographr.com/blog/choreographr-0-1-0/">&lt;p&gt;AI agents are moving into the terminal — and that is exactly the problem. An
+LLM with shell access can do almost anything, which is precisely why only
+careful power users feel comfortable handing it the keys. And even then, most
+agents feel disposable: one process you close, a wall of RAM and fan noise, no
+real record of what the model actually did.&lt;/p&gt;
+&lt;p&gt;Choreographr is built to run for months, not minutes. A &lt;strong&gt;persistent daemon&lt;/strong&gt;
+owns your sessions while clients — terminal, desktop, Telegram, editor — come
+and go. LLM-generated code runs in a &lt;strong&gt;sandboxed RISC-V VM&lt;/strong&gt; instead of your
+shell. And the core is written in &lt;strong&gt;Rust&lt;/strong&gt;, so it stays lean, memory-safe, and
+honest about everything the agent did. The first release, v0.1.0, is out now.&lt;/p&gt;
+&lt;blockquote class=&quot;markdown-alert-tip&quot;&gt;
+&lt;p&gt;&lt;strong&gt;Try it now — no Rust toolchain needed.&lt;/strong&gt; Prebuilt binaries ship for macOS
+(Apple Silicon) and Linux x86_64 as Homebrew, &lt;code&gt;.deb&lt;/code&gt;/&lt;code&gt;.rpm&lt;/code&gt;, and static
+tarballs. Then it&#39;s two commands to your first conversation:&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #CDD6F4; background-color: #1E1E2E;&quot; &gt;&lt;code data-lang=&quot;shellscript&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #89B4FA;font-style: italic;&quot;&gt;brew&lt;/span&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt; tap choreographr/choreographr&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #89B4FA;font-style: italic;&quot;&gt;brew&lt;/span&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt; install choreographr&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #89B4FA;font-style: italic;&quot;&gt;choreographr&lt;/span&gt;&lt;span style=&quot;color: #9399B2;font-style: italic;&quot;&gt;   # terminal 1 — the daemon&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #89B4FA;font-style: italic;&quot;&gt;choreo-tui&lt;/span&gt;&lt;span style=&quot;color: #9399B2;font-style: italic;&quot;&gt;     # terminal 2 — the terminal client&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;See the &lt;a href=&quot;https://choreographr.com/docs/installation/&quot;&gt;installation guide&lt;/a&gt; for every platform, and
+the &lt;a href=&quot;https://choreographr.com/docs/quick-start/&quot;&gt;quick start&lt;/a&gt; for your first prompt.&lt;/p&gt;
+&lt;h2 id=&quot;so-why-another-agent&quot;&gt;So why another agent?
+&lt;a class=&quot;zola-anchor&quot; href=&quot;#so-why-another-agent&quot; aria-label=&quot;Anchor link for: so-why-another-agent&quot;&gt;
   &lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;16&quot; height=&quot;16&quot; viewBox=&quot;0 0 24 24&quot; fill=&quot;none&quot; stroke=&quot;currentColor&quot; stroke-width=&quot;2.5&quot; stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot; aria-hidden=&quot;true&quot;&gt;&lt;path d=&quot;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&quot;/&gt;&lt;path d=&quot;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&quot;/&gt;&lt;/svg&gt;
 &lt;/a&gt;
 &lt;/h2&gt;
-&lt;p&gt;Many agents are written in JavaScript or Python and are starting to show the limits of what an agent written in these languages can do.&lt;/p&gt;
-&lt;p&gt;Choreographr has:&lt;/p&gt;
+&lt;p&gt;There are already very good agents — Codex, Claude Code, OpenCode, Pi,
+Openclaw, Hermes, and more. Choreographr exists because three things matter
+that few agents deliver together:&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;no async code in core components&lt;/strong&gt; — it is built with real threads that communicate via messaging, and each session runs in its own thread. The optional blockchain tools run on a small tokio sidecar; everything else is thread-only.&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;high CPU efficiency&lt;/strong&gt; — agents are inherently I/O bound and don&#39;t really need much CPU, but agents in other languages use a lot of CPU, wasting laptop battery, heating up your laptop and causing fans to produce noise. Choreographr is so CPU efficient you will not notice it. Your software builds, of course, are another story.&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;high RAM efficiency&lt;/strong&gt; — other agents consume a huge amount of RAM. Choreographr is extremely lean.&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;robustness&lt;/strong&gt; — Rust&#39;s memory safety makes a long-lived daemon that holds your API keys and runs untrusted model output a much safer proposition.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Safety by design&lt;/strong&gt; — model output runs in a sandboxed VM, not an unlogged
+shell, and every tool call is recorded.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;A daemon that owns your sessions&lt;/strong&gt; — clients come and go; start a task in
+the terminal and check on it from your phone.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;A core that can be trusted to run for months&lt;/strong&gt; — Rust: memory-safe by
+construction, and light enough on CPU and RAM that you stop noticing it.&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;Check out our &lt;a href=&quot;https://choreographr.com/docs/why-rust/&quot;&gt;Why Rust?&lt;/a&gt; page for more information.&lt;/p&gt;
-&lt;h2 id=&quot;client-server&quot;&gt;Client / Server
-&lt;a class=&quot;zola-anchor&quot; href=&quot;#client-server&quot; aria-label=&quot;Anchor link for: client-server&quot;&gt;
+&lt;p&gt;The rest of this post digs into those three, and there&#39;s a
+&lt;a href=&quot;/&quot;&gt;feature-by-feature comparison&lt;/a&gt; on the homepage if you want the table view.&lt;/p&gt;
+&lt;h2 id=&quot;a-sandbox-not-a-shell&quot;&gt;A sandbox, not a shell
+&lt;a class=&quot;zola-anchor&quot; href=&quot;#a-sandbox-not-a-shell&quot; aria-label=&quot;Anchor link for: a-sandbox-not-a-shell&quot;&gt;
+  &lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;16&quot; height=&quot;16&quot; viewBox=&quot;0 0 24 24&quot; fill=&quot;none&quot; stroke=&quot;currentColor&quot; stroke-width=&quot;2.5&quot; stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot; aria-hidden=&quot;true&quot;&gt;&lt;path d=&quot;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&quot;/&gt;&lt;path d=&quot;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&quot;/&gt;&lt;/svg&gt;
+&lt;/a&gt;
+&lt;/h2&gt;
+&lt;p&gt;The most dangerous thing you can give an agent is a shell. It can do anything —
+and for anyone who isn&#39;t a careful power user, that is a recipe for disaster,
+no matter the safeguards. You can&#39;t easily see what the model is doing, and
+there is no reliable log of what it has done.&lt;/p&gt;
+&lt;p&gt;Choreographr replaces the shell with a &lt;strong&gt;RISC-V virtual machine&lt;/strong&gt;. Instead of
+issuing tool calls at the end of each turn, the model writes a small script (in
+Rust, compiled to RISC-V) that runs inside an isolated VM with its own flat
+memory: no host syscalls, no host filesystem access, no raw shell. Every tool
+call the guest makes is dispatched through the same typed &lt;code&gt;ToolRegistry&lt;/code&gt; the
+host agent uses — including subsessions — and every call is logged. Secure by
+design rather than bolted on, and fully observable.&lt;/p&gt;
+&lt;h2 id=&quot;one-daemon-every-surface&quot;&gt;One daemon, every surface
+&lt;a class=&quot;zola-anchor&quot; href=&quot;#one-daemon-every-surface&quot; aria-label=&quot;Anchor link for: one-daemon-every-surface&quot;&gt;
   &lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;16&quot; height=&quot;16&quot; viewBox=&quot;0 0 24 24&quot; fill=&quot;none&quot; stroke=&quot;currentColor&quot; stroke-width=&quot;2.5&quot; stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot; aria-hidden=&quot;true&quot;&gt;&lt;path d=&quot;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&quot;/&gt;&lt;path d=&quot;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&quot;/&gt;&lt;/svg&gt;
 &lt;/a&gt;
 &lt;/h2&gt;
 &lt;p&gt;Most agents are a single process with a single UI. Choreographr is built the
-other way around: a &lt;strong&gt;daemon&lt;/strong&gt; owns your sessions, and clients connect and
+other way around: one &lt;strong&gt;daemon&lt;/strong&gt; owns your sessions, and clients connect and
 disconnect whenever they want.&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;&lt;code&gt;choreo-tui&lt;/code&gt;&lt;/strong&gt; — a full-screen terminal UI with O(1) scrolling and streaming.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;&lt;code&gt;choreo-tui&lt;/code&gt;&lt;/strong&gt; — a full-screen terminal UI with O(1) scrolling and
+streaming, markdown rendering, syntax highlighting, and a model selector.&lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;&lt;code&gt;choreo-gui&lt;/code&gt;&lt;/strong&gt; — a desktop app (Dioxus), in development.&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;&lt;code&gt;choreo-im&lt;/code&gt;&lt;/strong&gt; — chat with your agent from Telegram.&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;&lt;code&gt;choreo-acp&lt;/code&gt;&lt;/strong&gt; — drive sessions from ACP-compatible editors like Claude Code.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;&lt;code&gt;choreo-im&lt;/code&gt;&lt;/strong&gt; — chat with your agent on the go, from Telegram.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;&lt;code&gt;choreo-acp&lt;/code&gt;&lt;/strong&gt; — drive sessions from ACP-compatible editors like Claude
+Code and Cline.&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;Because sessions live in the daemon, you can start a task in the terminal and
-check on it from your phone. Everything persists in an embedded &lt;code&gt;redb&lt;/code&gt;
-database and survives restarts.&lt;/p&gt;
+check on it from your phone. Everything persists in an embedded &lt;code&gt;redb&lt;/code&gt; database
+and survives restarts.&lt;/p&gt;
+&lt;!-- TODO: add a choreo-tui screenshot here (ideally with a short screencast of
+streaming and a run_riscv call) once available --&gt;
 &lt;p&gt;&lt;img src=&quot;/architecture.svg&quot; alt=&quot;Choreographr architecture: clients (TUI, GUI, IM, ACP) and the daemon handoff connect to the choreographr daemon, which talks to model providers and runs MCP servers, a RISC-V VM sandbox, and a redb database&quot; loading=&quot;lazy&quot; decoding=&quot;async&quot; /&gt;&lt;/p&gt;
-&lt;h2 id=&quot;risc-v-vm&quot;&gt;RISC-V VM
-&lt;a class=&quot;zola-anchor&quot; href=&quot;#risc-v-vm&quot; aria-label=&quot;Anchor link for: risc-v-vm&quot;&gt;
+&lt;h2 id=&quot;rust-because-it-has-to-last&quot;&gt;Rust, because it has to last
+&lt;a class=&quot;zola-anchor&quot; href=&quot;#rust-because-it-has-to-last&quot; aria-label=&quot;Anchor link for: rust-because-it-has-to-last&quot;&gt;
   &lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;16&quot; height=&quot;16&quot; viewBox=&quot;0 0 24 24&quot; fill=&quot;none&quot; stroke=&quot;currentColor&quot; stroke-width=&quot;2.5&quot; stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot; aria-hidden=&quot;true&quot;&gt;&lt;path d=&quot;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&quot;/&gt;&lt;path d=&quot;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&quot;/&gt;&lt;/svg&gt;
 &lt;/a&gt;
 &lt;/h2&gt;
-&lt;p&gt;Anyone who has used a coding agent knows the value of giving an LLM access to a terminal. It can do anything, but this configuration is not for everyone. Only developers and power users really understand what the LLM is doing in a shell, and even then it can be hard to track.&lt;/p&gt;
-&lt;p&gt;AI agents have huge use cases beyond coding. Research agents, personal agents, and business agents will all be used extensively by non-developers. In this situation, giving the LLM access to the shell is a recipe for disaster, no matter the safeguards put in place. It can find a way to do anything, and there is no log of what has happened.&lt;/p&gt;
-&lt;p&gt;A virtual machine is a much better environment for an LLM to run in. It is secure by design rather than bolted on later. Rather than issuing tool calls at the end of each turn, the LLM can quickly write a script (for example in Rust) that gets compiled to RISC-V. The script then makes tool calls as necessary (including subsessions), but not shell calls. Every tool call is logged, so there is no ambiguity about what the LLM has done.&lt;/p&gt;
-&lt;p&gt;In the future, RISC-V programs can be saved to run later or on a schedule via cron.&lt;/p&gt;
-&lt;h2 id=&quot;concurrent-sessions&quot;&gt;Concurrent Sessions
-&lt;a class=&quot;zola-anchor&quot; href=&quot;#concurrent-sessions&quot; aria-label=&quot;Anchor link for: concurrent-sessions&quot;&gt;
-  &lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;16&quot; height=&quot;16&quot; viewBox=&quot;0 0 24 24&quot; fill=&quot;none&quot; stroke=&quot;currentColor&quot; stroke-width=&quot;2.5&quot; stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot; aria-hidden=&quot;true&quot;&gt;&lt;path d=&quot;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&quot;/&gt;&lt;path d=&quot;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&quot;/&gt;&lt;/svg&gt;
-&lt;/a&gt;
-&lt;/h2&gt;
-&lt;p&gt;The server can run an arbitrary number of sessions concurrently, taking full advantage of multithreading, rather than having a single async process managing everything. Sessions can invoke multiple &quot;subsessions&quot; via a tool call. Sessions will also be able to be handed off to other agents via inter-agent communication.&lt;/p&gt;
-&lt;h2 id=&quot;encrypted-credentials&quot;&gt;Encrypted credentials
-&lt;a class=&quot;zola-anchor&quot; href=&quot;#encrypted-credentials&quot; aria-label=&quot;Anchor link for: encrypted-credentials&quot;&gt;
-  &lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;16&quot; height=&quot;16&quot; viewBox=&quot;0 0 24 24&quot; fill=&quot;none&quot; stroke=&quot;currentColor&quot; stroke-width=&quot;2.5&quot; stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot; aria-hidden=&quot;true&quot;&gt;&lt;path d=&quot;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&quot;/&gt;&lt;path d=&quot;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&quot;/&gt;&lt;/svg&gt;
-&lt;/a&gt;
-&lt;/h2&gt;
-&lt;p&gt;Credentials for LLMs and other cloud services are encrypted at rest. The decryption key is only provided by the client as necessary.&lt;/p&gt;
-&lt;h2 id=&quot;agent-db&quot;&gt;Agent DB
-&lt;a class=&quot;zola-anchor&quot; href=&quot;#agent-db&quot; aria-label=&quot;Anchor link for: agent-db&quot;&gt;
-  &lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;16&quot; height=&quot;16&quot; viewBox=&quot;0 0 24 24&quot; fill=&quot;none&quot; stroke=&quot;currentColor&quot; stroke-width=&quot;2.5&quot; stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot; aria-hidden=&quot;true&quot;&gt;&lt;path d=&quot;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&quot;/&gt;&lt;path d=&quot;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&quot;/&gt;&lt;/svg&gt;
-&lt;/a&gt;
-&lt;/h2&gt;
-&lt;p&gt;A key/value database is exposed directly to the agent, so LLMs can store data persistently.&lt;/p&gt;
-&lt;h2 id=&quot;blockchain-native&quot;&gt;Blockchain Native
+&lt;p&gt;Most agents are written in JavaScript or Python — and it shows, both in how
+much CPU and RAM they burn and in what it means to run one for weeks while it
+holds your API keys. Choreographr&#39;s core is pure Rust for three reasons:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Memory safety by construction&lt;/strong&gt; — no null dereferences, use-after-free, or
+buffer overflows; the compiler rejects them before they exist. A long-lived
+daemon that holds your keys and runs untrusted model output should not be one
+segfault away from a problem.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Threads, not async&lt;/strong&gt; — the daemon uses real OS threads with message
+passing; each session owns its state, with none of the shared-state and
+cancellation complexity an async runtime brings.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Lean enough to ignore&lt;/strong&gt; — agents are I/O bound, and Choreographr stays
+light on CPU and RAM so you barely notice it&#39;s running. Your builds, of
+course, are another story. &lt;!-- TODO: add real measured numbers here (idle RSS, CPU while streaming) when available --&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The &lt;a href=&quot;https://choreographr.com/docs/why-rust/&quot;&gt;Why Rust?&lt;/a&gt; page goes into the details.&lt;/p&gt;
+&lt;h2 id=&quot;blockchain-native&quot;&gt;Blockchain native
 &lt;a class=&quot;zola-anchor&quot; href=&quot;#blockchain-native&quot; aria-label=&quot;Anchor link for: blockchain-native&quot;&gt;
   &lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;16&quot; height=&quot;16&quot; viewBox=&quot;0 0 24 24&quot; fill=&quot;none&quot; stroke=&quot;currentColor&quot; stroke-width=&quot;2.5&quot; stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot; aria-hidden=&quot;true&quot;&gt;&lt;path d=&quot;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&quot;/&gt;&lt;path d=&quot;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&quot;/&gt;&lt;/svg&gt;
 &lt;/a&gt;
 &lt;/h2&gt;
-&lt;p&gt;Choreographr has native tool calling for &lt;strong&gt;Ethereum (EVM)&lt;/strong&gt; and &lt;strong&gt;Polkadot (Substrate)&lt;/strong&gt; blockchains, behind the optional &lt;code&gt;blockchain&lt;/code&gt; feature (enabled in the release binaries). From any session you can read balances, inspect blocks and transactions, make read-only contract calls, resolve ENS names, and query Substrate storage. Solana support is on the roadmap.&lt;/p&gt;
-&lt;p&gt;This is important for a number of reasons:&lt;/p&gt;
+&lt;p&gt;Choreographr has &lt;strong&gt;native tool calling for Ethereum (EVM) and Polkadot
+(Substrate)&lt;/strong&gt;, compiled into the release binaries. From any session you can
+read balances, inspect blocks and transactions, make read-only contract calls,
+resolve ENS names, and query Substrate storage — see the
+&lt;a href=&quot;https://choreographr.com/docs/tools/#blockchain-tools&quot;&gt;blockchain tools&lt;/a&gt; reference. Solana support
+is on the roadmap.&lt;/p&gt;
+&lt;p&gt;Why this matters:&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;Using AI to read and write to the blockchain is incredibly powerful. For example, a DeFi trading bot.&lt;/li&gt;
-&lt;li&gt;Agent coordination — currently agents collaborate via centralized entities such as GitHub, but this is proving unreliable.&lt;/li&gt;
-&lt;li&gt;Existing on-chain publishing technologies such as my other project &lt;a rel=&quot;noopener external&quot; target=&quot;_blank&quot; href=&quot;https://acuity.network&quot;&gt;Acuity&lt;/a&gt; are a perfect fit for agents.&lt;/li&gt;
+&lt;li&gt;Using AI to read and write the blockchain is incredibly powerful — a DeFi
+trading bot, for example.&lt;/li&gt;
+&lt;li&gt;Agent coordination: today agents collaborate through centralized services
+like GitHub, which is proving unreliable. On-chain coordination is the
+natural next step.&lt;/li&gt;
+&lt;li&gt;Existing on-chain publishing technologies, like my other project
+&lt;a rel=&quot;noopener external&quot; target=&quot;_blank&quot; href=&quot;https://acuity.network&quot;&gt;Acuity&lt;/a&gt;, are a perfect fit for agents.&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;It will be possible to pay for model access with cryptocurrencies directly in the TUI/GUI.&lt;/p&gt;
+&lt;p&gt;It will also be possible to pay for model access with cryptocurrency directly
+in the TUI/GUI.&lt;/p&gt;
+&lt;h2 id=&quot;and-everything-else&quot;&gt;And everything else
+&lt;a class=&quot;zola-anchor&quot; href=&quot;#and-everything-else&quot; aria-label=&quot;Anchor link for: and-everything-else&quot;&gt;
+  &lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;16&quot; height=&quot;16&quot; viewBox=&quot;0 0 24 24&quot; fill=&quot;none&quot; stroke=&quot;currentColor&quot; stroke-width=&quot;2.5&quot; stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot; aria-hidden=&quot;true&quot;&gt;&lt;path d=&quot;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&quot;/&gt;&lt;path d=&quot;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&quot;/&gt;&lt;/svg&gt;
+&lt;/a&gt;
+&lt;/h2&gt;
+&lt;p&gt;The rest of the feature list in brief:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;70+ model providers&lt;/strong&gt; — OpenAI, Anthropic, Mistral, DeepSeek, xAI, Groq,
+Ollama, OpenRouter and more, via OpenAI-compatible, Anthropic Messages, and
+Gemini APIs.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Concurrent sessions &amp;amp; subsessions&lt;/strong&gt; — the daemon runs many sessions in
+parallel on real threads, and any session can spawn hierarchical subsessions
+through a tool call.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Encrypted credentials&lt;/strong&gt; — every key is encrypted at rest with X25519 ECDH +
+AES-256-GCM; the daemon starts locked and decrypts in memory only after
+unlock. See &lt;a href=&quot;https://choreographr.com/docs/security/&quot;&gt;security&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Agent database&lt;/strong&gt; — a persistent, session-scoped key-value store (&lt;code&gt;redb&lt;/code&gt;)
+the agent writes to and reads back. See
+&lt;a href=&quot;https://choreographr.com/docs/tools/#database-tools&quot;&gt;database tools&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;MCP client&lt;/strong&gt; — spawn Model Context Protocol servers, discover their tools,
+and call them from any session.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;ACP bridge&lt;/strong&gt; — drive sessions from ACP-compatible editors like Claude Code
+and Cline.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Undo/redo per session&lt;/strong&gt; — if the agent mis-steps, remove the prompt instead
+of prompting more.&lt;/li&gt;
+&lt;/ul&gt;
 &lt;h2 id=&quot;what-s-next&quot;&gt;What&#39;s next
 &lt;a class=&quot;zola-anchor&quot; href=&quot;#what-s-next&quot; aria-label=&quot;Anchor link for: what-s-next&quot;&gt;
   &lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;16&quot; height=&quot;16&quot; viewBox=&quot;0 0 24 24&quot; fill=&quot;none&quot; stroke=&quot;currentColor&quot; stroke-width=&quot;2.5&quot; stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot; aria-hidden=&quot;true&quot;&gt;&lt;path d=&quot;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&quot;/&gt;&lt;path d=&quot;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&quot;/&gt;&lt;/svg&gt;
 &lt;/a&gt;
 &lt;/h2&gt;
-&lt;p&gt;Subsessions (hierarchical subagents) already exist. Next up, each session will
-be able to work on its own git branch in its own worktree, so parallel
-subsessions can work on the same codebase without colliding. Cron,
-extensions, and OS-level sandboxing are also on the roadmap.&lt;/p&gt;
-&lt;p&gt;Ready to give it a spin? See the &lt;a href=&quot;https://choreographr.com/docs/installation/&quot;&gt;installation guide&lt;/a&gt;
-and &lt;a href=&quot;https://choreographr.com/docs/quick-start/&quot;&gt;quick start&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt;We&#39;d love your help — star the &lt;a rel=&quot;noopener external&quot; target=&quot;_blank&quot; href=&quot;https://github.com/choreographr/choreographr&quot;&gt;repo&lt;/a&gt;,
-open &lt;a rel=&quot;noopener external&quot; target=&quot;_blank&quot; href=&quot;https://github.com/choreographr/choreographr/issues&quot;&gt;issues&lt;/a&gt;, and join
-the &lt;a rel=&quot;noopener external&quot; target=&quot;_blank&quot; href=&quot;https://t.me/choreographr&quot;&gt;Telegram community&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Subsessions already exist; here&#39;s what&#39;s on the roadmap:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Git worktrees&lt;/strong&gt; — each subsession works on its own branch, so parallel
+agents can share a codebase without colliding.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Cron&lt;/strong&gt; — save RISC-V programs and run them on a schedule.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Extensions&lt;/strong&gt; — hook into the server over a local socket to add tools and
+plugins.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;OS-level sandboxing&lt;/strong&gt; — Landlock on Linux, Seatbelt on macOS, for tools
+that must run outside the VM.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Inter-daemon handoff&lt;/strong&gt; — pass sessions between daemons over Noise.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Ready to give it a spin? The &lt;a href=&quot;https://choreographr.com/docs/quick-start/&quot;&gt;quick start&lt;/a&gt; gets you to
+your first prompt, and the
+&lt;a rel=&quot;noopener external&quot; target=&quot;_blank&quot; href=&quot;https://github.com/choreographr/choreographr/releases&quot;&gt;release notes&lt;/a&gt; cover
+what&#39;s in v0.1.0.&lt;/p&gt;
+&lt;p&gt;We&#39;d love your help — star the
+&lt;a rel=&quot;noopener external&quot; target=&quot;_blank&quot; href=&quot;https://github.com/choreographr/choreographr&quot;&gt;repo&lt;/a&gt;, open
+&lt;a rel=&quot;noopener external&quot; target=&quot;_blank&quot; href=&quot;https://github.com/choreographr/choreographr/issues&quot;&gt;issues&lt;/a&gt;, and join the
+&lt;a rel=&quot;noopener external&quot; target=&quot;_blank&quot; href=&quot;https://t.me/choreographr&quot;&gt;Telegram community&lt;/a&gt;.&lt;/p&gt;
 </content>
         
     </entry>

@@ -27,7 +27,7 @@
   <link rel="preload" href="https://choreographr.com/fonts/jetbrains-mono.woff2" as="font" type="font/woff2" crossorigin>
 
   <link rel="icon" type="image/svg+xml" href="https://choreographr.com/favicon.svg">
-  <link rel="stylesheet" href="https://choreographr.com/css/main.css?h=b9123aac10d72955404e">
+  <link rel="stylesheet" href="https://choreographr.com/css/main.css?h=258e37fcdb588b7471ed">
 
   <!-- Firefox/Zen can paint a frame before this stylesheet has been
        applied if a layout flush happens while it loads (Bugzilla
@@ -383,23 +383,6 @@ no polling, and O(1) scrolling and streaming.</p>
 <p>Rust's performance makes this trivial, and its ownership model makes
 the render/event split safe: the renderer never mutates state, so drawing and
 input handling can't race.</p>
-<h2 id="rust-and-the-ai-loop-the-compiler-as-a-second-model">Rust and the AI loop — the compiler as a second model
-<a class="zola-anchor" href="#rust-and-the-ai-loop-the-compiler-as-a-second-model" aria-label="Anchor link for: rust-and-the-ai-loop-the-compiler-as-a-second-model">
-  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
-</a>
-</h2>
-<p>Here is the argument that matters most in 2026: <strong>agents write code, and
-increasingly agents are written <em>with</em> code written by LLMs</strong>. Choreographr is
-partly LLM-generated, like most modern software.</p>
-<p>For an LLM writing code, Rust is the language that <em>fights back least
-dangerously</em>. A model writing TypeScript or Python can produce code that looks
-right and fails at runtime, in production, on a user's machine. A model
-writing Rust gets told, at compile time, exactly what it got wrong — the
-borrow checker and the type system are a relentless, specific, infinitely
-patient reviewer. Every <code>cargo check</code> cycle that catches a mistake is a bug
-that never reaches your terminal. For a codebase that an AI will keep
-modifying, that is not overhead — it is the highest-leverage safety net
-available.</p>
 
     </article>
   </div>

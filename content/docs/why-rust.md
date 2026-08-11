@@ -123,19 +123,3 @@ Rust's performance makes this trivial, and its ownership model makes
 the render/event split safe: the renderer never mutates state, so drawing and
 input handling can't race.
 
-## Rust and the AI loop — the compiler as a second model
-
-Here is the argument that matters most in 2026: **agents write code, and
-increasingly agents are written *with* code written by LLMs**. Choreographr is
-partly LLM-generated, like most modern software.
-
-For an LLM writing code, Rust is the language that *fights back least
-dangerously*. A model writing TypeScript or Python can produce code that looks
-right and fails at runtime, in production, on a user's machine. A model
-writing Rust gets told, at compile time, exactly what it got wrong — the
-borrow checker and the type system are a relentless, specific, infinitely
-patient reviewer. Every `cargo check` cycle that catches a mistake is a bug
-that never reaches your terminal. For a codebase that an AI will keep
-modifying, that is not overhead — it is the highest-leverage safety net
-available.
-
