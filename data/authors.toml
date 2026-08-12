@@ -9,4 +9,4 @@
 name = "Jonathan Brown"
 avatar = "me.jpg"
 bio = "Backend engineer and AI-augmented development specialist. Author of Acuity Index, now building Choreographr."
-links = { github = "https://github.com/choreographr", telegram = "https://t.me/choreographr", email = "jbrown@acuity.network" }
+links = { github = "https://github.com/choreographr", telegram = "https://t.me/choreographr", telegram_personal = "https://t.me/ethernomad" }

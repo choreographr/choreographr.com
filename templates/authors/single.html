@@ -25,8 +25,9 @@
         {% if author.links.telegram %}
         <a href="{{ author.links.telegram }}" target="_blank" rel="noopener noreferrer" class="text-night-400 hover:text-brand-400 transition-colors">Telegram</a>
         {% endif %}
-        {% if author.links.email %}
-        <a href="mailto:{{ author.links.email }}" class="text-night-400 hover:text-brand-400 transition-colors">Email</a>
+        {% if author.links.telegram_personal %}
+        {% set handle = author.links.telegram_personal | split(pat="/") | last %}
+        <a href="{{ author.links.telegram_personal }}" target="_blank" rel="noopener noreferrer" class="text-night-400 hover:text-brand-400 transition-colors">@{{ handle }}</a>
         {% endif %}
       </div>
       {% endif %}
