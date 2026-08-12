@@ -93,7 +93,10 @@ other way around: one &lt;strong&gt;daemon&lt;/strong&gt; owns your sessions, an
 disconnect whenever they want.&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;strong&gt;&lt;code&gt;choreo-tui&lt;/code&gt;&lt;/strong&gt; — a full-screen terminal UI with O(1) scrolling and
-streaming, markdown rendering, syntax highlighting, and a model selector.&lt;/li&gt;
+streaming, markdown rendering, syntax highlighting, and a model selector.
+It also renders images inline in your chat — PNG, JPEG, and vector SVG —
+using the kitty graphics protocol, sixel, or a universal half-block
+fallback, with click-to-open fullscreen viewing.&lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;&lt;code&gt;choreo-gui&lt;/code&gt;&lt;/strong&gt; — a desktop app (Dioxus), in development.&lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;&lt;code&gt;choreo-im&lt;/code&gt;&lt;/strong&gt; — chat with your agent on the go, from Telegram.&lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;&lt;code&gt;choreo-acp&lt;/code&gt;&lt;/strong&gt; — drive sessions from ACP-compatible editors like Claude
@@ -102,8 +105,9 @@ Code and Cline.&lt;/li&gt;
 &lt;p&gt;Because sessions live in the daemon, you can start a task in the terminal and
 check on it from your phone. Everything persists in an embedded &lt;code&gt;redb&lt;/code&gt; database
 and survives restarts.&lt;/p&gt;
-&lt;!-- TODO: add a choreo-tui screenshot here (ideally with a short screencast of
-streaming and a run_riscv call) once available --&gt;
+&lt;!-- TODO: add a choreo-tui screenshot here (ideally showing an inline image
+and the click-to-open fullscreen view, plus a short screencast of streaming
+and a run_riscv call) once available --&gt;
 &lt;p&gt;&lt;img src=&quot;/architecture.svg&quot; alt=&quot;Choreographr architecture: clients (TUI, GUI, IM, ACP) and the daemon handoff connect to the choreographr daemon, which talks to model providers and runs MCP servers, a RISC-V VM sandbox, and a redb database&quot; loading=&quot;lazy&quot; decoding=&quot;async&quot; /&gt;&lt;/p&gt;
 &lt;h2 id=&quot;rust-because-it-has-to-last&quot;&gt;Rust, because it has to last
 &lt;a class=&quot;zola-anchor&quot; href=&quot;#rust-because-it-has-to-last&quot; aria-label=&quot;Anchor link for: rust-because-it-has-to-last&quot;&gt;

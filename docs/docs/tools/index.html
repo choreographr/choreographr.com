@@ -47,7 +47,7 @@
   <link rel="preload" href="https://choreographr.com/fonts/jetbrains-mono.woff2" as="font" type="font/woff2" crossorigin>
 
   <link rel="icon" type="image/svg+xml" href="https://choreographr.com/favicon.svg">
-  <link rel="stylesheet" href="https://choreographr.com/css/main.css?h=826ac5ad431795f8dffb">
+  <link rel="stylesheet" href="https://choreographr.com/css/main.css?h=943c35e5df9563a1ca56">
 
   <!-- Firefox/Zen can paint a frame before this stylesheet has been
        applied if a layout flush happens while it loads (Bugzilla
@@ -222,6 +222,13 @@
       <a href="https://choreographr.com/docs/slash-commands/"
          class="text-night-200 hover:text-night-50">
         Slash commands
+      </a>
+    </li>
+    
+    <li>
+      <a href="https://choreographr.com/docs/terminal/"
+         class="text-night-200 hover:text-night-50">
+        Terminal client
       </a>
     </li>
     
@@ -463,7 +470,14 @@ headers (including <code>Range</code> for partial content), an optional body, an
 configurable timeout (default 30 s).</li>
 <li><code>display_image</code> accepts exactly one source: <code>path</code>, <code>url</code>, <code>base64_data</code>, or
 raw <code>svg_text</code>, with an optional <code>alt</code> description. Supported types are PNG,
-JPEG, and SVG (SVG is rendered to a bitmap first).</li>
+JPEG, and SVG (SVG is rasterized at display resolution with system fonts, so
+vector diagrams stay crisp at any terminal size).</li>
+<li>In the terminal client the image appears <strong>inline in the chat history</strong> at
+half the viewport height. Click it for a fullscreen view (<code>Esc</code> dismisses).
+Encoding runs on a background thread and picks the best terminal protocol
+automatically — kitty graphics, sixel, or a universal half-block fallback —
+so images render in virtually any terminal. See
+<a href="https://choreographr.com/docs/terminal/">Terminal client</a>.</li>
 </ul>
 <h3 id="pdf-tools">PDF tools
 <a class="zola-anchor" href="#pdf-tools" aria-label="Anchor link for: pdf-tools">

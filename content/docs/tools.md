@@ -160,7 +160,14 @@ search, randomness, time, session management, and orchestration.
   configurable timeout (default 30 s).
 - `display_image` accepts exactly one source: `path`, `url`, `base64_data`, or
   raw `svg_text`, with an optional `alt` description. Supported types are PNG,
-  JPEG, and SVG (SVG is rendered to a bitmap first).
+  JPEG, and SVG (SVG is rasterized at display resolution with system fonts, so
+  vector diagrams stay crisp at any terminal size).
+- In the terminal client the image appears **inline in the chat history** at
+  half the viewport height. Click it for a fullscreen view (`Esc` dismisses).
+  Encoding runs on a background thread and picks the best terminal protocol
+  automatically — kitty graphics, sixel, or a universal half-block fallback —
+  so images render in virtually any terminal. See
+  [Terminal client](@/docs/terminal.md).
 
 ### PDF tools
 

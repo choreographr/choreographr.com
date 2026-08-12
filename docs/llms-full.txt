@@ -19,7 +19,7 @@ guide, then the [quick start](@/docs/quick-start.md), or jump straight to a topi
 
 - **Getting started** — [installation](@/docs/installation.md), [quick start](@/docs/quick-start.md)
 - **Configuration** — [configuration](@/docs/configuration.md), [accounts & providers](@/docs/accounts-and-providers.md)
-- **Using the client** — [slash commands](@/docs/slash-commands.md)
+- **Using the client** — [terminal client](@/docs/terminal.md), [slash commands](@/docs/slash-commands.md)
 - **Under the hood** — [concepts](@/docs/concepts.md), [tools](@/docs/tools.md), [why Rust](@/docs/why-rust.md), [architecture](@/docs/architecture.md)
 - **Operations** — [security](@/docs/security.md), [monitoring](@/docs/monitoring.md), [testing](@/docs/testing.md), [troubleshooting](@/docs/troubleshooting.md)
 - **Reference** — [FAQ](@/docs/faq.md)
@@ -204,6 +204,22 @@ Accounts are managed right in the TUI — no config files needed.
 10. Send your first prompt!
 
 That's it — you're chatting with your agent.
+
+## See an image inline
+
+The agent can display images right in the terminal. Ask it to show a diagram
+or a chart:
+
+```
+you: render the architecture diagram as an image
+```
+
+When the agent calls `display_image`, the image appears **inline in the chat
+history** — PNG, JPEG, or vector SVG (SVG is rasterized at display resolution,
+so diagrams stay crisp). Click the image for a fullscreen view; press `Esc` to
+dismiss. Images render via the kitty graphics protocol, sixel, or a half-block
+fallback, so they work in virtually any terminal. See the
+[Terminal client](@/docs/terminal.md) page for details.
 
 
 ## Configuration
@@ -412,6 +428,61 @@ two-phase flow: pick a provider, then enter a slug.
 Any other input is sent to the attached session as a prompt. In `choreo-tui`,
 `Ctrl+C` exits the local client and disconnects from the daemon without
 requesting daemon shutdown.
+
+
+## Terminal client
+
+
+`choreo-tui` is the terminal client. It attaches to a running daemon over the
+local Unix socket — or over TCP with a Noise IK handshake
+(`--tcp-addr` / `--server-pk`) — and renders your sessions in a full-screen
+UI. It is entirely event driven and runs in immediate mode: the terminal
+updates the moment a keystroke or network event arrives, with no maximum
+framerate. Scrolling and streaming are O(1), so history stays smooth even on
+very long sessions.
+
+## What the TUI renders
+
+- **Markdown** — headings, lists, code blocks, tables, links, blockquotes,
+  emphasis, inline code, and math, wrapped to the terminal width.
+- **Syntax highlighting** — code in tool output is highlighted with syntect
+  themes.
+- **Images** — when the agent calls `display_image` (PNG, JPEG, or SVG), the
+  image appears **inline in the chat history** at half the viewport height.
+  Click an image to open it fullscreen; press `Esc` to dismiss.
+- **Tool results** — streaming execution descriptions, collapsible per-result
+  bodies, and live token estimates in the status bar.
+
+## Image rendering
+
+Image encoding runs on a **background thread** so the UI never stalls, and
+results are cached per terminal size — switching between the inline view and
+fullscreen never re-encodes. SVG is rasterized at display resolution with
+system fonts loaded, so vector diagrams stay crisp at any terminal size.
+
+The terminal protocol is auto-detected at startup and falls back gracefully:
+
+| Protocol | Where it works |
+|---|---|
+| Kitty graphics | kitty, foot, wezterm, ghostty, and other kitty-graphics terminals |
+| Sixel | terminals with sixel support (e.g. xterm-sixel, mlterm) |
+| Half-blocks | any terminal — a 2-pixel-per-cell Unicode fallback |
+
+Image blocks always reserve their height, so scrolling past an image stays
+stable even while it is still encoding.
+
+## Managing sessions
+
+- `Ctrl+S` — session manager: list, switch, create, and delete sessions
+- `Ctrl+A` — accounts page: add, remove, and select AI provider accounts
+- `Ctrl+M` — model selector (requires a terminal with the kitty keyboard
+  protocol; on other terminals `Ctrl+M` arrives as Enter)
+- `Ctrl+R` — cycle the reasoning effort
+- `Ctrl+H` — toggle the keybinding help overlay
+- `Ctrl+Q` — quit the client
+
+The full command reference lives on the
+[slash commands](@/docs/slash-commands.md) page.
 
 
 ## Concepts
@@ -675,7 +746,14 @@ search, randomness, time, session management, and orchestration.
   configurable timeout (default 30 s).
 - `display_image` accepts exactly one source: `path`, `url`, `base64_data`, or
   raw `svg_text`, with an optional `alt` description. Supported types are PNG,
-  JPEG, and SVG (SVG is rendered to a bitmap first).
+  JPEG, and SVG (SVG is rasterized at display resolution with system fonts, so
+  vector diagrams stay crisp at any terminal size).
+- In the terminal client the image appears **inline in the chat history** at
+  half the viewport height. Click it for a fullscreen view (`Esc` dismisses).
+  Encoding runs on a background thread and picks the best terminal protocol
+  automatically — kitty graphics, sixel, or a universal half-block fallback —
+  so images render in virtually any terminal. See
+  [Terminal client](@/docs/terminal.md).
 
 ### PDF tools
 
@@ -1416,6 +1494,9 @@ disconnect whenever they want.
 
 - **`choreo-tui`** — a full-screen terminal UI with O(1) scrolling and
   streaming, markdown rendering, syntax highlighting, and a model selector.
+  It also renders images inline in your chat — PNG, JPEG, and vector SVG —
+  using the kitty graphics protocol, sixel, or a universal half-block
+  fallback, with click-to-open fullscreen viewing.
 - **`choreo-gui`** — a desktop app (Dioxus), in development.
 - **`choreo-im`** — chat with your agent on the go, from Telegram.
 - **`choreo-acp`** — drive sessions from ACP-compatible editors like Claude
@@ -1425,8 +1506,9 @@ Because sessions live in the daemon, you can start a task in the terminal and
 check on it from your phone. Everything persists in an embedded `redb` database
 and survives restarts.
 
-<!-- TODO: add a choreo-tui screenshot here (ideally with a short screencast of
-streaming and a run_riscv call) once available -->
+<!-- TODO: add a choreo-tui screenshot here (ideally showing an inline image
+and the click-to-open fullscreen view, plus a short screencast of streaming
+and a run_riscv call) once available -->
 
 ![Choreographr architecture: clients (TUI, GUI, IM, ACP) and the daemon handoff connect to the choreographr daemon, which talks to model providers and runs MCP servers, a RISC-V VM sandbox, and a redb database](/architecture.svg)
 

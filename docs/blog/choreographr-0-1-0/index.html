@@ -47,7 +47,7 @@
   <link rel="preload" href="https://choreographr.com/fonts/jetbrains-mono.woff2" as="font" type="font/woff2" crossorigin>
 
   <link rel="icon" type="image/svg+xml" href="https://choreographr.com/favicon.svg">
-  <link rel="stylesheet" href="https://choreographr.com/css/main.css?h=826ac5ad431795f8dffb">
+  <link rel="stylesheet" href="https://choreographr.com/css/main.css?h=943c35e5df9563a1ca56">
 
   <!-- Firefox/Zen can paint a frame before this stylesheet has been
        applied if a layout flush happens while it loads (Bugzilla
@@ -278,7 +278,10 @@ other way around: one <strong>daemon</strong> owns your sessions, and clients co
 disconnect whenever they want.</p>
 <ul>
 <li><strong><code>choreo-tui</code></strong> — a full-screen terminal UI with O(1) scrolling and
-streaming, markdown rendering, syntax highlighting, and a model selector.</li>
+streaming, markdown rendering, syntax highlighting, and a model selector.
+It also renders images inline in your chat — PNG, JPEG, and vector SVG —
+using the kitty graphics protocol, sixel, or a universal half-block
+fallback, with click-to-open fullscreen viewing.</li>
 <li><strong><code>choreo-gui</code></strong> — a desktop app (Dioxus), in development.</li>
 <li><strong><code>choreo-im</code></strong> — chat with your agent on the go, from Telegram.</li>
 <li><strong><code>choreo-acp</code></strong> — drive sessions from ACP-compatible editors like Claude
@@ -287,8 +290,9 @@ Code and Cline.</li>
 <p>Because sessions live in the daemon, you can start a task in the terminal and
 check on it from your phone. Everything persists in an embedded <code>redb</code> database
 and survives restarts.</p>
-<!-- TODO: add a choreo-tui screenshot here (ideally with a short screencast of
-streaming and a run_riscv call) once available -->
+<!-- TODO: add a choreo-tui screenshot here (ideally showing an inline image
+and the click-to-open fullscreen view, plus a short screencast of streaming
+and a run_riscv call) once available -->
 <p><img src="/architecture.svg" alt="Choreographr architecture: clients (TUI, GUI, IM, ACP) and the daemon handoff connect to the choreographr daemon, which talks to model providers and runs MCP servers, a RISC-V VM sandbox, and a redb database" loading="lazy" decoding="async" /></p>
 <h2 id="rust-because-it-has-to-last">Rust, because it has to last
 <a class="zola-anchor" href="#rust-because-it-has-to-last" aria-label="Anchor link for: rust-because-it-has-to-last">

@@ -47,7 +47,7 @@
   <link rel="preload" href="https://choreographr.com/fonts/jetbrains-mono.woff2" as="font" type="font/woff2" crossorigin>
 
   <link rel="icon" type="image/svg+xml" href="https://choreographr.com/favicon.svg">
-  <link rel="stylesheet" href="https://choreographr.com/css/main.css?h=826ac5ad431795f8dffb">
+  <link rel="stylesheet" href="https://choreographr.com/css/main.css?h=943c35e5df9563a1ca56">
 
   <!-- Firefox/Zen can paint a frame before this stylesheet has been
        applied if a layout flush happens while it loads (Bugzilla
@@ -226,6 +226,13 @@
     </li>
     
     <li>
+      <a href="https://choreographr.com/docs/terminal/"
+         class="text-night-200 hover:text-night-50">
+        Terminal client
+      </a>
+    </li>
+    
+    <li>
       <a href="https://choreographr.com/docs/concepts/"
          class="text-night-200 hover:text-night-50">
         Concepts
@@ -336,6 +343,20 @@
 <li>Send your first prompt!</li>
 </ol>
 <p>That's it — you're chatting with your agent.</p>
+<h2 id="see-an-image-inline">See an image inline
+<a class="zola-anchor" href="#see-an-image-inline" aria-label="Anchor link for: see-an-image-inline">
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+</a>
+</h2>
+<p>The agent can display images right in the terminal. Ask it to show a diagram
+or a chart:</p>
+<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;" ><code data-lang="plain"><span class="giallo-l"><span>you: render the architecture diagram as an image</span></span></code></pre>
+<p>When the agent calls <code>display_image</code>, the image appears <strong>inline in the chat
+history</strong> — PNG, JPEG, or vector SVG (SVG is rasterized at display resolution,
+so diagrams stay crisp). Click the image for a fullscreen view; press <code>Esc</code> to
+dismiss. Images render via the kitty graphics protocol, sixel, or a half-block
+fallback, so they work in virtually any terminal. See the
+<a href="https://choreographr.com/docs/terminal/">Terminal client</a> page for details.</p>
 
       
     </article>

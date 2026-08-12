@@ -47,3 +47,19 @@ Accounts are managed right in the TUI — no config files needed.
 10. Send your first prompt!
 
 That's it — you're chatting with your agent.
+
+## See an image inline
+
+The agent can display images right in the terminal. Ask it to show a diagram
+or a chart:
+
+```
+you: render the architecture diagram as an image
+```
+
+When the agent calls `display_image`, the image appears **inline in the chat
+history** — PNG, JPEG, or vector SVG (SVG is rasterized at display resolution,
+so diagrams stay crisp). Click the image for a fullscreen view; press `Esc` to
+dismiss. Images render via the kitty graphics protocol, sixel, or a half-block
+fallback, so they work in virtually any terminal. See the
+[Terminal client](@/docs/terminal.md) page for details.

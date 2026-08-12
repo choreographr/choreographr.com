@@ -9,23 +9,23 @@
        unlike Chromium which defers first paint until the inline CSS exists. -->
   <meta name="color-scheme" content="dark">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Architecture — Choreographr</title>
-  <meta name="description" content="Threading model, workspace topology, and where to find the deep dive.">
+  <title>Terminal client — Choreographr</title>
+  <meta name="description" content="What choreo-tui renders: markdown, syntax highlighting, inline images, streaming, and O(1) scrolling.">
   <meta name="theme-color" content="#06080b">
 
   
   <!-- Canonical: every page (incl. trailing-slash and /index.html variants)
        resolves to one authoritative URL, which also matches the sitemap. -->
-  <link rel="canonical" href="https://choreographr.com/docs/architecture/">
+  <link rel="canonical" href="https://choreographr.com/docs/terminal/">
   
 
   <!-- Open Graph / social sharing. og:title / og:description are overridden
        per template so they always match the <title> and meta description. -->
   <meta property="og:site_name" content="Choreographr">
   <meta property="og:type" content="website">
-  <meta property="og:title" content="Architecture — Choreographr">
-  <meta property="og:description" content="Threading model, workspace topology, and where to find the deep dive.">
-  <meta property="og:url" content="https://choreographr.com/docs/architecture/">
+  <meta property="og:title" content="Terminal client — Choreographr">
+  <meta property="og:description" content="What choreo-tui renders: markdown, syntax highlighting, inline images, streaming, and O(1) scrolling.">
+  <meta property="og:url" content="https://choreographr.com/docs/terminal/">
   <meta property="og:image" content="https://choreographr.com/og-image.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
@@ -73,7 +73,7 @@
   "itemListElement": [
     { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://choreographr.com/" },
     { "@type": "ListItem", "position": 2, "name": "Documentation", "item": "https://choreographr.com/docs/" },
-    { "@type": "ListItem", "position": 3, "name": "Architecture" }
+    { "@type": "ListItem", "position": 3, "name": "Terminal client" }
   ]
 }
 </script>
@@ -227,7 +227,7 @@
     
     <li>
       <a href="https://choreographr.com/docs/terminal/"
-         class="text-night-200 hover:text-night-50">
+         class="bg-night-700 text-night-50 font-semibold">
         Terminal client
       </a>
     </li>
@@ -255,7 +255,7 @@
     
     <li>
       <a href="https://choreographr.com/docs/architecture/"
-         class="bg-night-700 text-night-50 font-semibold">
+         class="text-night-200 hover:text-night-50">
         Architecture
       </a>
     </li>
@@ -301,120 +301,66 @@
       </div>
     </aside>
     <article class="prose min-w-0 flex-1 max-w-3xl">
-      <h1>Architecture</h1>
+      <h1>Terminal client</h1>
       <div class="text-sm text-night-400 font-mono mb-6">
-        /docs/architecture/
+        /docs/terminal/
       </div>
-      <p>The full architecture deep-dive lives in the repository at <code>ARCHITECTURE.md</code>.
-This page is a short orientation.</p>
-<h2 id="client-server-topology">Client/server topology
-<a class="zola-anchor" href="#client-server-topology" aria-label="Anchor link for: client-server-topology">
+      <p><code>choreo-tui</code> is the terminal client. It attaches to a running daemon over the
+local Unix socket — or over TCP with a Noise IK handshake
+(<code>--tcp-addr</code> / <code>--server-pk</code>) — and renders your sessions in a full-screen
+UI. It is entirely event driven and runs in immediate mode: the terminal
+updates the moment a keystroke or network event arrives, with no maximum
+framerate. Scrolling and streaming are O(1), so history stays smooth even on
+very long sessions.</p>
+<h2 id="what-the-tui-renders">What the TUI renders
+<a class="zola-anchor" href="#what-the-tui-renders" aria-label="Anchor link for: what-the-tui-renders">
   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
 </a>
 </h2>
-<p>Choreographr separates the daemon that runs sessions from the clients that
-connect and disconnect at any time.</p>
-<p><img src="/architecture.svg" alt="Architecture diagram: daemon with TUI, GUI, IM, ACP and daemon clients, model providers, and the RISC-V VM sandbox" loading="lazy" decoding="async" /></p>
 <ul>
-<li>The client can run on the same computer as the daemon (via a local Unix
-socket), or the daemon can live anywhere on your local network or the
-Internet.</li>
-<li>When connecting remotely, clients use <strong>Noise-IK</strong> encrypted TCP.</li>
-<li>Because the daemon can live anywhere and is reachable over encrypted TCP, it
-can also be reached from mobile devices — for example, chatting with your
-agent on the go via the <code>choreo-im</code> Telegram bridge.</li>
-<li>Daemons can also connect to each other — <code>choreo-daemon</code> acts as a client of
-other daemons, handing off sessions over Noise-IK encrypted TCP to deploy
-work elsewhere.</li>
+<li><strong>Markdown</strong> — headings, lists, code blocks, tables, links, blockquotes,
+emphasis, inline code, and math, wrapped to the terminal width.</li>
+<li><strong>Syntax highlighting</strong> — code in tool output is highlighted with syntect
+themes.</li>
+<li><strong>Images</strong> — when the agent calls <code>display_image</code> (PNG, JPEG, or SVG), the
+image appears <strong>inline in the chat history</strong> at half the viewport height.
+Click an image to open it fullscreen; press <code>Esc</code> to dismiss.</li>
+<li><strong>Tool results</strong> — streaming execution descriptions, collapsible per-result
+bodies, and live token estimates in the status bar.</li>
 </ul>
-<p>Client/server communication is encoded via <a rel="noopener external" target="_blank" href="https://postcard.jamesmunns.com/">Postcard</a>.</p>
-<h2 id="threading-model">Threading model
-<a class="zola-anchor" href="#threading-model" aria-label="Anchor link for: threading-model">
+<h2 id="image-rendering">Image rendering
+<a class="zola-anchor" href="#image-rendering" aria-label="Anchor link for: image-rendering">
   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
 </a>
 </h2>
-<p>The daemon uses <strong>pure OS threads with message passing</strong> (actor model) — no
-async code in its own logic, and no <code>Arc&lt;Mutex&gt;</code> shared state. All I/O uses
-blocking <code>std</code> APIs on dedicated threads:</p>
-<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;" ><code data-lang="plain"><span class="giallo-l"><span>main()</span></span>
-<span class="giallo-l"><span>├── listener thread — UnixListener accept loop</span></span>
-<span class="giallo-l"><span>│   └── per client: spawns client_thread</span></span>
-<span class="giallo-l"><span>├── metrics HTTP thread — (optional) serves /metrics</span></span>
-<span class="giallo-l"><span>├── command thread — DaemonCommand receiver loop</span></span>
-<span class="giallo-l"><span>│   └── owns DaemonState (exclusive access)</span></span>
-<span class="giallo-l"><span>├── per-session threads — one per active session</span></span>
-<span class="giallo-l"><span>│   └── owns SessionState (exclusive access)</span></span>
-<span class="giallo-l"><span>└── main thread — polls shutdown flag, orchestrates exit</span></span></code></pre>
-<p>This keeps the mental model simple — each thread owns its data — and avoids the
-complexity of async cancellation. The one exception is the optional
-<code>blockchain</code> feature: the <code>choreo-blockchain</code> crate (linked only then) holds a
-tokio sidecar runtime for the async alloy/subxt clients, and the daemon calls
-its synchronous <code>execute_*</code> entry points (which <code>block_on</code> internally).</p>
-<h2 id="request-flow">Request flow
-<a class="zola-anchor" href="#request-flow" aria-label="Anchor link for: request-flow">
-  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
-</a>
-</h2>
-<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;" ><code data-lang="plain"><span class="giallo-l"><span>RunInput received</span></span>
-<span class="giallo-l"><span>  └► validate session, check active requests</span></span>
-<span class="giallo-l"><span>     └► tool-call loop (daemon-wide cap, default 0 = unlimited):</span></span>
-<span class="giallo-l"><span>        1. build system content (skills + context, fingerprint-cached)</span></span>
-<span class="giallo-l"><span>        2. send messages + tools → model</span></span>
-<span class="giallo-l"><span>        3. receive response</span></span>
-<span class="giallo-l"><span>        4. if tool_call → execute tool → repeat</span></span>
-<span class="giallo-l"><span>        5. else → emit final text, Done</span></span></code></pre>
-<p>Concurrent tools are dispatched across multiple OS threads in parallel;
-session-config tools (<code>load_tools</code>, <code>unload_tools</code>, <code>set_working_dir</code>) run
-serially to preserve ordering.</p>
-<h2 id="workspace-topology">Workspace topology
-<a class="zola-anchor" href="#workspace-topology" aria-label="Anchor link for: workspace-topology">
-  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
-</a>
-</h2>
-<p>Fourteen crates in a single Cargo workspace (resolver = "3"). The dependency
-spine is <code>choreo-proto</code> → <code>choreo-keystore</code> / <code>choreo-transport</code>, with
-<code>choreo-client-core</code> and the daemon on top, and clients (<code>choreo-tui</code>,
-<code>choreo-gui</code>, <code>choreo-im</code>, <code>choreo-acp</code>) as leaves. The daemon itself also
-acts as a client — <code>choreo-daemon</code> can connect to other daemons to handoff
-sessions.</p>
-<table><thead><tr><th>Crate</th><th>Description</th></tr></thead><tbody>
-<tr><td><code>choreo-daemon</code></td><td>The core engine — binary <code>choreographr</code>. Unix socket server that validates credentials, manages persistent sessions (with sub-sessions and working directories), runs requests with a tool-call loop, and streams responses. Also connects to other daemons over Noise-IK to handoff sessions and deploy work elsewhere</td></tr>
-<tr><td><code>choreo-ai-protocols</code></td><td>Provider protocols — OpenAI-compatible, Anthropic Messages, and Google Gemini clients, the <code>ProviderClient</code> trait, and the provider catalog (70+ providers)</td></tr>
-<tr><td><code>choreo-blockchain</code></td><td>Blockchain tools — EVM (alloy) and Substrate/Polkadot (subxt) read-only queries plus the tokio sidecar runtime they run on; pulled in by the daemon's <code>blockchain</code> feature (off by default)</td></tr>
-<tr><td><code>choreo-proto</code></td><td>Framed binary protocol (postcard + length prefix) shared between clients and daemon</td></tr>
-<tr><td><code>choreo-keystore</code></td><td>X25519 keypair + ECDH/AES-256-GCM crypto library for encrypted credentials</td></tr>
-<tr><td><code>choreo-transport</code></td><td>Noise-IK encrypted transport over TCP</td></tr>
-<tr><td><code>choreo-mcp</code></td><td>MCP (Model Context Protocol) client — spawns subprocess servers, discovers tools, dispatches calls over JSON-RPC stdio</td></tr>
-<tr><td><code>choreo-acp</code></td><td>ACP (Agent Communication Protocol) bridge — translates JSON-RPC 2.0 over stdin/stdout into <code>choreo-proto</code> messages so ACP-compatible editors can drive sessions</td></tr>
-<tr><td><code>choreo-tui</code></td><td>Full-screen terminal UI client (ratatui + crossterm)</td></tr>
-<tr><td><code>choreo-gui</code></td><td>Desktop GUI client (Dioxus)</td></tr>
-<tr><td><code>choreo-im</code></td><td>Instant messaging bridge (Telegram)</td></tr>
-<tr><td><code>choreo-client-core</code></td><td>Shared parsing, markdown, image assembly, and daemon-message dispatch for UI clients</td></tr>
-<tr><td><code>choreo-markdown</code></td><td>Markdown parser and HTML renderer (pulldown-cmark + ammonia)</td></tr>
+<p>Image encoding runs on a <strong>background thread</strong> so the UI never stalls, and
+results are cached per terminal size — switching between the inline view and
+fullscreen never re-encodes. SVG is rasterized at display resolution with
+system fonts loaded, so vector diagrams stay crisp at any terminal size.</p>
+<p>The terminal protocol is auto-detected at startup and falls back gracefully:</p>
+<table><thead><tr><th>Protocol</th><th>Where it works</th></tr></thead><tbody>
+<tr><td>Kitty graphics</td><td>kitty, foot, wezterm, ghostty, and other kitty-graphics terminals</td></tr>
+<tr><td>Sixel</td><td>terminals with sixel support (e.g. xterm-sixel, mlterm)</td></tr>
+<tr><td>Half-blocks</td><td>any terminal — a 2-pixel-per-cell Unicode fallback</td></tr>
 </tbody></table>
-<h2 id="wire-protocol">Wire protocol
-<a class="zola-anchor" href="#wire-protocol" aria-label="Anchor link for: wire-protocol">
+<p>Image blocks always reserve their height, so scrolling past an image stays
+stable even while it is still encoding.</p>
+<h2 id="managing-sessions">Managing sessions
+<a class="zola-anchor" href="#managing-sessions" aria-label="Anchor link for: managing-sessions">
   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
 </a>
 </h2>
-<p>Client/daemon communication is a framed binary protocol (postcard + length
-prefix), defined in <code>choreo-proto</code>. Remote connections are wrapped in the
-Noise IK encrypted transport from <code>choreo-transport</code>.</p>
-<h2 id="provider-architecture">Provider architecture
-<a class="zola-anchor" href="#provider-architecture" aria-label="Anchor link for: provider-architecture">
-  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
-</a>
-</h2>
-<p>Three layers:</p>
-<ol>
-<li><code>ProviderClient</code> trait (<code>choreo-ai-protocols</code>) — the wire-protocol layer for
-OpenAI-compatible, Anthropic Messages, and Google Gemini clients.</li>
-<li><code>InferenceProvider</code> (<code>choreo-daemon</code>) — a protocol-erased facade wrapping an
-<code>Arc&lt;dyn ProviderClient&gt;</code> plus the catalog slug; records API metrics.</li>
-<li><strong>Provider Catalog</strong> (<code>choreo-ai-protocols/src/catalog/</code>) — one TOML file
-per provider with a curated model list, context windows, and reasoning
-levels. Adding a provider is a data-file edit, not code.</li>
-</ol>
+<ul>
+<li><code>Ctrl+S</code> — session manager: list, switch, create, and delete sessions</li>
+<li><code>Ctrl+A</code> — accounts page: add, remove, and select AI provider accounts</li>
+<li><code>Ctrl+M</code> — model selector (requires a terminal with the kitty keyboard
+protocol; on other terminals <code>Ctrl+M</code> arrives as Enter)</li>
+<li><code>Ctrl+R</code> — cycle the reasoning effort</li>
+<li><code>Ctrl+H</code> — toggle the keybinding help overlay</li>
+<li><code>Ctrl+Q</code> — quit the client</li>
+</ul>
+<p>The full command reference lives on the
+<a href="https://choreographr.com/docs/slash-commands/">slash commands</a> page.</p>
 
       
     </article>
