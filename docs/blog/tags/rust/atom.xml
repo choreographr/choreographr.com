@@ -39,13 +39,18 @@ did. The first release, v0.1.0, is out now.&lt;/p&gt;
 &lt;blockquote class=&quot;markdown-alert-tip&quot;&gt;
 &lt;p&gt;&lt;strong&gt;Try it now — no Rust toolchain needed.&lt;/strong&gt; Prebuilt binaries ship for macOS
 and Linux: Homebrew on macOS, &lt;code&gt;.deb&lt;/code&gt;/&lt;code&gt;.rpm&lt;/code&gt; or a static tarball on Linux.
-Then it&#39;s two commands to your first conversation:&lt;/p&gt;
+Then it&#39;s a few commands to your first conversation:&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;pre class=&quot;giallo&quot; style=&quot;color: #CDD6F4; background-color: #1E1E2E;&quot; &gt;&lt;code data-lang=&quot;shellscript&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #9399B2;font-style: italic;&quot;&gt;# macOS — Homebrew&lt;/span&gt;&lt;/span&gt;
 &lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #89B4FA;font-style: italic;&quot;&gt;brew&lt;/span&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt; tap choreographr/choreographr&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #89B4FA;font-style: italic;&quot;&gt;brew&lt;/span&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt; trust choreographr/choreographr&lt;/span&gt;&lt;/span&gt;
 &lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #89B4FA;font-style: italic;&quot;&gt;brew&lt;/span&gt;&lt;span style=&quot;color: #A6E3A1;&quot;&gt; install choreographr&lt;/span&gt;&lt;/span&gt;
 &lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #89B4FA;font-style: italic;&quot;&gt;choreographr&lt;/span&gt;&lt;span style=&quot;color: #9399B2;font-style: italic;&quot;&gt;   # terminal 1 — the daemon&lt;/span&gt;&lt;/span&gt;
 &lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #89B4FA;font-style: italic;&quot;&gt;choreo-tui&lt;/span&gt;&lt;span style=&quot;color: #9399B2;font-style: italic;&quot;&gt;     # terminal 2 — the terminal client&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Homebrew 6.0 and later refuse to load non-official taps until they are
+&lt;a href=&quot;https://choreographr.com/docs/installation/#homebrew&quot;&gt;explicitly trusted&lt;/a&gt; — loading a tap can run
+Ruby code from it, so &lt;code&gt;brew trust&lt;/code&gt; is how you tell Homebrew you&#39;ve reviewed
+and accepted this one.&lt;/p&gt;
 &lt;p&gt;See the &lt;a href=&quot;https://choreographr.com/docs/installation/&quot;&gt;installation guide&lt;/a&gt; for every platform, and
 the &lt;a href=&quot;https://choreographr.com/docs/quick-start/&quot;&gt;quick start&lt;/a&gt; for your first prompt.&lt;/p&gt;
 &lt;h2 id=&quot;so-why-another-agent&quot;&gt;So why another agent?

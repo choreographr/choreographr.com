@@ -32,15 +32,21 @@ did. The first release, v0.1.0, is out now.
 > [!TIP]
 > **Try it now — no Rust toolchain needed.** Prebuilt binaries ship for macOS
 > and Linux: Homebrew on macOS, `.deb`/`.rpm` or a static tarball on Linux.
-> Then it's two commands to your first conversation:
+> Then it's a few commands to your first conversation:
 
 ```bash
 # macOS — Homebrew
 brew tap choreographr/choreographr
+brew trust choreographr/choreographr
 brew install choreographr
 choreographr   # terminal 1 — the daemon
 choreo-tui     # terminal 2 — the terminal client
 ```
+
+Homebrew 6.0 and later refuse to load non-official taps until they are
+[explicitly trusted](@/docs/installation.md#homebrew) — loading a tap can run
+Ruby code from it, so `brew trust` is how you tell Homebrew you've reviewed
+and accepted this one.
 
 See the [installation guide](@/docs/installation.md) for every platform, and
 the [quick start](@/docs/quick-start.md) for your first prompt.
