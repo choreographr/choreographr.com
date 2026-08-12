@@ -13,6 +13,26 @@
   <meta name="description" content="Frequently asked questions about Choreographr.">
   <meta name="theme-color" content="#06080b">
 
+  
+  <!-- Canonical: every page (incl. trailing-slash and /index.html variants)
+       resolves to one authoritative URL, which also matches the sitemap. -->
+  <link rel="canonical" href="https://choreographr.com/docs/faq/">
+  
+
+  <!-- Open Graph / social sharing. og:title / og:description are overridden
+       per template so they always match the <title> and meta description. -->
+  <meta property="og:site_name" content="Choreographr">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="FAQ — Choreographr">
+  <meta property="og:description" content="Frequently asked questions about Choreographr.">
+  <meta property="og:url" content="https://choreographr.com/docs/faq/">
+  <meta property="og:image" content="https://choreographr.com/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Choreographr — your all-purpose AI agent, written in Rust">
+  <meta property="og:locale" content="en_US">
+  <meta name="twitter:card" content="summary_large_image">
+
   <!-- Critical inline CSS: paint the dark theme immediately, before
        main.css (or the webfont stylesheet) finishes loading, so the
        page never flashes white on navigation. -->
@@ -27,7 +47,7 @@
   <link rel="preload" href="https://choreographr.com/fonts/jetbrains-mono.woff2" as="font" type="font/woff2" crossorigin>
 
   <link rel="icon" type="image/svg+xml" href="https://choreographr.com/favicon.svg">
-  <link rel="stylesheet" href="https://choreographr.com/css/main.css?h=258e37fcdb588b7471ed">
+  <link rel="stylesheet" href="https://choreographr.com/css/main.css?h=826ac5ad431795f8dffb">
 
   <!-- Firefox/Zen can paint a frame before this stylesheet has been
        applied if a layout flush happens while it loads (Bugzilla
@@ -45,6 +65,130 @@
   
 
   
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://choreographr.com/" },
+    { "@type": "ListItem", "position": 2, "name": "Documentation", "item": "https://choreographr.com/docs/" },
+    { "@type": "ListItem", "position": 3, "name": "FAQ" }
+  ]
+}
+</script>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    
+    {
+      "@type": "Question",
+      "name": "What is Choreographr?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Choreographr is an all-purpose, extensible AI agent system written entirely in Rust. It has a client/server architecture and can run many sessions simultaneously. It runs locally or in the cloud, and LLM-generated code can be executed in a sandboxed RISC-V VM for complete security and observability.\n"
+      }
+    },
+    
+    {
+      "@type": "Question",
+      "name": "What can I use it for?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Software development, a personal/business agent, or research. It runs on your desktop or in the cloud, and you can talk to it from the terminal, a desktop app, or your phone (via the Telegram bridge).\n"
+      }
+    },
+    
+    {
+      "@type": "Question",
+      "name": "Which models does it support?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "70+ providers across three wire protocols: OpenAI-compatible (OpenAI, DeepSeek, Mistral, xAI, Groq, Ollama, OpenRouter, and many more), Anthropic Messages (Claude and friends), and Google Gemini.\n"
+      }
+    },
+    
+    {
+      "@type": "Question",
+      "name": "Is my data private?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Choreographr is local-first. Sessions and credentials live on your machine (encrypted at rest), and you choose which model providers your prompts go to. The daemon starts locked and credentials are only decrypted into memory after unlock.\n"
+      }
+    },
+    
+    {
+      "@type": "Question",
+      "name": "Is LLM-generated code safe to run?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Generated code runs in an isolated RISC-V VM by default, which is a complete replacement for the shell tool — full control and observability. OS-level sandboxing for tools that must run outside the VM is on the roadmap.\n"
+      }
+    },
+    
+    {
+      "@type": "Question",
+      "name": "Does it require an async runtime?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No — the daemon uses pure OS threads with message passing. No async code in its own logic, no Arc&lt;Mutex&gt; shared state. The one exception is the optional blockchain feature: the choreo-blockchain crate holds a tokio sidecar runtime for its async alloy/subxt clients, and the daemon calls into it through synchronous execute_* entry points. Without that feature, tokio isn't linked at all.\n"
+      }
+    },
+    
+    {
+      "@type": "Question",
+      "name": "Can it talk to blockchains?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes — the blockchain tool group adds read-only EVM and Substrate/Polkadot tools (balances, blocks, transactions, contract calls, ENS, storage queries). It's compiled in when the daemon is built with the blockchain cargo feature (enabled in the release binaries) and activated per session with load_tools blockchain. See the tools reference.\n"
+      }
+    },
+    
+    {
+      "@type": "Question",
+      "name": "Is it open source?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes — Apache-2.0.\n"
+      }
+    },
+    
+    {
+      "@type": "Question",
+      "name": "What's the minimum supported Rust version?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "1.91.\n"
+      }
+    },
+    
+    {
+      "@type": "Question",
+      "name": "What else do I need to build it?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A Zig 0.16.0 toolchain in addition to Rust. The zlob dependency — a fast globbing and file-walking library written in Zig — is compiled from Zig source at build time, so zig must be on your PATH. Choreographr uses zlob for the glob matching and gitignore-aware walking behind the find and grep tools.\n"
+      }
+    },
+    
+    {
+      "@type": "Question",
+      "name": "How is Choreographr different from other agents?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Its daemon + multi-client architecture, sandboxed RISC-V VM, subsessions (hierarchical subagents), and per-session undo/redo are a distinctive combination. See the comparison on the homepage.\n"
+      }
+    }
+    
+  ]
+}
+</script>
+
+
 </head>
 <body class="min-h-screen flex flex-col">
 
@@ -263,100 +407,78 @@
       <div class="text-sm text-night-400 font-mono mb-6">
         /docs/faq/
       </div>
-      <h3 id="what-is-choreographr">What is Choreographr?
-<a class="zola-anchor" href="#what-is-choreographr" aria-label="Anchor link for: what-is-choreographr">
-  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
-</a>
-</h3>
-<p>Choreographr is an all-purpose, extensible AI agent system written entirely in
-Rust. It has a client/server architecture and can run many sessions
-simultaneously. It runs locally or in the cloud, and LLM-generated code can be
-executed in a sandboxed RISC-V VM for complete security and observability.</p>
-<h3 id="what-can-i-use-it-for">What can I use it for?
-<a class="zola-anchor" href="#what-can-i-use-it-for" aria-label="Anchor link for: what-can-i-use-it-for">
-  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
-</a>
-</h3>
-<p>Software development, a personal/business agent, or research. It runs on your
-desktop or in the cloud, and you can talk to it from the terminal, a desktop
-app, or your phone (via the Telegram bridge).</p>
-<h3 id="which-models-does-it-support">Which models does it support?
-<a class="zola-anchor" href="#which-models-does-it-support" aria-label="Anchor link for: which-models-does-it-support">
-  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
-</a>
-</h3>
-<p>70+ providers across three wire protocols: OpenAI-compatible (OpenAI, DeepSeek,
-Mistral, xAI, Groq, Ollama, OpenRouter, and many more), Anthropic Messages
-(Claude and friends), and Google Gemini.</p>
-<h3 id="is-my-data-private">Is my data private?
-<a class="zola-anchor" href="#is-my-data-private" aria-label="Anchor link for: is-my-data-private">
-  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
-</a>
-</h3>
-<p>Choreographr is local-first. Sessions and credentials live on your machine
-(encrypted at rest), and you choose which model providers your prompts go to.
-The daemon starts locked and credentials are only decrypted into memory after
-unlock.</p>
-<h3 id="is-llm-generated-code-safe-to-run">Is LLM-generated code safe to run?
-<a class="zola-anchor" href="#is-llm-generated-code-safe-to-run" aria-label="Anchor link for: is-llm-generated-code-safe-to-run">
-  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
-</a>
-</h3>
-<p>Generated code runs in an isolated RISC-V VM by default, which is a complete
-replacement for the shell tool — full control and observability. OS-level
-sandboxing for tools that must run outside the VM is on the roadmap.</p>
-<h3 id="does-it-require-an-async-runtime">Does it require an async runtime?
-<a class="zola-anchor" href="#does-it-require-an-async-runtime" aria-label="Anchor link for: does-it-require-an-async-runtime">
-  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
-</a>
-</h3>
-<p>No — the daemon uses pure OS threads with message passing. No async code in its
-own logic, no <code>Arc&lt;Mutex&gt;</code> shared state. The one exception is the optional
-<code>blockchain</code> feature: the <code>choreo-blockchain</code> crate holds a tokio sidecar
-runtime for its async alloy/subxt clients, and the daemon calls into it through
-synchronous <code>execute_*</code> entry points. Without that feature, tokio isn't linked
-at all.</p>
-<h3 id="can-it-talk-to-blockchains">Can it talk to blockchains?
-<a class="zola-anchor" href="#can-it-talk-to-blockchains" aria-label="Anchor link for: can-it-talk-to-blockchains">
-  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
-</a>
-</h3>
-<p>Yes — the <code>blockchain</code> tool group adds read-only EVM and Substrate/Polkadot
-tools (balances, blocks, transactions, contract calls, ENS, storage queries).
-It's compiled in when the daemon is built with the <code>blockchain</code> cargo feature
-(enabled in the release binaries) and activated per session with
-<code>load_tools blockchain</code>. See the <a href="https://choreographr.com/docs/tools/#blockchain-tools">tools reference</a>.</p>
-<h3 id="is-it-open-source">Is it open source?
-<a class="zola-anchor" href="#is-it-open-source" aria-label="Anchor link for: is-it-open-source">
-  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
-</a>
-</h3>
-<p>Yes — Apache-2.0.</p>
-<h3 id="what-s-the-minimum-supported-rust-version">What's the minimum supported Rust version?
-<a class="zola-anchor" href="#what-s-the-minimum-supported-rust-version" aria-label="Anchor link for: what-s-the-minimum-supported-rust-version">
-  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
-</a>
-</h3>
-<p>1.91.</p>
-<h3 id="what-else-do-i-need-to-build-it">What else do I need to build it?
-<a class="zola-anchor" href="#what-else-do-i-need-to-build-it" aria-label="Anchor link for: what-else-do-i-need-to-build-it">
-  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
-</a>
-</h3>
-<p>A <strong>Zig 0.16.0</strong> toolchain in addition to Rust. The
-<a rel="noopener external" target="_blank" href="https://crates.io/crates/zlob"><code>zlob</code></a> dependency — a fast globbing and
-file-walking library written in Zig — is compiled from Zig source at build
-time, so <code>zig</code> must be on your <code>PATH</code>. Choreographr uses zlob for the glob
-matching and gitignore-aware walking behind the <code>find</code> and <code>grep</code> tools.</p>
-<h3 id="how-is-choreographr-different-from-other-agents">How is Choreographr different from other agents?
-<a class="zola-anchor" href="#how-is-choreographr-different-from-other-agents" aria-label="Anchor link for: how-is-choreographr-different-from-other-agents">
-  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
-</a>
-</h3>
-<p>Its daemon + multi-client architecture, sandboxed RISC-V VM, subsessions
-(hierarchical subagents), and per-session undo/redo are a distinctive
-combination. See the <a href="https://choreographr.com/">comparison</a> on the homepage.</p>
-
+      
+      
+      <div class="mt-10 space-y-8">
+        
+        <section>
+          <h2 class="text-2xl font-semibold text-night-50 tracking-tight">What is Choreographr?</h2>
+          <div class="mt-2 text-night-300"><p>Choreographr is an all-purpose, extensible AI agent system written entirely in Rust. It has a client/server architecture and can run many sessions simultaneously. It runs locally or in the cloud, and LLM-generated code can be executed in a sandboxed RISC-V VM for complete security and observability.</p>
+</div>
+        </section>
+        
+        <section>
+          <h2 class="text-2xl font-semibold text-night-50 tracking-tight">What can I use it for?</h2>
+          <div class="mt-2 text-night-300"><p>Software development, a personal/business agent, or research. It runs on your desktop or in the cloud, and you can talk to it from the terminal, a desktop app, or your phone (via the Telegram bridge).</p>
+</div>
+        </section>
+        
+        <section>
+          <h2 class="text-2xl font-semibold text-night-50 tracking-tight">Which models does it support?</h2>
+          <div class="mt-2 text-night-300"><p>70+ providers across three wire protocols: OpenAI-compatible (OpenAI, DeepSeek, Mistral, xAI, Groq, Ollama, OpenRouter, and many more), Anthropic Messages (Claude and friends), and Google Gemini.</p>
+</div>
+        </section>
+        
+        <section>
+          <h2 class="text-2xl font-semibold text-night-50 tracking-tight">Is my data private?</h2>
+          <div class="mt-2 text-night-300"><p>Choreographr is local-first. Sessions and credentials live on your machine (encrypted at rest), and you choose which model providers your prompts go to. The daemon starts locked and credentials are only decrypted into memory after unlock.</p>
+</div>
+        </section>
+        
+        <section>
+          <h2 class="text-2xl font-semibold text-night-50 tracking-tight">Is LLM-generated code safe to run?</h2>
+          <div class="mt-2 text-night-300"><p>Generated code runs in an isolated RISC-V VM by default, which is a complete replacement for the shell tool — full control and observability. OS-level sandboxing for tools that must run outside the VM is on the roadmap.</p>
+</div>
+        </section>
+        
+        <section>
+          <h2 class="text-2xl font-semibold text-night-50 tracking-tight">Does it require an async runtime?</h2>
+          <div class="mt-2 text-night-300"><p>No — the daemon uses pure OS threads with message passing. No async code in its own logic, no <code>Arc&lt;Mutex&gt;</code> shared state. The one exception is the optional <code>blockchain</code> feature: the <code>choreo-blockchain</code> crate holds a tokio sidecar runtime for its async alloy/subxt clients, and the daemon calls into it through synchronous <code>execute_*</code> entry points. Without that feature, tokio isn't linked at all.</p>
+</div>
+        </section>
+        
+        <section>
+          <h2 class="text-2xl font-semibold text-night-50 tracking-tight">Can it talk to blockchains?</h2>
+          <div class="mt-2 text-night-300"><p>Yes — the <code>blockchain</code> tool group adds read-only EVM and Substrate/Polkadot tools (balances, blocks, transactions, contract calls, ENS, storage queries). It's compiled in when the daemon is built with the <code>blockchain</code> cargo feature (enabled in the release binaries) and activated per session with <code>load_tools blockchain</code>. See the <a href="https://choreographr.com/docs/tools/#blockchain-tools">tools reference</a>.</p>
+</div>
+        </section>
+        
+        <section>
+          <h2 class="text-2xl font-semibold text-night-50 tracking-tight">Is it open source?</h2>
+          <div class="mt-2 text-night-300"><p>Yes — Apache-2.0.</p>
+</div>
+        </section>
+        
+        <section>
+          <h2 class="text-2xl font-semibold text-night-50 tracking-tight">What&#39;s the minimum supported Rust version?</h2>
+          <div class="mt-2 text-night-300"><p>1.91.</p>
+</div>
+        </section>
+        
+        <section>
+          <h2 class="text-2xl font-semibold text-night-50 tracking-tight">What else do I need to build it?</h2>
+          <div class="mt-2 text-night-300"><p>A <strong>Zig 0.16.0</strong> toolchain in addition to Rust. The <a rel="noopener external" target="_blank" href="https://crates.io/crates/zlob"><code>zlob</code></a> dependency — a fast globbing and file-walking library written in Zig — is compiled from Zig source at build time, so <code>zig</code> must be on your <code>PATH</code>. Choreographr uses zlob for the glob matching and gitignore-aware walking behind the <code>find</code> and <code>grep</code> tools.</p>
+</div>
+        </section>
+        
+        <section>
+          <h2 class="text-2xl font-semibold text-night-50 tracking-tight">How is Choreographr different from other agents?</h2>
+          <div class="mt-2 text-night-300"><p>Its daemon + multi-client architecture, sandboxed RISC-V VM, subsessions (hierarchical subagents), and per-session undo/redo are a distinctive combination. See the <a href="https://choreographr.com/">comparison</a> on the homepage.</p>
+</div>
+        </section>
+        
+      </div>
+      
     </article>
   </div>
 </div>

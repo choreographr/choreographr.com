@@ -1,6 +1,59 @@
 {% extends "base.html" %}
 
 {% block title %}Choreographr — your all-purpose AI agent, written in Rust{% endblock title %}
+{% block og_title %}Choreographr — your all-purpose AI agent, written in Rust{% endblock og_title %}
+
+{% block extra_head %}
+<!-- Structured data: WebSite + Organization + SoftwareApplication. This is
+     what lets search engines and AI answer engines extract and cite the
+     site's facts (what Choreographr is, license, language, repo). -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": "https://choreographr.com/#website",
+      "url": "https://choreographr.com/",
+      "name": "Choreographr",
+      "description": "Your all-purpose AI agent, written in Rust. A daemon with many clients, a sandboxed RISC-V VM, and support for 70+ model providers.",
+      "inLanguage": "en"
+    },
+    {
+      "@type": "Organization",
+      "@id": "https://choreographr.com/#organization",
+      "url": "https://choreographr.com/",
+      "name": "Choreographr",
+      "logo": "https://choreographr.com/favicon.svg",
+      "sameAs": [
+        "https://github.com/choreographr/choreographr",
+        "https://t.me/choreographr"
+      ]
+    },
+    {
+      "@type": "SoftwareApplication",
+      "@id": "https://choreographr.com/#software",
+      "name": "Choreographr",
+      "applicationCategory": "DeveloperApplication",
+      "operatingSystem": "Linux, macOS",
+      "description": "An all-purpose, extensible AI agent system written in Rust: a persistent daemon owns your sessions; terminal, desktop, Telegram and ACP editor clients come and go; LLM-generated code runs in a sandboxed RISC-V VM; 70+ model providers work out of the box.",
+      "license": "https://www.apache.org/licenses/LICENSE-2.0",
+      "url": "https://choreographr.com/",
+      "codeRepository": "https://github.com/choreographr/choreographr",
+      "softwareVersion": "0.1.0",
+      "isAccessibleForFree": true,
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+      "author": {
+        "@type": "Person",
+        "name": "Jonathan Brown",
+        "url": "https://choreographr.com/blog/authors/jonathan-brown/"
+      },
+      "publisher": { "@id": "https://choreographr.com/#organization" }
+    }
+  ]
+}
+</script>
+{% endblock extra_head %}
 
 {% block content %}
 

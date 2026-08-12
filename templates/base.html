@@ -13,6 +13,26 @@
   <meta name="description" content="{% block description %}{{ config.description }}{% endblock description %}">
   <meta name="theme-color" content="#06080b">
 
+  {% if current_url %}
+  <!-- Canonical: every page (incl. trailing-slash and /index.html variants)
+       resolves to one authoritative URL, which also matches the sitemap. -->
+  <link rel="canonical" href="{{ current_url | safe }}">
+  {% endif %}
+
+  <!-- Open Graph / social sharing. og:title / og:description are overridden
+       per template so they always match the <title> and meta description. -->
+  <meta property="og:site_name" content="Choreographr">
+  <meta property="og:type" content="{% block og_type %}website{% endblock og_type %}">
+  <meta property="og:title" content="{% block og_title %}{{ config.title }}{% endblock og_title %}">
+  <meta property="og:description" content="{% block og_description %}{{ config.description }}{% endblock og_description %}">
+  <meta property="og:url" content="{% if current_url %}{{ current_url | safe }}{% else %}{{ config.base_url | safe }}{% endif %}">
+  <meta property="og:image" content="{{ get_url(path='og-image.png') | safe }}">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Choreographr — your all-purpose AI agent, written in Rust">
+  <meta property="og:locale" content="en_US">
+  <meta name="twitter:card" content="summary_large_image">
+
   <!-- Critical inline CSS: paint the dark theme immediately, before
        main.css (or the webfont stylesheet) finishes loading, so the
        page never flashes white on navigation. -->

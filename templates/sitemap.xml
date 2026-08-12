@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+{#- Custom sitemap: excludes thin/utility pages that add no indexable value —
+   /search/, all /page/ pagination URLs (also excluded natively via
+   exclude_paginated_pages_in_sitemap in zola.toml), and the tag/author
+   listing pages. Only real content pages (home, docs, blog, posts, tag
+   terms) are listed. -#}
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  {%- for sitemap_entry in entries %}
+  {%- set p = sitemap_entry.permalink %}
+  {%- if p is not containing(pat="/search/")
+     and p is not containing(pat="/page/")
+     and p is not ending_with(pat="/blog/tags/")
+     and p is not containing(pat="/blog/authors/") %}
+  <url>
+    <loc>{{ p | escape_xml | safe }}</loc>
+    {%- if sitemap_entry.updated %}<lastmod>{{ sitemap_entry.updated }}</lastmod>{% endif %}
+  </url>
+  {%- endif %}
+  {%- endfor %}
+</urlset>

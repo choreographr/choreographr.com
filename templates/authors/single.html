@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 
 {% block title %}{{ term.name }} — {{ config.title }} Blog{% endblock title %}
+{% block og_title %}{{ term.name }} — {{ config.title }} Blog{% endblock og_title %}
 
 {% block content %}
 {% set all_authors = load_data(path="data/authors.toml") %}

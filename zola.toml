@@ -12,6 +12,12 @@ build_search_index = true
 # (Settings → Pages → Deploy from a branch → master /docs).
 output_dir = "docs"
 
+# Exclude /blog/page/N and /blog/tags/*/page/N pagination URLs from the
+# sitemap (they duplicate the canonical list pages). The custom
+# templates/sitemap.xml additionally filters /search/ and thin taxonomy
+# listing pages.
+exclude_paginated_pages_in_sitemap = "all"
+
 # Whether to automatically compile all Sass files in the sass directory
 compile_sass = false
 

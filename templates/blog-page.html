@@ -2,6 +2,29 @@
 
 {% block title %}{{ page.title }} — {{ config.title }} Blog{% endblock title %}
 {% block description %}{% if page.description %}{{ page.description }}{% else %}{{ config.description }}{% endif %}{% endblock description %}
+{% block og_type %}article{% endblock og_type %}
+{% block og_title %}{{ page.title }} — {{ config.title }} Blog{% endblock og_title %}
+{% block og_description %}{% if page.description %}{{ page.description }}{% else %}{{ config.description }}{% endif %}{% endblock og_description %}
+
+{% block extra_head %}
+{% set pubdate = page.date | date(format="%Y-%m-%d") %}
+{% set author_name = "Choreographr" %}
+{% if page.taxonomies.authors %}{% set author_name = page.taxonomies.authors | first %}{% endif %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": {{ page.title | json_encode() | safe }},
+  "description": {{ page.description | json_encode() | safe }},
+  "datePublished": {{ pubdate | json_encode() | safe }},
+  "dateModified": {{ pubdate | json_encode() | safe }},
+  "mainEntityOfPage": {{ page.permalink | json_encode() | safe }},
+  "image": {{ get_url(path='og-image.png') | json_encode() | safe }},
+  "author": [{ "@type": "Person", "name": {{ author_name | json_encode() | safe }} }],
+  "publisher": { "@type": "Organization", "name": "Choreographr", "url": "https://choreographr.com/" }
+}
+</script>
+{% endblock extra_head %}
 
 {% block content %}
 {% set all_authors = load_data(path="data/authors.toml") %}

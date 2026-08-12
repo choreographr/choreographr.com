@@ -13,6 +13,26 @@
   <meta name="description" content="Your all-purpose AI agent, written in Rust. A daemon with many clients, a sandboxed RISC-V VM, and support for 70+ model providers.">
   <meta name="theme-color" content="#06080b">
 
+  
+  <!-- Canonical: every page (incl. trailing-slash and /index.html variants)
+       resolves to one authoritative URL, which also matches the sitemap. -->
+  <link rel="canonical" href="https://choreographr.com/">
+  
+
+  <!-- Open Graph / social sharing. og:title / og:description are overridden
+       per template so they always match the <title> and meta description. -->
+  <meta property="og:site_name" content="Choreographr">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Choreographr — your all-purpose AI agent, written in Rust">
+  <meta property="og:description" content="Your all-purpose AI agent, written in Rust. A daemon with many clients, a sandboxed RISC-V VM, and support for 70+ model providers.">
+  <meta property="og:url" content="https://choreographr.com/">
+  <meta property="og:image" content="https://choreographr.com/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Choreographr — your all-purpose AI agent, written in Rust">
+  <meta property="og:locale" content="en_US">
+  <meta name="twitter:card" content="summary_large_image">
+
   <!-- Critical inline CSS: paint the dark theme immediately, before
        main.css (or the webfont stylesheet) finishes loading, so the
        page never flashes white on navigation. -->
@@ -27,7 +47,7 @@
   <link rel="preload" href="https://choreographr.com/fonts/jetbrains-mono.woff2" as="font" type="font/woff2" crossorigin>
 
   <link rel="icon" type="image/svg+xml" href="https://choreographr.com/favicon.svg">
-  <link rel="stylesheet" href="https://choreographr.com/css/main.css?h=258e37fcdb588b7471ed">
+  <link rel="stylesheet" href="https://choreographr.com/css/main.css?h=826ac5ad431795f8dffb">
 
   <!-- Firefox/Zen can paint a frame before this stylesheet has been
        applied if a layout flush happens while it loads (Bugzilla
@@ -45,6 +65,56 @@
   
 
   
+<!-- Structured data: WebSite + Organization + SoftwareApplication. This is
+     what lets search engines and AI answer engines extract and cite the
+     site's facts (what Choreographr is, license, language, repo). -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": "https://choreographr.com/#website",
+      "url": "https://choreographr.com/",
+      "name": "Choreographr",
+      "description": "Your all-purpose AI agent, written in Rust. A daemon with many clients, a sandboxed RISC-V VM, and support for 70+ model providers.",
+      "inLanguage": "en"
+    },
+    {
+      "@type": "Organization",
+      "@id": "https://choreographr.com/#organization",
+      "url": "https://choreographr.com/",
+      "name": "Choreographr",
+      "logo": "https://choreographr.com/favicon.svg",
+      "sameAs": [
+        "https://github.com/choreographr/choreographr",
+        "https://t.me/choreographr"
+      ]
+    },
+    {
+      "@type": "SoftwareApplication",
+      "@id": "https://choreographr.com/#software",
+      "name": "Choreographr",
+      "applicationCategory": "DeveloperApplication",
+      "operatingSystem": "Linux, macOS",
+      "description": "An all-purpose, extensible AI agent system written in Rust: a persistent daemon owns your sessions; terminal, desktop, Telegram and ACP editor clients come and go; LLM-generated code runs in a sandboxed RISC-V VM; 70+ model providers work out of the box.",
+      "license": "https://www.apache.org/licenses/LICENSE-2.0",
+      "url": "https://choreographr.com/",
+      "codeRepository": "https://github.com/choreographr/choreographr",
+      "softwareVersion": "0.1.0",
+      "isAccessibleForFree": true,
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+      "author": {
+        "@type": "Person",
+        "name": "Jonathan Brown",
+        "url": "https://choreographr.com/blog/authors/jonathan-brown/"
+      },
+      "publisher": { "@id": "https://choreographr.com/#organization" }
+    }
+  ]
+}
+</script>
+
 </head>
 <body class="min-h-screen flex flex-col">
 

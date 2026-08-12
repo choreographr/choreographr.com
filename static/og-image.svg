@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <radialGradient id="bg" cx="0.5" cy="0" r="0.9">
+      <stop offset="0" stop-color="#dea584" stop-opacity="0.16"/>
+      <stop offset="0.55" stop-color="#dea584" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="630" fill="#06080b"/>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+
+  <!-- accent bar -->
+  <rect x="80" y="120" width="72" height="6" rx="3" fill="#dea584"/>
+
+  <!-- wordmark -->
+  <text x="80" y="270" font-family="'Inter','Helvetica Neue',Helvetica,Arial,'DejaVu Sans',sans-serif" font-size="88" font-weight="800" letter-spacing="-2">
+    <tspan fill="#f5f7fa">choreo</tspan><tspan fill="#dea584">graphr</tspan>
+  </text>
+
+  <!-- tagline -->
+  <text x="80" y="350" font-family="'Inter','Helvetica Neue',Helvetica,Arial,'DejaVu Sans',sans-serif" font-size="40" font-weight="500" fill="#d3dae3">
+    Your all-purpose AI agent, written in Rust.
+  </text>
+
+  <!-- descriptor line -->
+  <text x="80" y="415" font-family="'Inter','Helvetica Neue',Helvetica,Arial,'DejaVu Sans',sans-serif" font-size="26" font-weight="400" fill="#8b98a8">
+    Sandboxed RISC-V VM · 70+ model providers · Apache-2.0
+  </text>
+
+  <!-- domain -->
+  <text x="80" y="520" font-family="'JetBrains Mono','DejaVu Sans Mono',monospace" font-size="26" font-weight="400" fill="#6b7686">
+    choreographr.com
+  </text>
+</svg>

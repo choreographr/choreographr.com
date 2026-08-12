@@ -13,6 +13,26 @@
   <meta name="description" content="Diagnostics, logs, and common problems.">
   <meta name="theme-color" content="#06080b">
 
+  
+  <!-- Canonical: every page (incl. trailing-slash and /index.html variants)
+       resolves to one authoritative URL, which also matches the sitemap. -->
+  <link rel="canonical" href="https://choreographr.com/docs/troubleshooting/">
+  
+
+  <!-- Open Graph / social sharing. og:title / og:description are overridden
+       per template so they always match the <title> and meta description. -->
+  <meta property="og:site_name" content="Choreographr">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Troubleshooting — Choreographr">
+  <meta property="og:description" content="Diagnostics, logs, and common problems.">
+  <meta property="og:url" content="https://choreographr.com/docs/troubleshooting/">
+  <meta property="og:image" content="https://choreographr.com/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Choreographr — your all-purpose AI agent, written in Rust">
+  <meta property="og:locale" content="en_US">
+  <meta name="twitter:card" content="summary_large_image">
+
   <!-- Critical inline CSS: paint the dark theme immediately, before
        main.css (or the webfont stylesheet) finishes loading, so the
        page never flashes white on navigation. -->
@@ -27,7 +47,7 @@
   <link rel="preload" href="https://choreographr.com/fonts/jetbrains-mono.woff2" as="font" type="font/woff2" crossorigin>
 
   <link rel="icon" type="image/svg+xml" href="https://choreographr.com/favicon.svg">
-  <link rel="stylesheet" href="https://choreographr.com/css/main.css?h=258e37fcdb588b7471ed">
+  <link rel="stylesheet" href="https://choreographr.com/css/main.css?h=826ac5ad431795f8dffb">
 
   <!-- Firefox/Zen can paint a frame before this stylesheet has been
        applied if a layout flush happens while it loads (Bugzilla
@@ -45,6 +65,21 @@
   
 
   
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://choreographr.com/" },
+    { "@type": "ListItem", "position": 2, "name": "Documentation", "item": "https://choreographr.com/docs/" },
+    { "@type": "ListItem", "position": 3, "name": "Troubleshooting" }
+  ]
+}
+</script>
+
+
+
 </head>
 <body class="min-h-screen flex flex-col">
 
@@ -305,6 +340,7 @@ that the client has the server's public key.</p>
 <p>Ask in the <a rel="noopener external" target="_blank" href="https://t.me/choreographr">Telegram community</a>, or open an issue
 on <a rel="noopener external" target="_blank" href="https://github.com/choreographr/choreographr">GitHub</a>.</p>
 
+      
     </article>
   </div>
 </div>

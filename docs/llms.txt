@@ -1,0 +1,59 @@
+# Choreographr
+
+> An all-purpose, extensible AI agent written in Rust. A persistent daemon owns
+> your sessions; clients for terminal, desktop, Telegram and ACP editors come
+> and go. LLM-generated code runs in a sandboxed RISC-V VM, and 70+ model
+> providers work out of the box. Open source, Apache-2.0.
+
+## What is Choreographr?
+
+Choreographr is an AI agent system built in 100% Rust: one server (the daemon)
+runs every session, and multiple clients connect to it — a terminal UI
+(`choreo-tui`), a desktop app (`choreo-gui`), a Telegram bridge (`choreo-im`),
+and an ACP bridge for editors like Claude Code and Cline. LLM-generated code is
+compiled to RISC-V and executed in an isolated `ckb-vm` sandbox: no host
+memory, no raw syscalls, no unlogged shell. Credentials are encrypted
+per-credential (X25519 ECDH + AES-256-GCM) and the daemon starts locked.
+Sessions, hierarchical subsessions and a persistent `redb` database come with
+per-session undo/redo. 70+ model providers are supported across
+OpenAI-compatible, Anthropic Messages and Google Gemini wire protocols,
+including OpenAI, Anthropic, Mistral, DeepSeek, xAI, Groq, Ollama and
+OpenRouter. Native EVM and Substrate/Polkadot blockchain tools are built in.
+
+## Key features
+
+- Daemon + multi-client architecture (terminal, desktop, Telegram, ACP editors)
+- Sandboxed RISC-V VM for LLM-generated code (a complete shell replacement)
+- 70+ model providers out of the box
+- Hierarchical subsessions with per-session undo/redo
+- Encrypted credential keystore (X25519 ECDH + HKDF + AES-256-GCM)
+- MCP client (Model Context Protocol)
+- Native EVM + Polkadot/Substrate blockchain tools
+- Persistent session-scoped database (redb)
+- Written in Rust; Apache-2.0; runs locally or in the cloud
+
+## Important pages
+
+- [Home](https://choreographr.com/): overview, features, and comparison table
+- [Quick start](https://choreographr.com/docs/quick-start/): first conversation in minutes
+- [Installation](https://choreographr.com/docs/installation/): Homebrew, .deb/.rpm, tarball, Cargo
+- [Documentation](https://choreographr.com/docs/): full documentation index
+- [FAQ](https://choreographr.com/docs/faq/): frequently asked questions
+- [Tools reference](https://choreographr.com/docs/tools/): every built-in tool and tool group
+- [Security](https://choreographr.com/docs/security/): threat model and encryption
+- [Why Rust](https://choreographr.com/docs/why-rust/): design rationale
+- [Architecture](https://choreographr.com/docs/architecture/): threading model and topology
+- [Blog](https://choreographr.com/blog/): news and release notes
+- [Consulting](https://choreographr.com/consulting/): about the author
+
+## Full text
+
+The complete text of the site (docs, FAQ, blog and consulting pages) is
+available as Markdown at [/llms-full.txt](https://choreographr.com/llms-full.txt).
+
+## Notes
+
+- License: Apache-2.0
+- Minimum supported Rust version: 1.91
+- Current release: v0.1.0 (early preview)
+- Community: [GitHub](https://github.com/choreographr/choreographr), [Telegram](https://t.me/choreographr)
