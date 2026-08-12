@@ -217,8 +217,8 @@ you: render the architecture diagram as an image
 When the agent calls `display_image`, the image appears **inline in the chat
 history** — PNG, JPEG, or vector SVG (SVG is rasterized at display resolution,
 so diagrams stay crisp). Click the image for a fullscreen view; press `Esc` to
-dismiss. Images render via the kitty graphics protocol, sixel, or a half-block
-fallback, so they work in virtually any terminal. See the
+dismiss. Images render via the kitty graphics protocol or sixel where
+supported, with a universal fallback that works in any terminal. See the
 [Terminal client](@/docs/terminal.md) page for details.
 
 
@@ -466,7 +466,7 @@ The terminal protocol is auto-detected at startup and falls back gracefully:
 |---|---|
 | Kitty graphics | kitty, foot, wezterm, ghostty, and other kitty-graphics terminals |
 | Sixel | terminals with sixel support (e.g. xterm-sixel, mlterm) |
-| Half-blocks | any terminal — a 2-pixel-per-cell Unicode fallback |
+| Universal fallback | any other terminal |
 
 Image blocks always reserve their height, so scrolling past an image stays
 stable even while it is still encoding.
@@ -751,8 +751,8 @@ search, randomness, time, session management, and orchestration.
 - In the terminal client the image appears **inline in the chat history** at
   half the viewport height. Click it for a fullscreen view (`Esc` dismisses).
   Encoding runs on a background thread and picks the best terminal protocol
-  automatically — kitty graphics, sixel, or a universal half-block fallback —
-  so images render in virtually any terminal. See
+  automatically — kitty graphics or sixel where supported, with a universal
+  fallback everywhere else — so images render in virtually any terminal. See
   [Terminal client](@/docs/terminal.md).
 
 ### PDF tools
@@ -1495,8 +1495,8 @@ disconnect whenever they want.
 - **`choreo-tui`** — a full-screen terminal UI with O(1) scrolling and
   streaming, markdown rendering, syntax highlighting, and a model selector.
   It also renders images inline in your chat — PNG, JPEG, and vector SVG —
-  using the kitty graphics protocol, sixel, or a universal half-block
-  fallback, with click-to-open fullscreen viewing.
+  using the kitty graphics protocol or sixel where supported, with a universal
+  fallback everywhere else, plus click-to-open fullscreen viewing.
 - **`choreo-gui`** — a desktop app (Dioxus), in development.
 - **`choreo-im`** — chat with your agent on the go, from Telegram.
 - **`choreo-acp`** — drive sessions from ACP-compatible editors like Claude

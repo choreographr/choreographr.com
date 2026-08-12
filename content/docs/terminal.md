@@ -37,7 +37,7 @@ The terminal protocol is auto-detected at startup and falls back gracefully:
 |---|---|
 | Kitty graphics | kitty, foot, wezterm, ghostty, and other kitty-graphics terminals |
 | Sixel | terminals with sixel support (e.g. xterm-sixel, mlterm) |
-| Half-blocks | any terminal — a 2-pixel-per-cell Unicode fallback |
+| Universal fallback | any other terminal |
 
 Image blocks always reserve their height, so scrolling past an image stays
 stable even while it is still encoding.

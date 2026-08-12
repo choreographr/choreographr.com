@@ -86,8 +86,8 @@ disconnect whenever they want.
 - **`choreo-tui`** — a full-screen terminal UI with O(1) scrolling and
   streaming, markdown rendering, syntax highlighting, and a model selector.
   It also renders images inline in your chat — PNG, JPEG, and vector SVG —
-  using the kitty graphics protocol, sixel, or a universal half-block
-  fallback, with click-to-open fullscreen viewing.
+  using the kitty graphics protocol or sixel where supported, with a universal
+  fallback everywhere else, plus click-to-open fullscreen viewing.
 - **`choreo-gui`** — a desktop app (Dioxus), in development.
 - **`choreo-im`** — chat with your agent on the go, from Telegram.
 - **`choreo-acp`** — drive sessions from ACP-compatible editors like Claude

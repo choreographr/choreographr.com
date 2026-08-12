@@ -165,8 +165,8 @@ search, randomness, time, session management, and orchestration.
 - In the terminal client the image appears **inline in the chat history** at
   half the viewport height. Click it for a fullscreen view (`Esc` dismisses).
   Encoding runs on a background thread and picks the best terminal protocol
-  automatically — kitty graphics, sixel, or a universal half-block fallback —
-  so images render in virtually any terminal. See
+  automatically — kitty graphics or sixel where supported, with a universal
+  fallback everywhere else — so images render in virtually any terminal. See
   [Terminal client](@/docs/terminal.md).
 
 ### PDF tools
