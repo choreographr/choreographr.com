@@ -10,7 +10,7 @@
   <meta name="color-scheme" content="dark">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Choreographr v0.1.0 Released — Choreographr Blog</title>
-  <meta name="description" content="Choreographr v0.1.0 is out — an open-source (Apache-2.0) AI agent in Rust with a sandboxed RISC-V VM, a persistent daemon, and 70+ model providers.">
+  <meta name="description" content="Choreographr v0.1.0 is out — an open-source (Apache-2.0) AI agent in Rust with a sandboxed RISC-V VM, a persistent server, and 70+ model providers.">
   <meta name="theme-color" content="#06080b">
 
   
@@ -24,7 +24,7 @@
   <meta property="og:site_name" content="Choreographr">
   <meta property="og:type" content="article">
   <meta property="og:title" content="Choreographr v0.1.0 Released — Choreographr Blog">
-  <meta property="og:description" content="Choreographr v0.1.0 is out — an open-source (Apache-2.0) AI agent in Rust with a sandboxed RISC-V VM, a persistent daemon, and 70+ model providers.">
+  <meta property="og:description" content="Choreographr v0.1.0 is out — an open-source (Apache-2.0) AI agent in Rust with a sandboxed RISC-V VM, a persistent server, and 70+ model providers.">
   <meta property="og:url" content="https://choreographr.com/blog/choreographr-0-1-0/">
   <meta property="og:image" content="https://choreographr.com/og-image.png">
   <meta property="og:image:width" content="1200">
@@ -73,7 +73,7 @@
   "@context": "https://schema.org",
   "@type": "Article",
   "headline": "Choreographr v0.1.0 Released",
-  "description": "Choreographr v0.1.0 is out — an open-source (Apache-2.0) AI agent in Rust with a sandboxed RISC-V VM, a persistent daemon, and 70+ model providers.",
+  "description": "Choreographr v0.1.0 is out — an open-source (Apache-2.0) AI agent in Rust with a sandboxed RISC-V VM, a persistent server, and 70+ model providers.",
   "datePublished": "2026-08-13",
   "dateModified": "2026-08-13",
   "mainEntityOfPage": "https://choreographr.com/blog/choreographr-0-1-0/",
@@ -217,7 +217,7 @@ does between prompts.</p>
 access and work the way they always have; for everyone else, LLM-generated code
 runs in a <strong>sandboxed RISC-V VM</strong> instead — an isolated environment with no
 host memory, no raw syscalls, and no filesystem access except through
-registered, logged tools. Around that core sits a <strong>persistent daemon</strong> that
+registered, logged tools. Around that core sits a <strong>persistent server</strong> that
 lets clients — terminal, desktop, Telegram, editor — come and go, written in
 <strong>Rust</strong> so it stays lean, memory-safe, and honest about everything the agent
 did. The first release, v0.1.0, is out now.</p>
@@ -230,7 +230,7 @@ Then it's a few commands to your first conversation:</p>
 <span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">brew</span><span style="color: #A6E3A1;"> tap choreographr/choreographr</span></span>
 <span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">brew</span><span style="color: #A6E3A1;"> trust choreographr/choreographr</span></span>
 <span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">brew</span><span style="color: #A6E3A1;"> install choreographr</span></span>
-<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">choreographr</span><span style="color: #9399B2;font-style: italic;">   # terminal 1 — the daemon</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">choreographr</span><span style="color: #9399B2;font-style: italic;">   # terminal 1 — the server</span></span>
 <span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">choreo-tui</span><span style="color: #9399B2;font-style: italic;">     # terminal 2 — the terminal client</span></span></code></pre>
 <p>Homebrew 6.0 and later refuse to load non-official taps until they are
 <a href="https://choreographr.com/docs/installation/#homebrew">explicitly trusted</a> — loading a tap can run
@@ -249,7 +249,7 @@ that few agents deliver together:</p>
 <ul>
 <li><strong>Safety by design</strong> — model output runs in a sandboxed VM, not an unlogged
 shell, and every tool call is recorded.</li>
-<li><strong>A daemon that owns your sessions</strong> — clients come and go; start a task in
+<li><strong>A server that owns your sessions</strong> — clients come and go; start a task in
 the terminal and check on it from your phone.</li>
 <li><strong>A core that can be trusted to run for months</strong> — Rust: memory-safe by
 construction, and light enough on CPU and RAM that you stop noticing it.</li>
@@ -285,7 +285,7 @@ design rather than bolted on, and fully observable.</p>
 beautiful, detailed and colorful geometric design in a SVG and show it to me.
 Only use integer math.</p>
 </blockquote>
-<p>The agent writes a small Rust program, the daemon compiles it to RISC-V and
+<p>The agent writes a small Rust program, the server compiles it to RISC-V and
 runs it inside the sandboxed VM, and the generated SVG comes back as a file the
 TUI renders inline:</p>
 <p><img src="/blog/2026-08-12-choreographr-0-1-0/riscv-vm-01-prompt.webp" alt="choreo-tui: the riscv-vm prompt typed into the session" loading="lazy" decoding="async" /></p>
@@ -296,13 +296,13 @@ TUI renders inline:</p>
 <p>And this is the SVG the VM produced — a geometric mandala drawn entirely with
 integer math:</p>
 <p><img src="/blog/2026-08-12-choreographr-0-1-0/geometric-mandala.svg" alt="Geometric mandala SVG generated by a Rust program running in the RISC-V VM" loading="lazy" decoding="async" /></p>
-<h2 id="one-daemon-every-surface">One daemon, every surface
-<a class="zola-anchor" href="#one-daemon-every-surface" aria-label="Anchor link for: one-daemon-every-surface">
+<h2 id="one-server-every-surface">One server, every surface
+<a class="zola-anchor" href="#one-server-every-surface" aria-label="Anchor link for: one-server-every-surface">
   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
 </a>
 </h2>
 <p>Most agents are a single process with a single UI. Choreographr is built the
-other way around: one <strong>daemon</strong> owns your sessions, and clients connect and
+other way around: one <strong>server</strong> owns your sessions, and clients connect and
 disconnect whenever they want.</p>
 <ul>
 <li><strong><code>choreo-tui</code></strong> — a full-screen terminal UI with O(1) scrolling and
@@ -315,12 +315,12 @@ fallback everywhere else, plus click-to-open fullscreen viewing.</li>
 <li><strong><code>choreo-acp</code></strong> — drive sessions from ACP-compatible editors like Claude
 Code and Cline.</li>
 </ul>
-<p>Because sessions live in the daemon, you can start a task in the terminal and
+<p>Because sessions live in the server, you can start a task in the terminal and
 check on it from your phone. Everything persists in an embedded <code>redb</code> database
 and survives restarts.</p>
 <!-- TODO: add a short screencast of streaming here (and a click-to-open
 fullscreen view of an inline image) once available -->
-<p><img src="/architecture.svg" alt="Choreographr architecture: clients (TUI, GUI, IM, ACP) and the daemon handoff connect to the choreographr daemon, which talks to model providers and runs MCP servers, a RISC-V VM sandbox, and a redb database" loading="lazy" decoding="async" /></p>
+<p><img src="/architecture.svg" alt="Choreographr architecture: clients (TUI, GUI, IM, ACP) and the server handoff connect to the choreographr server, which talks to model providers and runs MCP servers, a RISC-V VM sandbox, and a redb database" loading="lazy" decoding="async" /></p>
 <h2 id="rust-because-it-has-to-last">Rust, because it has to last
 <a class="zola-anchor" href="#rust-because-it-has-to-last" aria-label="Anchor link for: rust-because-it-has-to-last">
   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
@@ -332,9 +332,9 @@ holds your API keys. Choreographr's core is pure Rust for three reasons:</p>
 <ul>
 <li><strong>Memory safety by construction</strong> — no null dereferences, use-after-free, or
 buffer overflows; the compiler rejects them before they exist. A long-lived
-daemon that holds your keys and runs untrusted model output should not be one
+server that holds your keys and runs untrusted model output should not be one
 segfault away from a problem.</li>
-<li><strong>Threads, not async</strong> — the daemon uses real OS threads with message
+<li><strong>Threads, not async</strong> — the server uses real OS threads with message
 passing; each session owns its state, with none of the shared-state and
 cancellation complexity an async runtime brings.</li>
 <li><strong>Lean enough to ignore</strong> — agents are I/O bound, and Choreographr stays
@@ -375,11 +375,11 @@ in the TUI/GUI.</p>
 <li><strong>70+ model providers</strong> — OpenAI, Anthropic, Mistral, DeepSeek, xAI, Groq,
 Ollama, OpenRouter and more, via OpenAI-compatible, Anthropic Messages, and
 Gemini APIs.</li>
-<li><strong>Concurrent sessions &amp; subsessions</strong> — the daemon runs many sessions in
+<li><strong>Concurrent sessions &amp; subsessions</strong> — the server runs many sessions in
 parallel on real threads, and any session can spawn hierarchical subsessions
 through a tool call.</li>
 <li><strong>Encrypted credentials</strong> — every key is encrypted at rest with X25519 ECDH +
-AES-256-GCM; the daemon starts locked and decrypts in memory only after
+AES-256-GCM; the server starts locked and decrypts in memory only after
 unlock. See <a href="https://choreographr.com/docs/security/">security</a>.</li>
 <li><strong>Agent database</strong> — a persistent, session-scoped key-value store (<code>redb</code>)
 the agent writes to and reads back. See
@@ -405,7 +405,7 @@ agents can share a codebase without colliding.</li>
 plugins.</li>
 <li><strong>OS-level sandboxing</strong> — Landlock on Linux, Seatbelt on macOS, for tools
 that must run outside the VM.</li>
-<li><strong>Inter-daemon handoff</strong> — pass sessions between daemons over Noise.</li>
+<li><strong>Inter-server handoff</strong> — pass sessions between servers over Noise.</li>
 </ul>
 <p>Ready to give it a spin? The <a href="https://choreographr.com/docs/quick-start/">quick start</a> gets you to
 your first prompt, and the

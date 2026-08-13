@@ -37,7 +37,7 @@
   <!-- Daemon -->
   <rect x="290" y="120" width="220" height="130" class="box-accent"/>
   <text x="310" y="150" class="label" fill="#dea584">choreographr</text>
-  <text x="310" y="168" class="label-sub">daemon · the core engine</text>
+  <text x="310" y="168" class="label-sub">server · the core engine</text>
   <text x="310" y="190" class="label-sub">persistent sessions</text>
   <text x="310" y="206" class="label-sub">tool-call loop · undo/redo</text>
   <text x="310" y="222" class="label-sub">lock/unlock · credentials</text>
@@ -88,6 +88,6 @@
 
   <!-- Caption -->
   <text x="20" y="450" class="label-sub">Clients connect over a local Unix socket, or Noise-IK encrypted TCP from anywhere.</text>
-  <text x="20" y="468" class="label-sub">Sessions are stored in the embedded redb database and survive daemon restarts.</text>
-  <text x="20" y="486" class="label-sub">Daemons can handoff to sessions on other daemons via Noise-IK.</text>
+  <text x="20" y="468" class="label-sub">Sessions are stored in the embedded redb database and survive server restarts.</text>
+  <text x="20" y="486" class="label-sub">Servers can handoff to sessions on other servers via Noise-IK.</text>
 </svg>
