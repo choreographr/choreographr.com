@@ -1,7 +1,7 @@
 +++
 title = "Choreographr v0.1.0 Released"
 description = "Choreographr v0.1.0 is out — an open-source (Apache-2.0) AI agent in Rust with a sandboxed RISC-V VM, a persistent daemon, and 70+ model providers."
-date = 2026-08-12
+date = 2026-08-13
 template = "blog-page.html"
 # Top-level `authors` feeds the Atom feed; the `[taxonomies] authors` below
 # drives the author pages/byline. Kept in sync.
