@@ -1636,29 +1636,4 @@ We'd love your help — star the
 # Consulting
 
 
-## Background
-
-Jonathan started his career building a complete multiplayer 2D game in C — implementing BSP trees, UDP networking with dead reckoning, and event-stream demo recording and playback. This foundation in systems programming shaped his approach to software: rigorous, deterministic, and pragmatic.
-
-Over the following decade he built and maintained enterprise Drupal platforms for AIG, NAB, and Flight Centre — working with large SQL databases, complex migrations, and payment integrations. He contributed patches to Drupal, ran the Berlin Drupal community for three years, and spoke at conferences across Europe.
-
-In 2015 he transitioned into blockchain and Rust development. He authored **Acuity Index**, a config-driven event indexer for Substrate blockchains, which received [two Web3 Foundation grants](https://github.com/acuity-network/acuity-index) and Kusama Treasury funding. The project features resumable indexing, concurrent backfill and live-head catch-up with out-of-order resolution, and an embedded database — all in safe Rust.
-
-Today Jonathan focuses on AI-augmented development, using agentic tools daily to deliver high-quality software faster. The throughline across his entire career is **event-driven architecture**, **test-first engineering**, and building systems that work reliably in production.
-
-## AI-Augmented Development
-
-Jonathan was an early adopter of AI-agentic development tools. He uses Claude Code, Pi, OpenCode, and Hermes Agent for feature development, refactoring, and testing — and is building **Choreographr**, a custom long-running agent in Rust. His workflows emphasise:
-
-- **Read-only planning** — exploring codebases and producing a plan before writing a single line of code.
-- **Invariant enforcement** — AGENTS.md files that encode structural rules the AI must follow.
-- **Full test coverage** — every project runs a complete test suite, often AI-generated and human-reviewed, ensuring refactors land safely.
-
-He has demonstrated that AI-augmented workflows can dramatically accelerate delivery velocity without sacrificing quality — often 2–3× faster than traditional solo development while maintaining or improving test coverage.
-
-## Personal
-
-Jonathan has been in Vietnam since 2015, based in Da Nang. He is an async-first communicator comfortable working across European and Southeast Asian time zones. Outside of code he enjoys road cycling, yoga, swing dancing, and exploring the central highlands by motorbike.
-
-If you would like to discuss a project or explore how Jonathan's experience applies to your business, [get in touch](https://t.me/ethernomad).
 
