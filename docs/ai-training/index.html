@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="night">
+<head>
+  <meta charset="UTF-8">
+  <!-- color-scheme hint: lets the browser paint the dark canvas background
+       as soon as the head is parsed, before ANY CSS has been applied.
+       This is the one thing that closes the residual flash on Firefox/Zen,
+       which paints its default (white) canvas frame during navigation,
+       unlike Chromium which defers first paint until the inline CSS exists. -->
+  <meta name="color-scheme" content="dark">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AI Agent Training — Da Nang — Choreographr</title>
+  <meta name="description" content="Weekly two-hour beginner drop-in classes in Da Nang with Jonathan Brown: build a custom website with an AI agent — no coding at all. 400,000 VND per class, cash or bank QR. Skills transfer to any agent.">
+  <meta name="theme-color" content="#06080b">
+
+  
+  <!-- Canonical: every page (incl. trailing-slash and /index.html variants)
+       resolves to one authoritative URL, which also matches the sitemap. -->
+  <link rel="canonical" href="https://choreographr.com/ai-training/">
+  
+
+  <!-- Open Graph / social sharing. og:title / og:description are overridden
+       per template so they always match the <title> and meta description. -->
+  <meta property="og:site_name" content="Choreographr">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="AI Agent Training — Da Nang — Choreographr">
+  <meta property="og:description" content="Weekly two-hour beginner drop-in classes in Da Nang with Jonathan Brown: build a custom website with an AI agent — no coding at all. 400,000 VND per class, cash or bank QR. Skills transfer to any agent.">
+  <meta property="og:url" content="https://choreographr.com/ai-training/">
+  <meta property="og:image" content="https://choreographr.com/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Choreographr — your all-purpose AI agent, written in Rust">
+  <meta property="og:locale" content="en_US">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <!-- Critical inline CSS: paint the dark theme immediately, before
+       main.css (or the webfont stylesheet) finishes loading, so the
+       page never flashes white on navigation. -->
+  <style>
+    html { background-color: #06080b; color-scheme: dark; }
+    body { background-color: #06080b; color: #d3dae3; }
+  </style>
+
+  <!-- Self-hosted fonts (same-origin): preload the two variable woff2
+       files so they're available at first paint — no visible swap. -->
+  <link rel="preload" href="https://choreographr.com/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="https://choreographr.com/fonts/jetbrains-mono.woff2" as="font" type="font/woff2" crossorigin>
+
+  <link rel="icon" type="image/svg+xml" href="https://choreographr.com/favicon.svg">
+  <link rel="stylesheet" href="https://choreographr.com/css/main.css?h=1db46bcb58423681c46b">
+
+  <!-- Firefox/Zen can paint a frame before this stylesheet has been
+       applied if a layout flush happens while it loads (Bugzilla
+       1459305) — unlike Chromium, which blocks the parser on the
+       <link>. This synchronous script is the standard workaround: it
+       cannot execute until main.css is ready, and while it is pending
+       the <body> has not been parsed, so nothing unstyled can paint.
+       Result: same first-paint behaviour as Chromium, no FOUC. -->
+  <script>
+    // No-op: exists only to hold first paint until main.css is applied.
+  </script>
+
+  
+  <link rel="alternate" type="application/atom+xml" title="Choreographr Blog" href="https://choreographr.com/atom.xml">
+  
+
+  
+<meta name="robots" content="noindex, nofollow">
+
+</head>
+<body class="min-h-screen flex flex-col">
+
+  <header class="sticky top-0 z-40 w-full border-b border-night-700 bg-night-950/90 backdrop-blur">
+  <nav class="navbar mx-auto max-w-7xl px-4 sm:px-6">
+    <div class="navbar-start">
+      <div class="dropdown lg:hidden">
+        <div tabindex="0" role="button" class="btn btn-ghost btn-square" aria-label="Menu">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </div>
+        <ul tabindex="0" class="dropdown-content menu bg-night-900 border border-night-700 rounded-box z-50 mt-3 w-52 p-2 shadow-2xl">
+          
+          <li>
+            <a href="/docs/"  class="">
+              Docs
+            </a>
+          </li>
+          
+          <li>
+            <a href="/blog/"  class="">
+              Blog
+            </a>
+          </li>
+          
+          <li>
+            <a href="/consulting/"  class="">
+              Consulting
+            </a>
+          </li>
+          
+          <li>
+            <a href="https://github.com/choreographr/choreographr" target="_blank" rel="noopener" class="">
+              GitHub<span class="text-night-400 text-xs">↗</span>
+            </a>
+          </li>
+          
+          <li>
+            <a href="https://t.me/choreographr" target="_blank" rel="noopener" class="">
+              Telegram<span class="text-night-400 text-xs">↗</span>
+            </a>
+          </li>
+          
+        </ul>
+      </div>
+      <a href="/" class="font-mono text-lg font-bold tracking-tight select-none">
+        <span class="text-brand-500">choreo</span><span class="text-night-50">graphr</span>
+      </a>
+    </div>
+    <div class="navbar-end hidden lg:flex">
+      <ul class="menu menu-horizontal px-1 gap-1 text-sm">
+        
+        <li>
+          <a href="/docs/"
+             
+             class="text-night-200 hover:text-night-50">
+            Docs
+          </a>
+        </li>
+        
+        <li>
+          <a href="/blog/"
+             
+             class="text-night-200 hover:text-night-50">
+            Blog
+          </a>
+        </li>
+        
+        <li>
+          <a href="/consulting/"
+             
+             class="text-night-200 hover:text-night-50">
+            Consulting
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://github.com/choreographr/choreographr"
+             target="_blank" rel="noopener"
+             class="">
+            GitHub<span class="text-night-400 text-xs">↗</span>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://t.me/choreographr"
+             target="_blank" rel="noopener"
+             class="">
+            Telegram<span class="text-night-400 text-xs">↗</span>
+          </a>
+        </li>
+        
+      </ul>
+    </div>
+  </nav>
+</header>
+
+
+  <main class="flex-1">
+    
+
+
+<section class="relative overflow-hidden">
+  <div class="absolute inset-0 bg-grid"></div>
+  <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(222,165,132,0.10),transparent_55%)]"></div>
+
+  <div class="relative mx-auto max-w-7xl px-4 sm:px-6 py-16 lg:py-24">
+    <div class="grid gap-12 lg:grid-cols-2 lg:items-center">
+      <div class="space-y-6 text-center lg:text-left">
+        <p class="text-sm font-semibold tracking-widest text-brand-500/90 font-mono uppercase">Da Nang · Weekly drop-in classes for beginners</p>
+        <h1 class="text-4xl font-extrabold tracking-tight text-night-50 md:text-5xl glow-brand">
+          Build a website with an AI agent
+        </h1>
+        <p class="text-xl text-night-200 leading-relaxed">
+          A beginner class. Two hours a week, drop in when you can, with
+          one-on-one help at your own pace. You'll build a
+          <span class="text-night-100">custom website from scratch — without
+          writing any code at all</span>.
+        </p>
+        <div class="flex flex-wrap justify-center lg:justify-start gap-3 pt-2">
+          <span class="inline-flex items-center gap-2 rounded-full border border-night-600 bg-night-800 px-4 py-1.5 text-sm text-night-100">
+            <svg class="h-4 w-4 text-brand-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            400,000 VND per class
+          </span>
+          <span class="inline-flex items-center gap-2 rounded-full border border-night-600 bg-night-800 px-4 py-1.5 text-sm text-night-100">
+            <svg class="h-4 w-4 text-brand-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+            Cash or bank QR
+          </span>
+          <span class="inline-flex items-center gap-2 rounded-full border border-night-600 bg-night-800 px-4 py-1.5 text-sm text-night-100">
+            <svg class="h-4 w-4 text-brand-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            No coding at all — build a custom site
+          </span>
+          <span class="inline-flex items-center gap-2 rounded-full border border-night-600 bg-night-800 px-4 py-1.5 text-sm text-night-100">
+            <svg class="h-4 w-4 text-brand-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            Max 10 people per class
+          </span>
+        </div>
+        <div class="flex flex-wrap justify-center lg:justify-start gap-3 pt-2">
+          <a href="https://chat.whatsapp.com/BtVATGh7odDLpYbuXAtfZp" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-lg gap-2">
+            <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            Join the WhatsApp group
+          </a>
+        </div>
+      </div>
+
+      
+      <div class="flex justify-center">
+        <svg class="w-full max-w-xl h-auto" viewBox="0 0 520 320" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="From a prompt in the Choreographr terminal to a live website in the browser">
+          <defs>
+            <radialGradient id="heroGlow" cx="0.6" cy="0.4" r="0.7">
+              <stop offset="0" stop-color="#dea584" stop-opacity="0.14"/>
+              <stop offset="1" stop-color="#dea584" stop-opacity="0"/>
+            </radialGradient>
+          </defs>
+
+          <rect x="180" y="10" width="330" height="300" rx="150" fill="url(#heroGlow)"/>
+
+          
+          <rect x="16" y="56" width="224" height="216" rx="14" fill="#0a0d12" stroke="#232c38" stroke-width="1.5"/>
+          <path d="M16 70 a14 14 0 0 1 14 -14 h196 a14 14 0 0 1 14 14 v20 h-224 z" fill="#11161d"/>
+          <circle cx="36" cy="73" r="5" fill="#f85149"/>
+          <circle cx="52" cy="73" r="5" fill="#d29922"/>
+          <circle cx="68" cy="73" r="5" fill="#3fb950"/>
+          <text x="128" y="78" font-family="'JetBrains Mono', monospace" font-size="11" fill="#4b5a6b" text-anchor="middle">choreo-tui</text>
+          <line x1="16" y1="92" x2="240" y2="92" stroke="#1a212b" stroke-width="1.5"/>
+
+          <text x="32" y="118" font-family="'JetBrains Mono', monospace" font-size="11.5">
+            <tspan fill="#dea584">$ </tspan><tspan fill="#a9b4c2">you: build my website</tspan>
+          </text>
+          <text x="32" y="142" font-family="'JetBrains Mono', monospace" font-size="11.5" fill="#7d8b9d">→ reading project files…</text>
+          <text x="32" y="166" font-family="'JetBrains Mono', monospace" font-size="11.5" fill="#7d8b9d">→ creating index.html</text>
+          <text x="32" y="190" font-family="'JetBrains Mono', monospace" font-size="11.5" fill="#7d8b9d">→ creating styles.css</text>
+          <text x="32" y="214" font-family="'JetBrains Mono', monospace" font-size="11.5" fill="#7d8b9d">→ 3 files changed<tspan fill="#3fb950"> ✓</tspan></text>
+          <rect x="32" y="222" width="9" height="13" fill="#dea584">
+            <animate attributeName="opacity" values="1;0;1" dur="1.1s" repeatCount="indefinite"/>
+          </rect>
+
+          
+          <text x="271" y="150" font-family="'JetBrains Mono', monospace" font-size="9.5" fill="#4b5a6b" text-anchor="middle">deploy</text>
+          <line x1="254" y1="164" x2="288" y2="164" stroke="#dea584" stroke-width="3" stroke-linecap="round"/>
+          <path d="M288 158 L298 164 L288 170 Z" fill="#dea584"/>
+
+          
+          <rect x="296" y="36" width="212" height="240" rx="14" fill="#0a0d12" stroke="#232c38" stroke-width="1.5"/>
+          <path d="M296 50 a14 14 0 0 1 14 -14 h184 a14 14 0 0 1 14 14 v16 h-212 z" fill="#11161d"/>
+          <circle cx="314" cy="47" r="4" fill="#f85149"/>
+          <circle cx="328" cy="47" r="4" fill="#d29922"/>
+          <circle cx="342" cy="47" r="4" fill="#3fb950"/>
+          <rect x="360" y="38" width="122" height="18" rx="9" fill="#0d1117" stroke="#1a212b"/>
+          <text x="421" y="50.5" font-family="'JetBrains Mono', monospace" font-size="9" fill="#4b5a6b" text-anchor="middle">mysite.github.io</text>
+
+          <rect x="296" y="66" width="212" height="28" fill="#0d1117"/>
+          <rect x="310" y="80" width="8" height="8" rx="2" fill="#dea584"/>
+          <rect x="330" y="82" width="20" height="4" rx="2" fill="#2d3846"/>
+          <rect x="356" y="82" width="24" height="4" rx="2" fill="#2d3846"/>
+          <rect x="386" y="82" width="18" height="4" rx="2" fill="#2d3846"/>
+
+          <rect x="310" y="116" width="128" height="13" rx="4" fill="#d3dae3"/>
+          <rect x="310" y="138" width="172" height="7" rx="3.5" fill="#2d3846"/>
+          <rect x="310" y="151" width="150" height="7" rx="3.5" fill="#2d3846"/>
+          <rect x="310" y="170" width="66" height="20" rx="10" fill="#dea584"/>
+          <text x="343" y="183" font-family="'Inter', sans-serif" font-size="9" font-weight="600" fill="#1a0d05" text-anchor="middle">Get started</text>
+
+          <rect x="310" y="206" width="58" height="52" rx="8" fill="#11161d" stroke="#1a212b"/>
+          <rect x="316" y="216" width="30" height="5" rx="2.5" fill="#2d3846"/>
+          <rect x="316" y="228" width="20" height="4" rx="2" fill="#1a212b"/>
+          <rect x="376" y="206" width="58" height="52" rx="8" fill="#11161d" stroke="#1a212b"/>
+          <rect x="382" y="216" width="30" height="5" rx="2.5" fill="#2d3846"/>
+          <rect x="382" y="228" width="20" height="4" rx="2" fill="#1a212b"/>
+          <rect x="442" y="206" width="58" height="52" rx="8" fill="#11161d" stroke="#1a212b"/>
+          <rect x="448" y="216" width="30" height="5" rx="2.5" fill="#2d3846"/>
+          <rect x="448" y="228" width="20" height="4" rx="2" fill="#1a212b"/>
+
+          <rect x="296" y="258" width="212" height="18" fill="#0d1117"/>
+          <circle cx="312" cy="267" r="4" fill="#3fb950"/>
+          <text x="322" y="270.5" font-family="'JetBrains Mono', monospace" font-size="9" fill="#7d8b9d">pages · live</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section class="border-t border-night-700">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 py-16">
+    <div class="text-center mb-12">
+      <p class="text-sm font-semibold tracking-widest text-brand-500/90 font-mono uppercase">The curriculum</p>
+      <h2 class="mt-2 text-3xl font-extrabold tracking-tight text-night-50">What you'll learn</h2>
+    </div>
+
+    <div class="mx-auto max-w-3xl">
+      <div class="rounded-2xl border border-night-700 bg-night-900 p-8">
+        <div class="flex items-center gap-3 mb-6">
+          <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-brand-500/10 border border-brand-500/30">
+            <svg class="h-5 w-5 text-brand-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          </div>
+          <div>
+            <h3 class="text-xl font-bold text-night-50">Build your first website</h3>
+            <p class="text-sm text-night-400">A beginner's path — no coding at all</p>
+          </div>
+        </div>
+        <p class="mt-2 text-2xl font-extrabold tracking-tight text-night-50">
+          Build a beautiful, custom website by simply chatting with an agent —
+          no code to write.
+        </p>
+        <p class="mt-3 text-night-300 leading-relaxed">
+          You describe what you want in plain English. Your agent writes the
+          code; you watch, review, and refine — until it's yours.
+        </p>
+
+        <p class="mt-6 text-sm font-semibold tracking-widest text-brand-500/90 font-mono uppercase">The path</p>
+        <ol class="mt-3 space-y-4">
+          <li class="flex gap-3">
+            <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-brand-500/40 bg-night-800 font-mono text-sm font-semibold text-brand-400">1</span>
+            <span class="text-night-200 pt-1">Set up your workspace</span>
+          </li>
+          <li class="flex gap-3">
+            <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-brand-500/40 bg-night-800 font-mono text-sm font-semibold text-brand-400">2</span>
+            <span class="text-night-200 pt-1">Chat with your agent to build your site</span>
+          </li>
+          <li class="flex gap-3">
+            <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-brand-500/40 bg-night-800 font-mono text-sm font-semibold text-brand-400">3</span>
+            <span class="text-night-200 pt-1">Make it look good — colors, layout, style</span>
+          </li>
+          <li class="flex gap-3">
+            <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-brand-500/40 bg-night-800 font-mono text-sm font-semibold text-brand-400">4</span>
+            <span class="text-night-200 pt-1">Keep it safe to change — every edit tracked and undoable</span>
+          </li>
+          <li class="flex gap-3">
+            <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-brand-500/40 bg-night-800 font-mono text-sm font-semibold text-brand-400">5</span>
+            <span class="text-night-200 pt-1">Put it live — <span class="text-night-100 font-semibold">free</span> hosting on GitHub Pages with your own domain</span>
+          </li>
+        </ol>
+
+        <p class="mt-6 text-sm font-semibold tracking-widest text-brand-500/90 font-mono uppercase">Technologies you'll use</p>
+        <div class="mt-3 flex flex-wrap gap-2">
+          
+          
+          <span class="rounded-full border border-night-600 bg-night-800 px-3 py-1 font-mono text-sm text-night-200">Ghostty</span>
+          
+          <span class="rounded-full border border-night-600 bg-night-800 px-3 py-1 font-mono text-sm text-night-200">Choreographr</span>
+          
+          <span class="rounded-full border border-night-600 bg-night-800 px-3 py-1 font-mono text-sm text-night-200">Zola</span>
+          
+          <span class="rounded-full border border-night-600 bg-night-800 px-3 py-1 font-mono text-sm text-night-200">daisyUI</span>
+          
+          <span class="rounded-full border border-night-600 bg-night-800 px-3 py-1 font-mono text-sm text-night-200">Tailwind</span>
+          
+          <span class="rounded-full border border-night-600 bg-night-800 px-3 py-1 font-mono text-sm text-night-200">Git</span>
+          
+          <span class="rounded-full border border-night-600 bg-night-800 px-3 py-1 font-mono text-sm text-night-200">GitHub Pages</span>
+          
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section class="relative overflow-hidden border-t border-night-700">
+  <img src="https://choreographr.com/blog/2026-08-12-choreographr-0-1-0/geometric-mandala.svg" alt=""
+       class="absolute -right-16 top-1/2 hidden md:block pointer-events-none"
+       style="width:340px;height:340px;opacity:0.05;transform:translateY(-50%);" loading="lazy">
+  <div class="relative mx-auto max-w-7xl px-4 sm:px-6 py-16">
+    <div class="max-w-2xl">
+      <p class="text-sm font-semibold tracking-widest text-brand-500/90 font-mono uppercase">Not tied to one tool</p>
+      <h2 class="mt-2 text-3xl font-extrabold tracking-tight text-night-50">Skills that transfer</h2>
+      <p class="mt-4 text-lg text-night-300 leading-relaxed">
+        The way you chat with an agent isn't unique to Choreographr — the same
+        skills work with any AI coding tool:
+      </p>
+      <div class="mt-6 flex flex-wrap gap-3">
+        
+        
+        <span class="rounded-full border border-night-600 bg-night-800 px-4 py-1.5 text-sm text-night-200">Choreographr</span>
+        
+        <span class="rounded-full border border-night-600 bg-night-800 px-4 py-1.5 text-sm text-night-200">Claude Code</span>
+        
+        <span class="rounded-full border border-night-600 bg-night-800 px-4 py-1.5 text-sm text-night-200">Cursor</span>
+        
+        <span class="rounded-full border border-night-600 bg-night-800 px-4 py-1.5 text-sm text-night-200">GitHub Copilot</span>
+        
+        <span class="rounded-full border border-night-600 bg-night-800 px-4 py-1.5 text-sm text-night-200">OpenCode</span>
+        
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section class="border-t border-night-700">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 py-16">
+    <div class="text-center mb-12">
+      <p class="text-sm font-semibold tracking-widest text-brand-500/90 font-mono uppercase">Practicalities</p>
+      <h2 class="mt-2 text-3xl font-extrabold tracking-tight text-night-50">Details</h2>
+    </div>
+
+    <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      <div class="rounded-2xl border border-night-700 bg-night-900 p-6">
+        <svg class="h-6 w-6 text-brand-500 mb-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <h3 class="font-bold text-night-50">Format</h3>
+        <p class="mt-1 text-sm text-night-300">Weekly, two hours, drop-in — <span class="text-night-100 font-semibold">maximum 10 people</span>. Come when you can; work at your own pace.</p>
+      </div>
+      <div class="rounded-2xl border border-night-700 bg-night-900 p-6">
+        <svg class="h-6 w-6 text-brand-500 mb-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.83z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+        <h3 class="font-bold text-night-50">Price</h3>
+        <p class="mt-1 text-sm text-night-300"><span class="text-night-100 font-semibold">400,000 VND</span> per class.</p>
+      </div>
+      <div class="rounded-2xl border border-night-700 bg-night-900 p-6">
+        <svg class="h-6 w-6 text-brand-500 mb-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+        <h3 class="font-bold text-night-50">Payment</h3>
+        <p class="mt-1 text-sm text-night-300">Cash or banking QR, on the day.</p>
+      </div>
+      <div class="rounded-2xl border border-night-700 bg-night-900 p-6">
+        <svg class="h-6 w-6 text-brand-500 mb-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        <h3 class="font-bold text-night-50">Venue &amp; time</h3>
+        <p class="mt-1 text-sm text-night-300">Venue and day/time to be confirmed — central Da Nang, easy to reach by motorbike.</p>
+      </div>
+      <div class="rounded-2xl border border-night-700 bg-night-900 p-6">
+        <svg class="h-6 w-6 text-brand-500 mb-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="2" y1="20" x2="22" y2="20"/></svg>
+        <h3 class="font-bold text-night-50">Bring</h3>
+        <p class="mt-1 text-sm text-night-300">Your laptop, fully charged.</p>
+      </div>
+      <div class="rounded-2xl border border-night-700 bg-night-900 p-6">
+        <svg class="h-6 w-6 text-brand-500 mb-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+        <h3 class="font-bold text-night-50">Model access</h3>
+        <p class="mt-1 text-sm text-night-300"><a href="https://opencode.ai/go?ref=K76T4060YH" class="text-brand-500 hover:text-brand-400 underline underline-offset-2" target="_blank" rel="noopener noreferrer">OpenCode Go</a> from $5/month, or any provider Choreographr supports.</p>
+      </div>
+    </div>
+
+    
+    <div class="mt-8 flex gap-4 rounded-2xl border p-6" style="border-color:rgba(210,153,34,0.35);background:rgba(210,153,34,0.05);">
+      <svg class="h-6 w-6 shrink-0 mt-0.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:#d29922;"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      <div>
+        <h3 class="font-bold text-night-50">On Windows?</h3>
+        <p class="mt-1 text-sm text-night-300">
+          Choreographr doesn't support Windows yet — use the
+          <a href="https://opencode.ai" class="text-brand-500 hover:text-brand-400 underline underline-offset-2" target="_blank" rel="noopener noreferrer">OpenCode agent</a>
+          instead. The skills are the same.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section class="border-t border-night-700">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 py-16">
+    <div class="flex flex-col md:flex-row items-center md:items-start gap-10 rounded-2xl border border-night-700 bg-night-900 p-8 lg:p-10">
+      <div class="flex justify-center shrink-0">
+        <div class="relative">
+          <img src="https://choreographr.com/me.jpg" alt="Jonathan Brown"
+               class="w-44 h-44 lg:w-52 lg:h-52 rounded-full object-cover border-4 border-brand-500/60 shadow-[0_0_60px_rgba(222,165,132,0.25)]" />
+          <div class="absolute -bottom-2 -right-2 rounded-full bg-success p-2 shadow-lg border border-night-950">
+            <svg class="h-5 w-5 text-night-950" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+        </div>
+      </div>
+      <div class="text-center md:text-left space-y-4">
+        <p class="text-sm font-semibold tracking-widest text-brand-500/90 font-mono uppercase">Your instructor</p>
+        <h2 class="text-3xl font-extrabold tracking-tight text-night-50">Jonathan Brown</h2>
+        <p class="text-night-300 leading-relaxed">
+          Backend engineer with 30 years of experience building production
+          systems across games, enterprise web, and blockchain — and the author
+          of Choreographr. He teaches the workflow he uses every day, not a
+          rehearsed demo.
+        </p>
+        <div class="flex flex-wrap justify-center md:justify-start gap-3 pt-1">
+          <a href="/consulting/" class="btn btn-outline btn-sm gap-2 border-night-600 text-night-200 hover:border-brand-500/50 hover:text-brand-400 transition-colors">
+            Read more about Jonathan's work
+            <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section class="border-t border-night-700">
+  <div class="mx-auto max-w-4xl px-4 sm:px-6 py-16 text-center">
+    <h2 class="text-3xl font-extrabold tracking-tight text-night-50">Come build with an agent</h2>
+    <p class="mt-4 text-lg text-night-300">
+      Join the WhatsApp group to claim a spot — venue, day and time will be
+      announced there. First come, first served — max 10 per class.
+    </p>
+    <div class="mt-6 flex justify-center">
+      <a href="https://chat.whatsapp.com/BtVATGh7odDLpYbuXAtfZp" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-lg gap-2">
+        <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Join the WhatsApp group
+      </a>
+    </div>
+    <div class="mt-6 flex flex-wrap justify-center gap-3">
+      <span class="inline-flex items-center gap-2 rounded-full border border-night-600 bg-night-800 px-4 py-1.5 text-sm text-night-100">
+        <svg class="h-4 w-4 text-brand-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        400,000 VND per class
+      </span>
+      <span class="inline-flex items-center gap-2 rounded-full border border-night-600 bg-night-800 px-4 py-1.5 text-sm text-night-100">
+        <svg class="h-4 w-4 text-brand-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+        Cash or bank QR
+      </span>
+    </div>
+  </div>
+</section>
+
+
+  </main>
+
+  <footer class="border-t border-night-700 bg-night-900">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 py-12">
+    <div class="grid gap-10 md:grid-cols-3">
+      <div>
+        <div class="font-mono text-lg font-bold tracking-tight">
+          <span class="text-brand-500">choreo</span><span class="text-night-50">graphr</span>
+        </div>
+        <p class="mt-3 text-sm text-night-300 max-w-xs">
+          An all-purpose, extensible AI agent written in Rust. Runs locally or in the cloud. Open source under Apache-2.0.
+        </p>
+      </div>
+      <div>
+        <h3 class="text-sm font-semibold text-night-50 uppercase tracking-wider mb-3">Explore</h3>
+        <ul class="space-y-2 text-sm text-night-300">
+          <li><a href="https://choreographr.com/docs" class="hover:text-brand-400">Documentation</a></li>
+          <li><a href="https://choreographr.com/blog" class="hover:text-brand-400">Blog</a></li>
+          <li><a href="https://choreographr.com/consulting" class="hover:text-brand-400">Consulting</a></li>
+          <li><a href="https://choreographr.com/search" class="hover:text-brand-400">Search</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3 class="text-sm font-semibold text-night-50 uppercase tracking-wider mb-3">Community</h3>
+        <ul class="space-y-2 text-sm text-night-300">
+          <li><a href="https://github.com/choreographr/choreographr" target="_blank" rel="noopener" class="hover:text-brand-400">GitHub</a></li>
+          <li><a href="https://t.me/choreographr" target="_blank" rel="noopener" class="hover:text-brand-400">Telegram</a></li>
+          <li><a href="https://choreographr.com/atom.xml" class="hover:text-brand-400">RSS Feed</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="mt-10 border-t border-night-700 pt-6 flex flex-col sm:flex-row justify-between gap-3 text-xs text-night-400">
+      <p>© 2026 Choreographr. Released under the Apache-2.0 license.</p>
+      <p class="font-mono">100% Rust · written by <a href="https://github.com/choreographr/choreographr" target="_blank" rel="noopener" class="text-night-300 hover:text-brand-400">choreographr</a></p>
+    </div>
+  </div>
+</footer>
+
+
+  
+
+  <script>
+    // Click-to-copy buttons for every code block. Wraps each <pre> in a
+    // .code-block container and adds a corner button that copies the block's
+    // text via the async Clipboard API, with an execCommand fallback for
+    // non-secure contexts. The button sits OUTSIDE the <pre> so it stays in
+    // the corner while horizontally-overflowing code scrolls inside the block.
+    (function () {
+      var COPY_ICON =
+        '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
+      var CHECK_ICON =
+        '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
+
+      function fallbackCopy(text) {
+        var ta = document.createElement('textarea');
+        ta.value = text;
+        ta.setAttribute('readonly', '');
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        try { document.execCommand('copy'); } catch (e) { /* ignore */ }
+        document.body.removeChild(ta);
+      }
+
+      document.querySelectorAll('pre').forEach(function (pre) {
+        // Skip daisyUI terminal mockups (mockup-code): every line is its
+        // own <pre>, so per-line copy buttons would be noise. Real code
+        // blocks are a single <pre> that is not inside a .mockup-code.
+        if (pre.closest('.mockup-code')) return;
+
+        // Idempotent: don't re-wrap if the script runs more than once.
+        if (pre.parentElement && pre.parentElement.classList.contains('code-block')) return;
+
+        var wrap = document.createElement('div');
+        wrap.className = 'code-block';
+        pre.parentNode.insertBefore(wrap, pre);
+        wrap.appendChild(pre);
+
+        var btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'code-copy';
+        btn.setAttribute('aria-label', 'Copy code to clipboard');
+        btn.innerHTML = COPY_ICON;
+        wrap.appendChild(btn);
+
+        btn.addEventListener('click', function () {
+          var text = pre.innerText;
+          var done = function () {
+            btn.classList.add('copied');
+            btn.innerHTML = CHECK_ICON;
+            btn.setAttribute('aria-label', 'Copied');
+            setTimeout(function () {
+              btn.classList.remove('copied');
+              btn.innerHTML = COPY_ICON;
+              btn.setAttribute('aria-label', 'Copy code to clipboard');
+            }, 1500);
+          };
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(text).then(done, function () { fallbackCopy(text); done(); });
+          } else {
+            fallbackCopy(text);
+            done();
+          }
+        });
+      });
+    })();
+  </script>
+</body>
+</html>
