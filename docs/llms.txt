@@ -45,11 +45,12 @@ OpenRouter. Native EVM and Substrate/Polkadot blockchain tools are built in.
 - [Architecture](https://choreographr.com/docs/architecture/): threading model and topology
 - [Blog](https://choreographr.com/blog/): news and release notes
 - [Consulting](https://choreographr.com/consulting/): about the author
+- [AI Training — Da Nang](https://choreographr.com/ai-training/): weekly beginner classes — build a custom website with an AI agent, no coding at all
 
 ## Full text
 
-The complete text of the site (docs, FAQ, blog and consulting pages) is
-available as Markdown at [/llms-full.txt](https://choreographr.com/llms-full.txt).
+The complete text of the site (docs, FAQ, blog, consulting and AI training
+pages) is available as Markdown at [/llms-full.txt](https://choreographr.com/llms-full.txt).
 
 ## Notes
 

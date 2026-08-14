@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 # Generate static/llms-full.txt — the full text of the site's Markdown content
-# (docs, FAQ, blog, consulting) for LLM crawlers (llmstxt.org). Run at build
-# time via `just build` (see justfile); Zola copies the result into docs/.
+# (docs, FAQ, blog, consulting, AI training) for LLM crawlers (llmstxt.org).
+# Run at build time via `just build` (see justfile); Zola copies the result
+# into docs/.
 set -euo pipefail
 
 cd "$(dirname "$0")/.."
@@ -36,8 +37,8 @@ weight_of() {
 > providers work out of the box. Open source, Apache-2.0.
 >
 > This file contains the complete text of the site's Markdown content — the
-> documentation, FAQ, blog post and consulting page — for LLM crawlers. The
-> short index is at /llms.txt.
+> documentation, FAQ, blog post, consulting and AI training pages — for LLM
+> crawlers. The short index is at /llms.txt.
 
 EOF
 
@@ -69,6 +70,11 @@ EOF
   echo "# Consulting"
   echo
   strip_fm content/consulting.md
+  echo
+
+  echo "# AI Training — Da Nang"
+  echo
+  strip_fm content/ai-training.md
   echo
 } > "$OUT"
 
