@@ -76,6 +76,11 @@ EOF
   echo
   strip_fm content/ai-training.md
   echo
+
+  echo "# Free AI Consultation — Da Nang"
+  echo
+  strip_fm content/free-consultation.md
+  echo
 } > "$OUT"
 
 echo "Wrote $OUT ($(wc -c < "$OUT") bytes)"
