@@ -77,7 +77,7 @@ EOF
   strip_fm content/ai-training.md
   echo
 
-  echo "# Free AI Consultation — Da Nang"
+  echo "# AI Coffee Meetups — Da Nang"
   echo
   strip_fm content/free-consultation.md
   echo

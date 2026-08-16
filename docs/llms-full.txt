@@ -1667,26 +1667,31 @@ students build a custom website with an AI agent, without writing any code.
   building production systems, and the author of Choreographr.
 - Signup: join the WhatsApp group at https://chat.whatsapp.com/BtVATGh7odDLpYbuXAtfZp.
 
-# Free AI Consultation — Da Nang
+# AI Coffee Meetups — Da Nang
 
 
 <!-- Human-facing copy lives in templates/free-consultation.html. This body is
      the plain-text version served to LLM crawlers via llms.txt / llms-full.txt. -->
 
-Free AI Consultation — Da Nang is a relaxed, no-obligation coffee chat for
-owners of small and medium local businesses. Meet at a coffee shop in Da Nang,
-talk for about an hour, and walk away with practical AI ideas for your
-business. Afterwards you'll receive a one-page PDF summary of the key points
-and next steps.
+AI Coffee Meetups — Da Nang is my way of giving back. Most days I sit at my
+favourite coffee shop in Da Nang with an americano for an hour or two, and I
+keep meeting business owners — big and small — who run great businesses but
+are stuck on the work behind them: paperwork, accounts, spreadsheets,
+reports. They know AI could help, but they don't know where to start, or
+they have already spent real money on AI tokens without ever understanding
+it. Skepticism is healthy — there is a lot of hype out there, and plenty of
+people have been burned. But matched to how a business actually runs, AI
+can deliver huge benefits. I have been building software for 30 years and I
+use AI every day, so I decided to share that hour with anyone who wants it.
+No service, no pitch — just a coffee, a chat, and a clear direction.
 
-- What it is: a chat, not a meeting. No slides, no sales pitch, no expectations.
+- What it is: an hour, one coffee — a chat, not a meeting. No slides, no pitch.
 - Where: any coffee shop in Da Nang — you pick, or I'll suggest one.
 - When: whenever suits you. No fixed slots.
 - Cost: a coffee. That's it. No contract, no obligation.
 - Language: English.
 - Who: Jonathan Brown — an engineer with 30 years of experience building
-  production systems, and the author of Choreographr. Based in Da Nang since 2015.
-- Afterwards: a one-page PDF summary of the key points and next steps.
+  production systems and an everyday AI user. Based in Da Nang since 2015.
 - What it is not: a pitch for AI chatbots, voice calls, or AI-generated content.
 
 The focus is the back office — the paperwork, accounting, and custom systems
