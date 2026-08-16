@@ -1,16 +1,172 @@
-{% extends "base.html" %}
+<!DOCTYPE html>
+<html lang="en" data-theme="night">
+<head>
+  <meta charset="UTF-8">
+  <!-- color-scheme hint: lets the browser paint the dark canvas background
+       as soon as the head is parsed, before ANY CSS has been applied.
+       This is the one thing that closes the residual flash on Firefox/Zen,
+       which paints its default (white) canvas frame during navigation,
+       unlike Chromium which defers first paint until the inline CSS exists. -->
+  <meta name="color-scheme" content="dark">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AI Coffee Meetups — Đà Nẵng — Choreographr</title>
+  <meta name="description" content="An hour over coffee in Đà Nẵng — free, no pitch, no obligation. Practical ideas for using AI in your business, from an engineer who uses it every day. Just buy me a coffee.">
+  <meta name="theme-color" content="#06080b">
 
-{% block title %}{{ page.title }} — {{ config.title }}{% endblock title %}
-{% block description %}{{ page.description }}{% endblock description %}
-{% block og_title %}{{ page.title }} — {{ config.title }}{% endblock og_title %}
-{% block og_description %}{{ page.description }}{% endblock og_description %}
+  
+  <!-- Canonical: every page (incl. trailing-slash and /index.html variants)
+       resolves to one authoritative URL, which also matches the sitemap. -->
+  <link rel="canonical" href="https://choreographr.com/ai-coffee-meetup/">
+  
 
-{% block extra_head %}
-{% endblock extra_head %}
+  <!-- Open Graph / social sharing. og:title / og:description are overridden
+       per template so they always match the <title> and meta description. -->
+  <meta property="og:site_name" content="Choreographr">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="AI Coffee Meetups — Đà Nẵng — Choreographr">
+  <meta property="og:description" content="An hour over coffee in Đà Nẵng — free, no pitch, no obligation. Practical ideas for using AI in your business, from an engineer who uses it every day. Just buy me a coffee.">
+  <meta property="og:url" content="https://choreographr.com/ai-coffee-meetup/">
+  <meta property="og:image" content="https://choreographr.com/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Choreographr — your all-purpose AI agent, written in Rust">
+  <meta property="og:locale" content="en_US">
+  <meta name="twitter:card" content="summary_large_image">
 
-{% block content %}
+  <!-- Critical inline CSS: paint the dark theme immediately, before
+       main.css (or the webfont stylesheet) finishes loading, so the
+       page never flashes white on navigation. -->
+  <style>
+    html { background-color: #06080b; color-scheme: dark; }
+    body { background-color: #06080b; color: #d3dae3; }
+  </style>
 
-{# ============================== HERO ============================== #}
+  <!-- Self-hosted fonts (same-origin): preload the two variable woff2
+       files so they're available at first paint — no visible swap. -->
+  <link rel="preload" href="https://choreographr.com/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="https://choreographr.com/fonts/jetbrains-mono.woff2" as="font" type="font/woff2" crossorigin>
+
+  <link rel="icon" type="image/svg+xml" href="https://choreographr.com/favicon.svg">
+  <link rel="stylesheet" href="https://choreographr.com/css/main.css?h=79a419c57e7a50e55289">
+
+  <!-- Firefox/Zen can paint a frame before this stylesheet has been
+       applied if a layout flush happens while it loads (Bugzilla
+       1459305) — unlike Chromium, which blocks the parser on the
+       <link>. This synchronous script is the standard workaround: it
+       cannot execute until main.css is ready, and while it is pending
+       the <body> has not been parsed, so nothing unstyled can paint.
+       Result: same first-paint behaviour as Chromium, no FOUC. -->
+  <script>
+    // No-op: exists only to hold first paint until main.css is applied.
+  </script>
+
+  
+  <link rel="alternate" type="application/atom+xml" title="Choreographr Blog" href="https://choreographr.com/atom.xml">
+  
+
+  
+
+</head>
+<body class="min-h-screen flex flex-col">
+
+  <header class="sticky top-0 z-40 w-full border-b border-night-700 bg-night-950/90 backdrop-blur">
+  <nav class="navbar mx-auto max-w-7xl px-4 sm:px-6">
+    <div class="navbar-start">
+      <div class="dropdown lg:hidden">
+        <div tabindex="0" role="button" class="btn btn-ghost btn-square" aria-label="Menu">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </div>
+        <ul tabindex="0" class="dropdown-content menu bg-night-900 border border-night-700 rounded-box z-50 mt-3 w-52 p-2 shadow-2xl">
+          
+          <li>
+            <a href="/docs/"  class="">
+              Docs
+            </a>
+          </li>
+          
+          <li>
+            <a href="/blog/"  class="">
+              Blog
+            </a>
+          </li>
+          
+          <li>
+            <a href="/consulting/"  class="">
+              Consulting
+            </a>
+          </li>
+          
+          <li>
+            <a href="https://github.com/choreographr/choreographr" target="_blank" rel="noopener" class="">
+              GitHub<span class="text-night-400 text-xs">↗</span>
+            </a>
+          </li>
+          
+          <li>
+            <a href="https://t.me/choreographr" target="_blank" rel="noopener" class="">
+              Telegram<span class="text-night-400 text-xs">↗</span>
+            </a>
+          </li>
+          
+        </ul>
+      </div>
+      <a href="/" class="font-mono text-lg font-bold tracking-tight select-none">
+        <span class="text-brand-500">choreo</span><span class="text-night-50">graphr</span>
+      </a>
+    </div>
+    <div class="navbar-end hidden lg:flex">
+      <ul class="menu menu-horizontal px-1 gap-1 text-sm">
+        
+        <li>
+          <a href="/docs/"
+             
+             class="text-night-200 hover:text-night-50">
+            Docs
+          </a>
+        </li>
+        
+        <li>
+          <a href="/blog/"
+             
+             class="text-night-200 hover:text-night-50">
+            Blog
+          </a>
+        </li>
+        
+        <li>
+          <a href="/consulting/"
+             
+             class="text-night-200 hover:text-night-50">
+            Consulting
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://github.com/choreographr/choreographr"
+             target="_blank" rel="noopener"
+             class="">
+            GitHub<span class="text-night-400 text-xs">↗</span>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://t.me/choreographr"
+             target="_blank" rel="noopener"
+             class="">
+            Telegram<span class="text-night-400 text-xs">↗</span>
+          </a>
+        </li>
+        
+      </ul>
+    </div>
+  </nav>
+</header>
+
+
+  <main class="flex-1">
+    
+
+
 <section class="relative overflow-hidden">
   <div class="absolute inset-0 bg-grid"></div>
   <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(222,165,132,0.10),transparent_55%)]"></div>
@@ -18,12 +174,12 @@
   <div class="relative mx-auto max-w-7xl px-4 sm:px-6 py-16 lg:py-24">
     <div class="grid gap-12 lg:grid-cols-2 lg:items-center">
       <div class="space-y-6 text-center lg:text-left">
-        <p class="text-sm font-semibold tracking-widest text-brand-500/90 font-mono uppercase">Da Nang · one hour, one coffee</p>
+        <p class="text-sm font-semibold tracking-widest text-brand-500/90 font-mono uppercase">Đà Nẵng · one hour, one coffee</p>
         <h1 class="text-4xl font-extrabold tracking-tight text-night-50 md:text-5xl glow-brand">
           AI coffee meetups —<br class="hidden md:block"> just buy me a coffee
         </h1>
         <p class="text-xl text-night-200 leading-relaxed">
-          I'm usually at my favourite coffee shop in Da Nang with an
+          I'm usually at my favourite coffee shop in Đà Nẵng with an
           americano for an hour or two every day. I keep meeting business
           owners who are skeptical about how their business can be improved
           with AI — or who've already invested in it without a positive
@@ -44,7 +200,7 @@
           </span>
           <span class="inline-flex items-center gap-2 rounded-full border border-night-600 bg-night-800 px-4 py-1.5 text-sm text-night-100">
             <svg class="h-4 w-4 text-brand-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-            In person, in Da Nang
+            In person, in Đà Nẵng
           </span>
           <span class="inline-flex items-center gap-2 rounded-full border border-night-600 bg-night-800 px-4 py-1.5 text-sm text-night-100">
             <svg class="h-4 w-4 text-brand-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
@@ -63,7 +219,7 @@
         </div>
       </div>
 
-      {# --- Hero graphic: a coffee chat --- #}
+      
       <div class="flex justify-center">
         <svg class="w-full max-w-xl h-auto" viewBox="0 0 520 320" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A chat about AI over coffee">
           <defs>
@@ -75,7 +231,7 @@
 
           <rect x="150" y="10" width="330" height="300" rx="150" fill="url(#coffeeGlow)"/>
 
-          {# --- Chat window --- #}
+          
           <rect x="16" y="56" width="250" height="216" rx="14" fill="#0a0d12" stroke="#232c38" stroke-width="1.5"/>
           <path d="M16 70 a14 14 0 0 1 14 -14 h222 a14 14 0 0 1 14 14 v20 h-250 z" fill="#11161d"/>
           <circle cx="36" cy="73" r="5" fill="#f85149"/>
@@ -83,23 +239,23 @@
           <circle cx="68" cy="73" r="5" fill="#3fb950"/>
           <text x="141" y="78" font-family="'JetBrains Mono', monospace" font-size="11" fill="#4b5a6b" text-anchor="middle">coffee chat · AI</text>
 
-          {# --- Owner bubble --- #}
+          
           <rect x="32" y="104" width="204" height="48" rx="12" fill="#1a212b" stroke="#232c38" stroke-width="1"/>
           <text x="46" y="125" font-family="'Inter', sans-serif" font-size="11" fill="#7d8b9d">Receipts, stock, reports…</text>
           <text x="46" y="142" font-family="'Inter', sans-serif" font-size="11" fill="#7d8b9d">the paperwork never ends.</text>
 
-          {# --- AI bubble --- #}
+          
           <rect x="70" y="170" width="182" height="78" rx="12" fill="#dea584" fill-opacity="0.12" stroke="#dea584" stroke-opacity="0.35" stroke-width="1"/>
           <text x="84" y="190" font-family="'Inter', sans-serif" font-size="11" fill="#d3a68f">AI reads the paperwork,</text>
           <text x="84" y="208" font-family="'Inter', sans-serif" font-size="11" fill="#d3a68f">builds custom tools,</text>
           <text x="84" y="226" font-family="'Inter', sans-serif" font-size="11" fill="#d3a68f">finds what's missing.</text>
           <text x="141" y="266" font-family="'Inter', sans-serif" font-size="10.5" fill="#7d8b9d" text-anchor="middle">let's talk it over ☕</text>
 
-          {# --- Arrow: chat → dashboard --- #}
+          
           <line x1="270" y1="160" x2="282" y2="160" stroke="#dea584" stroke-width="3" stroke-linecap="round"/>
           <path d="M282 154 L288 160 L282 166 Z" fill="#dea584"/>
 
-          {# --- Dashboard mockup --- #}
+          
           <rect x="292" y="46" width="214" height="230" rx="14" fill="#0a0d12" stroke="#232c38" stroke-width="1.5"/>
           <path d="M292 60 a14 14 0 0 1 14 -14 h186 a14 14 0 0 1 14 14 v18 h-214 z" fill="#11161d"/>
           <circle cx="310" cy="57" r="4" fill="#f85149"/>
@@ -107,7 +263,7 @@
           <circle cx="338" cy="57" r="4" fill="#3fb950"/>
           <text x="399" y="61" font-family="'JetBrains Mono', monospace" font-size="10" fill="#4b5a6b" text-anchor="middle">ops dashboard</text>
 
-          {# --- KPI cards --- #}
+          
           <rect x="302" y="84" width="58" height="44" rx="8" fill="#11161d" stroke="#1a212b"/>
           <text x="312" y="100" font-family="'JetBrains Mono', monospace" font-size="8" fill="#7d8b9d">sales</text>
           <text x="312" y="118" font-family="'JetBrains Mono', monospace" font-size="12" fill="#d3dae3">84.2M</text>
@@ -120,7 +276,7 @@
           <text x="448" y="100" font-family="'JetBrains Mono', monospace" font-size="8" fill="#7d8b9d">cash</text>
           <text x="448" y="118" font-family="'JetBrains Mono', monospace" font-size="12" fill="#3fb950">+18%</text>
 
-          {# --- Bar chart --- #}
+          
           <text x="312" y="148" font-family="'JetBrains Mono', monospace" font-size="8" fill="#7d8b9d">bookings · this week</text>
           <rect x="302" y="184" width="8" height="24" rx="2" fill="#2d3846"/>
           <rect x="316" y="176" width="8" height="32" rx="2" fill="#2d3846"/>
@@ -130,7 +286,7 @@
           <rect x="372" y="164" width="8" height="44" rx="2" fill="#dea584"/>
           <rect x="386" y="172" width="8" height="36" rx="2" fill="#2d3846"/>
 
-          {# --- Status row --- #}
+          
           <line x1="302" y1="232" x2="496" y2="232" stroke="#1a212b" stroke-width="1"/>
           <circle cx="312" cy="250" r="3.5" fill="#3fb950"/>
           <text x="322" y="254" font-family="'Inter', sans-serif" font-size="9" fill="#7d8b9d">books reconciled</text>
@@ -142,13 +298,13 @@
   </div>
 </section>
 
-{# ============================== WHAT IT IS / ISN'T ============================== #}
+
 <section class="border-t border-night-700">
   <div class="mx-auto max-w-7xl px-4 sm:px-6 py-16">
     <div class="text-center mb-12">
       <p class="text-sm font-semibold tracking-widest text-brand-500/90 font-mono uppercase">Why</p>
       <h2 class="mt-2 text-3xl font-extrabold tracking-tight text-night-50">Giving back, over coffee</h2>
-      <p class="mt-2 text-night-300 max-w-2xl mx-auto">Most days I sit at my favourite coffee shop in Da Nang with an americano — usually for an hour or two. I keep meeting business owners, big and small, who run great businesses but are stuck on the work behind them: paperwork, accounts, spreadsheets, reports. They know AI could help, but they don't know where to start — or they've already spent real money on AI tokens without ever understanding it. And they're right to be skeptical: a lot of what's sold as "AI for business" is hype, and plenty of people have been burned. But when AI is matched to how a business actually runs, the benefits are huge — I've seen it pay for itself many times over. I've been building software for 30 years and I use AI every day, so I figured: why not spend that hour sharing what I know? This is my way of giving back to the city that's been my home since 2015 — not a service, not a pitch.</p>
+      <p class="mt-2 text-night-300 max-w-2xl mx-auto">Here's what I keep noticing over my americano: business owners here run their places brilliantly, but the work behind the counter — receipts, books, spreadsheets — still eats hours of their week. Most have tried AI and walked away unconvinced, because it was aimed at the wrong problem or oversold from day one. The businesses I've seen benefit from AI aren't the ones with big IT budgets — they're the ones who understood their own numbers and had someone show them where AI actually fits. That's the gap I want to close. I've been building software for 30 years and I use AI every day; I'd rather spend my morning coffee hour helping a neighbour close it than scrolling my phone.</p>
     </div>
 
     <div class="grid gap-6 sm:grid-cols-2">
@@ -176,7 +332,7 @@
   </div>
 </section>
 
-{# ============================== WHO IT'S FOR ============================== #}
+
 <section class="border-t border-night-700 bg-night-900/50">
   <div class="mx-auto max-w-7xl px-4 sm:px-6 py-16">
     <div class="text-center mb-12">
@@ -250,7 +406,7 @@
   </div>
 </section>
 
-{# ============================== WHAT WE'LL TALK ABOUT ============================== #}
+
 <section class="border-t border-night-700">
   <div class="mx-auto max-w-7xl px-4 sm:px-6 py-16">
     <div class="text-center mb-12">
@@ -294,7 +450,7 @@
   </div>
 </section>
 
-{# ============================== IN PRACTICE ============================== #}
+
 <section class="border-t border-night-700 bg-night-900/50">
   <div class="mx-auto max-w-7xl px-4 sm:px-6 py-16">
     <div class="text-center mb-12">
@@ -333,7 +489,7 @@
   </div>
 </section>
 
-{# ============================== DON'T WASTE MONEY ============================== #}
+
 <section class="border-t border-night-700 bg-night-900/50">
   <div class="mx-auto max-w-7xl px-4 sm:px-6 py-16">
     <div class="text-center mb-12">
@@ -375,7 +531,7 @@
   </div>
 </section>
 
-{# ============================== HOW IT WORKS ============================== #}
+
 <section class="border-t border-night-700">
   <div class="mx-auto max-w-7xl px-4 sm:px-6 py-16">
     <div class="text-center mb-12">
@@ -395,7 +551,7 @@
         <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-brand-500/40 bg-night-800 font-mono text-base font-semibold text-brand-400">2</span>
         <div>
           <h3 class="font-bold text-night-50">Pick a coffee shop</h3>
-          <p class="mt-1 text-sm text-night-300">Anywhere in Da Nang that suits you — near your business, by the river, wherever. You pick the spot, or I'll suggest one. No fixed times; whenever works.</p>
+          <p class="mt-1 text-sm text-night-300">I'd suggest my regular spot, but if you have a favourite, we can meet there! No fixed times; whenever works.</p>
         </div>
       </div>
       <div class="flex gap-4 rounded-2xl border border-night-700 bg-night-900 p-6">
@@ -409,7 +565,7 @@
   </div>
 </section>
 
-{# ============================== DETAILS ============================== #}
+
 <section class="border-t border-night-700 bg-night-900/50">
   <div class="mx-auto max-w-7xl px-4 sm:px-6 py-16">
     <div class="text-center mb-12">
@@ -426,12 +582,12 @@
       <div class="rounded-2xl border border-night-700 bg-night-900 p-6">
         <svg class="h-6 w-6 text-brand-500 mb-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
         <h3 class="font-bold text-night-50">Where</h3>
-        <p class="mt-1 text-sm text-night-300">Any coffee shop in Da Nang — <span class="text-night-100 font-semibold">you pick</span>, or I'll suggest one.</p>
+        <p class="mt-1 text-sm text-night-300"><span class="text-night-100 font-semibold">My regular spot</span> — or if you have a favourite, we'll meet there.</p>
       </div>
       <div class="rounded-2xl border border-night-700 bg-night-900 p-6">
         <svg class="h-6 w-6 text-brand-500 mb-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
         <h3 class="font-bold text-night-50">When</h3>
-        <p class="mt-1 text-sm text-night-300">Whenever suits you — no fixed slots, <span class="text-night-100 font-semibold">no calendar to fight</span>.</p>
+        <p class="mt-1 text-sm text-night-300">Whenever suits you — no fixed slots, <span class="text-night-100 font-semibold">we'll find a time that works</span>.</p>
       </div>
       <div class="rounded-2xl border border-night-700 bg-night-900 p-6">
         <svg class="h-6 w-6 text-brand-500 mb-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
@@ -452,13 +608,13 @@
   </div>
 </section>
 
-{# ============================== WHO YOU'LL TALK TO ============================== #}
+
 <section class="border-t border-night-700">
   <div class="mx-auto max-w-7xl px-4 sm:px-6 py-16">
     <div class="flex flex-col md:flex-row items-center md:items-start gap-10 rounded-2xl border border-night-700 bg-night-900 p-8 lg:p-10">
       <div class="flex justify-center shrink-0">
         <div class="relative">
-          <img src="{{ get_url(path='me.jpg') }}" alt="Jonathan Brown"
+          <img src="https://choreographr.com/me.jpg" alt="Jonathan Brown"
                class="w-44 h-44 lg:w-52 lg:h-52 rounded-full object-cover border-4 border-brand-500/60 shadow-[0_0_60px_rgba(222,165,132,0.25)]" />
           <div class="absolute -bottom-2 -right-2 rounded-full bg-success p-2 shadow-lg border border-night-950">
             <svg class="h-5 w-5 text-night-950" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
@@ -471,11 +627,11 @@
         <p class="text-night-300 leading-relaxed">
           An engineer with <strong class="text-night-50">30 years of experience</strong> building
           production systems across games, enterprise web, and blockchain — and the author of
-          Choreographr, an open-source AI agent. He's been based in Da Nang since 2015, and he
+          Choreographr, an open-source AI agent. He's been based in Đà Nẵng since 2015, and he
           teaches the AI workflows he uses every day.
         </p>
         <div class="flex flex-wrap justify-center md:justify-start gap-3 pt-1">
-          <a href="{{ get_url(path='/consulting/') }}" class="btn btn-outline btn-sm gap-2 border-night-600 text-night-200 hover:border-brand-500/50 hover:text-brand-400 transition-colors">
+          <a href="https://choreographr.com/consulting" class="btn btn-outline btn-sm gap-2 border-night-600 text-night-200 hover:border-brand-500/50 hover:text-brand-400 transition-colors">
             Read more about Jonathan's work
             <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
           </a>
@@ -485,7 +641,7 @@
   </div>
 </section>
 
-{# ============================== CTA ============================== #}
+
 <section class="border-t border-night-700 bg-night-900/50">
   <div class="mx-auto max-w-4xl px-4 sm:px-6 py-16 text-center">
     <h2 class="text-3xl font-extrabold tracking-tight text-night-50">Fancy an americano?</h2>
@@ -508,4 +664,114 @@
   </div>
 </section>
 
-{% endblock content %}
+
+  </main>
+
+  <footer class="border-t border-night-700 bg-night-900">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 py-12">
+    <div class="grid gap-10 md:grid-cols-3">
+      <div>
+        <div class="font-mono text-lg font-bold tracking-tight">
+          <span class="text-brand-500">choreo</span><span class="text-night-50">graphr</span>
+        </div>
+        <p class="mt-3 text-sm text-night-300 max-w-xs">
+          An all-purpose, extensible AI agent written in Rust. Runs locally or in the cloud. Open source under Apache-2.0.
+        </p>
+      </div>
+      <div>
+        <h3 class="text-sm font-semibold text-night-50 uppercase tracking-wider mb-3">Explore</h3>
+        <ul class="space-y-2 text-sm text-night-300">
+          <li><a href="https://choreographr.com/docs" class="hover:text-brand-400">Documentation</a></li>
+          <li><a href="https://choreographr.com/blog" class="hover:text-brand-400">Blog</a></li>
+          <li><a href="https://choreographr.com/consulting" class="hover:text-brand-400">Consulting</a></li>
+          <li><a href="https://choreographr.com/search" class="hover:text-brand-400">Search</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3 class="text-sm font-semibold text-night-50 uppercase tracking-wider mb-3">Community</h3>
+        <ul class="space-y-2 text-sm text-night-300">
+          <li><a href="https://github.com/choreographr/choreographr" target="_blank" rel="noopener" class="hover:text-brand-400">GitHub</a></li>
+          <li><a href="https://t.me/choreographr" target="_blank" rel="noopener" class="hover:text-brand-400">Telegram</a></li>
+          <li><a href="https://choreographr.com/atom.xml" class="hover:text-brand-400">RSS Feed</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="mt-10 border-t border-night-700 pt-6 flex flex-col sm:flex-row justify-between gap-3 text-xs text-night-400">
+      <p>© 2026 Choreographr. Released under the Apache-2.0 license.</p>
+      <p class="font-mono">100% Rust · written by <a href="https://github.com/choreographr/choreographr" target="_blank" rel="noopener" class="text-night-300 hover:text-brand-400">choreographr</a></p>
+    </div>
+  </div>
+</footer>
+
+
+  
+
+  <script>
+    // Click-to-copy buttons for every code block. Wraps each <pre> in a
+    // .code-block container and adds a corner button that copies the block's
+    // text via the async Clipboard API, with an execCommand fallback for
+    // non-secure contexts. The button sits OUTSIDE the <pre> so it stays in
+    // the corner while horizontally-overflowing code scrolls inside the block.
+    (function () {
+      var COPY_ICON =
+        '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
+      var CHECK_ICON =
+        '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
+
+      function fallbackCopy(text) {
+        var ta = document.createElement('textarea');
+        ta.value = text;
+        ta.setAttribute('readonly', '');
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        try { document.execCommand('copy'); } catch (e) { /* ignore */ }
+        document.body.removeChild(ta);
+      }
+
+      document.querySelectorAll('pre').forEach(function (pre) {
+        // Skip daisyUI terminal mockups (mockup-code): every line is its
+        // own <pre>, so per-line copy buttons would be noise. Real code
+        // blocks are a single <pre> that is not inside a .mockup-code.
+        if (pre.closest('.mockup-code')) return;
+
+        // Idempotent: don't re-wrap if the script runs more than once.
+        if (pre.parentElement && pre.parentElement.classList.contains('code-block')) return;
+
+        var wrap = document.createElement('div');
+        wrap.className = 'code-block';
+        pre.parentNode.insertBefore(wrap, pre);
+        wrap.appendChild(pre);
+
+        var btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'code-copy';
+        btn.setAttribute('aria-label', 'Copy code to clipboard');
+        btn.innerHTML = COPY_ICON;
+        wrap.appendChild(btn);
+
+        btn.addEventListener('click', function () {
+          var text = pre.innerText;
+          var done = function () {
+            btn.classList.add('copied');
+            btn.innerHTML = CHECK_ICON;
+            btn.setAttribute('aria-label', 'Copied');
+            setTimeout(function () {
+              btn.classList.remove('copied');
+              btn.innerHTML = COPY_ICON;
+              btn.setAttribute('aria-label', 'Copy code to clipboard');
+            }, 1500);
+          };
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(text).then(done, function () { fallbackCopy(text); done(); });
+          } else {
+            fallbackCopy(text);
+            done();
+          }
+        });
+      });
+    })();
+  </script>
+</body>
+</html>

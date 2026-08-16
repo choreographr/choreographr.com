@@ -3,6 +3,9 @@
     <loc>https://choreographr.com/</loc>
   </url>
   <url>
+    <loc>https://choreographr.com/ai-coffee-meetup/</loc>
+  </url>
+  <url>
     <loc>https://choreographr.com/ai-training/</loc>
   </url>
   <url>
@@ -67,8 +70,5 @@
   </url>
   <url>
     <loc>https://choreographr.com/docs/why-rust/</loc>
-  </url>
-  <url>
-    <loc>https://choreographr.com/free-consultation/</loc>
   </url>
 </urlset>

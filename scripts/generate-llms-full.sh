@@ -72,14 +72,14 @@ EOF
   strip_fm content/consulting.md
   echo
 
-  echo "# AI Training — Da Nang"
+  echo "# AI Training — Đà Nẵng"
   echo
   strip_fm content/ai-training.md
   echo
 
-  echo "# AI Coffee Meetups — Da Nang"
+  echo "# AI Coffee Meetups — Đà Nẵng"
   echo
-  strip_fm content/free-consultation.md
+  strip_fm content/ai-coffee-meetup.md
   echo
 } > "$OUT"
 

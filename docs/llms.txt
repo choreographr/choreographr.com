@@ -45,8 +45,8 @@ OpenRouter. Native EVM and Substrate/Polkadot blockchain tools are built in.
 - [Architecture](https://choreographr.com/docs/architecture/): threading model and topology
 - [Blog](https://choreographr.com/blog/): news and release notes
 - [Consulting](https://choreographr.com/consulting/): about the author
-- [AI Training — Da Nang](https://choreographr.com/ai-training/): weekly beginner classes — build a custom website with an AI agent, no coding at all
-- [AI Coffee Meetups — Da Nang](https://choreographr.com/free-consultation/): an hour over coffee in Da Nang — free, no pitch, practical ideas for using AI in your business
+- [AI Training — Đà Nẵng](https://choreographr.com/ai-training/): weekly beginner classes — build a custom website with an AI agent, no coding at all
+- [AI Coffee Meetups — Đà Nẵng](https://choreographr.com/ai-coffee-meetup/): an hour over coffee in Đà Nẵng — free, no pitch, practical ideas for using AI in your business
 
 ## Full text
 
