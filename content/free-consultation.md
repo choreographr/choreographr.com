@@ -14,7 +14,7 @@ business. Afterwards you'll receive a one-page PDF summary of the key points
 and next steps.
 
 - What it is: a chat, not a meeting. No slides, no sales pitch, no expectations.
-- Where: any coffee shop in Da Nang — you pick, or suggest one near your business.
+- Where: any coffee shop in Da Nang — you pick, or I'll suggest one.
 - When: whenever suits you. No fixed slots.
 - Cost: a coffee. That's it. No contract, no obligation.
 - Language: English.
@@ -75,6 +75,6 @@ and what it really costs.
 
 To arrange it: message Jonathan on Telegram (@ethernomad) or Facebook
 Messenger (m.me/ethernomad), say what your business is and what is on your
-mind, and pick a coffee shop.
+mind, and pick a coffee shop (or ask Jonathan to suggest one).
 Bring a spreadsheet you hate, a pile of paperwork, or a process you do by
-hand, if you like — you can look at it together.
+hand — we'll look at it together.

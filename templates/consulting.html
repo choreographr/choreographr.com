@@ -269,12 +269,14 @@
           <span class="inline-block text-xs font-bold tracking-wider text-warning uppercase bg-warning/10 px-3 py-1 rounded-full font-mono">2023 – Present</span>
           <h3 class="mt-3 text-xl font-bold text-night-50">AI — Choreographr</h3>
           <p class="text-sm font-medium text-brand-400">Agentic Tools &middot; Choreographr &middot; AI Workflows</p>
-          <p class="mt-2 text-night-300 leading-relaxed">Pioneering AI-agentic development with Claude Code, Pi, OpenCode, and Hermes Agent, and building <strong class="text-night-50">Choreographr</strong> — an open-source AI agent in Rust, released as v0.1.0 in 2026.</p>
+          <p class="mt-2 text-night-300 leading-relaxed">After working with Claude Code, Pi, OpenCode, and Hermes Agent, he built <strong class="text-night-50">Choreographr</strong> — an open-source AI agent in Rust — and now uses it for all of his own daily work.</p>
           <ul class="mt-3 space-y-1.5 text-sm text-night-300 leading-relaxed list-disc list-inside">
-            <li><strong class="text-night-50">Read-only planning</strong> — explore the codebase and produce a plan before writing any code</li>
-            <li><strong class="text-night-50">Invariant enforcement</strong> — AGENTS.md files encode structural rules the agent must follow</li>
-            <li><strong class="text-night-50">Test-first delivery</strong> — full AI-generated, human-reviewed test suites make refactors safe</li>
-            <li><strong class="text-night-50">2–3× faster</strong> — AI-augmented workflows with no loss of quality</li>
+            <li><strong class="text-night-50">RISC-V sandboxed VM</strong> — LLM-written Rust runs in an isolated VM with no host syscalls or filesystem access, replacing the shell for complete security and observability</li>
+            <li><strong class="text-night-50">Agent daemon + multi-client</strong> — a persistent server runs many concurrent sessions that any client (terminal, desktop, Telegram, ACP editors) attaches to over Noise-IK encrypted transport</li>
+            <li><strong class="text-night-50">Hierarchical subsessions</strong> — real interactive child sessions that run in parallel, can be paused and re-prompted, and report back to the parent</li>
+            <li><strong class="text-night-50">Three wire protocols, one interface</strong> — OpenAI-compatible, Anthropic Messages, and Gemini unified behind a single provider abstraction, so one agent loop drives every model</li>
+            <li><strong class="text-night-50">Encrypted credential keystore</strong> — per-credential X25519 ECDH + AES-256-GCM encryption; the daemon starts locked and decrypts only in memory</li>
+            <li><strong class="text-night-50">Zero-async engine</strong> — real kernel threads and message passing, no async runtime, no shared mutable state, no polling</li>
           </ul>
           <div class="mt-4 flex flex-wrap gap-2">
             <a href="https://github.com/choreographr/choreographr" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 rounded-full border border-warning/40 bg-warning/10 px-3 py-1 text-xs font-medium text-warning font-mono transition-colors hover:bg-warning/20">
