@@ -77,7 +77,7 @@ EOF
   strip_fm content/ai-training.md
   echo
 
-  echo "# AI Coffee Meetups — Đà Nẵng"
+  echo "# AI Coffee Meetup — Đà Nẵng & Hội An"
   echo
   strip_fm content/ai-coffee-meetup.md
   echo

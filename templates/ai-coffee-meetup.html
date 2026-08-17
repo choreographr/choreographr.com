@@ -8,6 +8,13 @@
 {% block extra_head %}
 {% endblock extra_head %}
 
+{% block og_image_meta %}
+<meta property="og:image" content="{{ get_url(path='ai-coffee-meetup-share.png') | safe }}">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="AI Coffee Meetup in Đà Nẵng & Hội An — buy me a coffee and I'll spend the hour showing you where AI helps your business">
+{% endblock og_image_meta %}
+
 {% block content %}
 
 {# ============================== HERO ============================== #}
@@ -18,14 +25,14 @@
   <div class="relative mx-auto max-w-7xl px-4 sm:px-6 py-16 lg:py-24">
     <div class="grid gap-12 lg:grid-cols-2 lg:items-center">
       <div class="space-y-6 text-center lg:text-left">
-        <p class="text-sm font-semibold tracking-widest text-brand-500/90 font-mono uppercase">Đà Nẵng · one hour, one coffee</p>
+        <p class="text-sm font-semibold tracking-widest text-brand-500/90 font-mono uppercase">Đà Nẵng · Hội An · one hour, one coffee</p>
         <h1 class="text-4xl font-extrabold tracking-tight text-night-50 md:text-5xl glow-brand">
           AI coffee meetup —<br class="hidden md:block"> just buy me a coffee
         </h1>
         <p class="text-xl text-night-200 leading-relaxed">
-          I'm usually at my favourite coffee shop in Đà Nẵng with an
-          americano for an hour or two every day. I keep meeting business
-          owners who are skeptical about how their business can be improved
+          I'm usually at my favourite coffee shop in Đà Nẵng or Hội An
+          with an americano for an hour or two every day. I keep meeting
+          business owners who are skeptical about how their business can be improved
           with AI — or who've already invested in it without a positive
           result. And I get the skepticism: there's plenty of hype out
           there. But with the right understanding of your business and the
@@ -44,7 +51,7 @@
           </span>
           <span class="inline-flex items-center gap-2 rounded-full border border-night-600 bg-night-800 px-4 py-1.5 text-sm text-night-100">
             <svg class="h-4 w-4 text-brand-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-            In person, in Đà Nẵng
+            In person, in Đà Nẵng & Hội An
           </span>
           <span class="inline-flex items-center gap-2 rounded-full border border-night-600 bg-night-800 px-4 py-1.5 text-sm text-night-100">
             <svg class="h-4 w-4 text-brand-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
@@ -395,7 +402,7 @@
         <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-brand-500/40 bg-night-800 font-mono text-base font-semibold text-brand-400">2</span>
         <div>
           <h3 class="font-bold text-night-50">Pick a coffee shop</h3>
-          <p class="mt-1 text-sm text-night-300">I'd suggest my regular spot, but if you have a favourite, we can meet there! No fixed times; whenever works.</p>
+          <p class="mt-1 text-sm text-night-300">I'd suggest my regular spot — in Đà Nẵng or Hội An. If you have a favourite, we can meet there! No fixed times; whenever works.</p>
         </div>
       </div>
       <div class="flex gap-4 rounded-2xl border border-night-700 bg-night-900 p-6">
@@ -426,7 +433,7 @@
       <div class="rounded-2xl border border-night-700 bg-night-900 p-6">
         <svg class="h-6 w-6 text-brand-500 mb-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
         <h3 class="font-bold text-night-50">Where</h3>
-        <p class="mt-1 text-sm text-night-300"><span class="text-night-100 font-semibold">My regular spot</span> — or if you have a favourite, we'll meet there.</p>
+        <p class="mt-1 text-sm text-night-300">Anywhere in Đà Nẵng or Hội An — <span class="text-night-100 font-semibold">my regular spot</span>, or your favourite if you have one.</p>
       </div>
       <div class="rounded-2xl border border-night-700 bg-night-900 p-6">
         <svg class="h-6 w-6 text-brand-500 mb-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
@@ -471,7 +478,7 @@
         <p class="text-night-300 leading-relaxed">
           An engineer with <strong class="text-night-50">30 years of experience</strong> building
           production systems across games, enterprise web, and blockchain — and the author of
-          Choreographr, an open-source AI agent. He's been based in Đà Nẵng since 2015, and he
+          Choreographr, an open-source AI agent. He's been based in Vietnam since 2015, and he
           teaches the AI workflows he uses every day.
         </p>
         <div class="flex flex-wrap justify-center md:justify-start gap-3 pt-1">

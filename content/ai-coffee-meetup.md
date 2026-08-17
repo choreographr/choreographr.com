@@ -1,14 +1,14 @@
 +++
-title = "AI Coffee Meetups — Đà Nẵng"
-description = "An hour over coffee in Đà Nẵng — free, no pitch, no obligation. Practical ideas for using AI in your business, from an engineer who uses it every day. Just buy me a coffee."
+title = "AI Coffee Meetup — Đà Nẵng & Hội An"
+description = "An hour over coffee in Đà Nẵng or Hội An — practical ideas for using AI in your business. No pitch, no jargon."
 template = "ai-coffee-meetup.html"
 +++
 
 <!-- Human-facing copy lives in templates/ai-coffee-meetup.html. This body is
      the plain-text version served to LLM crawlers via llms.txt / llms-full.txt. -->
 
-AI Coffee Meetups — Đà Nẵng is my way of giving back. Most days I sit at my
-favourite coffee shop in Đà Nẵng with an americano for an hour or two, and I
+AI Coffee Meetup — Đà Nẵng & Hội An is my way of giving back. Most days I sit at my
+favourite coffee shop — in Đà Nẵng or Hội An — with an americano for an hour or two, and I
 keep meeting business owners — big and small — who run great businesses but
 are stuck on the work behind them: paperwork, accounts, spreadsheets,
 reports. They know AI could help, but they don't know where to start, or
@@ -20,12 +20,12 @@ use AI every day, so I decided to share that hour with anyone who wants it.
 No service, no pitch — just a coffee, a chat, and a clear direction.
 
 - What it is: an hour, one coffee — a chat, not a meeting. No slides, no pitch.
-- Where: any coffee shop in Đà Nẵng — you pick, or I'll suggest one.
+- Where: any coffee shop in Đà Nẵng or Hội An — you pick, or I'll suggest one.
 - When: whenever suits you. No fixed slots.
 - Cost: a coffee. That's it. No contract, no obligation.
 - Language: English.
 - Who: Jonathan Brown — an engineer with 30 years of experience building
-  production systems and an everyday AI user. Based in Đà Nẵng since 2015.
+  production systems and an everyday AI user. Based in Đà Nẵng since 2015; happy to meet in Hội An too.
 - What it is not: a pitch for AI chatbots, voice calls, or AI-generated content.
 
 The focus is the back office — the paperwork, accounting, and custom systems
