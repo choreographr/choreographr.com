@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1080" viewBox="0 0 1080 1080">
+  <defs>
+    <radialGradient id="bg" cx="0.5" cy="0.05" r="0.9">
+      <stop offset="0" stop-color="#dea584" stop-opacity="0.16"/>
+      <stop offset="0.55" stop-color="#dea584" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="cupGlow" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#dea584" stop-opacity="0.16"/>
+      <stop offset="1" stop-color="#dea584" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="1080" height="1080" fill="#06080b"/>
+  <rect width="1080" height="1080" fill="url(#bg)"/>
+
+  <!-- accent bar -->
+  <rect x="504" y="130" width="72" height="6" rx="3" fill="#dea584"/>
+
+  <!-- eyebrow -->
+  <text x="540" y="215" font-family="'JetBrains Mono','DejaVu Sans Mono',monospace" font-size="26" font-weight="400" fill="#dea584" letter-spacing="4" text-anchor="middle">ĐÀ NẴNG · HỘI AN · ONE HOUR, ONE COFFEE</text>
+
+  <!-- headline -->
+  <text x="540" y="330" font-family="'Inter','Helvetica Neue',Helvetica,Arial,'DejaVu Sans',sans-serif" font-size="92" font-weight="900" letter-spacing="-2" fill="#f5f7fa" text-anchor="middle">AI coffee meetup</text>
+
+  <!-- subhead -->
+  <text x="540" y="410" font-family="'Inter','Helvetica Neue',Helvetica,Arial,'DejaVu Sans',sans-serif" font-size="44" font-weight="600" fill="#dea584" text-anchor="middle">just buy me a coffee.</text>
+
+  <!-- coffee cup graphic -->
+  <g transform="translate(-212,356) scale(0.8)">
+    <circle cx="940" cy="300" r="210" fill="url(#cupGlow)"/>
+
+    <!-- steam -->
+    <path d="M 905 250 q -10 -22 5 -38" stroke="#dea584" stroke-width="5" fill="none" stroke-linecap="round" opacity="0.85"/>
+    <path d="M 940 242 q -10 -22 5 -38" stroke="#dea584" stroke-width="5" fill="none" stroke-linecap="round" opacity="0.6"/>
+    <path d="M 975 250 q -10 -22 5 -38" stroke="#dea584" stroke-width="5" fill="none" stroke-linecap="round" opacity="0.85"/>
+
+    <!-- handle -->
+    <path d="M 1010 320 C 1060 318 1060 396 1002 400" stroke="#2d3846" stroke-width="10" fill="none" stroke-linecap="round"/>
+
+    <!-- cup body -->
+    <path d="M 870 318 L 1010 318 L 992 428 Q 940 452 888 428 Z" fill="#11161d" stroke="#2d3846" stroke-width="4"/>
+
+    <!-- coffee surface -->
+    <ellipse cx="940" cy="318" rx="66" ry="13" fill="#2d3846"/>
+    <ellipse cx="922" cy="314" rx="20" ry="5" fill="#3a4657" opacity="0.7"/>
+
+    <!-- rim -->
+    <ellipse cx="940" cy="318" rx="70" ry="14" fill="none" stroke="#3a4657" stroke-width="3"/>
+
+    <!-- saucer -->
+    <ellipse cx="940" cy="452" rx="96" ry="17" fill="#0d1117" stroke="#1a212b" stroke-width="3"/>
+
+    <!-- sparkle -->
+    <circle cx="1050" cy="230" r="6" fill="#dea584" opacity="0.7"/>
+    <circle cx="1082" cy="272" r="4" fill="#dea584" opacity="0.5"/>
+    <path d="M 850 240 l 0 16 M 842 248 l 16 0" stroke="#dea584" stroke-width="3" stroke-linecap="round" opacity="0.7"/>
+  </g>
+
+  <!-- body -->
+  <text x="540" y="830" font-family="'Inter','Helvetica Neue',Helvetica,Arial,'DejaVu Sans',sans-serif" font-size="30" font-weight="400" fill="#d3dae3" text-anchor="middle">I'll spend the hour showing you where AI genuinely</text>
+  <text x="540" y="872" font-family="'Inter','Helvetica Neue',Helvetica,Arial,'DejaVu Sans',sans-serif" font-size="30" font-weight="400" fill="#d3dae3" text-anchor="middle">helps your business. No pitch, no jargon, no upsell.</text>
+
+  <!-- footer -->
+  <text x="540" y="975" font-family="'JetBrains Mono','DejaVu Sans Mono',monospace" font-size="27" font-weight="400" fill="#6b7686" text-anchor="middle">choreographr.com/ai-coffee-meetup</text>
+  <text x="540" y="1020" font-family="'JetBrains Mono','DejaVu Sans Mono',monospace" font-size="27" font-weight="400" fill="#6b7686" text-anchor="middle">Messenger · Telegram @ethernomad</text>
+</svg>
