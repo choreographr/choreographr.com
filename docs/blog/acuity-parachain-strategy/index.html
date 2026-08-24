@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="night">
+<head>
+  <meta charset="UTF-8">
+  <!-- color-scheme hint: lets the browser paint the dark canvas background
+       as soon as the head is parsed, before ANY CSS has been applied.
+       This is the one thing that closes the residual flash on Firefox/Zen,
+       which paints its default (white) canvas frame during navigation,
+       unlike Chromium which defers first paint until the inline CSS exists. -->
+  <meta name="color-scheme" content="dark">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Acuity Parachain Strategy — Choreographr Blog</title>
+  <meta name="description" content="The Polkadot ecosystem is evolving rapidly. Kusama will soon have parachains and Polkadot itself will follow. Parachains are a means of connecting together different blockchains in a hierarchy for shared security and asynchronous communication. Acuity will be a hierarchy within this hierarchy.">
+  <meta name="theme-color" content="#06080b">
+
+  
+  <!-- Canonical: every page (incl. trailing-slash and /index.html variants)
+       resolves to one authoritative URL, which also matches the sitemap. -->
+  <link rel="canonical" href="https://choreographr.com/blog/acuity-parachain-strategy/">
+  
+
+  <!-- Open Graph / social sharing. og:title / og:description are overridden
+       per template so they always match the <title> and meta description. -->
+  <meta property="og:site_name" content="Choreographr">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Acuity Parachain Strategy — Choreographr Blog">
+  <meta property="og:description" content="The Polkadot ecosystem is evolving rapidly. Kusama will soon have parachains and Polkadot itself will follow. Parachains are a means of connecting together different blockchains in a hierarchy for shared security and asynchronous communication. Acuity will be a hierarchy within this hierarchy.">
+  <meta property="og:url" content="https://choreographr.com/blog/acuity-parachain-strategy/">
+  
+  <meta property="og:image" content="https://choreographr.com/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Choreographr — your all-purpose AI agent, written in Rust">
+  
+  <meta property="og:locale" content="en_US">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <!-- Critical inline CSS: paint the dark theme immediately, before
+       main.css (or the webfont stylesheet) finishes loading, so the
+       page never flashes white on navigation. -->
+  <style>
+    html { background-color: #06080b; color-scheme: dark; }
+    body { background-color: #06080b; color: #d3dae3; }
+  </style>
+
+  <!-- Self-hosted fonts (same-origin): preload the two variable woff2
+       files so they're available at first paint — no visible swap. -->
+  <link rel="preload" href="https://choreographr.com/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="https://choreographr.com/fonts/jetbrains-mono.woff2" as="font" type="font/woff2" crossorigin>
+
+  <link rel="icon" type="image/svg+xml" href="https://choreographr.com/favicon.svg">
+  <link rel="stylesheet" href="https://choreographr.com/css/main.css?h=2d812d12b3967d2e0fb0">
+
+  <!-- Firefox/Zen can paint a frame before this stylesheet has been
+       applied if a layout flush happens while it loads (Bugzilla
+       1459305) — unlike Chromium, which blocks the parser on the
+       <link>. This synchronous script is the standard workaround: it
+       cannot execute until main.css is ready, and while it is pending
+       the <body> has not been parsed, so nothing unstyled can paint.
+       Result: same first-paint behaviour as Chromium, no FOUC. -->
+  <script>
+    // No-op: exists only to hold first paint until main.css is applied.
+  </script>
+
+  
+  <link rel="alternate" type="application/atom+xml" title="Choreographr Blog" href="https://choreographr.com/atom.xml">
+  
+
+  
+
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Acuity Parachain Strategy",
+  "description": "The Polkadot ecosystem is evolving rapidly. Kusama will soon have parachains and Polkadot itself will follow. Parachains are a means of connecting together different blockchains in a hierarchy for shared security and asynchronous communication. Acuity will be a hierarchy within this hierarchy.",
+  "datePublished": "2021-03-19",
+  "dateModified": "2021-03-19",
+  "mainEntityOfPage": "https://choreographr.com/blog/acuity-parachain-strategy/",
+  "image": "https://choreographr.com/og-image.png",
+  "author": [{ "@type": "Person", "name": "Jonathan Brown" }],
+  "publisher": { "@type": "Organization", "name": "Choreographr", "url": "https://choreographr.com/" }
+}
+</script>
+
+</head>
+<body class="min-h-screen flex flex-col">
+
+  <header class="sticky top-0 z-40 w-full border-b border-night-700 bg-night-950/90 backdrop-blur">
+  <nav class="navbar mx-auto max-w-7xl px-4 sm:px-6">
+    <div class="navbar-start">
+      <div class="dropdown lg:hidden">
+        <div tabindex="0" role="button" class="btn btn-ghost btn-square" aria-label="Menu">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </div>
+        <ul tabindex="0" class="dropdown-content menu bg-night-900 border border-night-700 rounded-box z-50 mt-3 w-52 p-2 shadow-2xl">
+          
+          <li>
+            <a href="/agent/"  class="">
+              Agent
+            </a>
+          </li>
+          
+          <li>
+            <a href="/platform/"  class="">
+              Platform
+            </a>
+          </li>
+          
+          <li>
+            <a href="/blog/"  class="text-brand-500">
+              Blog
+            </a>
+          </li>
+          
+          <li>
+            <a href="/consulting/"  class="">
+              Consulting
+            </a>
+          </li>
+          
+          <li>
+            <a href="https://github.com/choreographr/choreographr" target="_blank" rel="noopener" class="">
+              GitHub<span class="text-night-400 text-xs">↗</span>
+            </a>
+          </li>
+          
+          <li>
+            <a href="https://t.me/choreographr" target="_blank" rel="noopener" class="">
+              Telegram<span class="text-night-400 text-xs">↗</span>
+            </a>
+          </li>
+          
+        </ul>
+      </div>
+      <a href="/" class="font-mono text-lg font-bold tracking-tight select-none">
+        <span class="text-brand-500">choreo</span><span class="text-night-50">graphr</span>&ensp;<span class="text-brand-500">&gt;</span><span class="text-night-50">_</span>
+      </a>
+    </div>
+    <div class="navbar-end hidden lg:flex">
+      <ul class="menu menu-horizontal px-1 gap-1 text-sm">
+        
+        <li>
+          <a href="/agent/"
+             
+             class="text-night-200 hover:text-night-50">
+            Agent
+          </a>
+        </li>
+        
+        <li>
+          <a href="/platform/"
+             
+             class="text-night-200 hover:text-night-50">
+            Platform
+          </a>
+        </li>
+        
+        <li>
+          <a href="/blog/"
+             
+             class="text-brand-500 font-semibold">
+            Blog
+          </a>
+        </li>
+        
+        <li>
+          <a href="/consulting/"
+             
+             class="text-night-200 hover:text-night-50">
+            Consulting
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://github.com/choreographr/choreographr"
+             target="_blank" rel="noopener"
+             class="">
+            GitHub<span class="text-night-400 text-xs">↗</span>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://t.me/choreographr"
+             target="_blank" rel="noopener"
+             class="">
+            Telegram<span class="text-night-400 text-xs">↗</span>
+          </a>
+        </li>
+        
+      </ul>
+    </div>
+  </nav>
+</header>
+
+
+  <main class="flex-1">
+    
+    
+      
+    
+    
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 pt-5">
+      
+
+
+
+
+<nav aria-label="Breadcrumb" class="font-mono text-sm text-night-400">
+  <span class="flex flex-wrap items-center">
+    <a href="/" class="hover:text-brand-400">home</a>
+    
+    
+      
+    
+      
+        
+        
+        <span class="text-night-600">/</span>
+        
+        <a href="/blog/" class="hover:text-brand-400">blog</a>
+        
+      
+    
+      
+        
+        
+        <span class="text-night-600">/</span>
+        
+        <span class="text-night-200 font-medium">acuity-parachain-strategy</span>
+        
+      
+    
+      
+    
+  </span>
+</nav>
+
+    </div>
+    
+    
+
+<div class="mx-auto max-w-3xl px-4 sm:px-6 py-12">
+  <a href="https://choreographr.com/blog" class="text-sm text-night-400 hover:text-brand-400 font-mono">← Back to blog</a>
+  <article class="mt-6">
+    <h1 class="text-3xl font-bold text-night-50 tracking-tight">Acuity Parachain Strategy</h1>
+    <div class="mt-4 flex flex-wrap items-center gap-x-5 gap-y-3">
+      
+      
+      
+      
+      <a href="https://choreographr.com/blog/authors/jonathan-brown/" class="flex items-center gap-2 group/author">
+        
+        <img src="https://choreographr.com/me.jpg" alt="Jonathan Brown" class="h-9 w-9 rounded-full object-cover border border-brand-500/40" />
+        
+        <span class="text-sm font-medium text-night-200 group-hover/author:text-brand-400">Jonathan Brown</span>
+      </a>
+      
+      
+      <span class="text-sm font-mono text-night-400">
+        2021-03-19
+        
+      </span>
+    </div>
+    <div class="prose mt-8">
+      <p>The <a target="_blank" href="https://polkadot.network/">Polkadot</a> ecosystem is evolving rapidly. <a target="_blank" href="https://kusama.network/">Kusama</a> will soon have <a target="_blank" href="https://wiki.polkadot.network/docs/en/learn-parachains">parachains</a> and Polkadot itself will follow. Parachains are a means of connecting together different blockchains in a hierarchy for shared security and asynchronous communication. Acuity will be a hierarchy within this hierarchy.</p>
+<p>This is one of the most important reasons for MIX migrating to the Polkadot ecosystem as Acuity.</p>
+<p>The long term vision is for Acuity to become a backbone for the fully decentralized web.</p>
+<p>Acuity will have many different decentralized social communities, such as decentralized equivalents of Wikipedia, Stack Overflow, CouchSurfing, GoFundMe, DeviantArt, Flickr, Instagram, YouTube, GitHub, Ancestry, Quora, Reddit, Maps, private communities, software packaging repositories, etc. Typically <a target="_blank" href="https://ipfs.io/">IPFS</a> hashes will be stored on-chain and other on-chain state will connect the content together in different ways depending on the use-case. <a target="_blank" href="https://www.parity.io/substrate-off-chain-workers-secure-and-efficient-computing-intensive-tasks/">Off-chain</a> indexing can be used for node software to optionally have other derived state that is not consensus-critical.</p>
+<p>The on-chain logic of Acuity communities will be totally robust and reliable, unlike just about any other social media platform. This will create huge confidence in the system. This is vital for system extensibility.</p>
+<p>Ultimately, each Acuity social community will exist on its own parachain that connects to the Acuity relay chain. Additionally, each social community can shard further by acting as a relay chain with many parachains, each being a different content language such as English, French, etc. This further increases scalability.</p>
+<p>The Acuity relay chain can connect to either the Polkadot or Kusama relay chains, either as a parachain or a parathread. This enables asynchronous communication with the rest of the Polkadot ecosystem. It will be much cheaper for Acuity social communities to connect to the Acuity relay chain, rather than Polkadot or Kusama directly.</p>
+<p>However, the timescale for hierarchical parachains on Polkadot is <a target="_blank" href="https://www.youtube.com/watch?v=Yomudj2BCEo&t=1882s">2 to 3 years</a>.</p>
+<p>This means in the short term we have a choice, either enable Acuity to connect to Polkadot / Kusama, or enable a single layer of parachain social communities to exist under the Acuity parachain.</p>
+<p>The way forward is clear, Acuity needs to be able to become a parachain / parathread on Kusama / Polkadot at the earliest opportunity to be able to participate in the early network effects that MIX missed out on on Ethereum (being an independent Ethereum blockchain at the time).</p>
+<p>The first Acuity community will be based on the original Solidity smart contracts <a target="_blank" href="https://github.com/acuity-social/acuity-contracts">developed</a> when Acuity was called MIX. The <a target="_blank" href="https://github.com/hyperledger-labs/solang">Solang</a> compiler is now mature enough to compile these to <a target="_blank" href="https://en.wikipedia.org/wiki/WebAssembly">Wasm</a> and can therefore be deployed on the <a target="_blank" href="https://www.substrate.io/kb/smart-contracts/contracts-pallet">Contracts</a> pallet on the Acuity blockchain.</p>
+<p>Eventually, once Acuity can have its own parachains, social communities will be developed as native <a target="_blank" href="https://www.substrate.io/">Substrate</a> pallets on their own blockchains. Developers wishing to extend the on-chain functionality of such a community without going through the governance mechanism will be able to do so with smart contracts.</p>
+<p>Currently the Acuity node software is based on Kusama. This does not provide what we need. In order for Acuity to be able to be a parachain, the node software needs to be rebuilt based on <a target="_blank" href="https://github.com/substrate-developer-hub/substrate-node-template">substrate-node-template</a>. This is not especially difficult and hopefully can be achieved without performing another <a target="_blank" href="https://wiki.polkadot.network/docs/glossary#hard-spoon">hard-spoon</a>.</p>
+
+    </div>
+  </article>
+</div>
+
+  </main>
+
+  <footer class="border-t border-night-700 bg-night-900">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 py-12">
+    <div class="grid gap-10 md:grid-cols-3">
+      <div>
+        <div class="font-mono text-lg font-bold tracking-tight">
+          <span class="text-brand-500">choreo</span><span class="text-night-50">graphr</span>&ensp;<span class="text-brand-500">&gt;</span><span class="text-night-50">_</span>
+        </div>
+        <p class="mt-3 text-sm text-night-300 max-w-xs">
+          An all-purpose, extensible AI agent written in Rust. Runs locally or in the cloud. Open source under Apache-2.0.
+        </p>
+      </div>
+      <div>
+        <h3 class="text-sm font-semibold text-night-50 uppercase tracking-wider mb-3">Explore</h3>
+        <ul class="space-y-2 text-sm text-night-300">
+          <li><a href="https://choreographr.com/agent/docs" class="hover:text-brand-400">Agent docs</a></li>
+          <li><a href="https://choreographr.com/blog" class="hover:text-brand-400">Blog</a></li>
+          <li><a href="https://choreographr.com/consulting" class="hover:text-brand-400">Consulting</a></li>
+          <li><a href="https://choreographr.com/search" class="hover:text-brand-400">Search</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3 class="text-sm font-semibold text-night-50 uppercase tracking-wider mb-3">Community</h3>
+        <ul class="space-y-2 text-sm text-night-300">
+          <li><a href="https://github.com/choreographr/choreographr" target="_blank" rel="noopener" class="hover:text-brand-400">GitHub</a></li>
+          <li><a href="https://t.me/choreographr" target="_blank" rel="noopener" class="hover:text-brand-400">Telegram</a></li>
+          <li><a href="https://choreographr.com/atom.xml" class="hover:text-brand-400">RSS Feed</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="mt-10 border-t border-night-700 pt-6 flex flex-col sm:flex-row justify-between gap-3 text-xs text-night-400">
+      <p>© 2026 Choreographr. Released under the Apache-2.0 license.</p>
+      <p class="font-mono">100% Rust · written by <a href="https://github.com/choreographr/choreographr" target="_blank" rel="noopener" class="text-night-300 hover:text-brand-400">choreographr</a></p>
+    </div>
+  </div>
+</footer>
+
+
+  
+
+  <script>
+    // Click-to-copy buttons for every code block. Wraps each <pre> in a
+    // .code-block container and adds a corner button that copies the block's
+    // text via the async Clipboard API, with an execCommand fallback for
+    // non-secure contexts. The button sits OUTSIDE the <pre> so it stays in
+    // the corner while horizontally-overflowing code scrolls inside the block.
+    (function () {
+      var COPY_ICON =
+        '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
+      var CHECK_ICON =
+        '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
+
+      function fallbackCopy(text) {
+        var ta = document.createElement('textarea');
+        ta.value = text;
+        ta.setAttribute('readonly', '');
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        try { document.execCommand('copy'); } catch (e) { /* ignore */ }
+        document.body.removeChild(ta);
+      }
+
+      document.querySelectorAll('pre').forEach(function (pre) {
+        // Skip daisyUI terminal mockups (mockup-code): every line is its
+        // own <pre>, so per-line copy buttons would be noise. Real code
+        // blocks are a single <pre> that is not inside a .mockup-code.
+        if (pre.closest('.mockup-code')) return;
+
+        // Idempotent: don't re-wrap if the script runs more than once.
+        if (pre.parentElement && pre.parentElement.classList.contains('code-block')) return;
+
+        var wrap = document.createElement('div');
+        wrap.className = 'code-block';
+        pre.parentNode.insertBefore(wrap, pre);
+        wrap.appendChild(pre);
+
+        var btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'code-copy';
+        btn.setAttribute('aria-label', 'Copy code to clipboard');
+        btn.innerHTML = COPY_ICON;
+        wrap.appendChild(btn);
+
+        btn.addEventListener('click', function () {
+          var text = pre.innerText;
+          var done = function () {
+            btn.classList.add('copied');
+            btn.innerHTML = CHECK_ICON;
+            btn.setAttribute('aria-label', 'Copied');
+            setTimeout(function () {
+              btn.classList.remove('copied');
+              btn.innerHTML = COPY_ICON;
+              btn.setAttribute('aria-label', 'Copy code to clipboard');
+            }, 1500);
+          };
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(text).then(done, function () { fallbackCopy(text); done(); });
+          } else {
+            fallbackCopy(text);
+            done();
+          }
+        });
+      });
+    })();
+  </script>
+</body>
+</html>

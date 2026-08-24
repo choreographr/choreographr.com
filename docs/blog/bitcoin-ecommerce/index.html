@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="night">
+<head>
+  <meta charset="UTF-8">
+  <!-- color-scheme hint: lets the browser paint the dark canvas background
+       as soon as the head is parsed, before ANY CSS has been applied.
+       This is the one thing that closes the residual flash on Firefox/Zen,
+       which paints its default (white) canvas frame during navigation,
+       unlike Chromium which defers first paint until the inline CSS exists. -->
+  <meta name="color-scheme" content="dark">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ensuring security of funds and preserving anonymity when using Bitcoin for e-commerce — Choreographr Blog</title>
+  <meta name="description" content="Originally published on jonathanpatrick.me.">
+  <meta name="theme-color" content="#06080b">
+
+  
+  <!-- Canonical: every page (incl. trailing-slash and /index.html variants)
+       resolves to one authoritative URL, which also matches the sitemap. -->
+  <link rel="canonical" href="https://choreographr.com/blog/bitcoin-ecommerce/">
+  
+
+  <!-- Open Graph / social sharing. og:title / og:description are overridden
+       per template so they always match the <title> and meta description. -->
+  <meta property="og:site_name" content="Choreographr">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Ensuring security of funds and preserving anonymity when using Bitcoin for e-commerce — Choreographr Blog">
+  <meta property="og:description" content="Originally published on jonathanpatrick.me.">
+  <meta property="og:url" content="https://choreographr.com/blog/bitcoin-ecommerce/">
+  
+  <meta property="og:image" content="https://choreographr.com/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Choreographr — your all-purpose AI agent, written in Rust">
+  
+  <meta property="og:locale" content="en_US">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <!-- Critical inline CSS: paint the dark theme immediately, before
+       main.css (or the webfont stylesheet) finishes loading, so the
+       page never flashes white on navigation. -->
+  <style>
+    html { background-color: #06080b; color-scheme: dark; }
+    body { background-color: #06080b; color: #d3dae3; }
+  </style>
+
+  <!-- Self-hosted fonts (same-origin): preload the two variable woff2
+       files so they're available at first paint — no visible swap. -->
+  <link rel="preload" href="https://choreographr.com/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="https://choreographr.com/fonts/jetbrains-mono.woff2" as="font" type="font/woff2" crossorigin>
+
+  <link rel="icon" type="image/svg+xml" href="https://choreographr.com/favicon.svg">
+  <link rel="stylesheet" href="https://choreographr.com/css/main.css?h=2d812d12b3967d2e0fb0">
+
+  <!-- Firefox/Zen can paint a frame before this stylesheet has been
+       applied if a layout flush happens while it loads (Bugzilla
+       1459305) — unlike Chromium, which blocks the parser on the
+       <link>. This synchronous script is the standard workaround: it
+       cannot execute until main.css is ready, and while it is pending
+       the <body> has not been parsed, so nothing unstyled can paint.
+       Result: same first-paint behaviour as Chromium, no FOUC. -->
+  <script>
+    // No-op: exists only to hold first paint until main.css is applied.
+  </script>
+
+  
+  <link rel="alternate" type="application/atom+xml" title="Choreographr Blog" href="https://choreographr.com/atom.xml">
+  
+
+  
+
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Ensuring security of funds and preserving anonymity when using Bitcoin for e-commerce",
+  "description": "Originally published on jonathanpatrick.me.",
+  "datePublished": "2015-01-21",
+  "dateModified": "2015-01-21",
+  "mainEntityOfPage": "https://choreographr.com/blog/bitcoin-ecommerce/",
+  "image": "https://choreographr.com/og-image.png",
+  "author": [{ "@type": "Person", "name": "Jonathan Brown" }],
+  "publisher": { "@type": "Organization", "name": "Choreographr", "url": "https://choreographr.com/" }
+}
+</script>
+
+</head>
+<body class="min-h-screen flex flex-col">
+
+  <header class="sticky top-0 z-40 w-full border-b border-night-700 bg-night-950/90 backdrop-blur">
+  <nav class="navbar mx-auto max-w-7xl px-4 sm:px-6">
+    <div class="navbar-start">
+      <div class="dropdown lg:hidden">
+        <div tabindex="0" role="button" class="btn btn-ghost btn-square" aria-label="Menu">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </div>
+        <ul tabindex="0" class="dropdown-content menu bg-night-900 border border-night-700 rounded-box z-50 mt-3 w-52 p-2 shadow-2xl">
+          
+          <li>
+            <a href="/agent/"  class="">
+              Agent
+            </a>
+          </li>
+          
+          <li>
+            <a href="/platform/"  class="">
+              Platform
+            </a>
+          </li>
+          
+          <li>
+            <a href="/blog/"  class="text-brand-500">
+              Blog
+            </a>
+          </li>
+          
+          <li>
+            <a href="/consulting/"  class="">
+              Consulting
+            </a>
+          </li>
+          
+          <li>
+            <a href="https://github.com/choreographr/choreographr" target="_blank" rel="noopener" class="">
+              GitHub<span class="text-night-400 text-xs">↗</span>
+            </a>
+          </li>
+          
+          <li>
+            <a href="https://t.me/choreographr" target="_blank" rel="noopener" class="">
+              Telegram<span class="text-night-400 text-xs">↗</span>
+            </a>
+          </li>
+          
+        </ul>
+      </div>
+      <a href="/" class="font-mono text-lg font-bold tracking-tight select-none">
+        <span class="text-brand-500">choreo</span><span class="text-night-50">graphr</span>&ensp;<span class="text-brand-500">&gt;</span><span class="text-night-50">_</span>
+      </a>
+    </div>
+    <div class="navbar-end hidden lg:flex">
+      <ul class="menu menu-horizontal px-1 gap-1 text-sm">
+        
+        <li>
+          <a href="/agent/"
+             
+             class="text-night-200 hover:text-night-50">
+            Agent
+          </a>
+        </li>
+        
+        <li>
+          <a href="/platform/"
+             
+             class="text-night-200 hover:text-night-50">
+            Platform
+          </a>
+        </li>
+        
+        <li>
+          <a href="/blog/"
+             
+             class="text-brand-500 font-semibold">
+            Blog
+          </a>
+        </li>
+        
+        <li>
+          <a href="/consulting/"
+             
+             class="text-night-200 hover:text-night-50">
+            Consulting
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://github.com/choreographr/choreographr"
+             target="_blank" rel="noopener"
+             class="">
+            GitHub<span class="text-night-400 text-xs">↗</span>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://t.me/choreographr"
+             target="_blank" rel="noopener"
+             class="">
+            Telegram<span class="text-night-400 text-xs">↗</span>
+          </a>
+        </li>
+        
+      </ul>
+    </div>
+  </nav>
+</header>
+
+
+  <main class="flex-1">
+    
+    
+      
+    
+    
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 pt-5">
+      
+
+
+
+
+<nav aria-label="Breadcrumb" class="font-mono text-sm text-night-400">
+  <span class="flex flex-wrap items-center">
+    <a href="/" class="hover:text-brand-400">home</a>
+    
+    
+      
+    
+      
+        
+        
+        <span class="text-night-600">/</span>
+        
+        <a href="/blog/" class="hover:text-brand-400">blog</a>
+        
+      
+    
+      
+        
+        
+        <span class="text-night-600">/</span>
+        
+        <span class="text-night-200 font-medium">bitcoin-ecommerce</span>
+        
+      
+    
+      
+    
+  </span>
+</nav>
+
+    </div>
+    
+    
+
+<div class="mx-auto max-w-3xl px-4 sm:px-6 py-12">
+  <a href="https://choreographr.com/blog" class="text-sm text-night-400 hover:text-brand-400 font-mono">← Back to blog</a>
+  <article class="mt-6">
+    <h1 class="text-3xl font-bold text-night-50 tracking-tight">Ensuring security of funds and preserving anonymity when using Bitcoin for e-commerce</h1>
+    <div class="mt-4 flex flex-wrap items-center gap-x-5 gap-y-3">
+      
+      
+      
+      
+      <a href="https://choreographr.com/blog/authors/jonathan-brown/" class="flex items-center gap-2 group/author">
+        
+        <img src="https://choreographr.com/me.jpg" alt="Jonathan Brown" class="h-9 w-9 rounded-full object-cover border border-brand-500/40" />
+        
+        <span class="text-sm font-medium text-night-200 group-hover/author:text-brand-400">Jonathan Brown</span>
+      </a>
+      
+      
+      <span class="text-sm font-mono text-night-400">
+        2015-01-21
+        
+      </span>
+    </div>
+    <div class="prose mt-8">
+      <p>Retrieved from the <a rel="noopener external" target="_blank" href="https://web.archive.org/web/20181015023339/http://jonathanpatrick.me/blog/bitcoin-ecommerce">Wayback Machine</a>.</p>
+<img src="/blog/bitcoin-accepted-here.png" width="720" height="275" style="width: 100%; height: auto;">
+<p>When configuring an e-commerce website to accept Bitcoin, it is important to be aware of the extra security considerations relating to private keys. Each payment needs its own Bitcoin address so these need to be readily available on the system providing the e-commerce functionality. This is not true of the private keys. Unless payments need to be made in an automated manner in response to user actions on the website, the wallet that holds them can be stored in a much more secure environment. This can make it significantly harder for a hacker to steal the funds.</p>
+<p>There are various techniques to have a continuous supply of addresses for a wallet stored elsewhere:</p>
+<h2>Immediate forwarding to fixed address</h2>
+<p>Addresses are generated from a hot wallet the e-commerce system has full access to, e.g. bitcoind. Once the customer has sent the funds to a Bitcoin address for a specific payment, a subsequent transaction can be created by the system to forward the funds to an address that has its private key stored in a more secure manner. The exact outputs received from the customer can be used as the inputs for the forwarding transaction. This means that it is not necessary to wait for multiple confirmations of the original transaction, minimising the window of attack when the funds could be stolen. However, it may be prudent to wait for 1 confirmation to avoid <a href="https://web.archive.org/web/20181015023339/https://github.com/bitcoin/bips/blob/master/bip-0062.mediawiki" target="_blank">transaction malleability</a> issues.</p>
+<p>The problem with this technique is that all the funds received end up in a single address. This is very bad for anonymity because it links together on the public ledger all of the payments made on your website.</p>
+<h2>Extended public keys</h2>
+<p>Addresses could be generated in the wallet and uploaded to the live system in bulk, however there is no standardized way for this to happen and a much more elegant system exists. As described in detail in my <a href="https://web.archive.org/web/20181015023339/http://jonathanpatrick.me/blog/hd-wallets-drupal">previous post</a>, xpubs can be used to generate endless addresses for a wallet that is maintained elsewhere. This is exactly what we need, but there are a number of problems:</p>
+<ul><li>Low wallet support:<br><a href="https://web.archive.org/web/20181015023339/https://electrum.org/" target="_blank">Electrum</a>: exports an account xpub for receiving purposes for normal and <a href="https://web.archive.org/web/20181015023339/https://bitcoinmagazine.com/11108/multisig-future-bitcoin/" target="_blank">multisig</a> wallets.<br><a href="https://web.archive.org/web/20181015023339/https://play.google.com/store/apps/details?id=com.bonsai.wallet32" target="_blank">Wallet32</a>: works, but this is not a multisig wallet.<br><a href="https://web.archive.org/web/20181015023339/https://coinkite.com/fr/fce4276q" target="_blank">Coinkite</a>: will export multisig xpubs, but they actively do not support what they term <a href="https://web.archive.org/web/20181015023339/https://docs.coinkite.com/api/advanced.html" target="_blank">subkey front running</a>.
+</li><li>Low e-commerce software / service support:<br>
+The only e-commerce systems that I know of that will accept xpubs for generating addresses are <a href="https://web.archive.org/web/20181015023339/https://coindirect.io/" target="_blank">CoinDirect</a> and my own <a href="https://web.archive.org/web/20181015023339/https://www.drupal.org/project/cointools" target="_blank">Drupal Coin Tools</a>.
+</li>
+<li>Hard to setup:<br>
+Even with a non-multisig arrangement, care has to be taken that the correct path prefix is used with the xpub to generate addresses that match those in the wallet software. With multisig an xpub from each key signer has to be put into the system.
+</li>
+</ul><h2>Obtain addresses from web wallet API</h2>
+<p>Some web wallets provide API access to obtain new addresses for an account. Of course this is only available for wallets that are maintained by a third party. <a href="https://web.archive.org/web/20181015023339/https://coinkite.com/fr/fce4276q" target="_blank">Coinkite</a> and <a href="https://web.archive.org/web/20181015023339/https://www.bitgo.com/" target="_blank">BitGo</a> are examples of this. Fortunately both these services are multisig so the risk of utilising a third party is minimised.</p>
+<p>This technique has a number of disadvantages. In order for the e-commerce solution to be able to retrieve addresses from your wallet, it will need some sort of credentials. If a hacker stole these they could then access the wallet and steal the funds anyway. It is necessary that these APIs are able to utilise credentials that do not have spending capability. For example, Coinkite <a href="https://web.archive.org/web/20181015023339/https://docs.coinkite.com/api/auth.html" target="_blank">has this capability</a>.</p>
+<p>The APIs are not standardised so e-commerce systems will need to have a unique plugin written for each wallet service.</p>
+<h2>Use third party provider for payment workflow</h2>
+<p>Services such as <a href="https://web.archive.org/web/20181015023339/https://www.bitnet.io/" target="_blank">Bitnet</a>, <a href="https://web.archive.org/web/20181015023339/https://bitpay.com/" target="_blank">BitPay</a> and <a href="https://web.archive.org/web/20181015023339/https://www.coinbase.com/join/bluedroplet" target="_blank">Coinbase</a> offer a much more managed solution for Bitcoin payments. They do much more of the heavy lifting and the e-commerce system just has to do the bare minimum to integrate. This means that you do not have to have Bitcoin addresses stored on your system whatsoever.</p>
+<p>Advantages:</p>
+<ul><li>Easier to integrate if integration doesn't already exist.</li>
+<li>Not necessary to run your own Bitcoin node or use a service such as <a href="https://web.archive.org/web/20181015023339/https://chain.com/" target="_blank">Chain</a>.</li>
+<li>Customers may feel more confident using one of these trusted brands rather than a solution directly built into your web site.</li>
+<li>Because these services typically just maintain a database record for how much they owe you, they effectively act as a <a href="https://web.archive.org/web/20181015023339/https://en.bitcoin.it/wiki/Mixing_service" target="_blank">mixing service</a>. This can preserve payment anonymity.</li>
+<li>Built-in conversion to fiat.</li>
+<li>Prevent exposure to exchange rate volatility.</li>
+</ul><p>Disadvantages:</p>
+<ul><li>These payment providers are subject to very strong <a href="https://web.archive.org/web/20181015023339/https://en.wikipedia.org/wiki/Know_your_customer" target="_blank">KYC</a> and <a href="https://web.archive.org/web/20181015023339/https://en.wikipedia.org/wiki/Money_laundering#Enforcement" target="_blank">AML</a> regulations.</li>
+<li>Again, these APIs are not standardised so e-commerce systems will need to have a unique plugin written for each wallet service.</li>
+</ul><h2>Stealth addresses</h2>
+<p>At the moment <a href="https://web.archive.org/web/20181015023339/http://www.coindesk.com/stealth-addresses-secret-bitcoin-privacy/" target="_blank">stealth addresses</a> are purely theoretical, but they could be an extremely useful means of generating addresses for e-commerce.</p>
+<p>A highly simplified overview of how it works is that a single address is provided by the payee (your back-end wallet). This is stored on the e-commerce platform. Endless addresses can then be generated from this address that the wallet will be able to detect and spend.</p>
+<p>It has a number of advantages over xpubs:</p>
+<ul><li>Much improved usability. It is a much shorter address and can even generate multisig addresses from a single address.</li>
+<li>The same stealth address can be used by multiple payers while maintaining anonymity. This is useful for addresses that are publicised.</li>
+<li>Has the potential to have broad wallet support.</li>
+
+    </div>
+  </article>
+</div>
+
+  </main>
+
+  <footer class="border-t border-night-700 bg-night-900">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 py-12">
+    <div class="grid gap-10 md:grid-cols-3">
+      <div>
+        <div class="font-mono text-lg font-bold tracking-tight">
+          <span class="text-brand-500">choreo</span><span class="text-night-50">graphr</span>&ensp;<span class="text-brand-500">&gt;</span><span class="text-night-50">_</span>
+        </div>
+        <p class="mt-3 text-sm text-night-300 max-w-xs">
+          An all-purpose, extensible AI agent written in Rust. Runs locally or in the cloud. Open source under Apache-2.0.
+        </p>
+      </div>
+      <div>
+        <h3 class="text-sm font-semibold text-night-50 uppercase tracking-wider mb-3">Explore</h3>
+        <ul class="space-y-2 text-sm text-night-300">
+          <li><a href="https://choreographr.com/agent/docs" class="hover:text-brand-400">Agent docs</a></li>
+          <li><a href="https://choreographr.com/blog" class="hover:text-brand-400">Blog</a></li>
+          <li><a href="https://choreographr.com/consulting" class="hover:text-brand-400">Consulting</a></li>
+          <li><a href="https://choreographr.com/search" class="hover:text-brand-400">Search</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3 class="text-sm font-semibold text-night-50 uppercase tracking-wider mb-3">Community</h3>
+        <ul class="space-y-2 text-sm text-night-300">
+          <li><a href="https://github.com/choreographr/choreographr" target="_blank" rel="noopener" class="hover:text-brand-400">GitHub</a></li>
+          <li><a href="https://t.me/choreographr" target="_blank" rel="noopener" class="hover:text-brand-400">Telegram</a></li>
+          <li><a href="https://choreographr.com/atom.xml" class="hover:text-brand-400">RSS Feed</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="mt-10 border-t border-night-700 pt-6 flex flex-col sm:flex-row justify-between gap-3 text-xs text-night-400">
+      <p>© 2026 Choreographr. Released under the Apache-2.0 license.</p>
+      <p class="font-mono">100% Rust · written by <a href="https://github.com/choreographr/choreographr" target="_blank" rel="noopener" class="text-night-300 hover:text-brand-400">choreographr</a></p>
+    </div>
+  </div>
+</footer>
+
+
+  
+
+  <script>
+    // Click-to-copy buttons for every code block. Wraps each <pre> in a
+    // .code-block container and adds a corner button that copies the block's
+    // text via the async Clipboard API, with an execCommand fallback for
+    // non-secure contexts. The button sits OUTSIDE the <pre> so it stays in
+    // the corner while horizontally-overflowing code scrolls inside the block.
+    (function () {
+      var COPY_ICON =
+        '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
+      var CHECK_ICON =
+        '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
+
+      function fallbackCopy(text) {
+        var ta = document.createElement('textarea');
+        ta.value = text;
+        ta.setAttribute('readonly', '');
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        try { document.execCommand('copy'); } catch (e) { /* ignore */ }
+        document.body.removeChild(ta);
+      }
+
+      document.querySelectorAll('pre').forEach(function (pre) {
+        // Skip daisyUI terminal mockups (mockup-code): every line is its
+        // own <pre>, so per-line copy buttons would be noise. Real code
+        // blocks are a single <pre> that is not inside a .mockup-code.
+        if (pre.closest('.mockup-code')) return;
+
+        // Idempotent: don't re-wrap if the script runs more than once.
+        if (pre.parentElement && pre.parentElement.classList.contains('code-block')) return;
+
+        var wrap = document.createElement('div');
+        wrap.className = 'code-block';
+        pre.parentNode.insertBefore(wrap, pre);
+        wrap.appendChild(pre);
+
+        var btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'code-copy';
+        btn.setAttribute('aria-label', 'Copy code to clipboard');
+        btn.innerHTML = COPY_ICON;
+        wrap.appendChild(btn);
+
+        btn.addEventListener('click', function () {
+          var text = pre.innerText;
+          var done = function () {
+            btn.classList.add('copied');
+            btn.innerHTML = CHECK_ICON;
+            btn.setAttribute('aria-label', 'Copied');
+            setTimeout(function () {
+              btn.classList.remove('copied');
+              btn.innerHTML = COPY_ICON;
+              btn.setAttribute('aria-label', 'Copy code to clipboard');
+            }, 1500);
+          };
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(text).then(done, function () { fallbackCopy(text); done(); });
+          } else {
+            fallbackCopy(text);
+            done();
+          }
+        });
+      });
+    })();
+  </script>
+</body>
+</html>

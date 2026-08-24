@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block title %}{{ page.title }} — Choreographr{% endblock title %}
+{% block description %}{% if page.description %}{{ page.description }}{% else %}{{ config.description }}{% endif %}{% endblock description %}
+{% block og_title %}{{ page.title }} — Choreographr{% endblock og_title %}
+{% block og_description %}{% if page.description %}{{ page.description }}{% else %}{{ config.description }}{% endif %}{% endblock og_description %}
+
+{% block content %}
+{# The platform docs have a top-level section plus the indexer sub-section.
+   Detect which one the current page lives in so the sidebar lists the right
+   set of pages and the back-link goes to the right parent. #}
+{% if page.components is containing(pat="indexer") %}
+  {% set docs = get_section(path="platform/docs/indexer/_index.md") %}
+  {% set sidebar_label = "Indexer docs" %}
+  {% set back_href = "/platform/docs/" %}
+  {% set back_label = "Platform docs" %}
+{% else %}
+  {% set docs = get_section(path="platform/docs/_index.md") %}
+  {% set sidebar_label = "Platform docs" %}
+  {% set back_href = "/platform/" %}
+  {% set back_label = "Platform" %}
+{% endif %}
+<div class="mx-auto max-w-7xl px-4 sm:px-6 py-8 lg:py-12">
+  <div class="flex flex-col lg:flex-row gap-10">
+    <aside class="lg:w-60 shrink-0">
+      <div class="lg:sticky lg:top-24">
+        <nav class="w-full">
+          <p class="px-3 mb-2 text-xs font-semibold uppercase tracking-wider text-night-400">{{ sidebar_label }}</p>
+          <ul class="menu menu-sm w-full p-0 gap-0.5">
+            {% for p in docs.pages %}
+            <li>
+              <a href="{{ p.permalink }}"
+                 class="{% if current_path == p.path %}bg-night-700 text-night-50 font-semibold{% else %}text-night-200 hover:text-night-50{% endif %}">
+                {{ p.title }}
+              </a>
+            </li>
+            {% endfor %}
+          </ul>
+          <p class="px-3 mt-4"><a href="{{ get_url(path=back_href) }}" class="text-sm text-night-400 hover:text-brand-400 font-mono">← {{ back_label }}</a></p>
+        </nav>
+      </div>
+    </aside>
+    <article class="prose min-w-0 flex-1 max-w-3xl">
+      <h1>{{ page.title }}</h1>
+      {{ page.content | safe }}
+    </article>
+  </div>
+</div>
+{% endblock content %}

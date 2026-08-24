@@ -35,14 +35,14 @@ OpenRouter. Native EVM and Substrate/Polkadot blockchain tools are built in.
 ## Important pages
 
 - [Home](https://choreographr.com/): overview, features, and comparison table
-- [Quick start](https://choreographr.com/docs/quick-start/): first conversation in minutes
-- [Installation](https://choreographr.com/docs/installation/): Homebrew, .deb/.rpm, tarball, Cargo
-- [Documentation](https://choreographr.com/docs/): full documentation index
-- [FAQ](https://choreographr.com/docs/faq/): frequently asked questions
-- [Tools reference](https://choreographr.com/docs/tools/): every built-in tool and tool group
-- [Security](https://choreographr.com/docs/security/): threat model and encryption
-- [Why Rust](https://choreographr.com/docs/why-rust/): design rationale
-- [Architecture](https://choreographr.com/docs/architecture/): threading model and topology
+- [Quick start](https://choreographr.com/agent/docs/quick-start/): first conversation in minutes
+- [Installation](https://choreographr.com/agent/docs/installation/): Homebrew, .deb/.rpm, tarball, Cargo
+- [Documentation](https://choreographr.com/agent/docs/): full agent documentation index
+- [FAQ](https://choreographr.com/agent/docs/faq/): frequently asked questions
+- [Tools reference](https://choreographr.com/agent/docs/tools/): every built-in tool and tool group
+- [Security](https://choreographr.com/agent/docs/security/): threat model and encryption
+- [Why Rust](https://choreographr.com/agent/docs/why-rust/): design rationale
+- [Architecture](https://choreographr.com/agent/docs/architecture/): threading model and topology
 - [Blog](https://choreographr.com/blog/): news and release notes
 - [Consulting](https://choreographr.com/consulting/): about the author
 - [AI Training — Đà Nẵng](https://choreographr.com/ai-training/): weekly beginner classes — build a custom website with an AI agent, no coding at all

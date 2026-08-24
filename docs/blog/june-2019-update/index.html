@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="night">
+<head>
+  <meta charset="UTF-8">
+  <!-- color-scheme hint: lets the browser paint the dark canvas background
+       as soon as the head is parsed, before ANY CSS has been applied.
+       This is the one thing that closes the residual flash on Firefox/Zen,
+       which paints its default (white) canvas frame during navigation,
+       unlike Chromium which defers first paint until the inline CSS exists. -->
+  <meta name="color-scheme" content="dark">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>June 2019 MIX Update — Choreographr Blog</title>
+  <meta name="description" content="Online censorship is accelerating. The need for a stable release of MIX Acuity — the MIX desktop browser for Mac, Windows and Linux — grows by the day.">
+  <meta name="theme-color" content="#06080b">
+
+  
+  <!-- Canonical: every page (incl. trailing-slash and /index.html variants)
+       resolves to one authoritative URL, which also matches the sitemap. -->
+  <link rel="canonical" href="https://choreographr.com/blog/june-2019-update/">
+  
+
+  <!-- Open Graph / social sharing. og:title / og:description are overridden
+       per template so they always match the <title> and meta description. -->
+  <meta property="og:site_name" content="Choreographr">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="June 2019 MIX Update — Choreographr Blog">
+  <meta property="og:description" content="Online censorship is accelerating. The need for a stable release of MIX Acuity — the MIX desktop browser for Mac, Windows and Linux — grows by the day.">
+  <meta property="og:url" content="https://choreographr.com/blog/june-2019-update/">
+  
+  <meta property="og:image" content="https://choreographr.com/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Choreographr — your all-purpose AI agent, written in Rust">
+  
+  <meta property="og:locale" content="en_US">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <!-- Critical inline CSS: paint the dark theme immediately, before
+       main.css (or the webfont stylesheet) finishes loading, so the
+       page never flashes white on navigation. -->
+  <style>
+    html { background-color: #06080b; color-scheme: dark; }
+    body { background-color: #06080b; color: #d3dae3; }
+  </style>
+
+  <!-- Self-hosted fonts (same-origin): preload the two variable woff2
+       files so they're available at first paint — no visible swap. -->
+  <link rel="preload" href="https://choreographr.com/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="https://choreographr.com/fonts/jetbrains-mono.woff2" as="font" type="font/woff2" crossorigin>
+
+  <link rel="icon" type="image/svg+xml" href="https://choreographr.com/favicon.svg">
+  <link rel="stylesheet" href="https://choreographr.com/css/main.css?h=2d812d12b3967d2e0fb0">
+
+  <!-- Firefox/Zen can paint a frame before this stylesheet has been
+       applied if a layout flush happens while it loads (Bugzilla
+       1459305) — unlike Chromium, which blocks the parser on the
+       <link>. This synchronous script is the standard workaround: it
+       cannot execute until main.css is ready, and while it is pending
+       the <body> has not been parsed, so nothing unstyled can paint.
+       Result: same first-paint behaviour as Chromium, no FOUC. -->
+  <script>
+    // No-op: exists only to hold first paint until main.css is applied.
+  </script>
+
+  
+  <link rel="alternate" type="application/atom+xml" title="Choreographr Blog" href="https://choreographr.com/atom.xml">
+  
+
+  
+
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "June 2019 MIX Update",
+  "description": "Online censorship is accelerating. The need for a stable release of MIX Acuity — the MIX desktop browser for Mac, Windows and Linux — grows by the day.",
+  "datePublished": "2019-06-16",
+  "dateModified": "2019-06-16",
+  "mainEntityOfPage": "https://choreographr.com/blog/june-2019-update/",
+  "image": "https://choreographr.com/og-image.png",
+  "author": [{ "@type": "Person", "name": "Jonathan Brown" }],
+  "publisher": { "@type": "Organization", "name": "Choreographr", "url": "https://choreographr.com/" }
+}
+</script>
+
+</head>
+<body class="min-h-screen flex flex-col">
+
+  <header class="sticky top-0 z-40 w-full border-b border-night-700 bg-night-950/90 backdrop-blur">
+  <nav class="navbar mx-auto max-w-7xl px-4 sm:px-6">
+    <div class="navbar-start">
+      <div class="dropdown lg:hidden">
+        <div tabindex="0" role="button" class="btn btn-ghost btn-square" aria-label="Menu">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </div>
+        <ul tabindex="0" class="dropdown-content menu bg-night-900 border border-night-700 rounded-box z-50 mt-3 w-52 p-2 shadow-2xl">
+          
+          <li>
+            <a href="/agent/"  class="">
+              Agent
+            </a>
+          </li>
+          
+          <li>
+            <a href="/platform/"  class="">
+              Platform
+            </a>
+          </li>
+          
+          <li>
+            <a href="/blog/"  class="text-brand-500">
+              Blog
+            </a>
+          </li>
+          
+          <li>
+            <a href="/consulting/"  class="">
+              Consulting
+            </a>
+          </li>
+          
+          <li>
+            <a href="https://github.com/choreographr/choreographr" target="_blank" rel="noopener" class="">
+              GitHub<span class="text-night-400 text-xs">↗</span>
+            </a>
+          </li>
+          
+          <li>
+            <a href="https://t.me/choreographr" target="_blank" rel="noopener" class="">
+              Telegram<span class="text-night-400 text-xs">↗</span>
+            </a>
+          </li>
+          
+        </ul>
+      </div>
+      <a href="/" class="font-mono text-lg font-bold tracking-tight select-none">
+        <span class="text-brand-500">choreo</span><span class="text-night-50">graphr</span>&ensp;<span class="text-brand-500">&gt;</span><span class="text-night-50">_</span>
+      </a>
+    </div>
+    <div class="navbar-end hidden lg:flex">
+      <ul class="menu menu-horizontal px-1 gap-1 text-sm">
+        
+        <li>
+          <a href="/agent/"
+             
+             class="text-night-200 hover:text-night-50">
+            Agent
+          </a>
+        </li>
+        
+        <li>
+          <a href="/platform/"
+             
+             class="text-night-200 hover:text-night-50">
+            Platform
+          </a>
+        </li>
+        
+        <li>
+          <a href="/blog/"
+             
+             class="text-brand-500 font-semibold">
+            Blog
+          </a>
+        </li>
+        
+        <li>
+          <a href="/consulting/"
+             
+             class="text-night-200 hover:text-night-50">
+            Consulting
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://github.com/choreographr/choreographr"
+             target="_blank" rel="noopener"
+             class="">
+            GitHub<span class="text-night-400 text-xs">↗</span>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://t.me/choreographr"
+             target="_blank" rel="noopener"
+             class="">
+            Telegram<span class="text-night-400 text-xs">↗</span>
+          </a>
+        </li>
+        
+      </ul>
+    </div>
+  </nav>
+</header>
+
+
+  <main class="flex-1">
+    
+    
+      
+    
+    
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 pt-5">
+      
+
+
+
+
+<nav aria-label="Breadcrumb" class="font-mono text-sm text-night-400">
+  <span class="flex flex-wrap items-center">
+    <a href="/" class="hover:text-brand-400">home</a>
+    
+    
+      
+    
+      
+        
+        
+        <span class="text-night-600">/</span>
+        
+        <a href="/blog/" class="hover:text-brand-400">blog</a>
+        
+      
+    
+      
+        
+        
+        <span class="text-night-600">/</span>
+        
+        <span class="text-night-200 font-medium">june-2019-update</span>
+        
+      
+    
+      
+    
+  </span>
+</nav>
+
+    </div>
+    
+    
+
+<div class="mx-auto max-w-3xl px-4 sm:px-6 py-12">
+  <a href="https://choreographr.com/blog" class="text-sm text-night-400 hover:text-brand-400 font-mono">← Back to blog</a>
+  <article class="mt-6">
+    <h1 class="text-3xl font-bold text-night-50 tracking-tight">June 2019 MIX Update</h1>
+    <div class="mt-4 flex flex-wrap items-center gap-x-5 gap-y-3">
+      
+      
+      
+      
+      <a href="https://choreographr.com/blog/authors/jonathan-brown/" class="flex items-center gap-2 group/author">
+        
+        <img src="https://choreographr.com/me.jpg" alt="Jonathan Brown" class="h-9 w-9 rounded-full object-cover border border-brand-500/40" />
+        
+        <span class="text-sm font-medium text-night-200 group-hover/author:text-brand-400">Jonathan Brown</span>
+      </a>
+      
+      
+      <span class="text-sm font-mono text-night-400">
+        2019-06-16
+        
+      </span>
+    </div>
+    <div class="prose mt-8">
+      <p><em>Originally published at <a rel="noopener external" target="_blank" href="https://medium.com/mix-blockchain/june-2019-mix-update-7872391ae655">medium.com</a></em></p>
+<img src="/blog/june-2019-update.png" style="width: 100%; height: auto;">
+<h1 id="5f78" class="mn mo fr be mp mq mr ms mt mu mv mw mx my mz na nb nc nd ne nf ng nh ni nj nk bj" data-selectable-paragraph="">MIX Acuity</h1><p id="fd14" class="pw-post-body-paragraph nl nm fr nn b no np nq nr ns nt nu nv nw nx ny nz oa ob oc od oe of og oh oi fk bj" data-selectable-paragraph="">Online censorship is accelerating. The need for a stable release of MIX Acuity — the <a class="af oj" href="https://www.mix-blockchain.org/" rel="noopener ugc nofollow" target="_blank">MIX</a> desktop browser for Mac, Windows and Linux — grows by the day.</p><p id="4809" class="pw-post-body-paragraph nl nm fr nn b no ok nq nr ns ol nu nv nw om ny nz oa on oc od oe oo og oh oi fk bj" data-selectable-paragraph="">The are a few major tasks that need to be completed before Acuity 1.0. I intend to have these finished by the end of June. Once this is done we can start promoting Acuity for real-world use and continue to improve it.</p><h2 id="8291" class="op mo fr be mp oq or os mt ot ou ov mx nw ow ox oy oa oz pa pb oe pc pd pe pf bj" data-selectable-paragraph="">Secure account creation</h2><p id="13e7" class="pw-post-body-paragraph nl nm fr nn b no np nq nr ns nt nu nv nw nx ny nz oa ob oc od oe of og oh oi fk bj" data-selectable-paragraph="">Generating mnemonic words and encrypting private keys needs to be done in an industry-standard way.</p><p id="dc58" class="pw-post-body-paragraph nl nm fr nn b no ok nq nr ns ol nu nv nw om ny nz oa on oc od oe oo og oh oi fk bj" data-selectable-paragraph="">Each MIX account has two addresses: a controller and a contract. When creating a new account this mapping needs to be stored in a smart contract so that accounts can be recovered with just the mnemonic words. This will enable compatibility with the DoublePlus web-based MIX browser by Brian Heishman.</p><p id="32dd" class="pw-post-body-paragraph nl nm fr nn b no ok nq nr ns ol nu nv nw om ny nz oa on oc od oe oo og oh oi fk bj" data-selectable-paragraph="">Currently it is only possible to mine MIX once you have created an account. It needs to be possible to mine during the account creation process to obtain the MIX for account contract deployment and posting content.</p><h2 id="ef23" class="op mo fr be mp oq or os mt ot ou ov mx nw ow ox oy oa oz pa pb oe pc pd pe pf bj" data-selectable-paragraph="">Improved splash screen</h2><p id="dc69" class="pw-post-body-paragraph nl nm fr nn b no np nq nr ns nt nu nv nw nx ny nz oa ob oc od oe of og oh oi fk bj" data-selectable-paragraph="">Acuity has a splash screen already, but it needs to be updated to wait until both MIX and <a class="af oj" href="https://ipfs.io/" rel="noopener ugc nofollow" target="_blank">IPFS</a> are ready before entering the application.</p><h2 id="f0be" class="op mo fr be mp oq or os mt ot ou ov mx nw ow ox oy oa oz pa pb oe pc pd pe pf bj" data-selectable-paragraph="">Smart contract review &amp; redeployment</h2><p id="b3c2" class="pw-post-body-paragraph nl nm fr nn b no np nq nr ns nt nu nv nw nx ny nz oa ob oc od oe of og oh oi fk bj" data-selectable-paragraph="">MIX has many smart contracts that implement its core functionality. They are generally very mature and well-tested. They need to be updated for latest <a class="af oj" href="https://solidity.readthedocs.io" rel="noopener ugc nofollow" target="_blank">Solidity</a> and have test coverage increased further. Because MIX is a blockchain with a narrow remit it is theoretically possible to update any smart contract with a hard fork, but it is better to make them as good as possible to start with.</p><p id="3135" class="pw-post-body-paragraph nl nm fr nn b no ok nq nr ns ol nu nv nw om ny nz oa on oc od oe oo og oh oi fk bj" data-selectable-paragraph=""><a class="af oj" href="https://github.com/mix-blockchain/mix-item-store/blob/master/src/item_store_ipfs_sha256.sol" rel="noopener ugc nofollow" target="_blank">item_store_ipfs_sha256.sol</a> — initial commit Nov 26, 2015, this is the core smart contract of MIX. It enables the creation of revisionable on-chain content items. Each revision is stored as an IPFS hash.</p><p id="1565" class="pw-post-body-paragraph nl nm fr nn b no ok nq nr ns ol nu nv nw om ny nz oa on oc od oe oo og oh oi fk bj" data-selectable-paragraph=""><a class="af oj" href="https://github.com/mix-blockchain/mix-item-store/blob/master/src/item_store_registry.sol" rel="noopener ugc nofollow" target="_blank">item_store_registry.sol</a> — MIX has an upgrade system whereby anyone can deploy a new item store smart contract and register it with this contract. Each itemId is 32 bytes. The final 8 bytes can be used as a key in this smart contract to find the contract that manages the item. Client software needs to actively trust all item store contracts that they interact with.</p><p id="5aec" class="pw-post-body-paragraph nl nm fr nn b no ok nq nr ns ol nu nv nw om ny nz oa on oc od oe oo og oh oi fk bj" data-selectable-paragraph=""><a class="af oj" href="https://github.com/mix-blockchain/mix-item-store/blob/master/src/item_store_short_id.sol" rel="noopener ugc nofollow" target="_blank">item_store_short_id.sol</a> — For cases where 32 byte itemIds are too long, the itemId can be registered with this contract and a mapping from a 4 byte shortId to a 32 byte itemId will be created. Each <a class="af oj" href="https://en.wikipedia.org/wiki/Mixin" rel="noopener ugc nofollow" target="_blank">mixin</a>, e.g. Title, in a piece of content is identified by a mixin type item. Only a small number of these items will be used most of the time, so it makes sense to identify mixin types by shortId instead of itemId to reduce the size of content stored in IPFS.</p><p id="8e45" class="pw-post-body-paragraph nl nm fr nn b no ok nq nr ns ol nu nv nw om ny nz oa on oc od oe oo og oh oi fk bj" data-selectable-paragraph=""><a class="af oj" href="https://github.com/mix-blockchain/mix-reactions/blob/master/src/MixReactions.sol" rel="noopener ugc nofollow" target="_blank">MixReactions.sol</a> — Every account can have up to 8 emoji reactions to each content item. It needs to be determined if combined emoji should be supported.</p><p id="9ca5" class="pw-post-body-paragraph nl nm fr nn b no ok nq nr ns ol nu nv nw om ny nz oa on oc od oe oo og oh oi fk bj" data-selectable-paragraph=""><a class="af oj" href="https://github.com/mix-blockchain/mix-account-profile/blob/master/src/account_profile.sol" rel="noopener ugc nofollow" target="_blank">account_profile.sol</a> — This is a mapping between accounts and profile items. It needs to be determined if profile item history should be maintained in state.</p><p id="7231" class="pw-post-body-paragraph nl nm fr nn b no ok nq nr ns ol nu nv nw om ny nz oa on oc od oe oo og oh oi fk bj" data-selectable-paragraph=""><a class="af oj" href="https://github.com/mix-blockchain/mix-account/blob/master/src/MixAccount.sol" rel="noopener ugc nofollow" target="_blank">MixAccount.sol</a> — Every account is a deployment of this smart contract. It has the ability to forward arbitrary transaction data and MIX from its controller to other contracts. It can receive MIX, MIX tokens and ERC1155 tokens. TODO: investigate future use of CREATE2 opcode.</p><p id="876e" class="pw-post-body-paragraph nl nm fr nn b no ok nq nr ns ol nu nv nw om ny nz oa on oc od oe oo og oh oi fk bj" data-selectable-paragraph=""><a class="af oj" href="https://github.com/mix-blockchain/mix-account/blob/master/src/MixAccountRegistry.sol" rel="noopener ugc nofollow" target="_blank">MixAccountRegistry.sol</a> — Maintains a mapping between account controllers and contracts for ease of account recovery.</p><p id="705d" class="pw-post-body-paragraph nl nm fr nn b no ok nq nr ns ol nu nv nw om ny nz oa on oc od oe oo og oh oi fk bj" data-selectable-paragraph=""><a class="af oj" href="https://github.com/mix-blockchain/mix-account-items/blob/master/src/MixAccountItems.sol" rel="noopener ugc nofollow" target="_blank">MixAccountItems.sol</a> — Maintains a mapping between accounts and lists of items, for example so that content feeds associated with an account can be discovered.</p><p id="8666" class="pw-post-body-paragraph nl nm fr nn b no ok nq nr ns ol nu nv nw om ny nz oa on oc od oe oo og oh oi fk bj" data-selectable-paragraph=""><a class="af oj" href="https://github.com/mix-blockchain/mix-creator-token/blob/master/src/CreatorToken.sol" rel="noopener ugc nofollow" target="_blank">CreatorToken.sol</a> — Enables content creators to get paid continuously in their own token. Potentially enabling a revenue stream without the use of advertising, data harvesting or paywalls.</p><p id="3daf" class="pw-post-body-paragraph nl nm fr nn b no ok nq nr ns ol nu nv nw om ny nz oa on oc od oe oo og oh oi fk bj" data-selectable-paragraph=""><a class="af oj" href="https://github.com/mix-blockchain/mix-trusted-accounts/blob/master/src/TrustedAccounts.sol" rel="noopener ugc nofollow" target="_blank">TrustedAccounts.sol</a> — Enables accounts to publicly trust other accounts. The idea being that if you trust an account you are automatically whitelisting all content from them and everyone they trust. This should prove to be an effective way to receive content from a wide community while protecting yourself from illegal and immoral content.</p><p id="bbbe" class="pw-post-body-paragraph nl nm fr nn b no ok nq nr ns ol nu nv nw om ny nz oa on oc od oe oo og oh oi fk bj" data-selectable-paragraph=""><a class="af oj" href="https://github.com/mix-blockchain/mix-item-dag/blob/master/src/MixItemDagOneParent.sol" rel="noopener ugc nofollow" target="_blank">MixItemDagOneParent.sol</a> — A comment hierarchy is a <a class="af oj" href="https://en.wikipedia.org/wiki/Directed_acyclic_graph" rel="noopener ugc nofollow" target="_blank">DAG</a> where each item can only have one parent. This contract maintains a record of which item is a reply to which. The parent must be created before the connection. The child must be created after the connection. This is possible because the generated itemId is a hash of the creator address and the creator supplied nonce. Another deployment of this contract will be used for mixin type inheritance.</p><p id="9805" class="pw-post-body-paragraph nl nm fr nn b no ok nq nr ns ol nu nv nw om ny nz oa on oc od oe oo og oh oi fk bj" data-selectable-paragraph=""><a class="af oj" href="https://github.com/mix-blockchain/mix-item-dag/blob/master/src/MixItemDagOnlyOwner.sol" rel="noopener ugc nofollow" target="_blank">MixItemDagOnlyOwner.sol</a> — This is used for feed items. Only the owner of a feed can add an item to the feed. This may be extended so any account in a group can post to a feed.</p><h2 id="ec80" class="op mo fr be mp oq or os mt ot ou ov mx nw ow ox oy oa oz pa pb oe pc pd pe pf bj" data-selectable-paragraph="">Database schemas</h2><p id="ea50" class="pw-post-body-paragraph nl nm fr nn b no np nq nr ns nt nu nv nw nx ny nz oa ob oc od oe of og oh oi fk bj" data-selectable-paragraph="">Acuity stores some data locally in a <a class="af oj" href="https://github.com/google/leveldb" rel="noopener ugc nofollow" target="_blank">LevelDB</a> database. The structure will need to be reviewed before 1.0 because it would be more work to change it later.</p><h2 id="d8e3" class="op mo fr be mp oq or os mt ot ou ov mx nw ow ox oy oa oz pa pb oe pc pd pe pf bj" data-selectable-paragraph="">Mixin schemas</h2><p id="cdf2" class="pw-post-body-paragraph nl nm fr nn b no np nq nr ns nt nu nv nw nx ny nz oa ob oc od oe of og oh oi fk bj" data-selectable-paragraph="">The <a class="af oj" href="https://developers.google.com/protocol-buffers/" rel="noopener ugc nofollow" target="_blank">Protobuf</a> schemas for each mixin type will need to be reviewed before release so we don’t have to change them later.</p><h1 id="ae81" class="mn mo fr be mp mq mr ms mt mu mv mw mx my mz na nb nc nd ne nf ng nh ni nj nk bj" data-selectable-paragraph="">Recent Acuity milestones</h1><h2 id="f6c7" class="op mo fr be mp oq or os mt ot ou ov mx nw ow ox oy oa oz pa pb oe pc pd pe pf bj" data-selectable-paragraph="">Feeds</h2><figure class="pg ph pi pj pk mh lz ma paragraph-image"><div role="button" tabindex="0" class="mi mj ee mk bg ml"><div class="lz ma mb"><picture><source srcset="https://miro.medium.com/v2/resize:fit:640/format:webp/1*8Slx8fEwmri1VIFkJIfH1g.png 640w, https://miro.medium.com/v2/resize:fit:720/format:webp/1*8Slx8fEwmri1VIFkJIfH1g.png 720w, https://miro.medium.com/v2/resize:fit:750/format:webp/1*8Slx8fEwmri1VIFkJIfH1g.png 750w, https://miro.medium.com/v2/resize:fit:786/format:webp/1*8Slx8fEwmri1VIFkJIfH1g.png 786w, https://miro.medium.com/v2/resize:fit:828/format:webp/1*8Slx8fEwmri1VIFkJIfH1g.png 828w, https://miro.medium.com/v2/resize:fit:1100/format:webp/1*8Slx8fEwmri1VIFkJIfH1g.png 1100w, https://miro.medium.com/v2/resize:fit:1400/format:webp/1*8Slx8fEwmri1VIFkJIfH1g.png 1400w" sizes="(min-resolution: 4dppx) and (max-width: 700px) 50vw, (-webkit-min-device-pixel-ratio: 4) and (max-width: 700px) 50vw, (min-resolution: 3dppx) and (max-width: 700px) 67vw, (-webkit-min-device-pixel-ratio: 3) and (max-width: 700px) 65vw, (min-resolution: 2.5dppx) and (max-width: 700px) 80vw, (-webkit-min-device-pixel-ratio: 2.5) and (max-width: 700px) 80vw, (min-resolution: 2dppx) and (max-width: 700px) 100vw, (-webkit-min-device-pixel-ratio: 2) and (max-width: 700px) 100vw, 700px" type="image/webp"><source data-testid="og" srcset="https://miro.medium.com/v2/resize:fit:640/1*8Slx8fEwmri1VIFkJIfH1g.png 640w, https://miro.medium.com/v2/resize:fit:720/1*8Slx8fEwmri1VIFkJIfH1g.png 720w, https://miro.medium.com/v2/resize:fit:750/1*8Slx8fEwmri1VIFkJIfH1g.png 750w, https://miro.medium.com/v2/resize:fit:786/1*8Slx8fEwmri1VIFkJIfH1g.png 786w, https://miro.medium.com/v2/resize:fit:828/1*8Slx8fEwmri1VIFkJIfH1g.png 828w, https://miro.medium.com/v2/resize:fit:1100/1*8Slx8fEwmri1VIFkJIfH1g.png 1100w, https://miro.medium.com/v2/resize:fit:1400/1*8Slx8fEwmri1VIFkJIfH1g.png 1400w" sizes="(min-resolution: 4dppx) and (max-width: 700px) 50vw, (-webkit-min-device-pixel-ratio: 4) and (max-width: 700px) 50vw, (min-resolution: 3dppx) and (max-width: 700px) 67vw, (-webkit-min-device-pixel-ratio: 3) and (max-width: 700px) 65vw, (min-resolution: 2.5dppx) and (max-width: 700px) 80vw, (-webkit-min-device-pixel-ratio: 2.5) and (max-width: 700px) 80vw, (min-resolution: 2dppx) and (max-width: 700px) 100vw, (-webkit-min-device-pixel-ratio: 2) and (max-width: 700px) 100vw, 700px"><img alt="" class="bg lh mm c" width="700" height="394" loading="lazy" role="presentation" src="https://miro.medium.com/v2/resize:fit:1273/1*8Slx8fEwmri1VIFkJIfH1g.png"></picture></div></div></figure><p id="6e39" class="pw-post-body-paragraph nl nm fr nn b no ok nq nr ns ol nu nv nw om ny nz oa on oc od oe oo og oh oi fk bj" data-selectable-paragraph="">Every account can create any number of feeds. These can be subscribed to off-chain. Watch the <a class="af oj" href="https://www.youtube.com/watch?v=4pxq27EeD6Q" rel="noopener ugc nofollow" target="_blank">video</a>.</p><h2 id="62a0" class="op mo fr be mp oq or os mt ot ou ov mx nw ow ox oy oa oz pa pb oe pc pd pe pf bj" data-selectable-paragraph="">File attachments</h2><p id="7de8" class="pw-post-body-paragraph nl nm fr nn b no np nq nr ns nt nu nv nw nx ny nz oa ob oc od oe of og oh oi fk bj" data-selectable-paragraph="">Brian Heishman has implemented file attachments. This uses the new File mixin. Watch the <a class="af oj" href="https://www.youtube.com/watch?v=4pxq27EeD6Q&amp;t=69" rel="noopener ugc nofollow" target="_blank">video</a>.</p><h2 id="9ff9" class="op mo fr be mp oq or os mt ot ou ov mx nw ow ox oy oa oz pa pb oe pc pd pe pf bj" data-selectable-paragraph="">In-app mining</h2><figure class="pg ph pi pj pk mh lz ma paragraph-image"><div role="button" tabindex="0" class="mi mj ee mk bg ml"><div class="lz ma mb"><picture><source srcset="https://miro.medium.com/v2/resize:fit:640/format:webp/1*mkt9ciQBshcg-PPAhm7MVg.png 640w, https://miro.medium.com/v2/resize:fit:720/format:webp/1*mkt9ciQBshcg-PPAhm7MVg.png 720w, https://miro.medium.com/v2/resize:fit:750/format:webp/1*mkt9ciQBshcg-PPAhm7MVg.png 750w, https://miro.medium.com/v2/resize:fit:786/format:webp/1*mkt9ciQBshcg-PPAhm7MVg.png 786w, https://miro.medium.com/v2/resize:fit:828/format:webp/1*mkt9ciQBshcg-PPAhm7MVg.png 828w, https://miro.medium.com/v2/resize:fit:1100/format:webp/1*mkt9ciQBshcg-PPAhm7MVg.png 1100w, https://miro.medium.com/v2/resize:fit:1400/format:webp/1*mkt9ciQBshcg-PPAhm7MVg.png 1400w" sizes="(min-resolution: 4dppx) and (max-width: 700px) 50vw, (-webkit-min-device-pixel-ratio: 4) and (max-width: 700px) 50vw, (min-resolution: 3dppx) and (max-width: 700px) 67vw, (-webkit-min-device-pixel-ratio: 3) and (max-width: 700px) 65vw, (min-resolution: 2.5dppx) and (max-width: 700px) 80vw, (-webkit-min-device-pixel-ratio: 2.5) and (max-width: 700px) 80vw, (min-resolution: 2dppx) and (max-width: 700px) 100vw, (-webkit-min-device-pixel-ratio: 2) and (max-width: 700px) 100vw, 700px" type="image/webp"><source data-testid="og" srcset="https://miro.medium.com/v2/resize:fit:640/1*mkt9ciQBshcg-PPAhm7MVg.png 640w, https://miro.medium.com/v2/resize:fit:720/1*mkt9ciQBshcg-PPAhm7MVg.png 720w, https://miro.medium.com/v2/resize:fit:750/1*mkt9ciQBshcg-PPAhm7MVg.png 750w, https://miro.medium.com/v2/resize:fit:786/1*mkt9ciQBshcg-PPAhm7MVg.png 786w, https://miro.medium.com/v2/resize:fit:828/1*mkt9ciQBshcg-PPAhm7MVg.png 828w, https://miro.medium.com/v2/resize:fit:1100/1*mkt9ciQBshcg-PPAhm7MVg.png 1100w, https://miro.medium.com/v2/resize:fit:1400/1*mkt9ciQBshcg-PPAhm7MVg.png 1400w" sizes="(min-resolution: 4dppx) and (max-width: 700px) 50vw, (-webkit-min-device-pixel-ratio: 4) and (max-width: 700px) 50vw, (min-resolution: 3dppx) and (max-width: 700px) 67vw, (-webkit-min-device-pixel-ratio: 3) and (max-width: 700px) 65vw, (min-resolution: 2.5dppx) and (max-width: 700px) 80vw, (-webkit-min-device-pixel-ratio: 2.5) and (max-width: 700px) 80vw, (min-resolution: 2dppx) and (max-width: 700px) 100vw, (-webkit-min-device-pixel-ratio: 2) and (max-width: 700px) 100vw, 700px"><img alt="" class="bg lh mm c" width="700" height="394" loading="lazy" role="presentation" src="https://miro.medium.com/v2/resize:fit:1273/1*mkt9ciQBshcg-PPAhm7MVg.png"></picture></div></div></figure><p id="62ee" class="pw-post-body-paragraph nl nm fr nn b no ok nq nr ns ol nu nv nw om ny nz oa on oc od oe oo og oh oi fk bj" data-selectable-paragraph="">By popular request in-app mining has been implemented. This was quite easy because the open source Ethminer does most of the heavy lifting.</p><p id="c000" class="pw-post-body-paragraph nl nm fr nn b no ok nq nr ns ol nu nv nw om ny nz oa on oc od oe oo og oh oi fk bj" data-selectable-paragraph="">You can either mine the chain directly, or use a pool. Pool mining will be useful to get a small amount of MIX quickly. This will be very useful when setting up your account.</p><h2 id="072d" class="op mo fr be mp oq or os mt ot ou ov mx nw ow ox oy oa oz pa pb oe pc pd pe pf bj" data-selectable-paragraph="">Trusted Accounts</h2><p id="24b0" class="pw-post-body-paragraph nl nm fr nn b no np nq nr ns nt nu nv nw nx ny nz oa ob oc od oe of og oh oi fk bj" data-selectable-paragraph="">MIX has a system whereby accounts can publicly declare in a smart contract which accounts they “trust”. Content from trusted accounts and from accounts the trusted accounts trust is automatically whitelisted.</p><p id="9d06" class="pw-post-body-paragraph nl nm fr nn b no ok nq nr ns ol nu nv nw om ny nz oa on oc od oe oo og oh oi fk bj" data-selectable-paragraph="">Watch the <a class="af oj" href="https://www.youtube.com/watch?v=j8WfGYxBERo" rel="noopener ugc nofollow" target="_blank">video</a>.</p><h2 id="c5db" class="op mo fr be mp oq or os mt ot ou ov mx nw ow ox oy oa oz pa pb oe pc pd pe pf bj" data-selectable-paragraph="">Emoji Reactions</h2><figure class="pg ph pi pj pk mh lz ma paragraph-image"><div role="button" tabindex="0" class="mi mj ee mk bg ml"><div class="lz ma mb"><picture><source srcset="https://miro.medium.com/v2/resize:fit:640/format:webp/1*oj-UzlqjNKq6XWd1arwdrA.png 640w, https://miro.medium.com/v2/resize:fit:720/format:webp/1*oj-UzlqjNKq6XWd1arwdrA.png 720w, https://miro.medium.com/v2/resize:fit:750/format:webp/1*oj-UzlqjNKq6XWd1arwdrA.png 750w, https://miro.medium.com/v2/resize:fit:786/format:webp/1*oj-UzlqjNKq6XWd1arwdrA.png 786w, https://miro.medium.com/v2/resize:fit:828/format:webp/1*oj-UzlqjNKq6XWd1arwdrA.png 828w, https://miro.medium.com/v2/resize:fit:1100/format:webp/1*oj-UzlqjNKq6XWd1arwdrA.png 1100w, https://miro.medium.com/v2/resize:fit:1400/format:webp/1*oj-UzlqjNKq6XWd1arwdrA.png 1400w" sizes="(min-resolution: 4dppx) and (max-width: 700px) 50vw, (-webkit-min-device-pixel-ratio: 4) and (max-width: 700px) 50vw, (min-resolution: 3dppx) and (max-width: 700px) 67vw, (-webkit-min-device-pixel-ratio: 3) and (max-width: 700px) 65vw, (min-resolution: 2.5dppx) and (max-width: 700px) 80vw, (-webkit-min-device-pixel-ratio: 2.5) and (max-width: 700px) 80vw, (min-resolution: 2dppx) and (max-width: 700px) 100vw, (-webkit-min-device-pixel-ratio: 2) and (max-width: 700px) 100vw, 700px" type="image/webp"><source data-testid="og" srcset="https://miro.medium.com/v2/resize:fit:640/1*oj-UzlqjNKq6XWd1arwdrA.png 640w, https://miro.medium.com/v2/resize:fit:720/1*oj-UzlqjNKq6XWd1arwdrA.png 720w, https://miro.medium.com/v2/resize:fit:750/1*oj-UzlqjNKq6XWd1arwdrA.png 750w, https://miro.medium.com/v2/resize:fit:786/1*oj-UzlqjNKq6XWd1arwdrA.png 786w, https://miro.medium.com/v2/resize:fit:828/1*oj-UzlqjNKq6XWd1arwdrA.png 828w, https://miro.medium.com/v2/resize:fit:1100/1*oj-UzlqjNKq6XWd1arwdrA.png 1100w, https://miro.medium.com/v2/resize:fit:1400/1*oj-UzlqjNKq6XWd1arwdrA.png 1400w" sizes="(min-resolution: 4dppx) and (max-width: 700px) 50vw, (-webkit-min-device-pixel-ratio: 4) and (max-width: 700px) 50vw, (min-resolution: 3dppx) and (max-width: 700px) 67vw, (-webkit-min-device-pixel-ratio: 3) and (max-width: 700px) 65vw, (min-resolution: 2.5dppx) and (max-width: 700px) 80vw, (-webkit-min-device-pixel-ratio: 2.5) and (max-width: 700px) 80vw, (min-resolution: 2dppx) and (max-width: 700px) 100vw, (-webkit-min-device-pixel-ratio: 2) and (max-width: 700px) 100vw, 700px"><img alt="" class="bg lh mm c" width="700" height="394" loading="lazy" role="presentation" src="https://miro.medium.com/v2/resize:fit:1273/1*oj-UzlqjNKq6XWd1arwdrA.png"></picture></div></div></figure><h2 id="e60b" class="op mo fr be mp oq or os mt ot ou ov mx nw ow ox oy oa oz pa pb oe pc pd pe pf bj" data-selectable-paragraph="">Threaded Comments</h2><figure class="pg ph pi pj pk mh lz ma paragraph-image"><div role="button" tabindex="0" class="mi mj ee mk bg ml"><div class="lz ma mb"><picture><source srcset="https://miro.medium.com/v2/resize:fit:640/format:webp/1*n386uH9VEoEea7LbLx4w5A.png 640w, https://miro.medium.com/v2/resize:fit:720/format:webp/1*n386uH9VEoEea7LbLx4w5A.png 720w, https://miro.medium.com/v2/resize:fit:750/format:webp/1*n386uH9VEoEea7LbLx4w5A.png 750w, https://miro.medium.com/v2/resize:fit:786/format:webp/1*n386uH9VEoEea7LbLx4w5A.png 786w, https://miro.medium.com/v2/resize:fit:828/format:webp/1*n386uH9VEoEea7LbLx4w5A.png 828w, https://miro.medium.com/v2/resize:fit:1100/format:webp/1*n386uH9VEoEea7LbLx4w5A.png 1100w, https://miro.medium.com/v2/resize:fit:1400/format:webp/1*n386uH9VEoEea7LbLx4w5A.png 1400w" sizes="(min-resolution: 4dppx) and (max-width: 700px) 50vw, (-webkit-min-device-pixel-ratio: 4) and (max-width: 700px) 50vw, (min-resolution: 3dppx) and (max-width: 700px) 67vw, (-webkit-min-device-pixel-ratio: 3) and (max-width: 700px) 65vw, (min-resolution: 2.5dppx) and (max-width: 700px) 80vw, (-webkit-min-device-pixel-ratio: 2.5) and (max-width: 700px) 80vw, (min-resolution: 2dppx) and (max-width: 700px) 100vw, (-webkit-min-device-pixel-ratio: 2) and (max-width: 700px) 100vw, 700px" type="image/webp"><source data-testid="og" srcset="https://miro.medium.com/v2/resize:fit:640/1*n386uH9VEoEea7LbLx4w5A.png 640w, https://miro.medium.com/v2/resize:fit:720/1*n386uH9VEoEea7LbLx4w5A.png 720w, https://miro.medium.com/v2/resize:fit:750/1*n386uH9VEoEea7LbLx4w5A.png 750w, https://miro.medium.com/v2/resize:fit:786/1*n386uH9VEoEea7LbLx4w5A.png 786w, https://miro.medium.com/v2/resize:fit:828/1*n386uH9VEoEea7LbLx4w5A.png 828w, https://miro.medium.com/v2/resize:fit:1100/1*n386uH9VEoEea7LbLx4w5A.png 1100w, https://miro.medium.com/v2/resize:fit:1400/1*n386uH9VEoEea7LbLx4w5A.png 1400w" sizes="(min-resolution: 4dppx) and (max-width: 700px) 50vw, (-webkit-min-device-pixel-ratio: 4) and (max-width: 700px) 50vw, (min-resolution: 3dppx) and (max-width: 700px) 67vw, (-webkit-min-device-pixel-ratio: 3) and (max-width: 700px) 65vw, (min-resolution: 2.5dppx) and (max-width: 700px) 80vw, (-webkit-min-device-pixel-ratio: 2.5) and (max-width: 700px) 80vw, (min-resolution: 2dppx) and (max-width: 700px) 100vw, (-webkit-min-device-pixel-ratio: 2) and (max-width: 700px) 100vw, 700px"><img alt="" class="bg lh mm c" width="700" height="394" loading="lazy" role="presentation" src="https://miro.medium.com/v2/resize:fit:1273/1*n386uH9VEoEea7LbLx4w5A.png"></picture></div></div></figure><p id="702c" class="pw-post-body-paragraph nl nm fr nn b no ok nq nr ns ol nu nv nw om ny nz oa on oc od oe oo og oh oi fk bj" data-selectable-paragraph="">Brian Heishman implemented the close button and the collapse comments functionality.</p><h2 id="f743" class="op mo fr be mp oq or os mt ot ou ov mx nw ow ox oy oa oz pa pb oe pc pd pe pf bj" data-selectable-paragraph="">Russian UI</h2><figure class="pg ph pi pj pk mh lz ma paragraph-image"><div role="button" tabindex="0" class="mi mj ee mk bg ml"><div class="lz ma mb"><picture><source srcset="https://miro.medium.com/v2/resize:fit:640/format:webp/1*_ABgc84XWeqj0oGO3vJ0VQ.png 640w, https://miro.medium.com/v2/resize:fit:720/format:webp/1*_ABgc84XWeqj0oGO3vJ0VQ.png 720w, https://miro.medium.com/v2/resize:fit:750/format:webp/1*_ABgc84XWeqj0oGO3vJ0VQ.png 750w, https://miro.medium.com/v2/resize:fit:786/format:webp/1*_ABgc84XWeqj0oGO3vJ0VQ.png 786w, https://miro.medium.com/v2/resize:fit:828/format:webp/1*_ABgc84XWeqj0oGO3vJ0VQ.png 828w, https://miro.medium.com/v2/resize:fit:1100/format:webp/1*_ABgc84XWeqj0oGO3vJ0VQ.png 1100w, https://miro.medium.com/v2/resize:fit:1400/format:webp/1*_ABgc84XWeqj0oGO3vJ0VQ.png 1400w" sizes="(min-resolution: 4dppx) and (max-width: 700px) 50vw, (-webkit-min-device-pixel-ratio: 4) and (max-width: 700px) 50vw, (min-resolution: 3dppx) and (max-width: 700px) 67vw, (-webkit-min-device-pixel-ratio: 3) and (max-width: 700px) 65vw, (min-resolution: 2.5dppx) and (max-width: 700px) 80vw, (-webkit-min-device-pixel-ratio: 2.5) and (max-width: 700px) 80vw, (min-resolution: 2dppx) and (max-width: 700px) 100vw, (-webkit-min-device-pixel-ratio: 2) and (max-width: 700px) 100vw, 700px" type="image/webp"><source data-testid="og" srcset="https://miro.medium.com/v2/resize:fit:640/1*_ABgc84XWeqj0oGO3vJ0VQ.png 640w, https://miro.medium.com/v2/resize:fit:720/1*_ABgc84XWeqj0oGO3vJ0VQ.png 720w, https://miro.medium.com/v2/resize:fit:750/1*_ABgc84XWeqj0oGO3vJ0VQ.png 750w, https://miro.medium.com/v2/resize:fit:786/1*_ABgc84XWeqj0oGO3vJ0VQ.png 786w, https://miro.medium.com/v2/resize:fit:828/1*_ABgc84XWeqj0oGO3vJ0VQ.png 828w, https://miro.medium.com/v2/resize:fit:1100/1*_ABgc84XWeqj0oGO3vJ0VQ.png 1100w, https://miro.medium.com/v2/resize:fit:1400/1*_ABgc84XWeqj0oGO3vJ0VQ.png 1400w" sizes="(min-resolution: 4dppx) and (max-width: 700px) 50vw, (-webkit-min-device-pixel-ratio: 4) and (max-width: 700px) 50vw, (min-resolution: 3dppx) and (max-width: 700px) 67vw, (-webkit-min-device-pixel-ratio: 3) and (max-width: 700px) 65vw, (min-resolution: 2.5dppx) and (max-width: 700px) 80vw, (-webkit-min-device-pixel-ratio: 2.5) and (max-width: 700px) 80vw, (min-resolution: 2dppx) and (max-width: 700px) 100vw, (-webkit-min-device-pixel-ratio: 2) and (max-width: 700px) 100vw, 700px"><img alt="" class="bg lh mm c" width="700" height="394" loading="lazy" role="presentation" src="https://miro.medium.com/v2/resize:fit:1273/1*_ABgc84XWeqj0oGO3vJ0VQ.png"></picture></div></div></figure><p id="b846" class="pw-post-body-paragraph nl nm fr nn b no ok nq nr ns ol nu nv nw om ny nz oa on oc od oe oo og oh oi fk bj" data-selectable-paragraph="">Further translations can be added quite easily.</p><h2 id="78c3" class="op mo fr be mp oq or os mt ot ou ov mx nw ow ox oy oa oz pa pb oe pc pd pe pf bj" data-selectable-paragraph="">Conversion from electron-vue to electron-webpack</h2><p id="ff4b" class="pw-post-body-paragraph nl nm fr nn b no np nq nr ns nt nu nv nw nx ny nz oa ob oc od oe of og oh oi fk bj" data-selectable-paragraph="">When I created the Acuity project I used a template called <a class="af oj" href="https://github.com/SimulatedGREG/electron-vue" rel="noopener ugc nofollow" target="_blank">electron-vue</a>. This was extremely helpful to get the project started. However <a class="af oj" href="https://webpack.electron.build/" rel="noopener ugc nofollow" target="_blank">electron-webpack</a> is much more actively maintained and is part of the excellent <a class="af oj" href="https://www.electron.build/" rel="noopener ugc nofollow" target="_blank">electron-builder</a> project that we already use to build Acuity for Windows, Mac and Linux.</p><p id="8663" class="pw-post-body-paragraph nl nm fr nn b no ok nq nr ns ol nu nv nw om ny nz oa on oc od oe oo og oh oi fk bj" data-selectable-paragraph="">Switching to electron-webpack has upgraded Acuity to <a class="af oj" href="https://babeljs.io/" rel="noopener ugc nofollow" target="_blank">Babel</a> 7 and provides a much improved developer experience.</p><h1 id="a8ff" class="mn mo fr be mp mq mr ms mt mu mv mw mx my mz na nb nc nd ne nf ng nh ni nj nk bj" data-selectable-paragraph="">Future Acuity milestones</h1><h2 id="1bb0" class="op mo fr be mp oq or os mt ot ou ov mx nw ow ox oy oa oz pa pb oe pc pd pe pf bj" data-selectable-paragraph="">Website</h2><p id="44c9" class="pw-post-body-paragraph nl nm fr nn b no np nq nr ns nt nu nv nw nx ny nz oa ob oc od oe of og oh oi fk bj" data-selectable-paragraph="">As you can see from the screenshot at the top of this post, the web site is coming along well. Once we reach the 1.0 milestone one of the first things to will be to get this live. <a class="af oj" href="http://eethdesign.com/" rel="noopener ugc nofollow" target="_blank">Ethan Fisher</a> created the design and content in <a class="af oj" href="https://webflow.com/" rel="noopener ugc nofollow" target="_blank">Webflow</a>.</p><h2 id="55a7" class="op mo fr be mp oq or os mt ot ou ov mx nw ow ox oy oa oz pa pb oe pc pd pe pf bj" data-selectable-paragraph="">Native video</h2><p id="2a27" class="pw-post-body-paragraph nl nm fr nn b no np nq nr ns nt nu nv nw nx ny nz oa ob oc od oe of og oh oi fk bj" data-selectable-paragraph="">I have quite <a class="af oj" href="https://www.drupal.org/project/bd_video" rel="noopener ugc nofollow" target="_blank">extensive experience</a> with web video. Adding video functionality to Acuity seems fairly straight forward. This would make Acuity an uncensorable version of YouTube.</p><p id="af31" class="pw-post-body-paragraph nl nm fr nn b no ok nq nr ns ol nu nv nw om ny nz oa on oc od oe oo og oh oi fk bj" data-selectable-paragraph=""><a class="af oj" href="https://ffmpeg.org/" rel="noopener ugc nofollow" target="_blank">FFmpeg</a> is still the best open source transcoding software. Video will be transcoded to multiple resolutions either locally with FFmpeg, or using a hosted transcoding service, before being published to IPFS.</p><p id="8be0" class="pw-post-body-paragraph nl nm fr nn b no ok nq nr ns ol nu nv nw om ny nz oa on oc od oe oo og oh oi fk bj" data-selectable-paragraph="">It will probably use the <a class="af oj" href="https://en.wikipedia.org/wiki/AV1" rel="noopener ugc nofollow" target="_blank">AV1</a> codec, assuming support for it in FFmpeg and Electron is mature enough.</p><h2 id="1afc" class="op mo fr be mp oq or os mt ot ou ov mx nw ow ox oy oa oz pa pb oe pc pd pe pf bj" data-selectable-paragraph="">User tagging</h2><p id="b8d7" class="pw-post-body-paragraph nl nm fr nn b no np nq nr ns nt nu nv nw nx ny nz oa ob oc od oe of og oh oi fk bj" data-selectable-paragraph="">Mentioning people in messages is extremely important. This will be implemented as a smart contract, enabling rich functionality such as notifications.</p><h2 id="106d" class="op mo fr be mp oq or os mt ot ou ov mx nw ow ox oy oa oz pa pb oe pc pd pe pf bj" data-selectable-paragraph="">Topics</h2><p id="6840" class="pw-post-body-paragraph nl nm fr nn b no np nq nr ns nt nu nv nw nx ny nz oa ob oc od oe of og oh oi fk bj" data-selectable-paragraph="">It will be possible for any content item to be added to any number of “topics”. This will add subreddit-style functionality to Acuity.</p><h2 id="a15a" class="op mo fr be mp oq or os mt ot ou ov mx nw ow ox oy oa oz pa pb oe pc pd pe pf bj" data-selectable-paragraph="">Creator Tokens</h2><p id="b00a" class="pw-post-body-paragraph nl nm fr nn b no np nq nr ns nt nu nv nw nx ny nz oa ob oc od oe of og oh oi fk bj" data-selectable-paragraph="">Enabling every content creator to have their own freely tradable token is an <em class="pl">extremely</em> exciting concept. See the original <a class="af oj" rel="noopener" href="/mix-blockchain/paying-content-creators-on-mix-blockchain-addafc52e63f">blog post</a> for details.</p><p id="09a0" class="pw-post-body-paragraph nl nm fr nn b no ok nq nr ns ol nu nv nw om ny nz oa on oc od oe oo og oh oi fk bj" data-selectable-paragraph="">It will be possible to rank content creators in a <a class="af oj" href="https://en.wikipedia.org/wiki/Sybil_attack" rel="noopener ugc nofollow" target="_blank">Sybil-resistant</a> way by comparing how much revenue they earn per day.</p><p id="e9d0" class="pw-post-body-paragraph nl nm fr nn b no ok nq nr ns ol nu nv nw om ny nz oa on oc od oe oo og oh oi fk bj" data-selectable-paragraph="">Token holders will be able to up/down vote content relative to how much of the token they own.</p><p id="7728" class="pw-post-body-paragraph nl nm fr nn b no ok nq nr ns ol nu nv nw om ny nz oa on oc od oe oo og oh oi fk bj" data-selectable-paragraph="">Acuity itself will have its own token called ACUITY.</p><h2 id="0e46" class="op mo fr be mp oq or os mt ot ou ov mx nw ow ox oy oa oz pa pb oe pc pd pe pf bj" data-selectable-paragraph="">Account whitelist / blacklist</h2><p id="e6f8" class="pw-post-body-paragraph nl nm fr nn b no np nq nr ns nt nu nv nw nx ny nz oa ob oc od oe of og oh oi fk bj" data-selectable-paragraph="">Currently there is just the on-chain Trusted Accounts system. However, it does make sense to be able to override this with an off-chain whitelist / blacklist system.</p><h2 id="f6ef" class="op mo fr be mp oq or os mt ot ou ov mx nw ow ox oy oa oz pa pb oe pc pd pe pf bj" data-selectable-paragraph="">Search</h2><p id="a01c" class="pw-post-body-paragraph nl nm fr nn b no np nq nr ns nt nu nv nw nx ny nz oa ob oc od oe of og oh oi fk bj" data-selectable-paragraph="">Individual instances of Acuity will index the content they see using <a class="af oj" href="https://www.elastic.co/products/elasticsearch" rel="noopener ugc nofollow" target="_blank">Elasticsearch</a>. When searching, Acuity will recursively contact other instances of Acuity in the users trust network. This will not rely upon any centralized entity.</p><h2 id="aa4f" class="op mo fr be mp oq or os mt ot ou ov mx nw ow ox oy oa oz pa pb oe pc pd pe pf bj" data-selectable-paragraph="">Content language tagging</h2><p id="18fd" class="pw-post-body-paragraph nl nm fr nn b no np nq nr ns nt nu nv nw nx ny nz oa ob oc od oe of og oh oi fk bj" data-selectable-paragraph="">MIX has a language mixin. This will be exposed to the UI so the content creator can specify the language their content is written in.</p><h2 id="639b" class="op mo fr be mp oq or os mt ot ou ov mx nw ow ox oy oa oz pa pb oe pc pd pe pf bj" data-selectable-paragraph="">Revisions</h2><p id="ce26" class="pw-post-body-paragraph nl nm fr nn b no np nq nr ns nt nu nv nw nx ny nz oa ob oc od oe of og oh oi fk bj" data-selectable-paragraph="">The Item Store smart contract has built-in support for content revisions, but this functionality is not yet exposed in the Acuity UI. This will be an extremely powerful feature.</p><h2 id="37a4" class="op mo fr be mp oq or os mt ot ou ov mx nw ow ox oy oa oz pa pb oe pc pd pe pf bj" data-selectable-paragraph="">Feed item pinning</h2><p id="7207" class="pw-post-body-paragraph nl nm fr nn b no np nq nr ns nt nu nv nw nx ny nz oa ob oc od oe of og oh oi fk bj" data-selectable-paragraph="">A common functionality in other social networks and CMSs is the ability to pin posts to the top of a feed. MIX should have this ability also.</p><h2 id="84a2" class="op mo fr be mp oq or os mt ot ou ov mx nw ow ox oy oa oz pa pb oe pc pd pe pf bj" data-selectable-paragraph="">Unified content viewing / editing</h2><p id="4dea" class="pw-post-body-paragraph nl nm fr nn b no np nq nr ns nt nu nv nw nx ny nz oa ob oc od oe of og oh oi fk bj" data-selectable-paragraph="">Currently Acuity enables creation and editing of different “content types”, but MIX is not supposed to work this way. Content can be created by adding whatever mixins are required. Each mixin type will have 2 <a class="af oj" href="https://vuejs.org/" rel="noopener ugc nofollow" target="_blank">Vue</a> components: a view component and an edit component. This will enable dynamic content creation.</p><h2 id="62cf" class="op mo fr be mp oq or os mt ot ou ov mx nw ow ox oy oa oz pa pb oe pc pd pe pf bj" data-selectable-paragraph="">WYSIWYG</h2><p id="6eeb" class="pw-post-body-paragraph nl nm fr nn b no np nq nr ns nt nu nv nw nx ny nz oa ob oc od oe of og oh oi fk bj" data-selectable-paragraph="">Acuity currently uses <a class="af oj" href="https://en.wikipedia.org/wiki/Markdown" rel="noopener ugc nofollow" target="_blank">Markdown</a> for rich text. This is great, but of course a lot of users prefer a WYSIWYG experience. <a class="af oj" href="https://www.youtube.com/watch?v=Zy6blNN-InY" rel="noopener ugc nofollow" target="_blank">Tiptap</a> is a strong candidate for this.</p><h2 id="26b0" class="op mo fr be mp oq or os mt ot ou ov mx nw ow ox oy oa oz pa pb oe pc pd pe pf bj" data-selectable-paragraph="">Historic Avatars</h2><p id="a7c6" class="pw-post-body-paragraph nl nm fr nn b no np nq nr ns nt nu nv nw nx ny nz oa ob oc od oe of og oh oi fk bj" data-selectable-paragraph="">It seems that every social media platform always shows the latest user avatar, even for content that was published when the user had a different avatar.</p><p id="b641" class="pw-post-body-paragraph nl nm fr nn b no ok nq nr ns ol nu nv nw om ny nz oa on oc od oe oo og oh oi fk bj" data-selectable-paragraph="">It’s desirable to to show the correct historical avatar that the user had at the time the content was posted. Because full history is preserved in blockchain state, this can be implemented in Acuity.</p><h2 id="998f" class="op mo fr be mp oq or os mt ot ou ov mx nw ow ox oy oa oz pa pb oe pc pd pe pf bj" data-selectable-paragraph="">Light Client</h2><p id="aadf" class="pw-post-body-paragraph nl nm fr nn b no np nq nr ns nt nu nv nw nx ny nz oa ob oc od oe of og oh oi fk bj" data-selectable-paragraph="">Currently, Acuity runs a full MIX node. Because there are not yet a lot of transactions this is not a major burden on the device. Once MIX gets more popular the time to catch up with the network may become detrimental to the user experience. Acuity will need to run as a “light client”. This is standard Ethereum functionality.</p><p id="8213" class="pw-post-body-paragraph nl nm fr nn b no ok nq nr ns ol nu nv nw om ny nz oa on oc od oe oo og oh oi fk bj" data-selectable-paragraph="">However, because every blockchain query would be over the Internet rather than local, Acuity would feel very slow. The solution to this issue is to deploy read-only smart contracts that perform all the queries in one request. This will also add further complexity to the Acuity codebase, but will ultimately result in excellent user experience.</p><h2 id="e0ee" class="op mo fr be mp oq or os mt ot ou ov mx nw ow ox oy oa oz pa pb oe pc pd pe pf bj" data-selectable-paragraph="">TypeScript</h2><p id="831c" class="pw-post-body-paragraph nl nm fr nn b no np nq nr ns nt nu nv nw nx ny nz oa ob oc od oe of og oh oi fk bj" data-selectable-paragraph="">Currently Acuity is written in JavaScript, but it will gradually be converted to <a class="af oj" href="https://www.typescriptlang.org/" rel="noopener ugc nofollow" target="_blank">TypeScript</a> for greater robustness and security.</p><h1 id="a624" class="mn mo fr be mp mq mr ms mt mu mv mw mx my mz na nb nc nd ne nf ng nh ni nj nk bj" data-selectable-paragraph="">Other MIX news</h1><h2 id="44e9" class="op mo fr be mp oq or os mt ot ou ov mx nw ow ox oy oa oz pa pb oe pc pd pe pf bj" data-selectable-paragraph="">Crowdfund issuance reduction</h2><p id="6a15" class="pw-post-body-paragraph nl nm fr nn b no np nq nr ns nt nu nv nw nx ny nz oa ob oc od oe of og oh oi fk bj" data-selectable-paragraph="">The <a class="af oj" href="https://github.com/mix-blockchain/mix-revenue/blob/master/link_revenue.sol" rel="noopener ugc nofollow" target="_blank">Revenue</a> smart contract was hard-wired in the genesis block to release project revenue for 2000 days. This is how the project is crowdfunded.</p><p id="871e" class="pw-post-body-paragraph nl nm fr nn b no ok nq nr ns ol nu nv nw om ny nz oa on oc od oe oo og oh oi fk bj" data-selectable-paragraph="">Initially (April 27th 2017) 50k MIX was released per day. This is reduced automatically by 5k every 200 days. Currently revenue is being released at 35k per day. This will reduce to 30k around 5th July. By co-incidence, 30k MIX is also approximately what the miners receive every day from the block reward.</p><p id="f59b" class="pw-post-body-paragraph nl nm fr nn b no ok nq nr ns ol nu nv nw om ny nz oa on oc od oe oo og oh oi fk bj" data-selectable-paragraph="">On October 18th 2022 the project revenue will have ceased completely and the block reward will be the sole source of increased supply.</p><p id="8455" class="pw-post-body-paragraph nl nm fr nn b no ok nq nr ns ol nu nv nw om ny nz oa on oc od oe oo og oh oi fk bj" data-selectable-paragraph="">See <a class="af oj" href="https://docs.mix-blockchain.org/en/latest/issuance.html" rel="noopener ugc nofollow" target="_blank">Issuance</a> for more information.</p><h2 id="68a8" class="op mo fr be mp oq or os mt ot ou ov mx nw ow ox oy oa oz pa pb oe pc pd pe pf bj" data-selectable-paragraph="">MIX Book</h2><p id="b45f" class="pw-post-body-paragraph nl nm fr nn b no np nq nr ns nt nu nv nw nx ny nz oa ob oc od oe of og oh oi fk bj" data-selectable-paragraph="">The <a class="af oj" href="https://docs.mix-blockchain.org/en/latest/index.html" rel="noopener ugc nofollow" target="_blank">MIX Documentation</a> is very out of date. I will be hiring a technical writer to analyze all the progress already made and synthesize it into a book explaining in detail how MIX works. This will be an open source project with its own creator token.</p><p id="e282" class="pw-post-body-paragraph nl nm fr nn b no ok nq nr ns ol nu nv nw om ny nz oa on oc od oe oo og oh oi fk bj" data-selectable-paragraph="">It will probably use the same <a class="af oj" href="https://readthedocs.org/" rel="noopener ugc nofollow" target="_blank">Read the Docs</a> system as the current documentation. It can compile documentation into many formats including web, ebook and printed form.</p><p id="d5fc" class="pw-post-body-paragraph nl nm fr nn b no ok nq nr ns ol nu nv nw om ny nz oa on oc od oe oo og oh oi fk bj" data-selectable-paragraph="">Physical copies of the book will be available for purchase.</p><h2 id="aab9" class="op mo fr be mp oq or os mt ot ou ov mx nw ow ox oy oa oz pa pb oe pc pd pe pf bj" data-selectable-paragraph="">MIX Base</h2><p id="293a" class="pw-post-body-paragraph nl nm fr nn b no np nq nr ns nt nu nv nw nx ny nz oa ob oc od oe of og oh oi fk bj" data-selectable-paragraph="">Komodo recently had a <a class="af oj" href="http://blog.npmjs.org/post/185397814280/plot-to-steal-cryptocurrency-foiled-by-the-npm" rel="noopener ugc nofollow" target="_blank">major security incident</a>. This relates to the extensive use of third-party JavaScript libraries. Acuity is susceptible to this also.</p><p id="f380" class="pw-post-body-paragraph nl nm fr nn b no ok nq nr ns ol nu nv nw om ny nz oa on oc od oe oo og oh oi fk bj" data-selectable-paragraph="">The solution is the creation of another piece of software, MIX Base. It will handle everything that all MIX apps need, i.e. running Parity and IPFS, and account management. If a MIX app wishes to send MIX, change account controller, or spend gas too quickly, Base will prompt the user to confirm the transaction.</p><p id="2491" class="pw-post-body-paragraph nl nm fr nn b no ok nq nr ns ol nu nv nw om ny nz oa on oc od oe oo og oh oi fk bj" data-selectable-paragraph="">Because MIX Base will be written in <a class="af oj" href="https://en.wikipedia.org/wiki/Rust_(programming_language)" rel="noopener ugc nofollow" target="_blank">Rust</a> with much less use of third-party libraries, it will be much less susceptible to this attack.</p><p id="19c1" class="pw-post-body-paragraph nl nm fr nn b no ok nq nr ns ol nu nv nw om ny nz oa on oc od oe oo og oh oi fk bj" data-selectable-paragraph="">This functionality will be gradually transitioned from Acuity to Mix Base.</p><div class="ab ca pm pn po pp" role="separator"><span class="pq bx bl pr ps pt"></span><span class="pq bx bl pr ps pt"></span><span class="pq bx bl pr ps"></span></div><div class="fk fl fm fn fo"><div class="ab ca"><div class="ch bg ew ex ey ez"><p id="0ade" class="pw-post-body-paragraph nl nm fr nn b no ok nq nr ns ol nu nv nw om ny nz oa on oc od oe oo og oh oi fk bj" data-selectable-paragraph="">Testing releases of MIX Acuity are available <a class="af oj" href="https://github.com/mix-blockchain/mix-acuity/releases" rel="noopener ugc nofollow" target="_blank">here</a>.</p><p id="116d" class="pw-post-body-paragraph nl nm fr nn b no ok nq nr ns ol nu nv nw om ny nz oa on oc od oe oo og oh oi fk bj" data-selectable-paragraph=""><a class="af oj" href="https://www.mix-blockchain.org/" rel="noopener ugc nofollow" target="_blank">MIX</a> is available to trade on STEX and Graviex:<br><a class="af oj" href="https://app.stex.com/en/basic-trade/pair/ETH/MIX" rel="noopener ugc nofollow" target="_blank">https://app.stex.com/en/basic-trade/pair/ETH/MIX</a><br><a class="af oj" href="https://graviex.net/markets/mixbtc" rel="noopener ugc nofollow" target="_blank">https://graviex.net/markets/mixbtc</a><br><a class="af oj" href="https://graviex.net/markets/mixeth" rel="noopener ugc nofollow" target="_blank">https://graviex.net/markets/mixeth</a></p><p id="6b38" class="pw-post-body-paragraph nl nm fr nn b no ok nq nr ns ol nu nv nw om ny nz oa on oc od oe oo og oh oi fk bj" data-selectable-paragraph="">Join the <a class="af oj" href="https://discordapp.com/invite/GxD7adN" rel="noopener ugc nofollow" target="_blank">MIX Discord</a>!</p></div></div></div>
+
+    </div>
+  </article>
+</div>
+
+  </main>
+
+  <footer class="border-t border-night-700 bg-night-900">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 py-12">
+    <div class="grid gap-10 md:grid-cols-3">
+      <div>
+        <div class="font-mono text-lg font-bold tracking-tight">
+          <span class="text-brand-500">choreo</span><span class="text-night-50">graphr</span>&ensp;<span class="text-brand-500">&gt;</span><span class="text-night-50">_</span>
+        </div>
+        <p class="mt-3 text-sm text-night-300 max-w-xs">
+          An all-purpose, extensible AI agent written in Rust. Runs locally or in the cloud. Open source under Apache-2.0.
+        </p>
+      </div>
+      <div>
+        <h3 class="text-sm font-semibold text-night-50 uppercase tracking-wider mb-3">Explore</h3>
+        <ul class="space-y-2 text-sm text-night-300">
+          <li><a href="https://choreographr.com/agent/docs" class="hover:text-brand-400">Agent docs</a></li>
+          <li><a href="https://choreographr.com/blog" class="hover:text-brand-400">Blog</a></li>
+          <li><a href="https://choreographr.com/consulting" class="hover:text-brand-400">Consulting</a></li>
+          <li><a href="https://choreographr.com/search" class="hover:text-brand-400">Search</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3 class="text-sm font-semibold text-night-50 uppercase tracking-wider mb-3">Community</h3>
+        <ul class="space-y-2 text-sm text-night-300">
+          <li><a href="https://github.com/choreographr/choreographr" target="_blank" rel="noopener" class="hover:text-brand-400">GitHub</a></li>
+          <li><a href="https://t.me/choreographr" target="_blank" rel="noopener" class="hover:text-brand-400">Telegram</a></li>
+          <li><a href="https://choreographr.com/atom.xml" class="hover:text-brand-400">RSS Feed</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="mt-10 border-t border-night-700 pt-6 flex flex-col sm:flex-row justify-between gap-3 text-xs text-night-400">
+      <p>© 2026 Choreographr. Released under the Apache-2.0 license.</p>
+      <p class="font-mono">100% Rust · written by <a href="https://github.com/choreographr/choreographr" target="_blank" rel="noopener" class="text-night-300 hover:text-brand-400">choreographr</a></p>
+    </div>
+  </div>
+</footer>
+
+
+  
+
+  <script>
+    // Click-to-copy buttons for every code block. Wraps each <pre> in a
+    // .code-block container and adds a corner button that copies the block's
+    // text via the async Clipboard API, with an execCommand fallback for
+    // non-secure contexts. The button sits OUTSIDE the <pre> so it stays in
+    // the corner while horizontally-overflowing code scrolls inside the block.
+    (function () {
+      var COPY_ICON =
+        '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
+      var CHECK_ICON =
+        '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
+
+      function fallbackCopy(text) {
+        var ta = document.createElement('textarea');
+        ta.value = text;
+        ta.setAttribute('readonly', '');
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        try { document.execCommand('copy'); } catch (e) { /* ignore */ }
+        document.body.removeChild(ta);
+      }
+
+      document.querySelectorAll('pre').forEach(function (pre) {
+        // Skip daisyUI terminal mockups (mockup-code): every line is its
+        // own <pre>, so per-line copy buttons would be noise. Real code
+        // blocks are a single <pre> that is not inside a .mockup-code.
+        if (pre.closest('.mockup-code')) return;
+
+        // Idempotent: don't re-wrap if the script runs more than once.
+        if (pre.parentElement && pre.parentElement.classList.contains('code-block')) return;
+
+        var wrap = document.createElement('div');
+        wrap.className = 'code-block';
+        pre.parentNode.insertBefore(wrap, pre);
+        wrap.appendChild(pre);
+
+        var btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'code-copy';
+        btn.setAttribute('aria-label', 'Copy code to clipboard');
+        btn.innerHTML = COPY_ICON;
+        wrap.appendChild(btn);
+
+        btn.addEventListener('click', function () {
+          var text = pre.innerText;
+          var done = function () {
+            btn.classList.add('copied');
+            btn.innerHTML = CHECK_ICON;
+            btn.setAttribute('aria-label', 'Copied');
+            setTimeout(function () {
+              btn.classList.remove('copied');
+              btn.innerHTML = COPY_ICON;
+              btn.setAttribute('aria-label', 'Copy code to clipboard');
+            }, 1500);
+          };
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(text).then(done, function () { fallbackCopy(text); done(); });
+          } else {
+            fallbackCopy(text);
+            done();
+          }
+        });
+      });
+    })();
+  </script>
+</body>
+</html>

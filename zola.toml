@@ -3,7 +3,7 @@
 # canonical URL at build time (and "/" when serving locally).
 base_url = "/"
 title = "Choreographr"
-description = "Your all-purpose AI agent, written in Rust. A daemon with many clients, a sandboxed RISC-V VM, and support for 70+ model providers."
+description = "Choreographr is an all-purpose AI agent, written in Rust, and the decentralized publishing platform it writes to. A daemon with many clients, a sandboxed RISC-V VM, 200+ model providers, and built-in access to the Choreographr publishing platform."
 generate_feeds = true
 feed_filenames = ["atom.xml"]
 build_search_index = true
@@ -42,6 +42,17 @@ theme = "catppuccin-mocha"
 # rendering it unhighlighted.
 error_on_missing_language = true
 
+[link_checker]
+# Skip external-link checking for URLs that start with these prefixes.
+# These are historical references from the original MIX/LINK era that remain
+# as authentic citations: the archived Medium blog posts (Medium blocks the
+# automated checker) and the moved Polkadot SDK URL. They are not live
+# mistakes, so don't fail `zola check` on them.
+skip_prefixes = [
+  "https://medium.com/mix-blockchain/",
+  "https://polkadot.com/platform/sdk/",
+]
+
 [[taxonomies]]
 name = "tags"
 paginate_by = 10
@@ -71,7 +82,8 @@ tool_count = 60
 # Navigation — items are shown on the right of the navbar.
 # `href` is a site-relative path.
 nav = [
-  { name = "Docs", href = "/docs/" },
+  { name = "Agent", href = "/agent/" },
+  { name = "Platform", href = "/platform/" },
   { name = "Blog", href = "/blog/" },
   { name = "Consulting", href = "/consulting/" },
   { name = "GitHub", href = "https://github.com/choreographr/choreographr", external = true },

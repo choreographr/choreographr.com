@@ -3,6 +3,57 @@
     <loc>https://choreographr.com/</loc>
   </url>
   <url>
+    <loc>https://choreographr.com/agent/</loc>
+  </url>
+  <url>
+    <loc>https://choreographr.com/agent/docs/</loc>
+  </url>
+  <url>
+    <loc>https://choreographr.com/agent/docs/accounts-and-providers/</loc>
+  </url>
+  <url>
+    <loc>https://choreographr.com/agent/docs/architecture/</loc>
+  </url>
+  <url>
+    <loc>https://choreographr.com/agent/docs/concepts/</loc>
+  </url>
+  <url>
+    <loc>https://choreographr.com/agent/docs/configuration/</loc>
+  </url>
+  <url>
+    <loc>https://choreographr.com/agent/docs/faq/</loc>
+  </url>
+  <url>
+    <loc>https://choreographr.com/agent/docs/installation/</loc>
+  </url>
+  <url>
+    <loc>https://choreographr.com/agent/docs/monitoring/</loc>
+  </url>
+  <url>
+    <loc>https://choreographr.com/agent/docs/quick-start/</loc>
+  </url>
+  <url>
+    <loc>https://choreographr.com/agent/docs/security/</loc>
+  </url>
+  <url>
+    <loc>https://choreographr.com/agent/docs/slash-commands/</loc>
+  </url>
+  <url>
+    <loc>https://choreographr.com/agent/docs/terminal/</loc>
+  </url>
+  <url>
+    <loc>https://choreographr.com/agent/docs/testing/</loc>
+  </url>
+  <url>
+    <loc>https://choreographr.com/agent/docs/tools/</loc>
+  </url>
+  <url>
+    <loc>https://choreographr.com/agent/docs/troubleshooting/</loc>
+  </url>
+  <url>
+    <loc>https://choreographr.com/agent/docs/why-rust/</loc>
+  </url>
+  <url>
     <loc>https://choreographr.com/ai-coffee-meetup/</loc>
   </url>
   <url>
@@ -12,7 +63,160 @@
     <loc>https://choreographr.com/blog/</loc>
   </url>
   <url>
+    <loc>https://choreographr.com/blog/2020-update/</loc><lastmod>2020-05-13</lastmod>
+  </url>
+  <url>
+    <loc>https://choreographr.com/blog/acuity-hardspooned/</loc><lastmod>2020-11-26</lastmod>
+  </url>
+  <url>
+    <loc>https://choreographr.com/blog/acuity-index-0-7-0/</loc><lastmod>2025-07-24</lastmod>
+  </url>
+  <url>
+    <loc>https://choreographr.com/blog/acuity-index/</loc><lastmod>2025-05-07</lastmod>
+  </url>
+  <url>
+    <loc>https://choreographr.com/blog/acuity-parachain-strategy/</loc><lastmod>2021-03-19</lastmod>
+  </url>
+  <url>
+    <loc>https://choreographr.com/blog/april-2018-update/</loc><lastmod>2018-04-18</lastmod>
+  </url>
+  <url>
+    <loc>https://choreographr.com/blog/atomic-swap-under-development/</loc><lastmod>2020-12-03</lastmod>
+  </url>
+  <url>
+    <loc>https://choreographr.com/blog/beta-testing/</loc><lastmod>2022-11-18</lastmod>
+  </url>
+  <url>
+    <loc>https://choreographr.com/blog/bip70-drupal/</loc><lastmod>2014-10-30</lastmod>
+  </url>
+  <url>
+    <loc>https://choreographr.com/blog/bip70-pki-drupal/</loc><lastmod>2014-11-03</lastmod>
+  </url>
+  <url>
+    <loc>https://choreographr.com/blog/bitcoin-ecommerce/</loc><lastmod>2015-01-21</lastmod>
+  </url>
+  <url>
+    <loc>https://choreographr.com/blog/bitcoin-exchange-rate-apis/</loc><lastmod>2014-03-07</lastmod>
+  </url>
+  <url>
+    <loc>https://choreographr.com/blog/bitcoin-spam-filter/</loc><lastmod>2015-01-30</lastmod>
+  </url>
+  <url>
+    <loc>https://choreographr.com/blog/blobstore/</loc><lastmod>2016-11-19</lastmod>
+  </url>
+  <url>
+    <loc>https://choreographr.com/blog/blockchain-crowdfunding/</loc><lastmod>2014-10-18</lastmod>
+  </url>
+  <url>
     <loc>https://choreographr.com/blog/choreographr-0-1-0/</loc><lastmod>2026-08-13</lastmod>
+  </url>
+  <url>
+    <loc>https://choreographr.com/blog/content-handling/</loc><lastmod>2018-05-01</lastmod>
+  </url>
+  <url>
+    <loc>https://choreographr.com/blog/dapple-testing/</loc><lastmod>2015-10-20</lastmod>
+  </url>
+  <url>
+    <loc>https://choreographr.com/blog/defi-only/</loc><lastmod>2022-06-02</lastmod>
+  </url>
+  <url>
+    <loc>https://choreographr.com/blog/dex-alpha-testing/</loc><lastmod>2021-07-21</lastmod>
+  </url>
+  <url>
+    <loc>https://choreographr.com/blog/dex-architectural-changes/</loc><lastmod>2022-02-06</lastmod>
+  </url>
+  <url>
+    <loc>https://choreographr.com/blog/drupal-bitcoin/</loc><lastmod>2014-09-15</lastmod>
+  </url>
+  <url>
+    <loc>https://choreographr.com/blog/elastic-ethereum/</loc><lastmod>2016-01-05</lastmod>
+  </url>
+  <url>
+    <loc>https://choreographr.com/blog/enable-staking/</loc><lastmod>2020-09-25</lastmod>
+  </url>
+  <url>
+    <loc>https://choreographr.com/blog/ethereum-compressed-text/</loc><lastmod>2015-10-29</lastmod>
+  </url>
+  <url>
+    <loc>https://choreographr.com/blog/ethereum-smtp/</loc><lastmod>2015-09-12</lastmod>
+  </url>
+  <url>
+    <loc>https://choreographr.com/blog/ethereum-text-publishing/</loc><lastmod>2016-01-18</lastmod>
+  </url>
+  <url>
+    <loc>https://choreographr.com/blog/federated-ethereum-blockchains/</loc><lastmod>2016-07-25</lastmod>
+  </url>
+  <url>
+    <loc>https://choreographr.com/blog/floating-fees/</loc><lastmod>2015-02-16</lastmod>
+  </url>
+  <url>
+    <loc>https://choreographr.com/blog/future-interchain-trading/</loc><lastmod>2021-12-04</lastmod>
+  </url>
+  <url>
+    <loc>https://choreographr.com/blog/grant2/</loc><lastmod>2024-03-12</lastmod>
+  </url>
+  <url>
+    <loc>https://choreographr.com/blog/hard-spoon-completed/</loc><lastmod>2021-12-14</lastmod>
+  </url>
+  <url>
+    <loc>https://choreographr.com/blog/hd-wallets-drupal/</loc><lastmod>2015-01-07</lastmod>
+  </url>
+  <url>
+    <loc>https://choreographr.com/blog/introducing-glofile/</loc><lastmod>2015-09-18</lastmod>
+  </url>
+  <url>
+    <loc>https://choreographr.com/blog/introducing-link-blockchain/</loc><lastmod>2016-12-17</lastmod>
+  </url>
+  <url>
+    <loc>https://choreographr.com/blog/introducing-mix-browser/</loc><lastmod>2017-12-19</lastmod>
+  </url>
+  <url>
+    <loc>https://choreographr.com/blog/january-2018-update/</loc><lastmod>2018-01-17</lastmod>
+  </url>
+  <url>
+    <loc>https://choreographr.com/blog/june-2019-update/</loc><lastmod>2019-06-16</lastmod>
+  </url>
+  <url>
+    <loc>https://choreographr.com/blog/june-2022-dex-update/</loc><lastmod>2022-06-15</lastmod>
+  </url>
+  <url>
+    <loc>https://choreographr.com/blog/launch-procedure/</loc><lastmod>2022-11-03</lastmod>
+  </url>
+  <url>
+    <loc>https://choreographr.com/blog/launch-update/</loc><lastmod>2022-08-17</lastmod>
+  </url>
+  <url>
+    <loc>https://choreographr.com/blog/may-2021-update/</loc><lastmod>2021-05-05</lastmod>
+  </url>
+  <url>
+    <loc>https://choreographr.com/blog/mix-acuity/</loc><lastmod>2019-08-05</lastmod>
+  </url>
+  <url>
+    <loc>https://choreographr.com/blog/november-2020-update/</loc><lastmod>2020-11-19</lastmod>
+  </url>
+  <url>
+    <loc>https://choreographr.com/blog/paying-content-creators/</loc><lastmod>2018-12-26</lastmod>
+  </url>
+  <url>
+    <loc>https://choreographr.com/blog/polkadot-dapps/</loc><lastmod>2025-07-31</lastmod>
+  </url>
+  <url>
+    <loc>https://choreographr.com/blog/prelaunch-architectural-changes/</loc><lastmod>2022-09-17</lastmod>
+  </url>
+  <url>
+    <loc>https://choreographr.com/blog/private-on-public/</loc><lastmod>2015-08-14</lastmod>
+  </url>
+  <url>
+    <loc>https://choreographr.com/blog/public-testing/</loc><lastmod>2022-07-14</lastmod>
+  </url>
+  <url>
+    <loc>https://choreographr.com/blog/real-dapps/</loc><lastmod>2026-04-30</lastmod>
+  </url>
+  <url>
+    <loc>https://choreographr.com/blog/social-trading/</loc><lastmod>2022-04-18</lastmod>
+  </url>
+  <url>
+    <loc>https://choreographr.com/blog/substrate/</loc><lastmod>2024-05-20</lastmod>
   </url>
   <url>
     <loc>https://choreographr.com/blog/tags/announcement/</loc>
@@ -21,54 +225,75 @@
     <loc>https://choreographr.com/blog/tags/rust/</loc>
   </url>
   <url>
+    <loc>https://choreographr.com/blog/transaction-forwarding/</loc><lastmod>2015-02-10</lastmod>
+  </url>
+  <url>
+    <loc>https://choreographr.com/blog/versionedblob/</loc><lastmod>2015-08-19</lastmod>
+  </url>
+  <url>
     <loc>https://choreographr.com/consulting/</loc>
   </url>
   <url>
-    <loc>https://choreographr.com/docs/</loc>
+    <loc>https://choreographr.com/platform/</loc>
   </url>
   <url>
-    <loc>https://choreographr.com/docs/accounts-and-providers/</loc>
+    <loc>https://choreographr.com/platform/docs/</loc>
   </url>
   <url>
-    <loc>https://choreographr.com/docs/architecture/</loc>
+    <loc>https://choreographr.com/platform/docs/community-moderation/</loc><lastmod>2025-04-26T08:00:00Z</lastmod>
   </url>
   <url>
-    <loc>https://choreographr.com/docs/concepts/</loc>
+    <loc>https://choreographr.com/platform/docs/features/</loc><lastmod>2025-04-25T08:00:00Z</lastmod>
   </url>
   <url>
-    <loc>https://choreographr.com/docs/configuration/</loc>
+    <loc>https://choreographr.com/platform/docs/history/</loc><lastmod>2025-04-27T08:20:00Z</lastmod>
   </url>
   <url>
-    <loc>https://choreographr.com/docs/faq/</loc>
+    <loc>https://choreographr.com/platform/docs/index-event-log/</loc><lastmod>2025-04-27T08:20:00Z</lastmod>
   </url>
   <url>
-    <loc>https://choreographr.com/docs/installation/</loc>
+    <loc>https://choreographr.com/platform/docs/indexer/</loc>
   </url>
   <url>
-    <loc>https://choreographr.com/docs/monitoring/</loc>
+    <loc>https://choreographr.com/platform/docs/indexer/api/</loc><lastmod>2021-05-01T19:30:00Z</lastmod>
   </url>
   <url>
-    <loc>https://choreographr.com/docs/quick-start/</loc>
+    <loc>https://choreographr.com/platform/docs/indexer/architecture/</loc><lastmod>2021-05-01T19:30:00Z</lastmod>
   </url>
   <url>
-    <loc>https://choreographr.com/docs/security/</loc>
+    <loc>https://choreographr.com/platform/docs/indexer/configuration/</loc><lastmod>2021-05-01T19:30:00Z</lastmod>
   </url>
   <url>
-    <loc>https://choreographr.com/docs/slash-commands/</loc>
+    <loc>https://choreographr.com/platform/docs/indexer/features/</loc><lastmod>2021-05-01T19:30:00Z</lastmod>
   </url>
   <url>
-    <loc>https://choreographr.com/docs/terminal/</loc>
+    <loc>https://choreographr.com/platform/docs/indexer/installation/</loc><lastmod>2021-05-01T19:30:00Z</lastmod>
   </url>
   <url>
-    <loc>https://choreographr.com/docs/testing/</loc>
+    <loc>https://choreographr.com/platform/docs/indexer/problem/</loc><lastmod>2021-05-01T19:30:00Z</lastmod>
   </url>
   <url>
-    <loc>https://choreographr.com/docs/tools/</loc>
+    <loc>https://choreographr.com/platform/docs/indexer/quick-start/</loc><lastmod>2021-05-01T08:20:00Z</lastmod>
   </url>
   <url>
-    <loc>https://choreographr.com/docs/troubleshooting/</loc>
+    <loc>https://choreographr.com/platform/docs/indexer/solution/</loc><lastmod>2021-05-01T19:30:00Z</lastmod>
   </url>
   <url>
-    <loc>https://choreographr.com/docs/why-rust/</loc>
+    <loc>https://choreographr.com/platform/docs/introduction/</loc><lastmod>2025-04-25T08:00:00Z</lastmod>
+  </url>
+  <url>
+    <loc>https://choreographr.com/platform/docs/prevent-debasement/</loc><lastmod>2025-04-27T08:20:00Z</lastmod>
+  </url>
+  <url>
+    <loc>https://choreographr.com/platform/docs/regenesis/</loc><lastmod>2025-04-27T08:20:00Z</lastmod>
+  </url>
+  <url>
+    <loc>https://choreographr.com/platform/docs/roadmap/</loc><lastmod>2025-04-27T08:20:00Z</lastmod>
+  </url>
+  <url>
+    <loc>https://choreographr.com/platform/docs/tokenomics/</loc><lastmod>2025-04-27T08:20:00Z</lastmod>
+  </url>
+  <url>
+    <loc>https://choreographr.com/platform/docs/why/</loc><lastmod>2025-04-25T08:00:00Z</lastmod>
   </url>
 </urlset>

@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="night">
+<head>
+  <meta charset="UTF-8">
+  <!-- color-scheme hint: lets the browser paint the dark canvas background
+       as soon as the head is parsed, before ANY CSS has been applied.
+       This is the one thing that closes the residual flash on Firefox/Zen,
+       which paints its default (white) canvas frame during navigation,
+       unlike Chromium which defers first paint until the inline CSS exists. -->
+  <meta name="color-scheme" content="dark">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>How To Build Real Dapps With Acuity Index — Choreographr Blog</title>
+  <meta name="description" content="The Internet is being gradually locked down like a boiling frog, undermining our potential to resist tyranny. Before long all Internet devices and services will require ID verification and VPNs will be banned.">
+  <meta name="theme-color" content="#06080b">
+
+  
+  <!-- Canonical: every page (incl. trailing-slash and /index.html variants)
+       resolves to one authoritative URL, which also matches the sitemap. -->
+  <link rel="canonical" href="https://choreographr.com/blog/real-dapps/">
+  
+
+  <!-- Open Graph / social sharing. og:title / og:description are overridden
+       per template so they always match the <title> and meta description. -->
+  <meta property="og:site_name" content="Choreographr">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="How To Build Real Dapps With Acuity Index — Choreographr Blog">
+  <meta property="og:description" content="The Internet is being gradually locked down like a boiling frog, undermining our potential to resist tyranny. Before long all Internet devices and services will require ID verification and VPNs will be banned.">
+  <meta property="og:url" content="https://choreographr.com/blog/real-dapps/">
+  
+  <meta property="og:image" content="https://choreographr.com/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Choreographr — your all-purpose AI agent, written in Rust">
+  
+  <meta property="og:locale" content="en_US">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <!-- Critical inline CSS: paint the dark theme immediately, before
+       main.css (or the webfont stylesheet) finishes loading, so the
+       page never flashes white on navigation. -->
+  <style>
+    html { background-color: #06080b; color-scheme: dark; }
+    body { background-color: #06080b; color: #d3dae3; }
+  </style>
+
+  <!-- Self-hosted fonts (same-origin): preload the two variable woff2
+       files so they're available at first paint — no visible swap. -->
+  <link rel="preload" href="https://choreographr.com/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="https://choreographr.com/fonts/jetbrains-mono.woff2" as="font" type="font/woff2" crossorigin>
+
+  <link rel="icon" type="image/svg+xml" href="https://choreographr.com/favicon.svg">
+  <link rel="stylesheet" href="https://choreographr.com/css/main.css?h=2d812d12b3967d2e0fb0">
+
+  <!-- Firefox/Zen can paint a frame before this stylesheet has been
+       applied if a layout flush happens while it loads (Bugzilla
+       1459305) — unlike Chromium, which blocks the parser on the
+       <link>. This synchronous script is the standard workaround: it
+       cannot execute until main.css is ready, and while it is pending
+       the <body> has not been parsed, so nothing unstyled can paint.
+       Result: same first-paint behaviour as Chromium, no FOUC. -->
+  <script>
+    // No-op: exists only to hold first paint until main.css is applied.
+  </script>
+
+  
+  <link rel="alternate" type="application/atom+xml" title="Choreographr Blog" href="https://choreographr.com/atom.xml">
+  
+
+  
+
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "How To Build Real Dapps With Acuity Index",
+  "description": "The Internet is being gradually locked down like a boiling frog, undermining our potential to resist tyranny. Before long all Internet devices and services will require ID verification and VPNs will be banned.",
+  "datePublished": "2026-04-30",
+  "dateModified": "2026-04-30",
+  "mainEntityOfPage": "https://choreographr.com/blog/real-dapps/",
+  "image": "https://choreographr.com/og-image.png",
+  "author": [{ "@type": "Person", "name": "Jonathan Brown" }],
+  "publisher": { "@type": "Organization", "name": "Choreographr", "url": "https://choreographr.com/" }
+}
+</script>
+
+</head>
+<body class="min-h-screen flex flex-col">
+
+  <header class="sticky top-0 z-40 w-full border-b border-night-700 bg-night-950/90 backdrop-blur">
+  <nav class="navbar mx-auto max-w-7xl px-4 sm:px-6">
+    <div class="navbar-start">
+      <div class="dropdown lg:hidden">
+        <div tabindex="0" role="button" class="btn btn-ghost btn-square" aria-label="Menu">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </div>
+        <ul tabindex="0" class="dropdown-content menu bg-night-900 border border-night-700 rounded-box z-50 mt-3 w-52 p-2 shadow-2xl">
+          
+          <li>
+            <a href="/agent/"  class="">
+              Agent
+            </a>
+          </li>
+          
+          <li>
+            <a href="/platform/"  class="">
+              Platform
+            </a>
+          </li>
+          
+          <li>
+            <a href="/blog/"  class="text-brand-500">
+              Blog
+            </a>
+          </li>
+          
+          <li>
+            <a href="/consulting/"  class="">
+              Consulting
+            </a>
+          </li>
+          
+          <li>
+            <a href="https://github.com/choreographr/choreographr" target="_blank" rel="noopener" class="">
+              GitHub<span class="text-night-400 text-xs">↗</span>
+            </a>
+          </li>
+          
+          <li>
+            <a href="https://t.me/choreographr" target="_blank" rel="noopener" class="">
+              Telegram<span class="text-night-400 text-xs">↗</span>
+            </a>
+          </li>
+          
+        </ul>
+      </div>
+      <a href="/" class="font-mono text-lg font-bold tracking-tight select-none">
+        <span class="text-brand-500">choreo</span><span class="text-night-50">graphr</span>&ensp;<span class="text-brand-500">&gt;</span><span class="text-night-50">_</span>
+      </a>
+    </div>
+    <div class="navbar-end hidden lg:flex">
+      <ul class="menu menu-horizontal px-1 gap-1 text-sm">
+        
+        <li>
+          <a href="/agent/"
+             
+             class="text-night-200 hover:text-night-50">
+            Agent
+          </a>
+        </li>
+        
+        <li>
+          <a href="/platform/"
+             
+             class="text-night-200 hover:text-night-50">
+            Platform
+          </a>
+        </li>
+        
+        <li>
+          <a href="/blog/"
+             
+             class="text-brand-500 font-semibold">
+            Blog
+          </a>
+        </li>
+        
+        <li>
+          <a href="/consulting/"
+             
+             class="text-night-200 hover:text-night-50">
+            Consulting
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://github.com/choreographr/choreographr"
+             target="_blank" rel="noopener"
+             class="">
+            GitHub<span class="text-night-400 text-xs">↗</span>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://t.me/choreographr"
+             target="_blank" rel="noopener"
+             class="">
+            Telegram<span class="text-night-400 text-xs">↗</span>
+          </a>
+        </li>
+        
+      </ul>
+    </div>
+  </nav>
+</header>
+
+
+  <main class="flex-1">
+    
+    
+      
+    
+    
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 pt-5">
+      
+
+
+
+
+<nav aria-label="Breadcrumb" class="font-mono text-sm text-night-400">
+  <span class="flex flex-wrap items-center">
+    <a href="/" class="hover:text-brand-400">home</a>
+    
+    
+      
+    
+      
+        
+        
+        <span class="text-night-600">/</span>
+        
+        <a href="/blog/" class="hover:text-brand-400">blog</a>
+        
+      
+    
+      
+        
+        
+        <span class="text-night-600">/</span>
+        
+        <span class="text-night-200 font-medium">real-dapps</span>
+        
+      
+    
+      
+    
+  </span>
+</nav>
+
+    </div>
+    
+    
+
+<div class="mx-auto max-w-3xl px-4 sm:px-6 py-12">
+  <a href="https://choreographr.com/blog" class="text-sm text-night-400 hover:text-brand-400 font-mono">← Back to blog</a>
+  <article class="mt-6">
+    <h1 class="text-3xl font-bold text-night-50 tracking-tight">How To Build Real Dapps With Acuity Index</h1>
+    <div class="mt-4 flex flex-wrap items-center gap-x-5 gap-y-3">
+      
+      
+      
+      
+      <a href="https://choreographr.com/blog/authors/jonathan-brown/" class="flex items-center gap-2 group/author">
+        
+        <img src="https://choreographr.com/me.jpg" alt="Jonathan Brown" class="h-9 w-9 rounded-full object-cover border border-brand-500/40" />
+        
+        <span class="text-sm font-medium text-night-200 group-hover/author:text-brand-400">Jonathan Brown</span>
+      </a>
+      
+      
+      <span class="text-sm font-mono text-night-400">
+        2026-04-30
+        
+      </span>
+    </div>
+    <div class="prose mt-8">
+      <p>The Internet is being gradually <a rel="noopener external" target="_blank" href="https://youtu.be/RE51m6JnYMo">locked down</a> like a boiling frog, undermining our potential to resist tyranny. Before long all Internet devices and services will require ID verification and VPNs will be banned.</p>
+<p>Of course, in Web3, the theory is that dapps can provide peer-to-peer means of coordination. While there has been some success in this regard, it has yet to really take the world by storm in the way that the Web did in a few short years.</p>
+<p>Most on-chain programs are not really permissionless and those that <em>are</em> typically require a centralized backend to function. Decoupling of transaction publishing from the backend does have a lot of good properties, but dapps reliant on backends are still vulnerable to capture.</p>
+<p>For a dapp to provide a rich user experience it needs various services that are inherently centralized. For example:</p>
+<ul>
+<li><strong>Full Node</strong> - State needs to be queried.</li>
+<li><strong>Event Indexer</strong> - State is kept as minimal as possible to keep transaction fees low. Emitting events is the solution, but there needs to be a centralized database of events that can be queried.</li>
+<li><strong>IPFS Pinner</strong> - Content published via IPFS does not stay available by itself. An always-on service must "pin" content for it to be available to other users.</li>
+<li><strong>IPFS Address Cache</strong> - It can take too long for a dapp to find who has the required IPFS content. An address cache can make this immediate, but this is an always-on, shared service.</li>
+<li><strong>Content Search</strong> - Full text search is expected in a modern app, but this is an inherently centralized service.</li>
+<li><strong>AI</strong> - Users want powerful AI features that they will not run on their local device.</li>
+</ul>
+<p>While these services are essentially impossible to implement in a peer-to-peer manner, they can be implemented in a federated manner provided they are standardized. If there is a flock of available backend providers to pick from, the dapp can switch ad-hoc between them.</p>
+<p>When querying untrusted backends it is essential that there is a system to prove the data is correct. In the Polkadot ecosystem, the dapp can run a light client to use finality proofs to ensure state queries are correct.</p>
+<p>When querying an event indexer it is also possible to verify the events are correct using finality proofs. Although, it is not possible to guarantee that the indexer has not left out some results. This can be helped by querying multiple indexers run by different groups.</p>
+<p>If the IPFS hash is proven to be correct by a finality proof, then the content retrieved from IPFS is guaranteed to be correct.</p>
+<p>Positive content search results can be verified by examining the content. Again, it is not possible to prove that a search service has left something out, but a dapp can query different services over time to determine which ones are trustworthy.</p>
+<p>Users could use multiple IPFS pinning services to ensure content remains available.</p>
+<p>As there are multiple providers, they will compete against each other on various criteria.</p>
+<h2 id="what-is-acuity-index">What is Acuity Index?
+<a class="zola-anchor" href="#what-is-acuity-index" aria-label="Anchor link for: what-is-acuity-index">
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+</a>
+</h2>
+<p><a href="/platform/">Acuity Index</a> is part of the broader <a href="/platform/">Acuity</a> decentralized CMS.</p>
+<p>It is a federated, multi-chain Polkadot event indexer with finality proofs, primarily intended to make dapps fully decentralized.</p>
+<p>It was originally called Hybrid and was funded by two (<a rel="noopener external" target="_blank" href="https://github.com/w3f/Grants-Program/blob/master/applications/hybrid.md">1</a>, <a rel="noopener external" target="_blank" href="https://github.com/w3f/Grants-Program/blob/master/applications/hybrid2.md">2</a>) Web3 Foundation grants and a Kusama Treasury <a rel="noopener external" target="_blank" href="https://kusama.subsquare.io/referenda/534">referendum</a>. A second funding referendum <a rel="noopener external" target="_blank" href="https://kusama.subsquare.io/referenda/567">failed</a>. Treasury funding for a Kusama Forum based on Acuity Index has been <a rel="noopener external" target="_blank" href="https://kusama.subsquare.io/referenda/603">secured</a>.</p>
+<p><a rel="noopener external" target="_blank" href="https://crates.io/crates/acuity-index/0.8.0">Acuity Index 0.8.0</a> has just been released for experimentation. It has the following features:</p>
+<ul>
+<li>Config-driven indexing with support for compound keys and multi-keys</li>
+<li>Index specification checkpointing. When a new checkpoint is added re-indexing will occur from that block.</li>
+<li>Hot reload for accepted index-spec changes</li>
+<li>Concurrent backfill and head catch-up</li>
+<li>Asynchronous and multithreaded design for maximum node indexing performance
+(63.1k events per second on AMD Ryzen 7 6800HS Creator Edition (16) @ 4.79 GHz)</li>
+<li>Finality proofs that can be verified by a light client running in the dapp</li>
+<li>Key subscriptions - notify dapp as soon as the key is included in a block</li>
+<li>Event variant indexing - search for or subscribe to all events of a certain type</li>
+<li>Prometheus / OpenMetrics monitoring</li>
+<li>Full unit and integration testing</li>
+</ul>
+<p>Examine the <a href="/platform/">documentation</a> to see how it works.</p>
+<p>Here's a screencast showing how a dapp can query events with Acuity Index to create a rich user interface:</p>
+<p><a rel="noopener external" target="_blank" href="https://youtu.be/V5QZNv3niKo?t=150"><img src="/take-back-the-web.jpg" style="width: 100%; height: auto;"></img></a></p>
+<p>Here's the <a rel="noopener external" target="_blank" href="https://github.com/acuity-network/acuity-dioxus">repo</a> for the dapp.</p>
+<h2 id="federated-indexing">Federated Indexing
+<a class="zola-anchor" href="#federated-indexing" aria-label="Anchor link for: federated-indexing">
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+</a>
+</h2>
+<p><img src="/acuity-index.svg" style="width: 100%; height: auto;"></img></p>
+<p>While an instance of Acuity Index can be hosted and a dapp hard-wired to use it, the intention is that there are multiple indexes available for each dapp.
+The idea is that anyone can host a standardized index and potentially get paid to do so. Here is how it will work.</p>
+<p>The Acuity DAO will establish the correct index spec for a given chain. Anyone hosting that index for the public can pay a deposit to register their endpoint on the Acuity blockchain. There is a micropayment system where dapps can query different providers in an ad-hoc manner, determining which ones tend to work the best and charge the least. The fees are paid to the index operator in ACU, the native coin of the Acuity blockchain. The dapp user has the option to pay in any currency as this will be routed through the <a rel="noopener external" target="_blank" href="https://hydration.net/">Hydration</a> exchange on Polkadot.</p>
+<p>Acuity Index will also provide access to state queries on the full node. Over time this will be expanded to all the other federated services that dapps need access to.</p>
+<h2 id="building-the-ecosystem">Building the Ecosystem
+<a class="zola-anchor" href="#building-the-ecosystem" aria-label="Anchor link for: building-the-ecosystem">
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+</a>
+</h2>
+<p>Who I am looking for:</p>
+<p><strong>Chain Builders</strong></p>
+<p>I want to add all Substrate-based chains to the platform. This will involve working with the teams to determine the correct index specification for the chain and then registering this on the Acuity blockchain.</p>
+<p><strong>Index Providers</strong></p>
+<p>Those who are interested in running indexes and registering on-chain so dapps can utilize them.</p>
+<p><strong>Dapp Developers</strong></p>
+<p>Querying event indexes is an extremely powerful technique for dapps. Reach out if you would like me to help build a dapp with Acuity Index.</p>
+<hr/>
+<p>If you are interested in participating, don't hesitate to reach out. My contact details:</p>
+<ul>
+<li>telegram: @ethernomad</li>
+<li>email: jbrown@acuity.network</li>
+</ul>
+
+    </div>
+  </article>
+</div>
+
+  </main>
+
+  <footer class="border-t border-night-700 bg-night-900">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 py-12">
+    <div class="grid gap-10 md:grid-cols-3">
+      <div>
+        <div class="font-mono text-lg font-bold tracking-tight">
+          <span class="text-brand-500">choreo</span><span class="text-night-50">graphr</span>&ensp;<span class="text-brand-500">&gt;</span><span class="text-night-50">_</span>
+        </div>
+        <p class="mt-3 text-sm text-night-300 max-w-xs">
+          An all-purpose, extensible AI agent written in Rust. Runs locally or in the cloud. Open source under Apache-2.0.
+        </p>
+      </div>
+      <div>
+        <h3 class="text-sm font-semibold text-night-50 uppercase tracking-wider mb-3">Explore</h3>
+        <ul class="space-y-2 text-sm text-night-300">
+          <li><a href="https://choreographr.com/agent/docs" class="hover:text-brand-400">Agent docs</a></li>
+          <li><a href="https://choreographr.com/blog" class="hover:text-brand-400">Blog</a></li>
+          <li><a href="https://choreographr.com/consulting" class="hover:text-brand-400">Consulting</a></li>
+          <li><a href="https://choreographr.com/search" class="hover:text-brand-400">Search</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3 class="text-sm font-semibold text-night-50 uppercase tracking-wider mb-3">Community</h3>
+        <ul class="space-y-2 text-sm text-night-300">
+          <li><a href="https://github.com/choreographr/choreographr" target="_blank" rel="noopener" class="hover:text-brand-400">GitHub</a></li>
+          <li><a href="https://t.me/choreographr" target="_blank" rel="noopener" class="hover:text-brand-400">Telegram</a></li>
+          <li><a href="https://choreographr.com/atom.xml" class="hover:text-brand-400">RSS Feed</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="mt-10 border-t border-night-700 pt-6 flex flex-col sm:flex-row justify-between gap-3 text-xs text-night-400">
+      <p>© 2026 Choreographr. Released under the Apache-2.0 license.</p>
+      <p class="font-mono">100% Rust · written by <a href="https://github.com/choreographr/choreographr" target="_blank" rel="noopener" class="text-night-300 hover:text-brand-400">choreographr</a></p>
+    </div>
+  </div>
+</footer>
+
+
+  
+
+  <script>
+    // Click-to-copy buttons for every code block. Wraps each <pre> in a
+    // .code-block container and adds a corner button that copies the block's
+    // text via the async Clipboard API, with an execCommand fallback for
+    // non-secure contexts. The button sits OUTSIDE the <pre> so it stays in
+    // the corner while horizontally-overflowing code scrolls inside the block.
+    (function () {
+      var COPY_ICON =
+        '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
+      var CHECK_ICON =
+        '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
+
+      function fallbackCopy(text) {
+        var ta = document.createElement('textarea');
+        ta.value = text;
+        ta.setAttribute('readonly', '');
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        try { document.execCommand('copy'); } catch (e) { /* ignore */ }
+        document.body.removeChild(ta);
+      }
+
+      document.querySelectorAll('pre').forEach(function (pre) {
+        // Skip daisyUI terminal mockups (mockup-code): every line is its
+        // own <pre>, so per-line copy buttons would be noise. Real code
+        // blocks are a single <pre> that is not inside a .mockup-code.
+        if (pre.closest('.mockup-code')) return;
+
+        // Idempotent: don't re-wrap if the script runs more than once.
+        if (pre.parentElement && pre.parentElement.classList.contains('code-block')) return;
+
+        var wrap = document.createElement('div');
+        wrap.className = 'code-block';
+        pre.parentNode.insertBefore(wrap, pre);
+        wrap.appendChild(pre);
+
+        var btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'code-copy';
+        btn.setAttribute('aria-label', 'Copy code to clipboard');
+        btn.innerHTML = COPY_ICON;
+        wrap.appendChild(btn);
+
+        btn.addEventListener('click', function () {
+          var text = pre.innerText;
+          var done = function () {
+            btn.classList.add('copied');
+            btn.innerHTML = CHECK_ICON;
+            btn.setAttribute('aria-label', 'Copied');
+            setTimeout(function () {
+              btn.classList.remove('copied');
+              btn.innerHTML = COPY_ICON;
+              btn.setAttribute('aria-label', 'Copy code to clipboard');
+            }, 1500);
+          };
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(text).then(done, function () { fallbackCopy(text); done(); });
+          } else {
+            fallbackCopy(text);
+            done();
+          }
+        });
+      });
+    })();
+  </script>
+</body>
+</html>

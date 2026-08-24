@@ -73,6 +73,21 @@
   {% include "partials/nav.html" %}
 
   <main class="flex-1">
+    {# Global breadcrumb — a subtle monospace trail directly under the site
+       header on every page (except the homepage). The leaf uses the current
+       page/section title. #}
+    {% if page %}
+      {% set cur_title = page.title %}
+    {% elif section %}
+      {% set cur_title = section.title %}
+    {% else %}
+      {% set cur_title = config.title %}
+    {% endif %}
+    {% if current_path and current_path != "/" %}
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 pt-5">
+      {{<breadcrumbs current_path={current_path} current_title={cur_title}/>}}
+    </div>
+    {% endif %}
     {% block content %}{% endblock content %}
   </main>
 

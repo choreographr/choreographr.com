@@ -44,12 +44,12 @@ choreo-tui     # terminal 2 — the terminal client
 ```
 
 Homebrew 6.0 and later refuse to load non-official taps until they are
-[explicitly trusted](@/docs/installation.md#homebrew) — loading a tap can run
+[explicitly trusted](@/agent/docs/installation.md#homebrew) — loading a tap can run
 Ruby code from it, so `brew trust` is how you tell Homebrew you've reviewed
 and accepted this one.
 
-See the [installation guide](@/docs/installation.md) for every platform, and
-the [quick start](@/docs/quick-start.md) for your first prompt.
+See the [installation guide](@/agent/docs/installation.md) for every platform, and
+the [quick start](@/agent/docs/quick-start.md) for your first prompt.
 
 ## So why another agent?
 
@@ -153,7 +153,7 @@ holds your API keys. Choreographr's core is pure Rust for three reasons:
   light on CPU and RAM so you barely notice it's running. Your builds, of
   course, are another story. <!-- TODO: add real measured numbers here (idle RSS, CPU while streaming) when available -->
 
-The [Why Rust?](@/docs/why-rust.md) page goes into the details.
+The [Why Rust?](@/agent/docs/why-rust.md) page goes into the details.
 
 ## Blockchain native
 
@@ -161,7 +161,7 @@ Choreographr has **native tool calling for Ethereum (EVM) and Polkadot
 (Substrate)**, compiled into the release binaries. From any session you can
 read balances, inspect blocks and transactions, make read-only contract calls,
 resolve ENS names, and query Substrate storage — see the
-[blockchain tools](@/docs/tools.md#blockchain-tools) reference. Solana support
+[blockchain tools](@/agent/docs/tools.md#blockchain-tools) reference. Solana support
 is on the roadmap.
 
 Why this matters:
@@ -172,7 +172,7 @@ Why this matters:
   like GitHub, which is proving unreliable. On-chain coordination is the
   natural next step.
 - Existing on-chain publishing technologies, like my other project
-  [Acuity](https://acuity.network), are a perfect fit for agents.
+  [Acuity](/platform/), are a perfect fit for agents.
 
 It will also be possible to pay for model access with cryptocurrency directly
 in the TUI/GUI.
@@ -189,10 +189,10 @@ The rest of the feature list in brief:
   through a tool call.
 - **Encrypted credentials** — every key is encrypted at rest with X25519 ECDH +
   AES-256-GCM; the server starts locked and decrypts in memory only after
-  unlock. See [security](@/docs/security.md).
+  unlock. See [security](@/agent/docs/security.md).
 - **Agent database** — a persistent, session-scoped key-value store (`redb`)
   the agent writes to and reads back. See
-  [database tools](@/docs/tools.md#database-tools).
+  [database tools](@/agent/docs/tools.md#database-tools).
 - **MCP client** — spawn Model Context Protocol servers, discover their tools,
   and call them from any session.
 - **ACP bridge** — drive sessions from ACP-compatible editors like Claude Code
@@ -213,7 +213,7 @@ Subsessions already exist; here's what's on the roadmap:
   that must run outside the VM.
 - **Inter-server handoff** — pass sessions between servers over Noise.
 
-Ready to give it a spin? The [quick start](@/docs/quick-start.md) gets you to
+Ready to give it a spin? The [quick start](@/agent/docs/quick-start.md) gets you to
 your first prompt, and the
 [release notes](https://github.com/choreographr/choreographr/releases) cover
 what's in v0.1.0.

@@ -45,7 +45,7 @@ EOF
   echo "# Documentation"
   echo
   # Docs ordered by front-matter weight (matches the docs sidebar).
-  for f in $(for f in content/docs/*.md; do
+  for f in $(for f in content/agent/docs/*.md; do
                w="$(weight_of "$f")"
                printf "%04d %s\n" "${w:-999}" "$f"
              done | sort | awk '{print $2}'); do

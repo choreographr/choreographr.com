@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
     <title>Choreographr - announcement</title>
-    <subtitle>Your all-purpose AI agent, written in Rust. A daemon with many clients, a sandboxed RISC-V VM, and support for 70+ model providers.</subtitle>
+    <subtitle>Choreographr is an all-purpose AI agent, written in Rust, and the decentralized publishing platform it writes to. A daemon with many clients, a sandboxed RISC-V VM, 200+ model providers, and built-in access to the Choreographr publishing platform.</subtitle>
     <link rel="self" type="application/atom+xml" href="https://choreographr.com/blog/tags/announcement/atom.xml"/>
     <link rel="alternate" type="text/html" href="https://choreographr.com/"/>
     <generator uri="https://www.getzola.org/">Zola</generator>
@@ -48,11 +48,11 @@ Then it&#39;s a few commands to your first conversation:&lt;/p&gt;
 &lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #89B4FA;font-style: italic;&quot;&gt;choreographr&lt;/span&gt;&lt;span style=&quot;color: #9399B2;font-style: italic;&quot;&gt;   # terminal 1 — the server&lt;/span&gt;&lt;/span&gt;
 &lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #89B4FA;font-style: italic;&quot;&gt;choreo-tui&lt;/span&gt;&lt;span style=&quot;color: #9399B2;font-style: italic;&quot;&gt;     # terminal 2 — the terminal client&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;Homebrew 6.0 and later refuse to load non-official taps until they are
-&lt;a href=&quot;https://choreographr.com/docs/installation/#homebrew&quot;&gt;explicitly trusted&lt;/a&gt; — loading a tap can run
+&lt;a href=&quot;https://choreographr.com/agent/docs/installation/#homebrew&quot;&gt;explicitly trusted&lt;/a&gt; — loading a tap can run
 Ruby code from it, so &lt;code&gt;brew trust&lt;/code&gt; is how you tell Homebrew you&#39;ve reviewed
 and accepted this one.&lt;/p&gt;
-&lt;p&gt;See the &lt;a href=&quot;https://choreographr.com/docs/installation/&quot;&gt;installation guide&lt;/a&gt; for every platform, and
-the &lt;a href=&quot;https://choreographr.com/docs/quick-start/&quot;&gt;quick start&lt;/a&gt; for your first prompt.&lt;/p&gt;
+&lt;p&gt;See the &lt;a href=&quot;https://choreographr.com/agent/docs/installation/&quot;&gt;installation guide&lt;/a&gt; for every platform, and
+the &lt;a href=&quot;https://choreographr.com/agent/docs/quick-start/&quot;&gt;quick start&lt;/a&gt; for your first prompt.&lt;/p&gt;
 &lt;h2 id=&quot;so-why-another-agent&quot;&gt;So why another agent?
 &lt;a class=&quot;zola-anchor&quot; href=&quot;#so-why-another-agent&quot; aria-label=&quot;Anchor link for: so-why-another-agent&quot;&gt;
   &lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;16&quot; height=&quot;16&quot; viewBox=&quot;0 0 24 24&quot; fill=&quot;none&quot; stroke=&quot;currentColor&quot; stroke-width=&quot;2.5&quot; stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot; aria-hidden=&quot;true&quot;&gt;&lt;path d=&quot;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&quot;/&gt;&lt;path d=&quot;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&quot;/&gt;&lt;/svg&gt;
@@ -156,7 +156,7 @@ cancellation complexity an async runtime brings.&lt;/li&gt;
 light on CPU and RAM so you barely notice it&#39;s running. Your builds, of
 course, are another story. &lt;!-- TODO: add real measured numbers here (idle RSS, CPU while streaming) when available --&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;The &lt;a href=&quot;https://choreographr.com/docs/why-rust/&quot;&gt;Why Rust?&lt;/a&gt; page goes into the details.&lt;/p&gt;
+&lt;p&gt;The &lt;a href=&quot;https://choreographr.com/agent/docs/why-rust/&quot;&gt;Why Rust?&lt;/a&gt; page goes into the details.&lt;/p&gt;
 &lt;h2 id=&quot;blockchain-native&quot;&gt;Blockchain native
 &lt;a class=&quot;zola-anchor&quot; href=&quot;#blockchain-native&quot; aria-label=&quot;Anchor link for: blockchain-native&quot;&gt;
   &lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;16&quot; height=&quot;16&quot; viewBox=&quot;0 0 24 24&quot; fill=&quot;none&quot; stroke=&quot;currentColor&quot; stroke-width=&quot;2.5&quot; stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot; aria-hidden=&quot;true&quot;&gt;&lt;path d=&quot;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&quot;/&gt;&lt;path d=&quot;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&quot;/&gt;&lt;/svg&gt;
@@ -166,7 +166,7 @@ course, are another story. &lt;!-- TODO: add real measured numbers here (idle RS
 (Substrate)&lt;/strong&gt;, compiled into the release binaries. From any session you can
 read balances, inspect blocks and transactions, make read-only contract calls,
 resolve ENS names, and query Substrate storage — see the
-&lt;a href=&quot;https://choreographr.com/docs/tools/#blockchain-tools&quot;&gt;blockchain tools&lt;/a&gt; reference. Solana support
+&lt;a href=&quot;https://choreographr.com/agent/docs/tools/#blockchain-tools&quot;&gt;blockchain tools&lt;/a&gt; reference. Solana support
 is on the roadmap.&lt;/p&gt;
 &lt;p&gt;Why this matters:&lt;/p&gt;
 &lt;ul&gt;
@@ -176,7 +176,7 @@ trading bot, for example.&lt;/li&gt;
 like GitHub, which is proving unreliable. On-chain coordination is the
 natural next step.&lt;/li&gt;
 &lt;li&gt;Existing on-chain publishing technologies, like my other project
-&lt;a rel=&quot;noopener external&quot; target=&quot;_blank&quot; href=&quot;https://acuity.network&quot;&gt;Acuity&lt;/a&gt;, are a perfect fit for agents.&lt;/li&gt;
+&lt;a href=&quot;/platform/&quot;&gt;Acuity&lt;/a&gt;, are a perfect fit for agents.&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;It will also be possible to pay for model access with cryptocurrency directly
 in the TUI/GUI.&lt;/p&gt;
@@ -195,10 +195,10 @@ parallel on real threads, and any session can spawn hierarchical subsessions
 through a tool call.&lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;Encrypted credentials&lt;/strong&gt; — every key is encrypted at rest with X25519 ECDH +
 AES-256-GCM; the server starts locked and decrypts in memory only after
-unlock. See &lt;a href=&quot;https://choreographr.com/docs/security/&quot;&gt;security&lt;/a&gt;.&lt;/li&gt;
+unlock. See &lt;a href=&quot;https://choreographr.com/agent/docs/security/&quot;&gt;security&lt;/a&gt;.&lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;Agent database&lt;/strong&gt; — a persistent, session-scoped key-value store (&lt;code&gt;redb&lt;/code&gt;)
 the agent writes to and reads back. See
-&lt;a href=&quot;https://choreographr.com/docs/tools/#database-tools&quot;&gt;database tools&lt;/a&gt;.&lt;/li&gt;
+&lt;a href=&quot;https://choreographr.com/agent/docs/tools/#database-tools&quot;&gt;database tools&lt;/a&gt;.&lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;MCP client&lt;/strong&gt; — spawn Model Context Protocol servers, discover their tools,
 and call them from any session.&lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;ACP bridge&lt;/strong&gt; — drive sessions from ACP-compatible editors like Claude Code
@@ -222,7 +222,7 @@ plugins.&lt;/li&gt;
 that must run outside the VM.&lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;Inter-server handoff&lt;/strong&gt; — pass sessions between servers over Noise.&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;Ready to give it a spin? The &lt;a href=&quot;https://choreographr.com/docs/quick-start/&quot;&gt;quick start&lt;/a&gt; gets you to
+&lt;p&gt;Ready to give it a spin? The &lt;a href=&quot;https://choreographr.com/agent/docs/quick-start/&quot;&gt;quick start&lt;/a&gt; gets you to
 your first prompt, and the
 &lt;a rel=&quot;noopener external&quot; target=&quot;_blank&quot; href=&quot;https://github.com/choreographr/choreographr/releases&quot;&gt;release notes&lt;/a&gt; cover
 what&#39;s in v0.1.0.&lt;/p&gt;

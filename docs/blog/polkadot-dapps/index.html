@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="night">
+<head>
+  <meta charset="UTF-8">
+  <!-- color-scheme hint: lets the browser paint the dark canvas background
+       as soon as the head is parsed, before ANY CSS has been applied.
+       This is the one thing that closes the residual flash on Firefox/Zen,
+       which paints its default (white) canvas frame during navigation,
+       unlike Chromium which defers first paint until the inline CSS exists. -->
+  <meta name="color-scheme" content="dark">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Standardized, decentralized indexing for Polkadot dapps — Choreographr Blog</title>
+  <meta name="description" content="A key issue holding back dapps across all blockchain ecosystems, including Polkadot, is the use of centralized backends.">
+  <meta name="theme-color" content="#06080b">
+
+  
+  <!-- Canonical: every page (incl. trailing-slash and /index.html variants)
+       resolves to one authoritative URL, which also matches the sitemap. -->
+  <link rel="canonical" href="https://choreographr.com/blog/polkadot-dapps/">
+  
+
+  <!-- Open Graph / social sharing. og:title / og:description are overridden
+       per template so they always match the <title> and meta description. -->
+  <meta property="og:site_name" content="Choreographr">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Standardized, decentralized indexing for Polkadot dapps — Choreographr Blog">
+  <meta property="og:description" content="A key issue holding back dapps across all blockchain ecosystems, including Polkadot, is the use of centralized backends.">
+  <meta property="og:url" content="https://choreographr.com/blog/polkadot-dapps/">
+  
+  <meta property="og:image" content="https://choreographr.com/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Choreographr — your all-purpose AI agent, written in Rust">
+  
+  <meta property="og:locale" content="en_US">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <!-- Critical inline CSS: paint the dark theme immediately, before
+       main.css (or the webfont stylesheet) finishes loading, so the
+       page never flashes white on navigation. -->
+  <style>
+    html { background-color: #06080b; color-scheme: dark; }
+    body { background-color: #06080b; color: #d3dae3; }
+  </style>
+
+  <!-- Self-hosted fonts (same-origin): preload the two variable woff2
+       files so they're available at first paint — no visible swap. -->
+  <link rel="preload" href="https://choreographr.com/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="https://choreographr.com/fonts/jetbrains-mono.woff2" as="font" type="font/woff2" crossorigin>
+
+  <link rel="icon" type="image/svg+xml" href="https://choreographr.com/favicon.svg">
+  <link rel="stylesheet" href="https://choreographr.com/css/main.css?h=2d812d12b3967d2e0fb0">
+
+  <!-- Firefox/Zen can paint a frame before this stylesheet has been
+       applied if a layout flush happens while it loads (Bugzilla
+       1459305) — unlike Chromium, which blocks the parser on the
+       <link>. This synchronous script is the standard workaround: it
+       cannot execute until main.css is ready, and while it is pending
+       the <body> has not been parsed, so nothing unstyled can paint.
+       Result: same first-paint behaviour as Chromium, no FOUC. -->
+  <script>
+    // No-op: exists only to hold first paint until main.css is applied.
+  </script>
+
+  
+  <link rel="alternate" type="application/atom+xml" title="Choreographr Blog" href="https://choreographr.com/atom.xml">
+  
+
+  
+
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Standardized, decentralized indexing for Polkadot dapps",
+  "description": "A key issue holding back dapps across all blockchain ecosystems, including Polkadot, is the use of centralized backends.",
+  "datePublished": "2025-07-31",
+  "dateModified": "2025-07-31",
+  "mainEntityOfPage": "https://choreographr.com/blog/polkadot-dapps/",
+  "image": "https://choreographr.com/og-image.png",
+  "author": [{ "@type": "Person", "name": "Jonathan Brown" }],
+  "publisher": { "@type": "Organization", "name": "Choreographr", "url": "https://choreographr.com/" }
+}
+</script>
+
+</head>
+<body class="min-h-screen flex flex-col">
+
+  <header class="sticky top-0 z-40 w-full border-b border-night-700 bg-night-950/90 backdrop-blur">
+  <nav class="navbar mx-auto max-w-7xl px-4 sm:px-6">
+    <div class="navbar-start">
+      <div class="dropdown lg:hidden">
+        <div tabindex="0" role="button" class="btn btn-ghost btn-square" aria-label="Menu">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </div>
+        <ul tabindex="0" class="dropdown-content menu bg-night-900 border border-night-700 rounded-box z-50 mt-3 w-52 p-2 shadow-2xl">
+          
+          <li>
+            <a href="/agent/"  class="">
+              Agent
+            </a>
+          </li>
+          
+          <li>
+            <a href="/platform/"  class="">
+              Platform
+            </a>
+          </li>
+          
+          <li>
+            <a href="/blog/"  class="text-brand-500">
+              Blog
+            </a>
+          </li>
+          
+          <li>
+            <a href="/consulting/"  class="">
+              Consulting
+            </a>
+          </li>
+          
+          <li>
+            <a href="https://github.com/choreographr/choreographr" target="_blank" rel="noopener" class="">
+              GitHub<span class="text-night-400 text-xs">↗</span>
+            </a>
+          </li>
+          
+          <li>
+            <a href="https://t.me/choreographr" target="_blank" rel="noopener" class="">
+              Telegram<span class="text-night-400 text-xs">↗</span>
+            </a>
+          </li>
+          
+        </ul>
+      </div>
+      <a href="/" class="font-mono text-lg font-bold tracking-tight select-none">
+        <span class="text-brand-500">choreo</span><span class="text-night-50">graphr</span>&ensp;<span class="text-brand-500">&gt;</span><span class="text-night-50">_</span>
+      </a>
+    </div>
+    <div class="navbar-end hidden lg:flex">
+      <ul class="menu menu-horizontal px-1 gap-1 text-sm">
+        
+        <li>
+          <a href="/agent/"
+             
+             class="text-night-200 hover:text-night-50">
+            Agent
+          </a>
+        </li>
+        
+        <li>
+          <a href="/platform/"
+             
+             class="text-night-200 hover:text-night-50">
+            Platform
+          </a>
+        </li>
+        
+        <li>
+          <a href="/blog/"
+             
+             class="text-brand-500 font-semibold">
+            Blog
+          </a>
+        </li>
+        
+        <li>
+          <a href="/consulting/"
+             
+             class="text-night-200 hover:text-night-50">
+            Consulting
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://github.com/choreographr/choreographr"
+             target="_blank" rel="noopener"
+             class="">
+            GitHub<span class="text-night-400 text-xs">↗</span>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://t.me/choreographr"
+             target="_blank" rel="noopener"
+             class="">
+            Telegram<span class="text-night-400 text-xs">↗</span>
+          </a>
+        </li>
+        
+      </ul>
+    </div>
+  </nav>
+</header>
+
+
+  <main class="flex-1">
+    
+    
+      
+    
+    
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 pt-5">
+      
+
+
+
+
+<nav aria-label="Breadcrumb" class="font-mono text-sm text-night-400">
+  <span class="flex flex-wrap items-center">
+    <a href="/" class="hover:text-brand-400">home</a>
+    
+    
+      
+    
+      
+        
+        
+        <span class="text-night-600">/</span>
+        
+        <a href="/blog/" class="hover:text-brand-400">blog</a>
+        
+      
+    
+      
+        
+        
+        <span class="text-night-600">/</span>
+        
+        <span class="text-night-200 font-medium">polkadot-dapps</span>
+        
+      
+    
+      
+    
+  </span>
+</nav>
+
+    </div>
+    
+    
+
+<div class="mx-auto max-w-3xl px-4 sm:px-6 py-12">
+  <a href="https://choreographr.com/blog" class="text-sm text-night-400 hover:text-brand-400 font-mono">← Back to blog</a>
+  <article class="mt-6">
+    <h1 class="text-3xl font-bold text-night-50 tracking-tight">Standardized, decentralized indexing for Polkadot dapps</h1>
+    <div class="mt-4 flex flex-wrap items-center gap-x-5 gap-y-3">
+      
+      
+      
+      
+      <a href="https://choreographr.com/blog/authors/jonathan-brown/" class="flex items-center gap-2 group/author">
+        
+        <img src="https://choreographr.com/me.jpg" alt="Jonathan Brown" class="h-9 w-9 rounded-full object-cover border border-brand-500/40" />
+        
+        <span class="text-sm font-medium text-night-200 group-hover/author:text-brand-400">Jonathan Brown</span>
+      </a>
+      
+      
+      <span class="text-sm font-mono text-night-400">
+        2025-07-31
+        
+      </span>
+    </div>
+    <div class="prose mt-8">
+      <p>A key issue holding back dapps across all blockchain ecosystems, including Polkadot, is the use of centralized backends. Being able to submit transactions permissionlessly and having autonomous on-chain business logic are key to setting the world free from the archaic systems that currently govern our world, but this is not enough.</p>
+<p>For dapps to provide a rich user experience they need to be able to query not just chain state, but an index of what has happened in the past. Maintaining such an index requires significant resources and is therefore inheritantly centralized. For example, decentralized social media needs to be able to query which posts have mentioned a specific user. To prevent reliance on a centralized source of truth, dapps needs to be able to choose which index they wish to use in the same way that they can chose which full node to query. This of course requires standardized APIs for querying the index.</p>
+<h2 id="acuity-index">Acuity Index
+<a class="zola-anchor" href="#acuity-index" aria-label="Anchor link for: acuity-index">
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+</a>
+</h2>
+<p>Acuity Index enables standardized indexing for Polkadot chains. If a specific index is not working well or is compromised, dapps can simply switch to another.</p>
+<p>Currently it is necessary to build an indexer for each chain using the <a rel="noopener external" target="_blank" href="https://crates.io/crates/acuity-index-substrate">acuity-index-substrate</a> Rust library. The next version of Acuity Index will be an omni-indexer. Each chain will be able to simply maintain an index specification config file.</p>
+<p>Future features include:</p>
+<ul>
+<li>publishing index specification on-chain</li>
+<li>registering index node on-chain</li>
+<li>private on-chain payment for index access (make money by hosting an index)</li>
+<li>other standardized rich node services such as: IPFS pinning &amp; full text search, private user settings storage, AI queries</li>
+</ul>
+<h2 id="funding">Funding
+<a class="zola-anchor" href="#funding" aria-label="Anchor link for: funding">
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+</a>
+</h2>
+<p>Acuity Index was originally called Hybrid and was funded by two (<a rel="noopener external" target="_blank" href="https://github.com/w3f/Grants-Program/blob/master/applications/hybrid.md">1</a>, <a rel="noopener external" target="_blank" href="https://github.com/w3f/Grants-Program/blob/master/applications/hybrid2.md">2</a>) Web3 Foundation grants and a Kusama Treasury <a rel="noopener external" target="_blank" href="https://kusama.polkassembly.io/referenda/534">referendum</a>. A second funding referendum is currently being <a rel="noopener external" target="_blank" href="https://kusama.polkassembly.io/referenda/567">voted on</a>.</p>
+<h2 id="example">Example
+<a class="zola-anchor" href="#example" aria-label="Anchor link for: example">
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+</a>
+</h2>
+<p>Build Acuity Index Polkadot:</p>
+<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;" ><code data-lang="plain"><span class="giallo-l"><span>git clone https://github.com/acuity-network/acuity-index-polkadot</span></span>
+<span class="giallo-l"><span>cd acuity-index-polkadot</span></span>
+<span class="giallo-l"><span>cargo build --release</span></span></code></pre>
+<p>Examine command line parameters:</p>
+<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;" ><code data-lang="plain"><span class="giallo-l"><span>cargo run --release -- --help</span></span></code></pre>
+<p>This outputs the following help page:</p>
+<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;" ><code data-lang="plain"><span class="giallo-l"><span>Usage: acuity-index-polkadot [OPTIONS]</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>Options:</span></span>
+<span class="giallo-l"><span>  -c, --chain &lt;CHAIN&gt;</span></span>
+<span class="giallo-l"><span>          Chain to index [default: polkadot] [possible values: polkadot, kusama, westend, paseo]</span></span>
+<span class="giallo-l"><span>  -d, --db-path &lt;DB_PATH&gt;</span></span>
+<span class="giallo-l"><span>          Database path</span></span>
+<span class="giallo-l"><span>      --db-mode &lt;DB_MODE&gt;</span></span>
+<span class="giallo-l"><span>          Database mode [default: low-space] [possible values: low-space, high-throughput]</span></span>
+<span class="giallo-l"><span>      --db-cache-capacity &lt;DB_CACHE_CAPACITY&gt;</span></span>
+<span class="giallo-l"><span>          Maximum size in bytes for the system page cache [default: &quot;1024.00 MiB&quot;]</span></span>
+<span class="giallo-l"><span>  -u, --url &lt;URL&gt;</span></span>
+<span class="giallo-l"><span>          URL of Substrate node to connect to</span></span>
+<span class="giallo-l"><span>      --queue-depth &lt;QUEUE_DEPTH&gt;</span></span>
+<span class="giallo-l"><span>          Maximum number of concurrent requests to the chain [default: 1]</span></span>
+<span class="giallo-l"><span>  -f, --finalized</span></span>
+<span class="giallo-l"><span>          Only index finalized blocks</span></span>
+<span class="giallo-l"><span>  -i, --index-variant</span></span>
+<span class="giallo-l"><span>          Index event variants</span></span>
+<span class="giallo-l"><span>  -s, --store-events</span></span>
+<span class="giallo-l"><span>          Store events in index for immediate retrieval</span></span>
+<span class="giallo-l"><span>  -p, --port &lt;PORT&gt;</span></span>
+<span class="giallo-l"><span>          Port to open for WebSocket queries [default: 8172]</span></span>
+<span class="giallo-l"><span>  -v, --verbose...</span></span>
+<span class="giallo-l"><span>          Increase logging verbosity</span></span>
+<span class="giallo-l"><span>  -q, --quiet...</span></span>
+<span class="giallo-l"><span>          Decrease logging verbosity</span></span>
+<span class="giallo-l"><span>  -h, --help</span></span>
+<span class="giallo-l"><span>          Print help</span></span>
+<span class="giallo-l"><span>  -V, --version</span></span>
+<span class="giallo-l"><span>          Print version</span></span></code></pre>
+<p>In order to index thousands of blocks per seconds, Acuity Index creates an asynchronous queue of blocks to be retrieved and processed. This means the round-trip latency to retrieve each block can be parallellized. As this can put a huge strain on the full node that is being indexed, <code>--queue-depth</code> defaults to 1. For high-speed indexing the index should have a dedicated archive node. Performance increases can be observed up to a depth of around 64.</p>
+<p><code>--index-variant</code> will treat the pallet and event type as an additional key to be indexed. For example, the index could be queried for every balance transfer.</p>
+<p><code>--store-events</code> will store raw event bytes for each block indexed. These will then be served directly with index results for immediate processing and display to the user. This increases index storage requirements considerably.</p>
+<p>Install the commandline query tool:</p>
+<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;" ><code data-lang="plain"><span class="giallo-l"><span>cargo install acuity-index-substrate-cli</span></span></code></pre>
+<p>Query key types that can be queried / subscribed to</p>
+<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;" ><code data-lang="plain"><span class="giallo-l"><span>ais --url ws://0.0.0.0:8172 get-events</span></span></code></pre><pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;" ><code data-lang="plain"><span class="giallo-l"><span>Query for events with a key</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>Usage: ais --url &lt;URL&gt; get-events &lt;COMMAND&gt;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>Commands:</span></span>
+<span class="giallo-l"><span>  account-id       AccountId</span></span>
+<span class="giallo-l"><span>  account-index    AccountIndex</span></span>
+<span class="giallo-l"><span>  bounty-index     BountyIndex</span></span>
+<span class="giallo-l"><span>  era-index        EraIndex</span></span>
+<span class="giallo-l"><span>  message-id       MessageId</span></span>
+<span class="giallo-l"><span>  pool-id          PoolId</span></span>
+<span class="giallo-l"><span>  preimage-hash    PreimageHash</span></span>
+<span class="giallo-l"><span>  proposal-hash    ProposalHash</span></span>
+<span class="giallo-l"><span>  proposal-index   ProposalIndex</span></span>
+<span class="giallo-l"><span>  ref-index        RefIndex</span></span>
+<span class="giallo-l"><span>  registrar-index  RegistrarIndex</span></span>
+<span class="giallo-l"><span>  session-index    SessionIndex</span></span>
+<span class="giallo-l"><span>  tip-hash         TipHash</span></span>
+<span class="giallo-l"><span>  variant          Variant</span></span>
+<span class="giallo-l"><span>  help             Print this message or the help of the given subcommand(s)</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>Options:</span></span>
+<span class="giallo-l"><span>  -h, --help  Print help</span></span></code></pre>
+<p>Query local node for events by Account Id:</p>
+<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;" ><code data-lang="plain"><span class="giallo-l"><span>ais --url ws://0.0.0.0:8172 get-events account-id --key 1tqrqW1qd2D9GG6qt2gtBMP8PYDmkumvLSpYEpdth1xwP1B</span></span></code></pre><pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;" ><code data-lang="plain"><span class="giallo-l"><span>block number: 27072121, event index: 61</span></span>
+<span class="giallo-l"><span>block number: 27072121, event index: 60</span></span></code></pre>
+<p>If you would like help indexing a Polkadot blockchain with Acuity Index, please email jbrown@acuity.network</p>
+
+    </div>
+  </article>
+</div>
+
+  </main>
+
+  <footer class="border-t border-night-700 bg-night-900">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 py-12">
+    <div class="grid gap-10 md:grid-cols-3">
+      <div>
+        <div class="font-mono text-lg font-bold tracking-tight">
+          <span class="text-brand-500">choreo</span><span class="text-night-50">graphr</span>&ensp;<span class="text-brand-500">&gt;</span><span class="text-night-50">_</span>
+        </div>
+        <p class="mt-3 text-sm text-night-300 max-w-xs">
+          An all-purpose, extensible AI agent written in Rust. Runs locally or in the cloud. Open source under Apache-2.0.
+        </p>
+      </div>
+      <div>
+        <h3 class="text-sm font-semibold text-night-50 uppercase tracking-wider mb-3">Explore</h3>
+        <ul class="space-y-2 text-sm text-night-300">
+          <li><a href="https://choreographr.com/agent/docs" class="hover:text-brand-400">Agent docs</a></li>
+          <li><a href="https://choreographr.com/blog" class="hover:text-brand-400">Blog</a></li>
+          <li><a href="https://choreographr.com/consulting" class="hover:text-brand-400">Consulting</a></li>
+          <li><a href="https://choreographr.com/search" class="hover:text-brand-400">Search</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3 class="text-sm font-semibold text-night-50 uppercase tracking-wider mb-3">Community</h3>
+        <ul class="space-y-2 text-sm text-night-300">
+          <li><a href="https://github.com/choreographr/choreographr" target="_blank" rel="noopener" class="hover:text-brand-400">GitHub</a></li>
+          <li><a href="https://t.me/choreographr" target="_blank" rel="noopener" class="hover:text-brand-400">Telegram</a></li>
+          <li><a href="https://choreographr.com/atom.xml" class="hover:text-brand-400">RSS Feed</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="mt-10 border-t border-night-700 pt-6 flex flex-col sm:flex-row justify-between gap-3 text-xs text-night-400">
+      <p>© 2026 Choreographr. Released under the Apache-2.0 license.</p>
+      <p class="font-mono">100% Rust · written by <a href="https://github.com/choreographr/choreographr" target="_blank" rel="noopener" class="text-night-300 hover:text-brand-400">choreographr</a></p>
+    </div>
+  </div>
+</footer>
+
+
+  
+
+  <script>
+    // Click-to-copy buttons for every code block. Wraps each <pre> in a
+    // .code-block container and adds a corner button that copies the block's
+    // text via the async Clipboard API, with an execCommand fallback for
+    // non-secure contexts. The button sits OUTSIDE the <pre> so it stays in
+    // the corner while horizontally-overflowing code scrolls inside the block.
+    (function () {
+      var COPY_ICON =
+        '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
+      var CHECK_ICON =
+        '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
+
+      function fallbackCopy(text) {
+        var ta = document.createElement('textarea');
+        ta.value = text;
+        ta.setAttribute('readonly', '');
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        try { document.execCommand('copy'); } catch (e) { /* ignore */ }
+        document.body.removeChild(ta);
+      }
+
+      document.querySelectorAll('pre').forEach(function (pre) {
+        // Skip daisyUI terminal mockups (mockup-code): every line is its
+        // own <pre>, so per-line copy buttons would be noise. Real code
+        // blocks are a single <pre> that is not inside a .mockup-code.
+        if (pre.closest('.mockup-code')) return;
+
+        // Idempotent: don't re-wrap if the script runs more than once.
+        if (pre.parentElement && pre.parentElement.classList.contains('code-block')) return;
+
+        var wrap = document.createElement('div');
+        wrap.className = 'code-block';
+        pre.parentNode.insertBefore(wrap, pre);
+        wrap.appendChild(pre);
+
+        var btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'code-copy';
+        btn.setAttribute('aria-label', 'Copy code to clipboard');
+        btn.innerHTML = COPY_ICON;
+        wrap.appendChild(btn);
+
+        btn.addEventListener('click', function () {
+          var text = pre.innerText;
+          var done = function () {
+            btn.classList.add('copied');
+            btn.innerHTML = CHECK_ICON;
+            btn.setAttribute('aria-label', 'Copied');
+            setTimeout(function () {
+              btn.classList.remove('copied');
+              btn.innerHTML = COPY_ICON;
+              btn.setAttribute('aria-label', 'Copy code to clipboard');
+            }, 1500);
+          };
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(text).then(done, function () { fallbackCopy(text); done(); });
+          } else {
+            fallbackCopy(text);
+            done();
+          }
+        });
+      });
+    })();
+  </script>
+</body>
+</html>

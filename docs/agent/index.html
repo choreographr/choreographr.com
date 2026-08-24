@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="night">
+<head>
+  <meta charset="UTF-8">
+  <!-- color-scheme hint: lets the browser paint the dark canvas background
+       as soon as the head is parsed, before ANY CSS has been applied.
+       This is the one thing that closes the residual flash on Firefox/Zen,
+       which paints its default (white) canvas frame during navigation,
+       unlike Chromium which defers first paint until the inline CSS exists. -->
+  <meta name="color-scheme" content="dark">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Agent — Choreographr</title>
+  <meta name="description" content="Choreographr is an all-purpose, extensible AI agent written in Rust. One server, a client for every surface, a sandboxed RISC-V VM, and built-in access to the Choreographr publishing platform.">
+  <meta name="theme-color" content="#06080b">
+
+  
+  <!-- Canonical: every page (incl. trailing-slash and /index.html variants)
+       resolves to one authoritative URL, which also matches the sitemap. -->
+  <link rel="canonical" href="https://choreographr.com/agent/">
+  
+
+  <!-- Open Graph / social sharing. og:title / og:description are overridden
+       per template so they always match the <title> and meta description. -->
+  <meta property="og:site_name" content="Choreographr">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Agent — Choreographr">
+  <meta property="og:description" content="Choreographr is an all-purpose, extensible AI agent written in Rust. One server, a client for every surface, a sandboxed RISC-V VM, and built-in access to the Choreographr publishing platform.">
+  <meta property="og:url" content="https://choreographr.com/agent/">
+  
+  <meta property="og:image" content="https://choreographr.com/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Choreographr — your all-purpose AI agent, written in Rust">
+  
+  <meta property="og:locale" content="en_US">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <!-- Critical inline CSS: paint the dark theme immediately, before
+       main.css (or the webfont stylesheet) finishes loading, so the
+       page never flashes white on navigation. -->
+  <style>
+    html { background-color: #06080b; color-scheme: dark; }
+    body { background-color: #06080b; color: #d3dae3; }
+  </style>
+
+  <!-- Self-hosted fonts (same-origin): preload the two variable woff2
+       files so they're available at first paint — no visible swap. -->
+  <link rel="preload" href="https://choreographr.com/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="https://choreographr.com/fonts/jetbrains-mono.woff2" as="font" type="font/woff2" crossorigin>
+
+  <link rel="icon" type="image/svg+xml" href="https://choreographr.com/favicon.svg">
+  <link rel="stylesheet" href="https://choreographr.com/css/main.css?h=2d812d12b3967d2e0fb0">
+
+  <!-- Firefox/Zen can paint a frame before this stylesheet has been
+       applied if a layout flush happens while it loads (Bugzilla
+       1459305) — unlike Chromium, which blocks the parser on the
+       <link>. This synchronous script is the standard workaround: it
+       cannot execute until main.css is ready, and while it is pending
+       the <body> has not been parsed, so nothing unstyled can paint.
+       Result: same first-paint behaviour as Chromium, no FOUC. -->
+  <script>
+    // No-op: exists only to hold first paint until main.css is applied.
+  </script>
+
+  
+  <link rel="alternate" type="application/atom+xml" title="Choreographr Blog" href="https://choreographr.com/atom.xml">
+  
+
+  
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Choreographr",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Linux, macOS",
+  "description": "An all-purpose, extensible AI agent system written in Rust: a persistent server owns your sessions; terminal, desktop, Telegram and ACP editor clients come and go; LLM-generated code runs in a sandboxed RISC-V VM; 200+ model providers work out of the box; and it has built-in access to the Choreographr publishing platform.",
+  "license": "https://www.apache.org/licenses/LICENSE-2.0",
+  "url": "https://choreographr.com/agent/",
+  "codeRepository": "https://github.com/choreographr/choreographr",
+  "isAccessibleForFree": true,
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "author": {
+    "@type": "Person",
+    "name": "Jonathan Brown",
+    "url": "https://choreographr.com/blog/authors/jonathan-brown/"
+  }
+}
+</script>
+
+</head>
+<body class="min-h-screen flex flex-col">
+
+  <header class="sticky top-0 z-40 w-full border-b border-night-700 bg-night-950/90 backdrop-blur">
+  <nav class="navbar mx-auto max-w-7xl px-4 sm:px-6">
+    <div class="navbar-start">
+      <div class="dropdown lg:hidden">
+        <div tabindex="0" role="button" class="btn btn-ghost btn-square" aria-label="Menu">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </div>
+        <ul tabindex="0" class="dropdown-content menu bg-night-900 border border-night-700 rounded-box z-50 mt-3 w-52 p-2 shadow-2xl">
+          
+          <li>
+            <a href="/agent/"  class="text-brand-500">
+              Agent
+            </a>
+          </li>
+          
+          <li>
+            <a href="/platform/"  class="">
+              Platform
+            </a>
+          </li>
+          
+          <li>
+            <a href="/blog/"  class="">
+              Blog
+            </a>
+          </li>
+          
+          <li>
+            <a href="/consulting/"  class="">
+              Consulting
+            </a>
+          </li>
+          
+          <li>
+            <a href="https://github.com/choreographr/choreographr" target="_blank" rel="noopener" class="">
+              GitHub<span class="text-night-400 text-xs">↗</span>
+            </a>
+          </li>
+          
+          <li>
+            <a href="https://t.me/choreographr" target="_blank" rel="noopener" class="">
+              Telegram<span class="text-night-400 text-xs">↗</span>
+            </a>
+          </li>
+          
+        </ul>
+      </div>
+      <a href="/" class="font-mono text-lg font-bold tracking-tight select-none">
+        <span class="text-brand-500">choreo</span><span class="text-night-50">graphr</span>&ensp;<span class="text-brand-500">&gt;</span><span class="text-night-50">_</span>
+      </a>
+    </div>
+    <div class="navbar-end hidden lg:flex">
+      <ul class="menu menu-horizontal px-1 gap-1 text-sm">
+        
+        <li>
+          <a href="/agent/"
+             
+             class="text-brand-500 font-semibold">
+            Agent
+          </a>
+        </li>
+        
+        <li>
+          <a href="/platform/"
+             
+             class="text-night-200 hover:text-night-50">
+            Platform
+          </a>
+        </li>
+        
+        <li>
+          <a href="/blog/"
+             
+             class="text-night-200 hover:text-night-50">
+            Blog
+          </a>
+        </li>
+        
+        <li>
+          <a href="/consulting/"
+             
+             class="text-night-200 hover:text-night-50">
+            Consulting
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://github.com/choreographr/choreographr"
+             target="_blank" rel="noopener"
+             class="">
+            GitHub<span class="text-night-400 text-xs">↗</span>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://t.me/choreographr"
+             target="_blank" rel="noopener"
+             class="">
+            Telegram<span class="text-night-400 text-xs">↗</span>
+          </a>
+        </li>
+        
+      </ul>
+    </div>
+  </nav>
+</header>
+
+
+  <main class="flex-1">
+    
+    
+      
+    
+    
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 pt-5">
+      
+
+
+
+
+<nav aria-label="Breadcrumb" class="font-mono text-sm text-night-400">
+  <span class="flex flex-wrap items-center">
+    <a href="/" class="hover:text-brand-400">home</a>
+    
+    
+      
+    
+      
+        
+        
+        <span class="text-night-600">/</span>
+        
+        <span class="text-night-200 font-medium">agent</span>
+        
+      
+    
+      
+    
+  </span>
+</nav>
+
+    </div>
+    
+    
+
+
+<section class="relative overflow-hidden">
+  <div class="absolute inset-0 bg-grid"></div>
+  <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(222,165,132,0.12),transparent_55%)]"></div>
+
+  <div class="relative mx-auto max-w-7xl px-4 sm:px-6 pt-20 pb-16 lg:pt-28 lg:pb-24">
+    <div class="grid lg:grid-cols-2 gap-12 lg:gap-8 items-center">
+      <div>
+        <div class="flex flex-wrap items-center gap-2 mb-6">
+          <span class="badge badge-outline badge-sm border-brand-500/40 text-brand-400 font-mono">100% Rust</span>
+          <span class="badge badge-outline badge-sm border-night-500 text-night-300 font-mono">Apache-2.0</span>
+          <span class="badge badge-outline badge-sm border-night-500 text-night-300 font-mono">v0.1 · early preview</span>
+        </div>
+
+        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-night-50 leading-[1.1]">
+          Your all-purpose AI agent,<br>
+          <span class="text-brand-500 glow-brand">written in Rust.</span>
+        </h1>
+
+        <p class="mt-6 text-lg text-night-200 leading-relaxed max-w-xl">
+          Choreographr is an extensible AI agent system with a server at its heart and a client for
+          every surface — terminal, desktop, chat apps, and your editor. LLM-generated code runs in a
+          <strong class="text-night-50">sandboxed RISC-V VM</strong>, 200+ model providers work out of the box,
+          and it has <strong class="text-night-50">built-in access to the Choreographr publishing platform</strong>.
+        </p>
+
+        <div class="mt-8 flex flex-wrap gap-3">
+          <a href="https://choreographr.com/agent/docs/quick-start" class="btn btn-primary btn-lg">Get started</a>
+          <a href="https://github.com/choreographr/choreographr" target="_blank" rel="noopener" class="btn btn-outline btn-lg border-night-500 text-night-100 hover:border-brand-500 hover:text-brand-400">
+            GitHub
+          </a>
+          <a href="https://t.me/choreographr" target="_blank" rel="noopener" class="btn btn-ghost btn-lg text-night-200 hover:text-brand-400">
+            Join the Telegram ↗
+          </a>
+        </div>
+
+        <div class="mt-10 grid grid-cols-3 gap-4 max-w-md">
+          <div>
+            <p class="text-2xl font-bold text-night-50 font-mono">200+</p>
+            <p class="text-xs text-night-400">model providers</p>
+          </div>
+          <div>
+            <p class="text-2xl font-bold text-night-50 font-mono">5</p>
+            <p class="text-xs text-night-400">native clients</p>
+          </div>
+          <div>
+            <p class="text-2xl font-bold text-night-50 font-mono">60</p>
+            <p class="text-xs text-night-400">built-in tools</p>
+          </div>
+        </div>
+      </div>
+
+      
+      <div class="relative min-w-0">
+        <div class="absolute -inset-4 bg-brand-500/10 blur-2xl rounded-3xl"></div>
+        <div class="relative mockup-code bg-night-900 border border-night-600 text-sm shadow-2xl">
+          <pre data-prefix="$"><code>cargo run --release -p choreo-daemon</code></pre>
+          <pre data-prefix=">"><code>you: research the Polkadot 2.0 launch</code></pre>
+          <pre data-prefix="✓"><code>choreo: pulled 6 sources, cross-checked…</code></pre>
+          <pre data-prefix=">"><code>you: publish the summary to the wiki</code></pre>
+          <pre data-prefix="✓"><code>choreo: publishing to the Choreographr platform</code></pre>
+          <pre data-prefix="  "><code>  (publish_item) content-addressed · IPFS hash</code></pre>
+          <pre data-prefix="  "><code>  ✓ #a1f3… timestamped on-chain · indexable</code></pre>
+          <pre data-prefix=">"><code>you: and ping me on Telegram when it's live</code></pre>
+          <pre data-prefix="✓" class="terminal-cursor"><code>choreo: done — published &amp; sent via choreo-im</code></pre>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section class="border-t border-night-700 bg-night-900/50">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 py-20">
+    <div class="max-w-2xl">
+      <h2 class="text-3xl font-bold text-night-50 tracking-tight">An agent that runs today</h2>
+      <p class="mt-4 text-night-300 leading-relaxed">
+        Choreographr is real, working software — not a roadmap. Run it on your desktop, home server, or in the cloud,
+        then talk to your agent from anywhere. It was designed around one idea: <strong class="text-night-50">one server owns
+        your sessions</strong>, and clients come and go as they please.
+      </p>
+    </div>
+
+    <div class="mt-8 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+      <div class="card bg-night-900 border border-night-700"><div class="card-body"><div class="text-2xl text-brand-500">🖥️</div><h3 class="card-title text-night-50 text-base">Server + multi-client</h3><p class="text-sm text-night-300">Sessions live in the server. Connect from a terminal, desktop app, Telegram, or an ACP-compatible editor.</p></div></div>
+      <div class="card bg-night-900 border border-night-700"><div class="card-body"><div class="text-2xl text-brand-500">🌳</div><h3 class="card-title text-night-50 text-base">Hierarchical subsessions</h3><p class="text-sm text-night-300">Break work into child sessions that run their own agent loop and report back. Pause, re-prompt, and nest them.</p></div></div>
+      <div class="card bg-night-900 border border-night-700"><div class="card-body"><div class="text-2xl text-brand-500">↩️</div><h3 class="card-title text-night-50 text-base">Undo / redo, per session</h3><p class="text-sm text-night-300">If an agent mis-steps, remove the prompt instead of prompting more. Multiple sessions run simultaneously.</p></div></div>
+      <div class="card bg-night-900 border border-night-700"><div class="card-body"><div class="text-2xl text-brand-500">🔑</div><h3 class="card-title text-night-50 text-base">Encrypted keystore</h3><p class="text-sm text-night-300">Credentials encrypted per-credential with X25519 ECDH + AES-256-GCM. The server starts locked.</p></div></div>
+    </div>
+  </div>
+</section>
+
+
+<section class="border-t border-night-700">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 py-20">
+    <div class="max-w-2xl">
+      <h2 class="text-3xl font-bold text-night-50 tracking-tight">Everything in the box</h2>
+      <p class="mt-4 text-night-300">A small, high-performance core — everything else plugs in as clients, tools and providers.</p>
+    </div>
+
+    <div class="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+      <div class="card bg-night-900 border border-night-700 hover:border-brand-500/40 transition-colors">
+        <div class="card-body">
+          <div class="text-2xl text-brand-500">🔐</div>
+          <h3 class="card-title text-night-50 text-lg">Sandboxed RISC-V VM</h3>
+          <p class="text-sm text-night-300">LLM-generated code is compiled to RISC-V and executed in an isolated <span class="font-mono text-brand-300">ckb-vm</span> sandbox. A complete replacement for the shell tool — full control and observability.</p>
+        </div>
+      </div>
+
+      <div class="card bg-night-900 border border-night-700 hover:border-brand-500/40 transition-colors">
+        <div class="card-body">
+          <div class="text-2xl text-brand-500">🧠</div>
+          <h3 class="card-title text-night-50 text-lg">200+ model providers</h3>
+          <p class="text-sm text-night-300">OpenAI-compatible, Anthropic Messages and Google Gemini — OpenAI, Anthropic, Mistral, DeepSeek, xAI, Groq, Ollama, OpenRouter and many more.</p>
+        </div>
+      </div>
+
+      <div class="card bg-night-900 border border-night-700 hover:border-brand-500/40 transition-colors">
+        <div class="card-body">
+          <div class="text-2xl text-brand-500">🖼️</div>
+          <h3 class="card-title text-night-50 text-lg">Images in the terminal</h3>
+          <p class="text-sm text-night-300">The TUI renders PNG, JPEG, and vector SVG inline in your chat history — kitty graphics or sixel where supported, with a universal fallback everywhere else.</p>
+        </div>
+      </div>
+
+      <div class="card bg-night-900 border border-night-700 hover:border-brand-500/40 transition-colors">
+        <div class="card-body">
+          <div class="text-2xl text-brand-500">🔌</div>
+          <h3 class="card-title text-night-50 text-lg">MCP client</h3>
+          <p class="text-sm text-night-300">Speaks the Model Context Protocol — spawn MCP subprocess servers, discover their tools, and call them from any session.</p>
+        </div>
+      </div>
+
+      <div class="card bg-night-900 border border-night-700 hover:border-brand-500/40 transition-colors">
+        <div class="card-body">
+          <div class="text-2xl text-brand-500">✏️</div>
+          <h3 class="card-title text-night-50 text-lg">ACP bridge</h3>
+          <p class="text-sm text-night-300">Drive Choreographr sessions from ACP-compatible editors like Claude Code and Cline over JSON-RPC, right from your IDE.</p>
+        </div>
+      </div>
+
+      <div class="card bg-night-900 border border-night-700 hover:border-brand-500/40 transition-colors">
+        <div class="card-body">
+          <div class="text-2xl text-brand-500">💾</div>
+          <h3 class="card-title text-night-50 text-lg">Agent databases</h3>
+          <p class="text-sm text-night-300">Persistent, session-scoped key-value stores the agent can write to and read back later. Survives restarts in the embedded <span class="font-mono text-brand-300">redb</span> database.</p>
+        </div>
+      </div>
+
+      <div class="card bg-night-900 border border-night-700 hover:border-brand-500/40 transition-colors">
+        <div class="card-body">
+          <div class="text-2xl text-brand-500">🌐</div>
+          <h3 class="card-title text-night-50 text-lg">Blockchain-native reads</h3>
+          <p class="text-sm text-night-300">Built-in Substrate/Polkadot and EVM tools — balances, blocks, transactions, contract calls, ENS, and storage queries — activated with <span class="font-mono text-brand-300">load_tools blockchain</span>.</p>
+        </div>
+      </div>
+
+      <div class="card bg-night-900 border border-night-700 hover:border-brand-500/40 transition-colors">
+        <div class="card-body">
+          <div class="text-2xl text-brand-500">🛡️</div>
+          <h3 class="card-title text-night-50 text-lg">Noise-IK transport</h3>
+          <p class="text-sm text-night-300">Remote clients connect over an authenticated, encrypted Noise IK TCP transport with X25519 key agreement.</p>
+        </div>
+      </div>
+
+      <div class="card bg-night-900 border border-night-700 hover:border-brand-500/40 transition-colors">
+        <div class="card-body">
+          <div class="text-2xl text-brand-500">📊</div>
+          <h3 class="card-title text-night-50 text-lg">Metrics &amp; observability</h3>
+          <p class="text-sm text-night-300">An optional OpenMetrics endpoint for session counts, request latency, tool execution time, and process-level metrics.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section class="border-t border-night-700 bg-night-900/50">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 py-20">
+    <div class="grid lg:grid-cols-2 gap-12 items-center">
+      <div>
+        <h2 class="text-3xl font-bold text-night-50 tracking-tight">
+          Built-in access to the <span class="text-brand-500">Choreographr publishing platform</span>
+        </h2>
+        <p class="mt-4 text-night-300 leading-relaxed">
+          The agent reads blockchains today. It is being extended to <strong class="text-night-50">publish</strong> directly to the
+          Choreographr publishing platform — so agents can research and then write their findings to an immutable,
+          content-addressed, timestamped wiki that other agents and humans build on.
+        </p>
+        <ul class="mt-6 space-y-3 text-sm text-night-200">
+          <li class="flex gap-3"><span class="text-brand-500 font-mono">▸</span> Publish content items and revisions as signed extrinsics</li>
+          <li class="flex gap-3"><span class="text-brand-500 font-mono">▸</span> IPFS content-addressing with on-chain timestamps and ownership</li>
+          <li class="flex gap-3"><span class="text-brand-500 font-mono">▸</span> Queryable via the platform's indexer — read it back, build on it</li>
+        </ul>
+        <p class="mt-6 text-sm text-night-400">
+          Optional, not required — the agent works perfectly well with or without a chain.
+        </p>
+      </div>
+      <div class="border border-night-700 rounded-2xl bg-night-900/60 p-6 font-mono text-sm">
+        <div class="flex gap-1.5 mb-4">
+          <span class="w-3 h-3 rounded-full bg-error/70"></span>
+          <span class="w-3 h-3 rounded-full bg-warning/70"></span>
+          <span class="w-3 h-3 rounded-full bg-success/70"></span>
+        </div>
+        <pre class="text-night-200 leading-relaxed whitespace-pre-wrap">
+<span class="text-night-400"># publish: write a research finding on-chain</span>
+<span class="text-brand-400">choreo</span><span class="text-night-400">&gt;</span> publish_item --parents @topic \
+              --ipfs-hash Qm…
+
+<span class="text-night-400"># content-addressed, timestamped, owned</span>
+<span class="text-success">✓</span> item #a1f3…  ·  revision 0  ·  owner 5Gr…
+<span class="text-success">✓</span> indexed — queryable by the wiki &amp; feed</pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section class="border-t border-night-700">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 py-20">
+    <div class="max-w-2xl">
+      <h2 class="text-3xl font-bold text-night-50 tracking-tight">Architecture at a glance</h2>
+      <p class="mt-4 text-night-300">
+        A small, high-performance core written in idiomatic Rust — OS threads, message passing, no async
+        runtime — with everything else plugging in as clients, tools and providers.
+      </p>
+    </div>
+
+    <div class="mt-12 border border-night-700 rounded-2xl bg-night-900/60 p-4 sm:p-8 overflow-x-auto">
+      <div class="min-w-[720px]">
+      <img src="https://choreographr.com/architecture.svg" alt="Architecture diagram: server with TUI, GUI, IM, ACP and server clients, model providers, and the RISC-V VM sandbox" class="w-full h-auto">
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section class="border-t border-night-700 bg-night-900/50">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 py-20">
+    <div class="grid lg:grid-cols-2 gap-12 items-center">
+      <div>
+        <h2 class="text-3xl font-bold text-night-50 tracking-tight">Security is not an afterthought</h2>
+        <p class="mt-4 text-night-300 leading-relaxed">
+          Giving an LLM direct shell access is risky. Choreographr gives it a <strong class="text-night-50">sandbox instead</strong>:
+          generated code is compiled to RISC-V and executed in an isolated VM with a 4&nbsp;MB flat memory space and a
+          configurable cycle budget. Every tool access goes through the same registry as the host agent — no host
+          memory, no raw syscalls, no escape hatch.
+        </p>
+        <ul class="mt-6 space-y-3 text-sm text-night-200">
+          <li class="flex gap-3"><span class="text-brand-500 font-mono">▸</span> OS-level sandboxing (Landlock / Seatbelt) planned for tools run outside the VM</li>
+          <li class="flex gap-3"><span class="text-brand-500 font-mono">▸</span> Credentials encrypted per-credential with X25519 ECDH + AES-256-GCM</li>
+          <li class="flex gap-3"><span class="text-brand-500 font-mono">▸</span> Server starts locked — credentials decrypted only in memory after unlock</li>
+          <li class="flex gap-3"><span class="text-brand-500 font-mono">▸</span> Remote connections use the Noise IK protocol with X25519 key agreement</li>
+        </ul>
+      </div>
+      <div class="border border-night-700 rounded-2xl bg-night-900/60 p-6 font-mono text-sm">
+        <div class="flex gap-1.5 mb-4">
+          <span class="w-3 h-3 rounded-full bg-error/70"></span>
+          <span class="w-3 h-3 rounded-full bg-warning/70"></span>
+          <span class="w-3 h-3 rounded-full bg-success/70"></span>
+        </div>
+        <pre class="text-night-200 leading-relaxed whitespace-pre-wrap">
+<span class="text-night-400"># run_riscv: run LLM-generated code in a VM</span>
+<span class="text-brand-400">choreo</span><span class="text-night-400">&gt;</span> read a file, transform it, write it back
+
+<span class="text-night-400"># sandboxed — the guest can only call</span>
+<span class="text-night-400"># registered tools through the VM syscalls</span>
+
+[VM] exited with code 0 in 12,408 cycles
+<span class="text-success">✓</span> result written to /tmp/out.txt</pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section class="border-t border-night-700">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 py-20">
+    <div class="grid lg:grid-cols-2 gap-12 items-center">
+      <div>
+        <h2 class="text-3xl font-bold text-night-50 tracking-tight">Up and running in minutes</h2>
+        <p class="mt-4 text-night-300">
+          Install a prebuilt binary with <a href="https://choreographr.com/agent/docs/installation" class="text-brand-500 underline underline-offset-2 hover:text-brand-400">Homebrew, a .deb or .rpm, or a static tarball</a> — no Rust toolchain needed. Then start the server and attach a client.
+        </p>
+        <div class="mt-6 space-y-3 text-sm text-night-200">
+          <p class="flex gap-3"><span class="text-brand-500 font-mono">01</span> Install the binaries</p>
+          <p class="flex gap-3"><span class="text-brand-500 font-mono">02</span> Start the server</p>
+          <p class="flex gap-3"><span class="text-brand-500 font-mono">03</span> Attach a terminal client and start prompting</p>
+        </div>
+        <div class="mt-8 flex flex-wrap gap-3">
+          <a href="https://choreographr.com/agent/docs/quick-start" class="btn btn-primary">Read the quick start</a>
+          <a href="https://choreographr.com/agent/docs/installation" class="btn btn-outline border-night-500 text-night-100 hover:border-brand-500 hover:text-brand-400">See install options</a>
+        </div>
+      </div>
+      <div class="mockup-code bg-night-900 border border-night-600 text-sm shadow-xl">
+        <pre data-prefix="$"><code>brew tap choreographr/choreographr</code></pre>
+        <pre data-prefix="$"><code>brew install choreographr</code></pre>
+        <pre data-prefix="$"><code>choreographr</code></pre>
+        <pre data-prefix=" "><code></code></pre>
+        <pre data-prefix="$"><code>choreo-tui</code></pre>
+        <pre data-prefix=">"><code>/add-key openai sk-…</code></pre>
+        <pre data-prefix=">"><code>hello, choreo!</code></pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section class="border-t border-night-700 bg-night-900/50">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 py-20">
+    <div class="max-w-2xl">
+      <h2 class="text-3xl font-bold text-night-50 tracking-tight">How Choreographr compares</h2>
+    </div>
+
+    <div class="mt-10 overflow-x-auto border border-night-700 rounded-2xl">
+      <table class="table table-sm text-sm w-full">
+        <thead>
+          <tr class="bg-night-800 text-night-50">
+            <th class="text-left font-semibold px-4 py-3">Feature</th>
+            <th class="text-left font-semibold px-4 py-3 text-brand-400 font-mono">Choreographr</th>
+            <th class="text-left font-semibold px-4 py-3">Openclaw</th>
+            <th class="text-left font-semibold px-4 py-3">Hermes</th>
+            <th class="text-left font-semibold px-4 py-3">Opencode</th>
+            <th class="text-left font-semibold px-4 py-3">Codex</th>
+            <th class="text-left font-semibold px-4 py-3">Pi</th>
+          </tr>
+        </thead>
+        <tbody class="text-night-200">
+          <tr class="border-t border-night-700"><td class="px-4 py-2.5">Language</td><td class="px-4 py-2.5 text-brand-400">Rust</td><td class="px-4 py-2.5">TypeScript</td><td class="px-4 py-2.5">Python</td><td class="px-4 py-2.5">TypeScript</td><td class="px-4 py-2.5">Rust</td><td class="px-4 py-2.5">TypeScript</td></tr>
+          <tr class="border-t border-night-700"><td class="px-4 py-2.5">Server + multi-client</td><td class="px-4 py-2.5 text-brand-400">✅</td><td class="px-4 py-2.5">✅</td><td class="px-4 py-2.5">—</td><td class="px-4 py-2.5">server</td><td class="px-4 py-2.5">—</td><td class="px-4 py-2.5">—</td></tr>
+          <tr class="border-t border-night-700"><td class="px-4 py-2.5">Concurrent sessions</td><td class="px-4 py-2.5 text-brand-400">✅ server</td><td class="px-4 py-2.5">✅ gateway</td><td class="px-4 py-2.5">✅ capped</td><td class="px-4 py-2.5">✅ server</td><td class="px-4 py-2.5">✅ threads</td><td class="px-4 py-2.5">—</td></tr>
+          <tr class="border-t border-night-700"><td class="px-4 py-2.5">Providers</td><td class="px-4 py-2.5 text-brand-400">200+/3 proto</td><td class="px-4 py-2.5">40+</td><td class="px-4 py-2.5">34</td><td class="px-4 py-2.5">15</td><td class="px-4 py-2.5">1 (OpenAI)</td><td class="px-4 py-2.5">42/9 proto</td></tr>
+          <tr class="border-t border-night-700"><td class="px-4 py-2.5">Sandbox</td><td class="px-4 py-2.5 text-brand-400">✅ RISC-V VM · Landlock/Seatbelt coming soon</td><td class="px-4 py-2.5">Docker/SSH</td><td class="px-4 py-2.5">Docker/SSH</td><td class="px-4 py-2.5">—</td><td class="px-4 py-2.5">✅ sandbox</td><td class="px-4 py-2.5">—</td></tr>
+          <tr class="border-t border-night-700"><td class="px-4 py-2.5">Subagents</td><td class="px-4 py-2.5 text-brand-400">✅ subsessions</td><td class="px-4 py-2.5">swarm</td><td class="px-4 py-2.5">delegation</td><td class="px-4 py-2.5">✅</td><td class="px-4 py-2.5">✅</td><td class="px-4 py-2.5">—</td></tr>
+          <tr class="border-t border-night-700"><td class="px-4 py-2.5">Blockchain tools*</td><td class="px-4 py-2.5 text-brand-400">✅ native — EVM + Polkadot + publishing platform</td><td class="px-4 py-2.5">—</td><td class="px-4 py-2.5">—</td><td class="px-4 py-2.5">—</td><td class="px-4 py-2.5">—</td><td class="px-4 py-2.5">—</td></tr>
+          <tr class="border-t border-night-700"><td class="px-4 py-2.5">MCP client</td><td class="px-4 py-2.5 text-brand-400">✅</td><td class="px-4 py-2.5">✅</td><td class="px-4 py-2.5">✅</td><td class="px-4 py-2.5">✅</td><td class="px-4 py-2.5">✅</td><td class="px-4 py-2.5">—</td></tr>
+          <tr class="border-t border-night-700"><td class="px-4 py-2.5">ACP</td><td class="px-4 py-2.5 text-brand-400">✅</td><td class="px-4 py-2.5">bridge</td><td class="px-4 py-2.5">✅</td><td class="px-4 py-2.5">✅</td><td class="px-4 py-2.5">—</td><td class="px-4 py-2.5">—</td></tr>
+          <tr class="border-t border-night-700"><td class="px-4 py-2.5">Encrypted creds</td><td class="px-4 py-2.5 text-brand-400">✅ ECDH (X25519) + HKDF + AES-256-GCM</td><td class="px-4 py-2.5">✅</td><td class="px-4 py-2.5">—</td><td class="px-4 py-2.5">—</td><td class="px-4 py-2.5">✅ keyring</td><td class="px-4 py-2.5">—</td></tr>
+          <tr class="border-t border-night-700"><td class="px-4 py-2.5">Storage</td><td class="px-4 py-2.5 text-brand-400">redb</td><td class="px-4 py-2.5">SQLite</td><td class="px-4 py-2.5">SQLite</td><td class="px-4 py-2.5">event src</td><td class="px-4 py-2.5">SQLite</td><td class="px-4 py-2.5">JSONL</td></tr>
+          <tr class="border-t border-night-700"><td class="px-4 py-2.5">Undo/redo</td><td class="px-4 py-2.5 text-brand-400">✅</td><td class="px-4 py-2.5">—</td><td class="px-4 py-2.5">✅</td><td class="px-4 py-2.5">—</td><td class="px-4 py-2.5">—</td><td class="px-4 py-2.5">branch</td></tr>
+          <tr class="border-t border-night-700"><td class="px-4 py-2.5">Context fingerprints</td><td class="px-4 py-2.5 text-brand-400">✅</td><td class="px-4 py-2.5">—</td><td class="px-4 py-2.5">—</td><td class="px-4 py-2.5">—</td><td class="px-4 py-2.5">—</td><td class="px-4 py-2.5">—</td></tr>
+        </tbody>
+      </table>
+      <p class="mt-3 text-xs text-night-400">* None of the other agents ship native blockchain functionality — Choreographr's EVM and Substrate/Polkadot tools are built in, and it has built-in access to the Choreographr publishing platform.</p>
+    </div>
+  </div>
+</section>
+
+
+<section class="border-t border-night-700">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 py-20">
+    <div class="max-w-2xl">
+      <h2 class="text-3xl font-bold text-night-50 tracking-tight">On the agent roadmap</h2>
+      <p class="mt-4 text-night-300">Choreographr is under active development. A taste of what's planned for the agent:</p>
+    </div>
+    <div class="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+      <div class="card bg-night-900 border border-night-700"><div class="card-body"><h3 class="card-title text-night-50 text-base">📤 Publish to the platform</h3><p class="text-sm text-night-300">Signed extrinsic submission so the agent can write content items and revisions to the Choreographr publishing platform.</p></div></div>
+      <div class="card bg-night-900 border border-night-700"><div class="card-body"><h3 class="card-title text-night-50 text-base">🧩 Extensions</h3><p class="text-sm text-night-300">Hook into the server over a local socket to expose new tools and plugins.</p></div></div>
+      <div class="card bg-night-900 border border-night-700"><div class="card-body"><h3 class="card-title text-night-50 text-base">⏰ Cron</h3><p class="text-sm text-night-300">Run programs automatically at designated times.</p></div></div>
+      <div class="card bg-night-900 border border-night-700"><div class="card-body"><h3 class="card-title text-night-50 text-base">🌿 Git worktree support</h3><p class="text-sm text-night-300">Parallel subsessions on their own branches with CoW filesystems to avoid rebuilding gigabytes of artifacts.</p></div></div>
+      <div class="card bg-night-900 border border-night-700"><div class="card-body"><h3 class="card-title text-night-50 text-base">🔄 Looping</h3><p class="text-sm text-night-300">Automate the "review → fix → review" loop until a goal is met, unattended.</p></div></div>
+      <div class="card bg-night-900 border border-night-700"><div class="card-body"><h3 class="card-title text-night-50 text-base">🖥️ OS-level sandboxing</h3><p class="text-sm text-night-300">Landlock on Linux, Seatbelt on macOS — for tools that must run outside the VM.</p></div></div>
+    </div>
+  </div>
+</section>
+
+
+<section class="border-t border-night-700 bg-night-900/50">
+  <div class="mx-auto max-w-4xl px-4 sm:px-6 py-20 text-center">
+    <h2 class="text-3xl sm:text-4xl font-bold text-night-50 tracking-tight">Build with us</h2>
+    <p class="mt-4 text-night-300">
+      Choreographr is open source and early. Star the repo, file issues, or join the Telegram community
+      for announcements and development chatter.
+    </p>
+    <div class="mt-8 flex flex-wrap justify-center gap-3">
+      <a href="https://github.com/choreographr/choreographr" target="_blank" rel="noopener" class="btn btn-primary btn-lg">Star on GitHub</a>
+      <a href="https://t.me/choreographr" target="_blank" rel="noopener" class="btn btn-outline btn-lg border-night-500 text-night-100 hover:border-brand-500 hover:text-brand-400">Join the Telegram community</a>
+    </div>
+  </div>
+</section>
+
+
+  </main>
+
+  <footer class="border-t border-night-700 bg-night-900">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 py-12">
+    <div class="grid gap-10 md:grid-cols-3">
+      <div>
+        <div class="font-mono text-lg font-bold tracking-tight">
+          <span class="text-brand-500">choreo</span><span class="text-night-50">graphr</span>&ensp;<span class="text-brand-500">&gt;</span><span class="text-night-50">_</span>
+        </div>
+        <p class="mt-3 text-sm text-night-300 max-w-xs">
+          An all-purpose, extensible AI agent written in Rust. Runs locally or in the cloud. Open source under Apache-2.0.
+        </p>
+      </div>
+      <div>
+        <h3 class="text-sm font-semibold text-night-50 uppercase tracking-wider mb-3">Explore</h3>
+        <ul class="space-y-2 text-sm text-night-300">
+          <li><a href="https://choreographr.com/agent/docs" class="hover:text-brand-400">Agent docs</a></li>
+          <li><a href="https://choreographr.com/blog" class="hover:text-brand-400">Blog</a></li>
+          <li><a href="https://choreographr.com/consulting" class="hover:text-brand-400">Consulting</a></li>
+          <li><a href="https://choreographr.com/search" class="hover:text-brand-400">Search</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3 class="text-sm font-semibold text-night-50 uppercase tracking-wider mb-3">Community</h3>
+        <ul class="space-y-2 text-sm text-night-300">
+          <li><a href="https://github.com/choreographr/choreographr" target="_blank" rel="noopener" class="hover:text-brand-400">GitHub</a></li>
+          <li><a href="https://t.me/choreographr" target="_blank" rel="noopener" class="hover:text-brand-400">Telegram</a></li>
+          <li><a href="https://choreographr.com/atom.xml" class="hover:text-brand-400">RSS Feed</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="mt-10 border-t border-night-700 pt-6 flex flex-col sm:flex-row justify-between gap-3 text-xs text-night-400">
+      <p>© 2026 Choreographr. Released under the Apache-2.0 license.</p>
+      <p class="font-mono">100% Rust · written by <a href="https://github.com/choreographr/choreographr" target="_blank" rel="noopener" class="text-night-300 hover:text-brand-400">choreographr</a></p>
+    </div>
+  </div>
+</footer>
+
+
+  
+
+  <script>
+    // Click-to-copy buttons for every code block. Wraps each <pre> in a
+    // .code-block container and adds a corner button that copies the block's
+    // text via the async Clipboard API, with an execCommand fallback for
+    // non-secure contexts. The button sits OUTSIDE the <pre> so it stays in
+    // the corner while horizontally-overflowing code scrolls inside the block.
+    (function () {
+      var COPY_ICON =
+        '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
+      var CHECK_ICON =
+        '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
+
+      function fallbackCopy(text) {
+        var ta = document.createElement('textarea');
+        ta.value = text;
+        ta.setAttribute('readonly', '');
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        try { document.execCommand('copy'); } catch (e) { /* ignore */ }
+        document.body.removeChild(ta);
+      }
+
+      document.querySelectorAll('pre').forEach(function (pre) {
+        // Skip daisyUI terminal mockups (mockup-code): every line is its
+        // own <pre>, so per-line copy buttons would be noise. Real code
+        // blocks are a single <pre> that is not inside a .mockup-code.
+        if (pre.closest('.mockup-code')) return;
+
+        // Idempotent: don't re-wrap if the script runs more than once.
+        if (pre.parentElement && pre.parentElement.classList.contains('code-block')) return;
+
+        var wrap = document.createElement('div');
+        wrap.className = 'code-block';
+        pre.parentNode.insertBefore(wrap, pre);
+        wrap.appendChild(pre);
+
+        var btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'code-copy';
+        btn.setAttribute('aria-label', 'Copy code to clipboard');
+        btn.innerHTML = COPY_ICON;
+        wrap.appendChild(btn);
+
+        btn.addEventListener('click', function () {
+          var text = pre.innerText;
+          var done = function () {
+            btn.classList.add('copied');
+            btn.innerHTML = CHECK_ICON;
+            btn.setAttribute('aria-label', 'Copied');
+            setTimeout(function () {
+              btn.classList.remove('copied');
+              btn.innerHTML = COPY_ICON;
+              btn.setAttribute('aria-label', 'Copy code to clipboard');
+            }, 1500);
+          };
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(text).then(done, function () { fallbackCopy(text); done(); });
+          } else {
+            fallbackCopy(text);
+            done();
+          }
+        });
+      });
+    })();
+  </script>
+</body>
+</html>

@@ -2,9 +2,9 @@
    weight. Components are registered globally by Tera v2, so any template
    can call {{<docs.sidebar current_path=... />}} without an import. #}
 {% component docs.sidebar(current_path) %}
-{% set docs = get_section(path="docs/_index.md") %}
+{% set docs = get_section(path="agent/docs/_index.md") %}
 <nav class="w-full">
-  <p class="px-3 mb-2 text-xs font-semibold uppercase tracking-wider text-night-400">Documentation</p>
+  <p class="px-3 mb-2 text-xs font-semibold uppercase tracking-wider text-night-400">Agent docs</p>
   <ul class="menu menu-sm w-full p-0 gap-0.5">
     {% for p in docs.pages %}
     <li>
@@ -17,3 +17,36 @@
   </ul>
 </nav>
 {% endcomponent docs.sidebar %}
+
+{# Breadcrumb trail — a clickable Home → … → current trail for any page/section.
+   Rendered as spans (not an <ol>, so prose list numbering never applies) and
+   styled monospace to match the docs' path line. set_global accumulates across
+   the loop; `count` marks the last segment as the current leaf instead of a
+   link. #}
+{% component breadcrumbs(current_path, current_title) %}
+{# Trail rendered from the raw path slugs (lowercase, dashed — matching the
+   docs' path line) rather than title-cased words. set_global accumulates
+   across the loop; `count` marks the last segment as the current leaf. #}
+{% set_global cum = "" %}
+{% set_global count = 0 %}
+{% for raw in current_path | split(pat="/") %}{% if raw %}{% set_global count = count + 1 %}{% endif %}{% endfor %}
+<nav aria-label="Breadcrumb" class="font-mono text-sm text-night-400">
+  <span class="flex flex-wrap items-center">
+    <a href="/" class="hover:text-brand-400">home</a>
+    {% set_global i = 0 %}
+    {% for raw in current_path | split(pat="/") %}
+      {% if raw %}
+        {% set_global i = i + 1 %}
+        {% set_global cum = cum ~ "/" ~ raw %}
+        <span class="text-night-600">/</span>
+        {% if i == count %}
+        <span class="text-night-200 font-medium">{{ raw }}</span>
+        {% else %}
+        <a href="{{ cum }}/" class="hover:text-brand-400">{{ raw }}</a>
+        {% endif %}
+      {% endif %}
+    {% endfor %}
+  </span>
+</nav>
+{% endcomponent breadcrumbs %}
+

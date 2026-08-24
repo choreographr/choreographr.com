@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="night">
+<head>
+  <meta charset="UTF-8">
+  <!-- color-scheme hint: lets the browser paint the dark canvas background
+       as soon as the head is parsed, before ANY CSS has been applied.
+       This is the one thing that closes the residual flash on Firefox/Zen,
+       which paints its default (white) canvas frame during navigation,
+       unlike Chromium which defers first paint until the inline CSS exists. -->
+  <meta name="color-scheme" content="dark">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Introducing MIX Browser — Choreographr Blog</title>
+  <meta name="description" content="MIX is a content publication platform, therefore a key component is a browser to be able to view any item and to serve as a reference implementation for other software to follow.">
+  <meta name="theme-color" content="#06080b">
+
+  
+  <!-- Canonical: every page (incl. trailing-slash and /index.html variants)
+       resolves to one authoritative URL, which also matches the sitemap. -->
+  <link rel="canonical" href="https://choreographr.com/blog/introducing-mix-browser/">
+  
+
+  <!-- Open Graph / social sharing. og:title / og:description are overridden
+       per template so they always match the <title> and meta description. -->
+  <meta property="og:site_name" content="Choreographr">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Introducing MIX Browser — Choreographr Blog">
+  <meta property="og:description" content="MIX is a content publication platform, therefore a key component is a browser to be able to view any item and to serve as a reference implementation for other software to follow.">
+  <meta property="og:url" content="https://choreographr.com/blog/introducing-mix-browser/">
+  
+  <meta property="og:image" content="https://choreographr.com/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Choreographr — your all-purpose AI agent, written in Rust">
+  
+  <meta property="og:locale" content="en_US">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <!-- Critical inline CSS: paint the dark theme immediately, before
+       main.css (or the webfont stylesheet) finishes loading, so the
+       page never flashes white on navigation. -->
+  <style>
+    html { background-color: #06080b; color-scheme: dark; }
+    body { background-color: #06080b; color: #d3dae3; }
+  </style>
+
+  <!-- Self-hosted fonts (same-origin): preload the two variable woff2
+       files so they're available at first paint — no visible swap. -->
+  <link rel="preload" href="https://choreographr.com/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="https://choreographr.com/fonts/jetbrains-mono.woff2" as="font" type="font/woff2" crossorigin>
+
+  <link rel="icon" type="image/svg+xml" href="https://choreographr.com/favicon.svg">
+  <link rel="stylesheet" href="https://choreographr.com/css/main.css?h=2d812d12b3967d2e0fb0">
+
+  <!-- Firefox/Zen can paint a frame before this stylesheet has been
+       applied if a layout flush happens while it loads (Bugzilla
+       1459305) — unlike Chromium, which blocks the parser on the
+       <link>. This synchronous script is the standard workaround: it
+       cannot execute until main.css is ready, and while it is pending
+       the <body> has not been parsed, so nothing unstyled can paint.
+       Result: same first-paint behaviour as Chromium, no FOUC. -->
+  <script>
+    // No-op: exists only to hold first paint until main.css is applied.
+  </script>
+
+  
+  <link rel="alternate" type="application/atom+xml" title="Choreographr Blog" href="https://choreographr.com/atom.xml">
+  
+
+  
+
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Introducing MIX Browser",
+  "description": "MIX is a content publication platform, therefore a key component is a browser to be able to view any item and to serve as a reference implementation for other software to follow.",
+  "datePublished": "2017-12-19",
+  "dateModified": "2017-12-19",
+  "mainEntityOfPage": "https://choreographr.com/blog/introducing-mix-browser/",
+  "image": "https://choreographr.com/og-image.png",
+  "author": [{ "@type": "Person", "name": "Jonathan Brown" }],
+  "publisher": { "@type": "Organization", "name": "Choreographr", "url": "https://choreographr.com/" }
+}
+</script>
+
+</head>
+<body class="min-h-screen flex flex-col">
+
+  <header class="sticky top-0 z-40 w-full border-b border-night-700 bg-night-950/90 backdrop-blur">
+  <nav class="navbar mx-auto max-w-7xl px-4 sm:px-6">
+    <div class="navbar-start">
+      <div class="dropdown lg:hidden">
+        <div tabindex="0" role="button" class="btn btn-ghost btn-square" aria-label="Menu">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </div>
+        <ul tabindex="0" class="dropdown-content menu bg-night-900 border border-night-700 rounded-box z-50 mt-3 w-52 p-2 shadow-2xl">
+          
+          <li>
+            <a href="/agent/"  class="">
+              Agent
+            </a>
+          </li>
+          
+          <li>
+            <a href="/platform/"  class="">
+              Platform
+            </a>
+          </li>
+          
+          <li>
+            <a href="/blog/"  class="text-brand-500">
+              Blog
+            </a>
+          </li>
+          
+          <li>
+            <a href="/consulting/"  class="">
+              Consulting
+            </a>
+          </li>
+          
+          <li>
+            <a href="https://github.com/choreographr/choreographr" target="_blank" rel="noopener" class="">
+              GitHub<span class="text-night-400 text-xs">↗</span>
+            </a>
+          </li>
+          
+          <li>
+            <a href="https://t.me/choreographr" target="_blank" rel="noopener" class="">
+              Telegram<span class="text-night-400 text-xs">↗</span>
+            </a>
+          </li>
+          
+        </ul>
+      </div>
+      <a href="/" class="font-mono text-lg font-bold tracking-tight select-none">
+        <span class="text-brand-500">choreo</span><span class="text-night-50">graphr</span>&ensp;<span class="text-brand-500">&gt;</span><span class="text-night-50">_</span>
+      </a>
+    </div>
+    <div class="navbar-end hidden lg:flex">
+      <ul class="menu menu-horizontal px-1 gap-1 text-sm">
+        
+        <li>
+          <a href="/agent/"
+             
+             class="text-night-200 hover:text-night-50">
+            Agent
+          </a>
+        </li>
+        
+        <li>
+          <a href="/platform/"
+             
+             class="text-night-200 hover:text-night-50">
+            Platform
+          </a>
+        </li>
+        
+        <li>
+          <a href="/blog/"
+             
+             class="text-brand-500 font-semibold">
+            Blog
+          </a>
+        </li>
+        
+        <li>
+          <a href="/consulting/"
+             
+             class="text-night-200 hover:text-night-50">
+            Consulting
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://github.com/choreographr/choreographr"
+             target="_blank" rel="noopener"
+             class="">
+            GitHub<span class="text-night-400 text-xs">↗</span>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://t.me/choreographr"
+             target="_blank" rel="noopener"
+             class="">
+            Telegram<span class="text-night-400 text-xs">↗</span>
+          </a>
+        </li>
+        
+      </ul>
+    </div>
+  </nav>
+</header>
+
+
+  <main class="flex-1">
+    
+    
+      
+    
+    
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 pt-5">
+      
+
+
+
+
+<nav aria-label="Breadcrumb" class="font-mono text-sm text-night-400">
+  <span class="flex flex-wrap items-center">
+    <a href="/" class="hover:text-brand-400">home</a>
+    
+    
+      
+    
+      
+        
+        
+        <span class="text-night-600">/</span>
+        
+        <a href="/blog/" class="hover:text-brand-400">blog</a>
+        
+      
+    
+      
+        
+        
+        <span class="text-night-600">/</span>
+        
+        <span class="text-night-200 font-medium">introducing-mix-browser</span>
+        
+      
+    
+      
+    
+  </span>
+</nav>
+
+    </div>
+    
+    
+
+<div class="mx-auto max-w-3xl px-4 sm:px-6 py-12">
+  <a href="https://choreographr.com/blog" class="text-sm text-night-400 hover:text-brand-400 font-mono">← Back to blog</a>
+  <article class="mt-6">
+    <h1 class="text-3xl font-bold text-night-50 tracking-tight">Introducing MIX Browser</h1>
+    <div class="mt-4 flex flex-wrap items-center gap-x-5 gap-y-3">
+      
+      
+      
+      
+      <a href="https://choreographr.com/blog/authors/jonathan-brown/" class="flex items-center gap-2 group/author">
+        
+        <img src="https://choreographr.com/me.jpg" alt="Jonathan Brown" class="h-9 w-9 rounded-full object-cover border border-brand-500/40" />
+        
+        <span class="text-sm font-medium text-night-200 group-hover/author:text-brand-400">Jonathan Brown</span>
+      </a>
+      
+      
+      <span class="text-sm font-mono text-night-400">
+        2017-12-19
+        
+      </span>
+    </div>
+    <div class="prose mt-8">
+      <p><em>Originally published at <a rel="noopener external" target="_blank" href="https://medium.com/mix-blockchain/introducing-mix-browser-47e09b43c131">medium.com</a></em></p>
+<img src="/blog/introducing-mix-browser.jpeg" style="width: 100%; height: auto;">
+</figure><p id="6583" class="pw-post-body-paragraph mn mo fr mp b mq mr ms mt mu mv mw mx my mz na nb nc nd ne nf ng nh ni nj nk fk bj" data-selectable-paragraph="">MIX is a content publication platform, therefore a key component is a browser to be able to view any item and to serve as a reference implementation for other software to follow.</p><p id="d668" class="pw-post-body-paragraph mn mo fr mp b mq mr ms mt mu mv mw mx my mz na nb nc nd ne nf ng nh ni nj nk fk bj" data-selectable-paragraph="">I have just implemented an initial version of the <a class="af nl" href="https://github.com/mix-blockchain/mix-browser" rel="noopener ugc nofollow" target="_blank">MIX Browser</a>. This is what the “address bar” looks like:</p>
+<img src="/blog/item-id-field.png" style="width: 100%; height: auto;">
+<p id="c72e" class="pw-post-body-paragraph mn mo fr mp b mq mr ms mt mu mv mw mx my mz na nb nc nd ne nf ng nh ni nj nk fk bj" data-selectable-paragraph="">Each MIX content item has a 32 byte itemId. This can be pasted into the itemId field. Once “Go” is pressed the browser will retrieve the content:</p>
+<img src="/blog/item-id-inspect.png" style="width: 100%; height: auto;">
+<p id="7cc0" class="pw-post-body-paragraph mn mo fr mp b mq mr ms mt mu mv mw mx my mz na nb nc nd ne nf ng nh ni nj nk fk bj" data-selectable-paragraph="">First of all it determines which Item Store contract is managing the item by passing the itemId to the getItemStore() method in the <a class="af nl" href="https://github.com/mix-blockchain/mix-item-store/blob/master/src/item_store_registry.sol" rel="noopener ugc nofollow" target="_blank">Item Store Registry</a> contract. The first 8 bytes of the itemId is actually the last 8 bytes of the address of its Item Store contract.</p><p id="e2f1" class="pw-post-body-paragraph mn mo fr mp b mq mr ms mt mu mv mw mx my mz na nb nc nd ne nf ng nh ni nj nk fk bj" data-selectable-paragraph="">Anyone can register a new Item Store contract, but the <a class="af nl" href="https://en.wikipedia.org/wiki/User_agent" rel="noopener ugc nofollow" target="_blank">user agent</a> must be hard-coded to know how to interact with it. Currently there is only one Item Store contract: <a class="af nl" href="https://github.com/mix-blockchain/mix-item-store/blob/master/src/item_store_ipfs_sha256.sol" rel="noopener ugc nofollow" target="_blank">Item Store IPFS SHA256</a>. This Item Store stores each revision as an <a class="af nl" href="https://ipfs.io/" rel="noopener ugc nofollow" target="_blank">IPFS</a> SHA256 hash.</p><p id="4289" class="pw-post-body-paragraph mn mo fr mp b mq mr ms mt mu mv mw mx my mz na nb nc nd ne nf ng nh ni nj nk fk bj" data-selectable-paragraph="">MIX Browser then calls the itemStoreIpfsSha256.getItem() method to get all the information about the item that is stored in the contract’s state:</p><ul class=""><li id="eb15" class="mn mo fr mp b mq mr ms mt mu mv mw mx my mz na nb nc nd ne nf ng nh ni nj nk ns nt nu bj" data-selectable-paragraph="">Flags: each item can have the following flags set:<br>- Updatable: item revisions can be changed.<br>- Enforce revisions: revisions cannot be changed or deleted, only new revisions can be added.<br>- Retractable: it is possible to retract the item in its entirety. This is not affected by the updatable or enforce revisions flags.<br>- Transferable: the item ownership can be transferred to a willing receiver or set as unowned.</li><li id="213f" class="mn mo fr mp b mq nv ms mt mu nw mw mx my nx na nb nc ny ne nf ng nz ni nj nk ns nt nu bj" data-selectable-paragraph="">Owner: the address of the account that owns this item. Only the owner can change the item’s content, owner or flags.</li><li id="9592" class="mn mo fr mp b mq nv ms mt mu nw mw mx my nx na nb nc ny ne nf ng nz ni nj nk ns nt nu bj" data-selectable-paragraph="">Revision count: how many revisions this item has.</li><li id="59b7" class="mn mo fr mp b mq nv ms mt mu nw mw mx my nx na nb nc ny ne nf ng nz ni nj nk ns nt nu bj" data-selectable-paragraph="">Revision IPFS hashes: IPFS hash of each revision.</li><li id="f055" class="mn mo fr mp b mq nv ms mt mu nw mw mx my nx na nb nc ny ne nf ng nz ni nj nk ns nt nu bj" data-selectable-paragraph="">Revision timestamps: the creation timestamp of each revision.</li><li id="ef9d" class="mn mo fr mp b mq nv ms mt mu nw mw mx my nx na nb nc ny ne nf ng nz ni nj nk ns nt nu bj" data-selectable-paragraph="">Parent itemIds: when an item is created it can specify any number of parent items. The meaning of a parent is context specific and can be implied or specified in the content itself. Examples of what a parent can mean are: feed the item is published in, item being replied to, or item being retweeted / quoted.</li><li id="74bd" class="mn mo fr mp b mq nv ms mt mu nw mw mx my nx na nb nc ny ne nf ng nz ni nj nk ns nt nu bj" data-selectable-paragraph="">Child itemIds: any items that have declared this item as a parent are listed here.</li></ul><p id="f8e3" class="pw-post-body-paragraph mn mo fr mp b mq mr ms mt mu mv mw mx my mz na nb nc nd ne nf ng nh ni nj nk fk bj" data-selectable-paragraph="">Currently MIX Browser only reads the first revision. The 32 byte IPFS hash of the revision is converted into a <a class="af nl" href="https://en.wikipedia.org/wiki/Base58" rel="noopener ugc nofollow" target="_blank">Base58</a>-encoded <a class="af nl" href="https://github.com/multiformats/multihash" rel="noopener ugc nofollow" target="_blank">Multihash</a> so the content can be retrieved from IPFS.</p><p id="0881" class="pw-post-body-paragraph mn mo fr mp b mq mr ms mt mu mv mw mx my mz na nb nc nd ne nf ng nh ni nj nk fk bj" data-selectable-paragraph="">MIX uses <a class="af nl" href="https://developers.google.com/protocol-buffers/" rel="noopener ugc nofollow" target="_blank">Protocol Buffers</a> to encode the content. Content from the storage layer (IPFS) is decoded using the ItemWrapper message from <a class="af nl" href="https://github.com/mix-blockchain/mix-item-schema/blob/master/item.proto" rel="noopener ugc nofollow" target="_blank">MIX item schema</a>. Among other things, this message declares which compression algorithm is used to compress the payload. Currently MIX uses <a class="af nl" href="https://en.wikipedia.org/wiki/DEFLATE" rel="noopener ugc nofollow" target="_blank">DEFLATE</a>, but <a class="af nl" href="https://en.wikipedia.org/wiki/Brotli" rel="noopener ugc nofollow" target="_blank">Brotli</a> will replace it once a suitable JavaScript library is available.</p><p id="6966" class="pw-post-body-paragraph mn mo fr mp b mq mr ms mt mu mv mw mx my mz na nb nc nd ne nf ng nh ni nj nk fk bj" data-selectable-paragraph="">The uncompressed payload is then decoded using the Item message. This produces an array of pairs of <a class="af nl" rel="noopener" href="/mix-blockchain/update-to-the-link-content-system-mixins-e2212ae06f73">mixi</a>nIds and mixin content.</p><p id="3f98" class="pw-post-body-paragraph mn mo fr mp b mq mr ms mt mu mv mw mx my mz na nb nc nd ne nf ng nh ni nj nk fk bj" data-selectable-paragraph="">Content items can be composed of any number of mixins, but the first mixin is considered to be the content type for the item as a whole.</p><p id="5542" class="pw-post-body-paragraph mn mo fr mp b mq mr ms mt mu mv mw mx my mz na nb nc nd ne nf ng nh ni nj nk fk bj" data-selectable-paragraph="">Example mixins are Video, Title, Description, Tags, Geolocation, Licence, Recording date, Language, Item derived from.</p><p id="482c" class="pw-post-body-paragraph mn mo fr mp b mq mr ms mt mu mv mw mx my mz na nb nc nd ne nf ng nh ni nj nk fk bj" data-selectable-paragraph="">Each mixin type has a MIX content item that includes the Protocol Buffers schema that defines how it is encoded.</p><p id="32f2" class="pw-post-body-paragraph mn mo fr mp b mq mr ms mt mu mv mw mx my mz na nb nc nd ne nf ng nh ni nj nk fk bj" data-selectable-paragraph="">Mixin types are registered with the <a class="af nl" href="https://github.com/mix-blockchain/mix-mixin-registry/blob/master/src/mixin_registry.sol" rel="noopener ugc nofollow" target="_blank">Mixin Registry</a> contract to obtain a permanent integer mixinId.</p><p id="dbf9" class="pw-post-body-paragraph mn mo fr mp b mq mr ms mt mu mv mw mx my mz na nb nc nd ne nf ng nh ni nj nk fk bj" data-selectable-paragraph="">Currently MIX Browser can only render mixins of type “Mixin”, that is, content that defines how different mixin types are encoded. It decodes the three fields: Name, Description and Protocol Buffers schema, and displays them as shown in the screenshot above.</p><p id="e846" class="pw-post-body-paragraph mn mo fr mp b mq mr ms mt mu mv mw mx my mz na nb nc nd ne nf ng nh ni nj nk fk bj" data-selectable-paragraph="">I appreciate this is a little bit complicated — I am having an infographic produced to make it easier to understand.</p><p id="5a28" class="pw-post-body-paragraph mn mo fr mp b mq mr ms mt mu mv mw mx my mz na nb nc nd ne nf ng nh ni nj nk fk bj" data-selectable-paragraph="">UPDATE: the infographic is now produced:</p>
+<img src="/mix-item-infographic.svg" style="width: 100%; height: auto;">
+</div></div></div></div></section></div></div></article><div class="ab ca"><div class="ch bg ew ex ey ez"></div></div>
+
+    </div>
+  </article>
+</div>
+
+  </main>
+
+  <footer class="border-t border-night-700 bg-night-900">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 py-12">
+    <div class="grid gap-10 md:grid-cols-3">
+      <div>
+        <div class="font-mono text-lg font-bold tracking-tight">
+          <span class="text-brand-500">choreo</span><span class="text-night-50">graphr</span>&ensp;<span class="text-brand-500">&gt;</span><span class="text-night-50">_</span>
+        </div>
+        <p class="mt-3 text-sm text-night-300 max-w-xs">
+          An all-purpose, extensible AI agent written in Rust. Runs locally or in the cloud. Open source under Apache-2.0.
+        </p>
+      </div>
+      <div>
+        <h3 class="text-sm font-semibold text-night-50 uppercase tracking-wider mb-3">Explore</h3>
+        <ul class="space-y-2 text-sm text-night-300">
+          <li><a href="https://choreographr.com/agent/docs" class="hover:text-brand-400">Agent docs</a></li>
+          <li><a href="https://choreographr.com/blog" class="hover:text-brand-400">Blog</a></li>
+          <li><a href="https://choreographr.com/consulting" class="hover:text-brand-400">Consulting</a></li>
+          <li><a href="https://choreographr.com/search" class="hover:text-brand-400">Search</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3 class="text-sm font-semibold text-night-50 uppercase tracking-wider mb-3">Community</h3>
+        <ul class="space-y-2 text-sm text-night-300">
+          <li><a href="https://github.com/choreographr/choreographr" target="_blank" rel="noopener" class="hover:text-brand-400">GitHub</a></li>
+          <li><a href="https://t.me/choreographr" target="_blank" rel="noopener" class="hover:text-brand-400">Telegram</a></li>
+          <li><a href="https://choreographr.com/atom.xml" class="hover:text-brand-400">RSS Feed</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="mt-10 border-t border-night-700 pt-6 flex flex-col sm:flex-row justify-between gap-3 text-xs text-night-400">
+      <p>© 2026 Choreographr. Released under the Apache-2.0 license.</p>
+      <p class="font-mono">100% Rust · written by <a href="https://github.com/choreographr/choreographr" target="_blank" rel="noopener" class="text-night-300 hover:text-brand-400">choreographr</a></p>
+    </div>
+  </div>
+</footer>
+
+
+  
+
+  <script>
+    // Click-to-copy buttons for every code block. Wraps each <pre> in a
+    // .code-block container and adds a corner button that copies the block's
+    // text via the async Clipboard API, with an execCommand fallback for
+    // non-secure contexts. The button sits OUTSIDE the <pre> so it stays in
+    // the corner while horizontally-overflowing code scrolls inside the block.
+    (function () {
+      var COPY_ICON =
+        '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
+      var CHECK_ICON =
+        '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
+
+      function fallbackCopy(text) {
+        var ta = document.createElement('textarea');
+        ta.value = text;
+        ta.setAttribute('readonly', '');
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        try { document.execCommand('copy'); } catch (e) { /* ignore */ }
+        document.body.removeChild(ta);
+      }
+
+      document.querySelectorAll('pre').forEach(function (pre) {
+        // Skip daisyUI terminal mockups (mockup-code): every line is its
+        // own <pre>, so per-line copy buttons would be noise. Real code
+        // blocks are a single <pre> that is not inside a .mockup-code.
+        if (pre.closest('.mockup-code')) return;
+
+        // Idempotent: don't re-wrap if the script runs more than once.
+        if (pre.parentElement && pre.parentElement.classList.contains('code-block')) return;
+
+        var wrap = document.createElement('div');
+        wrap.className = 'code-block';
+        pre.parentNode.insertBefore(wrap, pre);
+        wrap.appendChild(pre);
+
+        var btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'code-copy';
+        btn.setAttribute('aria-label', 'Copy code to clipboard');
+        btn.innerHTML = COPY_ICON;
+        wrap.appendChild(btn);
+
+        btn.addEventListener('click', function () {
+          var text = pre.innerText;
+          var done = function () {
+            btn.classList.add('copied');
+            btn.innerHTML = CHECK_ICON;
+            btn.setAttribute('aria-label', 'Copied');
+            setTimeout(function () {
+              btn.classList.remove('copied');
+              btn.innerHTML = COPY_ICON;
+              btn.setAttribute('aria-label', 'Copy code to clipboard');
+            }, 1500);
+          };
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(text).then(done, function () { fallbackCopy(text); done(); });
+          } else {
+            fallbackCopy(text);
+            done();
+          }
+        });
+      });
+    })();
+  </script>
+</body>
+</html>

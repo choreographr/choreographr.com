@@ -10,7 +10,7 @@
   <meta name="color-scheme" content="dark">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Jonathan Brown — Choreographr Blog</title>
-  <meta name="description" content="Your all-purpose AI agent, written in Rust. A daemon with many clients, a sandboxed RISC-V VM, and support for 70+ model providers.">
+  <meta name="description" content="Choreographr is an all-purpose AI agent, written in Rust, and the decentralized publishing platform it writes to. A daemon with many clients, a sandboxed RISC-V VM, 200+ model providers, and built-in access to the Choreographr publishing platform.">
   <meta name="theme-color" content="#06080b">
 
   
@@ -24,7 +24,7 @@
   <meta property="og:site_name" content="Choreographr">
   <meta property="og:type" content="website">
   <meta property="og:title" content="Jonathan Brown — Choreographr Blog">
-  <meta property="og:description" content="Your all-purpose AI agent, written in Rust. A daemon with many clients, a sandboxed RISC-V VM, and support for 70+ model providers.">
+  <meta property="og:description" content="Choreographr is an all-purpose AI agent, written in Rust, and the decentralized publishing platform it writes to. A daemon with many clients, a sandboxed RISC-V VM, 200+ model providers, and built-in access to the Choreographr publishing platform.">
   <meta property="og:url" content="https://choreographr.com/blog/authors/jonathan-brown/">
   
   <meta property="og:image" content="https://choreographr.com/og-image.png">
@@ -49,7 +49,7 @@
   <link rel="preload" href="https://choreographr.com/fonts/jetbrains-mono.woff2" as="font" type="font/woff2" crossorigin>
 
   <link rel="icon" type="image/svg+xml" href="https://choreographr.com/favicon.svg">
-  <link rel="stylesheet" href="https://choreographr.com/css/main.css?h=3237cddf61a6477b1aff">
+  <link rel="stylesheet" href="https://choreographr.com/css/main.css?h=2d812d12b3967d2e0fb0">
 
   <!-- Firefox/Zen can paint a frame before this stylesheet has been
        applied if a layout flush happens while it loads (Bugzilla
@@ -80,8 +80,14 @@
         <ul tabindex="0" class="dropdown-content menu bg-night-900 border border-night-700 rounded-box z-50 mt-3 w-52 p-2 shadow-2xl">
           
           <li>
-            <a href="/docs/"  class="">
-              Docs
+            <a href="/agent/"  class="">
+              Agent
+            </a>
+          </li>
+          
+          <li>
+            <a href="/platform/"  class="">
+              Platform
             </a>
           </li>
           
@@ -112,17 +118,25 @@
         </ul>
       </div>
       <a href="/" class="font-mono text-lg font-bold tracking-tight select-none">
-        <span class="text-brand-500">choreo</span><span class="text-night-50">graphr</span>
+        <span class="text-brand-500">choreo</span><span class="text-night-50">graphr</span>&ensp;<span class="text-brand-500">&gt;</span><span class="text-night-50">_</span>
       </a>
     </div>
     <div class="navbar-end hidden lg:flex">
       <ul class="menu menu-horizontal px-1 gap-1 text-sm">
         
         <li>
-          <a href="/docs/"
+          <a href="/agent/"
              
              class="text-night-200 hover:text-night-50">
-            Docs
+            Agent
+          </a>
+        </li>
+        
+        <li>
+          <a href="/platform/"
+             
+             class="text-night-200 hover:text-night-50">
+            Platform
           </a>
         </li>
         
@@ -166,6 +180,58 @@
 
   <main class="flex-1">
     
+    
+      
+    
+    
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 pt-5">
+      
+
+
+
+
+<nav aria-label="Breadcrumb" class="font-mono text-sm text-night-400">
+  <span class="flex flex-wrap items-center">
+    <a href="/" class="hover:text-brand-400">home</a>
+    
+    
+      
+    
+      
+        
+        
+        <span class="text-night-600">/</span>
+        
+        <a href="/blog/" class="hover:text-brand-400">blog</a>
+        
+      
+    
+      
+        
+        
+        <span class="text-night-600">/</span>
+        
+        <a href="/blog/authors/" class="hover:text-brand-400">authors</a>
+        
+      
+    
+      
+        
+        
+        <span class="text-night-600">/</span>
+        
+        <span class="text-night-200 font-medium">jonathan-brown</span>
+        
+      
+    
+      
+    
+  </span>
+</nav>
+
+    </div>
+    
+    
 
 
 <div class="mx-auto max-w-3xl px-4 sm:px-6 py-12">
@@ -205,6 +271,324 @@
       <p class="mt-2 text-night-300">Choreographr v0.1.0 is out — an open-source (Apache-2.0) AI agent in Rust with a sandboxed RISC-V VM, a persistent server, and 70+ model providers.</p>
     </a>
     
+    <a href="https://choreographr.com/blog/real-dapps/" class="group block border border-night-700 rounded-xl p-6 bg-night-900 hover:border-brand-500/50 hover:bg-night-800 transition-colors">
+      <h3 class="text-xl font-semibold text-night-50 group-hover:text-brand-400">How To Build Real Dapps With Acuity Index</h3>
+      <p class="mt-2 text-sm font-mono text-night-400">2026-04-30</p>
+      <p class="mt-2 text-night-300">The Internet is being gradually locked down like a boiling frog, undermining our potential to resist tyranny. Before long all Internet devices and services will require ID verification and VPNs will be banned.</p>
+    </a>
+    
+    <a href="https://choreographr.com/blog/polkadot-dapps/" class="group block border border-night-700 rounded-xl p-6 bg-night-900 hover:border-brand-500/50 hover:bg-night-800 transition-colors">
+      <h3 class="text-xl font-semibold text-night-50 group-hover:text-brand-400">Standardized, decentralized indexing for Polkadot dapps</h3>
+      <p class="mt-2 text-sm font-mono text-night-400">2025-07-31</p>
+      <p class="mt-2 text-night-300">A key issue holding back dapps across all blockchain ecosystems, including Polkadot, is the use of centralized backends.</p>
+    </a>
+    
+    <a href="https://choreographr.com/blog/acuity-index-0-7-0/" class="group block border border-night-700 rounded-xl p-6 bg-night-900 hover:border-brand-500/50 hover:bg-night-800 transition-colors">
+      <h3 class="text-xl font-semibold text-night-50 group-hover:text-brand-400">Acuity Index 0.7.0 Released</h3>
+      <p class="mt-2 text-sm font-mono text-night-400">2025-07-24</p>
+      <p class="mt-2 text-night-300">This release of Acuity Index was funded by the Kusama Treasury.</p>
+    </a>
+    
+    <a href="https://choreographr.com/blog/acuity-index/" class="group block border border-night-700 rounded-xl p-6 bg-night-900 hover:border-brand-500/50 hover:bg-night-800 transition-colors">
+      <h3 class="text-xl font-semibold text-night-50 group-hover:text-brand-400">Acuity Index</h3>
+      <p class="mt-2 text-sm font-mono text-night-400">2025-05-07</p>
+      <p class="mt-2 text-night-300">The theory behind disintermediation is that we replace our institutions with autonomous dapps so that people can interact with each other in a transparent, rules-based framework.</p>
+    </a>
+    
+    <a href="https://choreographr.com/blog/substrate/" class="group block border border-night-700 rounded-xl p-6 bg-night-900 hover:border-brand-500/50 hover:bg-night-800 transition-colors">
+      <h3 class="text-xl font-semibold text-night-50 group-hover:text-brand-400">Acuity Index Substrate Released</h3>
+      <p class="mt-2 text-sm font-mono text-night-400">2024-05-20</p>
+      <p class="mt-2 text-night-300">All blockchain platforms currently have a critical problem that is preventing dapps from being both fully decentralized and performant: dapps cannot search blockchains in a decentralized manner.</p>
+    </a>
+    
+    <a href="https://choreographr.com/blog/grant2/" class="group block border border-night-700 rounded-xl p-6 bg-night-900 hover:border-brand-500/50 hover:bg-night-800 transition-colors">
+      <h3 class="text-xl font-semibold text-night-50 group-hover:text-brand-400">Web3 Foundation Grant 2 Completed</h3>
+      <p class="mt-2 text-sm font-mono text-night-400">2024-03-12</p>
+      <p class="mt-2 text-night-300">The final milestone of the second Web3 Foundation grant for Hybrid Indexer has now been completed and submitted for evaluation.</p>
+    </a>
+    
+    <a href="https://choreographr.com/blog/beta-testing/" class="group block border border-night-700 rounded-xl p-6 bg-night-900 hover:border-brand-500/50 hover:bg-night-800 transition-colors">
+      <h3 class="text-xl font-semibold text-night-50 group-hover:text-brand-400">Acuity DEX Now Beta Testing On Mainnets</h3>
+      <p class="mt-2 text-sm font-mono text-night-400">2022-11-18</p>
+      <p class="mt-2 text-night-300">The recent collapse of FTX reinforces in the heaviest way possible the importance of the work we are doing building the Acuity atomic swap, peer-to-peer, cross-chain, fully autonomous, noncustodial, decentralized exchange.</p>
+    </a>
+    
+    <a href="https://choreographr.com/blog/launch-procedure/" class="group block border border-night-700 rounded-xl p-6 bg-night-900 hover:border-brand-500/50 hover:bg-night-800 transition-colors">
+      <h3 class="text-xl font-semibold text-night-50 group-hover:text-brand-400">Acuity DEX Launch Procedure</h3>
+      <p class="mt-2 text-sm font-mono text-night-400">2022-11-03</p>
+      <p class="mt-2 text-night-300">The Acuity DEX is very nearly ready to launch. It will begin cross-chain trading of ACU, and coins and tokens on mainnet EVM blockchains.</p>
+    </a>
+    
+    <a href="https://choreographr.com/blog/prelaunch-architectural-changes/" class="group block border border-night-700 rounded-xl p-6 bg-night-900 hover:border-brand-500/50 hover:bg-night-800 transition-colors">
+      <h3 class="text-xl font-semibold text-night-50 group-hover:text-brand-400">DEX Pre-Launch Architectural Changes</h3>
+      <p class="mt-2 text-sm font-mono text-night-400">2022-09-17</p>
+      <p class="mt-2 text-night-300">It has been 21 months since then initial announcement of the Acuity DEX. While the core concept of the atomic swap has remained the same during that time, the rest of the system has been re-designed many times. This can be see both from the blog posts below and from the GitHub activity.</p>
+    </a>
+    
+    <a href="https://choreographr.com/blog/launch-update/" class="group block border border-night-700 rounded-xl p-6 bg-night-900 hover:border-brand-500/50 hover:bg-night-800 transition-colors">
+      <h3 class="text-xl font-semibold text-night-50 group-hover:text-brand-400">Acuity Atomic Swap DEX Launch Update</h3>
+      <p class="mt-2 text-sm font-mono text-night-400">2022-08-17</p>
+      <p class="mt-2 text-night-300">The Acuity Atomic Swap Substrate pallet has been updated to the final design of the DEX. This means that ACU (and any other Substrate chain that deploys the pallet) will be able to be traded on Acuity DEX.</p>
+    </a>
+    
+    <a href="https://choreographr.com/blog/public-testing/" class="group block border border-night-700 rounded-xl p-6 bg-night-900 hover:border-brand-500/50 hover:bg-night-800 transition-colors">
+      <h3 class="text-xl font-semibold text-night-50 group-hover:text-brand-400">Acuity Atomic Swap DEX begins public testing</h3>
+      <p class="mt-2 text-sm font-mono text-night-400">2022-07-14</p>
+      <p class="mt-2 text-night-300">On July 11th 2022 the first cross-chain trade on Acuity Testnet occurred between Estonia and Vietnam. 0.02 Rinkeby was bought with 0.002 Ropsten. The Acuity Atomic Swap DEX is ready for general testing.</p>
+    </a>
+    
+    <a href="https://choreographr.com/blog/june-2022-dex-update/" class="group block border border-night-700 rounded-xl p-6 bg-night-900 hover:border-brand-500/50 hover:bg-night-800 transition-colors">
+      <h3 class="text-xl font-semibold text-night-50 group-hover:text-brand-400">DEX Development Update</h3>
+      <p class="mt-2 text-sm font-mono text-night-400">2022-06-15</p>
+      <p class="mt-2 text-night-300">The Acuity DE will be a fully autonomous and decentralized atomic swap cross-chain cryptocurrency exchange. It will support ACU, and both base coins and ERC20 tokens on all EVM compatible chains. It has a number of advantages over other cross-chain exchanges &amp;amp; bridges.</p>
+    </a>
+    
+    <a href="https://choreographr.com/blog/defi-only/" class="group block border border-night-700 rounded-xl p-6 bg-night-900 hover:border-brand-500/50 hover:bg-night-800 transition-colors">
+      <h3 class="text-xl font-semibold text-night-50 group-hover:text-brand-400">ACU is becoming a DeFi-only coin</h3>
+      <p class="mt-2 text-sm font-mono text-night-400">2022-06-02</p>
+      <p class="mt-2 text-night-300">As detailed in the earlier blog post below &quot;Acuity Atomic Swap DEX - the future of interchain trading&quot;, centralized exchanges are not only a risk to those storing their coins on such exchanges. CEXs are actually a systemic risk to the trading price of coins that are traded on them. It is a security vulnerability for a project to have its coin listed on a centralized exchange.</p>
+    </a>
+    
+    <a href="https://choreographr.com/blog/social-trading/" class="group block border border-night-700 rounded-xl p-6 bg-night-900 hover:border-brand-500/50 hover:bg-night-800 transition-colors">
+      <h3 class="text-xl font-semibold text-night-50 group-hover:text-brand-400">Social Trading</h3>
+      <p class="mt-2 text-sm font-mono text-night-400">2022-04-18</p>
+      <p class="mt-2 text-night-300">The Acuity Atomic Swap DEX is a spin-out project from the broader Acuity Decentralized Social Media project. Acuity is a rebuild of the MIX social media platform from Ethereum to Substrate.</p>
+    </a>
+    
+    <a href="https://choreographr.com/blog/dex-architectural-changes/" class="group block border border-night-700 rounded-xl p-6 bg-night-900 hover:border-brand-500/50 hover:bg-night-800 transition-colors">
+      <h3 class="text-xl font-semibold text-night-50 group-hover:text-brand-400">Architectural changes to Acuity Atomic Swap DEX</h3>
+      <p class="mt-2 text-sm font-mono text-night-400">2022-02-06</p>
+      <p class="mt-2 text-night-300">The Acuity DEX has been making a huge amount of progress towards launching an MVP, as can be seen from recent videos.</p>
+    </a>
+    
+    <a href="https://choreographr.com/blog/hard-spoon-completed/" class="group block border border-night-700 rounded-xl p-6 bg-night-900 hover:border-brand-500/50 hover:bg-night-800 transition-colors">
+      <h3 class="text-xl font-semibold text-night-50 group-hover:text-brand-400">Hard Spoon Completed</h3>
+      <p class="mt-2 text-sm font-mono text-night-400">2021-12-14</p>
+      <p class="mt-2 text-night-300">The hard spoon announced in the previous blog post has now occurred. At block #3276706 a snapshot was recorded of all ACU balances and unclaimed MIX =&gt; ACU.</p>
+    </a>
+    
+    <a href="https://choreographr.com/blog/future-interchain-trading/" class="group block border border-night-700 rounded-xl p-6 bg-night-900 hover:border-brand-500/50 hover:bg-night-800 transition-colors">
+      <h3 class="text-xl font-semibold text-night-50 group-hover:text-brand-400">Acuity Atomic Swap DEX - the future of interchain trading</h3>
+      <p class="mt-2 text-sm font-mono text-night-400">2021-12-04</p>
+      <p class="mt-2 text-night-300">First a little back-story on the history of Acuity... Acuity (previously known as MIX) was started in 2015 with the goal of creating on-chain social communities. These have many useful properties that are not available on centralized platforms.</p>
+    </a>
+    
+    <a href="https://choreographr.com/blog/dex-alpha-testing/" class="group block border border-night-700 rounded-xl p-6 bg-night-900 hover:border-brand-500/50 hover:bg-night-800 transition-colors">
+      <h3 class="text-xl font-semibold text-night-50 group-hover:text-brand-400">Acuity DEX Alpha Testing</h3>
+      <p class="mt-2 text-sm font-mono text-night-400">2021-07-21</p>
+      <p class="mt-2 text-night-300">The Acuity DEX is approaching minimum viable product. To begin with it will have a simple pair ACU / ETH. It will be possible to trade ETH stored in Metamask for ACU stored in the Polkadot browser extension. The Solidity smart contracts and the Substrate pallet are both mature. Development of a Rust-based off-chain worker to index the order book continues. Basic UI is coming together.</p>
+    </a>
+    
+    <a href="https://choreographr.com/blog/may-2021-update/" class="group block border border-night-700 rounded-xl p-6 bg-night-900 hover:border-brand-500/50 hover:bg-night-800 transition-colors">
+      <h3 class="text-xl font-semibold text-night-50 group-hover:text-brand-400">May 2021 Project Update</h3>
+      <p class="mt-2 text-sm font-mono text-night-400">2021-05-05</p>
+      <p class="mt-2 text-night-300">In line with the previous blog post and video, a new Acuity Substrate node implementation has been released.</p>
+    </a>
+    
+    <a href="https://choreographr.com/blog/acuity-parachain-strategy/" class="group block border border-night-700 rounded-xl p-6 bg-night-900 hover:border-brand-500/50 hover:bg-night-800 transition-colors">
+      <h3 class="text-xl font-semibold text-night-50 group-hover:text-brand-400">Acuity Parachain Strategy</h3>
+      <p class="mt-2 text-sm font-mono text-night-400">2021-03-19</p>
+      <p class="mt-2 text-night-300">The Polkadot ecosystem is evolving rapidly. Kusama will soon have parachains and Polkadot itself will follow. Parachains are a means of connecting together different blockchains in a hierarchy for shared security and asynchronous communication. Acuity will be a hierarchy within this hierarchy.</p>
+    </a>
+    
+    <a href="https://choreographr.com/blog/atomic-swap-under-development/" class="group block border border-night-700 rounded-xl p-6 bg-night-900 hover:border-brand-500/50 hover:bg-night-800 transition-colors">
+      <h3 class="text-xl font-semibold text-night-50 group-hover:text-brand-400">ACU / ETH atomic swap exchange under development</h3>
+      <p class="mt-2 text-sm font-mono text-night-400">2020-12-03</p>
+      <p class="mt-2 text-night-300">I&#39;m currently working on a very simple atomic swap exchange for Acuity. This will be implemented as a Solidity smart contract and deployed on both the Ethereum and Acuity blockchains so ACU can be traded with ETH in a fully decentralized manner and without any counterparty risk.</p>
+    </a>
+    
+    <a href="https://choreographr.com/blog/acuity-hardspooned/" class="group block border border-night-700 rounded-xl p-6 bg-night-900 hover:border-brand-500/50 hover:bg-night-800 transition-colors">
+      <h3 class="text-xl font-semibold text-night-50 group-hover:text-brand-400">Acuity hard spooned!</h3>
+      <p class="mt-2 text-sm font-mono text-night-400">2020-11-26</p>
+      <p class="mt-2 text-night-300">Due to the cessation of block production of the proof-of-authority nodes (see previous blog post), it was necessary for Acuity to hard spoon. A snapshot of blockchain state was taken at block 1049095 (the last finalized block) and a new genesis block was created.</p>
+    </a>
+    
+    <a href="https://choreographr.com/blog/november-2020-update/" class="group block border border-night-700 rounded-xl p-6 bg-night-900 hover:border-brand-500/50 hover:bg-night-800 transition-colors">
+      <h3 class="text-xl font-semibold text-night-50 group-hover:text-brand-400">Acuity Social November 2020 Project Update</h3>
+      <p class="mt-2 text-sm font-mono text-night-400">2020-11-19</p>
+      <p class="mt-2 text-night-300">There are a number of major Acuity announcements.</p>
+    </a>
+    
+    <a href="https://choreographr.com/blog/enable-staking/" class="group block border border-night-700 rounded-xl p-6 bg-night-900 hover:border-brand-500/50 hover:bg-night-800 transition-colors">
+      <h3 class="text-xl font-semibold text-night-50 group-hover:text-brand-400">Let&#39;s enable staking on the new Acuity Polkadot blockchain</h3>
+      <p class="mt-2 text-sm font-mono text-night-400">2020-09-25</p>
+      <p class="mt-2 text-night-300">The Acuity blockchain uses standard Polkadot consensus and governance.</p>
+    </a>
+    
+    <a href="https://choreographr.com/blog/2020-update/" class="group block border border-night-700 rounded-xl p-6 bg-night-900 hover:border-brand-500/50 hover:bg-night-800 transition-colors">
+      <h3 class="text-xl font-semibold text-night-50 group-hover:text-brand-400">MIX Acuity Decentralized Social Media 2020 Update</h3>
+      <p class="mt-2 text-sm font-mono text-night-400">2020-05-13</p>
+      <p class="mt-2 text-night-300">MIX Acuity is a decentralized publishing platform in development since 2015.</p>
+    </a>
+    
+    <a href="https://choreographr.com/blog/mix-acuity/" class="group block border border-night-700 rounded-xl p-6 bg-night-900 hover:border-brand-500/50 hover:bg-night-800 transition-colors">
+      <h3 class="text-xl font-semibold text-night-50 group-hover:text-brand-400">Decentralized Browser MIX Acuity 1.0 Released</h3>
+      <p class="mt-2 text-sm font-mono text-night-400">2019-08-05</p>
+      <p class="mt-2 text-night-300">MIX Blockchain has been in operation for more than 2 years. It was created as a platform for uncensorable publication.</p>
+    </a>
+    
+    <a href="https://choreographr.com/blog/june-2019-update/" class="group block border border-night-700 rounded-xl p-6 bg-night-900 hover:border-brand-500/50 hover:bg-night-800 transition-colors">
+      <h3 class="text-xl font-semibold text-night-50 group-hover:text-brand-400">June 2019 MIX Update</h3>
+      <p class="mt-2 text-sm font-mono text-night-400">2019-06-16</p>
+      <p class="mt-2 text-night-300">Online censorship is accelerating. The need for a stable release of MIX Acuity — the MIX desktop browser for Mac, Windows and Linux — grows by the day.</p>
+    </a>
+    
+    <a href="https://choreographr.com/blog/paying-content-creators/" class="group block border border-night-700 rounded-xl p-6 bg-night-900 hover:border-brand-500/50 hover:bg-night-800 transition-colors">
+      <h3 class="text-xl font-semibold text-night-50 group-hover:text-brand-400">Paying content creators on MIX Blockchain</h3>
+      <p class="mt-2 text-sm font-mono text-night-400">2018-12-26</p>
+      <p class="mt-2 text-night-300">As the Acuity browser is nearing completion, users will soon be able to post content on MIX.</p>
+    </a>
+    
+    <a href="https://choreographr.com/blog/content-handling/" class="group block border border-night-700 rounded-xl p-6 bg-night-900 hover:border-brand-500/50 hover:bg-night-800 transition-colors">
+      <h3 class="text-xl font-semibold text-night-50 group-hover:text-brand-400">How illegal and immoral content will be handled on MIX Blockchain</h3>
+      <p class="mt-2 text-sm font-mono text-night-400">2018-05-01</p>
+      <p class="mt-2 text-night-300">There are certain kinds of content that you do not want on your device because it is against your morality, can land you in jail, or is just not socially acceptable.</p>
+    </a>
+    
+    <a href="https://choreographr.com/blog/april-2018-update/" class="group block border border-night-700 rounded-xl p-6 bg-night-900 hover:border-brand-500/50 hover:bg-night-800 transition-colors">
+      <h3 class="text-xl font-semibold text-night-50 group-hover:text-brand-400">Announcing dWeb / April 2018 MIX Update</h3>
+      <p class="mt-2 text-sm font-mono text-night-400">2018-04-18</p>
+      <p class="mt-2 text-night-300">dWeb will be the first dapp built on MIX Blockchain. It will take the form of a desktop application installable on Mac, Windows and Linux. The package will include:</p>
+    </a>
+    
+    <a href="https://choreographr.com/blog/january-2018-update/" class="group block border border-night-700 rounded-xl p-6 bg-night-900 hover:border-brand-500/50 hover:bg-night-800 transition-colors">
+      <h3 class="text-xl font-semibold text-night-50 group-hover:text-brand-400">January 2018 Update</h3>
+      <p class="mt-2 text-sm font-mono text-night-400">2018-01-17</p>
+      <p class="mt-2 text-night-300">I thought I would give you a short update on what is happening with MIX Blockchain over the next few months.</p>
+    </a>
+    
+    <a href="https://choreographr.com/blog/introducing-mix-browser/" class="group block border border-night-700 rounded-xl p-6 bg-night-900 hover:border-brand-500/50 hover:bg-night-800 transition-colors">
+      <h3 class="text-xl font-semibold text-night-50 group-hover:text-brand-400">Introducing MIX Browser</h3>
+      <p class="mt-2 text-sm font-mono text-night-400">2017-12-19</p>
+      <p class="mt-2 text-night-300">MIX is a content publication platform, therefore a key component is a browser to be able to view any item and to serve as a reference implementation for other software to follow.</p>
+    </a>
+    
+    <a href="https://choreographr.com/blog/introducing-link-blockchain/" class="group block border border-night-700 rounded-xl p-6 bg-night-900 hover:border-brand-500/50 hover:bg-night-800 transition-colors">
+      <h3 class="text-xl font-semibold text-night-50 group-hover:text-brand-400">Introducing LINK Blockchain</h3>
+      <p class="mt-2 text-sm font-mono text-night-400">2016-12-17</p>
+      <p class="mt-2 text-night-300">LINK is an uncontrolled linked data ecosystem living on the blockchain. It is fully public. It cannot be censored and no one can be prevented from participating. It is fully programmable at every level. It is a development platform for interconnected distributed content apps that empower the individual.</p>
+    </a>
+    
+    <a href="https://choreographr.com/blog/blobstore/" class="group block border border-night-700 rounded-xl p-6 bg-night-900 hover:border-brand-500/50 hover:bg-night-800 transition-colors">
+      <h3 class="text-xl font-semibold text-night-50 group-hover:text-brand-400">BlobStore: immutable storage on Ethereum blockchains</h3>
+      <p class="mt-2 text-sm font-mono text-night-400">2016-11-19</p>
+      <p class="mt-2 text-night-300">BlobStore is an Ethereum smart contract I have been developing on and off for about a year. In January I wrote a blog post about the properties of various decentralized storage technologies. BlobStore specifically targets Ethereum log storage. The premise is simple — store a blob (Binary Large OBject) and get an identifier for it (blobId). For the rest of time that blob can be retrieved using that blobId.</p>
+    </a>
+    
+    <a href="https://choreographr.com/blog/federated-ethereum-blockchains/" class="group block border border-night-700 rounded-xl p-6 bg-night-900 hover:border-brand-500/50 hover:bg-night-800 transition-colors">
+      <h3 class="text-xl font-semibold text-night-50 group-hover:text-brand-400">Federated Ethereum Blockchains</h3>
+      <p class="mt-2 text-sm font-mono text-night-400">2016-07-25</p>
+      <p class="mt-2 text-night-300">In the aftermath of the DAO fork it occurred to me that there might be a better way for large Ethereum projects to exist on the Blockchain.</p>
+    </a>
+    
+    <a href="https://choreographr.com/blog/ethereum-text-publishing/" class="group block border border-night-700 rounded-xl p-6 bg-night-900 hover:border-brand-500/50 hover:bg-night-800 transition-colors">
+      <h3 class="text-xl font-semibold text-night-50 group-hover:text-brand-400">Text publishing technologies for Ethereum dapps</h3>
+      <p class="mt-2 text-sm font-mono text-night-400">2016-01-18</p>
+      <p class="mt-2 text-night-300">Building something like a Reddit or Twitter dapp (distributed app) on Ethereum is certainly an attractive idea, but the obvious question is &quot;where do the messages get stored?&quot; If an autonomous Git or Wikipedia were built on Ethereum the storage requirements would be even greater.</p>
+    </a>
+    
+    <a href="https://choreographr.com/blog/elastic-ethereum/" class="group block border border-night-700 rounded-xl p-6 bg-night-900 hover:border-brand-500/50 hover:bg-night-800 transition-colors">
+      <h3 class="text-xl font-semibold text-night-50 group-hover:text-brand-400">Indexing the blockchain with Elastic Ethereum</h3>
+      <p class="mt-2 text-sm font-mono text-night-400">2016-01-05</p>
+      <p class="mt-2 text-night-300">One of things that can&#39;t really be done yet in a decentralized manner is search. In an Ethereum smart contract it is possible to maintain some elementary lookup tables, but more advanced features such as full text search are generally not possible due to excessive processing and storage requirements on-chain. Eventually it may be possible to use Ethereum to coordinate a network of search oracles that would profit financially if the network determines them to be operating correctly, but I am not currently aware of any such project. This sort of solution would be analogous to how Swarm is being proposed to work.</p>
+    </a>
+    
+    <a href="https://choreographr.com/blog/ethereum-compressed-text/" class="group block border border-night-700 rounded-xl p-6 bg-night-900 hover:border-brand-500/50 hover:bg-night-800 transition-colors">
+      <h3 class="text-xl font-semibold text-night-50 group-hover:text-brand-400">Storing compressed text in Ethereum transaction logs</h3>
+      <p class="mt-2 text-sm font-mono text-night-400">2015-10-29</p>
+      <p class="mt-2 text-night-300">There are a lot of good reasons to store blobs of text in Ethereum. For example, a decentralized Reddit clone could store all the messages in the blockchain. These messages would be uncensorable and archived for eternity. In theory IPFS could be used, but it does not guarantee the availability of the messages unless someone is actively storing them.</p>
+    </a>
+    
+    <a href="https://choreographr.com/blog/dapple-testing/" class="group block border border-night-700 rounded-xl p-6 bg-night-900 hover:border-brand-500/50 hover:bg-night-800 transition-colors">
+      <h3 class="text-xl font-semibold text-night-50 group-hover:text-brand-400">Using Dapple to test Solidity with Solidity</h3>
+      <p class="mt-2 text-sm font-mono text-night-400">2015-10-20</p>
+      <p class="mt-2 text-night-300">As the Ethereum eco-system is still very immature it can sometimes be very frustrating to develop on this platform. Gradually more tools are being developed that make it much easier, such as Browser Solidity.</p>
+    </a>
+    
+    <a href="https://choreographr.com/blog/introducing-glofile/" class="group block border border-night-700 rounded-xl p-6 bg-night-900 hover:border-brand-500/50 hover:bg-night-800 transition-colors">
+      <h3 class="text-xl font-semibold text-night-50 group-hover:text-brand-400">Introducing Glofile</h3>
+      <p class="mt-2 text-sm font-mono text-night-400">2015-09-18</p>
+      <p class="mt-2 text-night-300">Glofile (Global profile) is essentially a clone of Gravatar for Ethereum.</p>
+    </a>
+    
+    <a href="https://choreographr.com/blog/ethereum-smtp/" class="group block border border-night-700 rounded-xl p-6 bg-night-900 hover:border-brand-500/50 hover:bg-night-800 transition-colors">
+      <h3 class="text-xl font-semibold text-night-50 group-hover:text-brand-400">SMTP can be replaced by a 19 line Ethereum contract</h3>
+      <p class="mt-2 text-sm font-mono text-night-400">2015-09-12</p>
+      <p class="mt-2 text-night-300">One of the advantages of the blockchain is that, unlike conventional Internet services, you do not have to maintain a backend in order to offer a service. You do however need to pay to write a transaction onto the blockchain.</p>
+    </a>
+    
+    <a href="https://choreographr.com/blog/versionedblob/" class="group block border border-night-700 rounded-xl p-6 bg-night-900 hover:border-brand-500/50 hover:bg-night-800 transition-colors">
+      <h3 class="text-xl font-semibold text-night-50 group-hover:text-brand-400">VersionedBlob: a poor man&#39;s Git built on Ethereum</h3>
+      <p class="mt-2 text-sm font-mono text-night-400">2015-08-19</p>
+      <p class="mt-2 text-night-300">One of the potential use-cases for Ethereum is to create a fully decentralized Git. Git is already decentralized in many respects, but you still need to push/pull with a specific server. If something like Git was implemented on Ethereum you just need to connect to another Ethereum node on the network.</p>
+    </a>
+    
+    <a href="https://choreographr.com/blog/private-on-public/" class="group block border border-night-700 rounded-xl p-6 bg-night-900 hover:border-brand-500/50 hover:bg-night-800 transition-colors">
+      <h3 class="text-xl font-semibold text-night-50 group-hover:text-brand-400">Building a private blockchain on the Ethereum public blockchain</h3>
+      <p class="mt-2 text-sm font-mono text-night-400">2015-08-14</p>
+      <p class="mt-2 text-night-300">Originally published on jonathanpatrick.me.</p>
+    </a>
+    
+    <a href="https://choreographr.com/blog/floating-fees/" class="group block border border-night-700 rounded-xl p-6 bg-night-900 hover:border-brand-500/50 hover:bg-night-800 transition-colors">
+      <h3 class="text-xl font-semibold text-night-50 group-hover:text-brand-400">Floating fees in Bitcoin Core 0.10</h3>
+      <p class="mt-2 text-sm font-mono text-night-400">2015-02-16</p>
+      <p class="mt-2 text-night-300">Originally published on jonathanpatrick.me.</p>
+    </a>
+    
+    <a href="https://choreographr.com/blog/transaction-forwarding/" class="group block border border-night-700 rounded-xl p-6 bg-night-900 hover:border-brand-500/50 hover:bg-night-800 transition-colors">
+      <h3 class="text-xl font-semibold text-night-50 group-hover:text-brand-400">Bitcoin transaction forwarding</h3>
+      <p class="mt-2 text-sm font-mono text-night-400">2015-02-10</p>
+      <p class="mt-2 text-night-300">Originally published on jonathanpatrick.me.</p>
+    </a>
+    
+    <a href="https://choreographr.com/blog/bitcoin-spam-filter/" class="group block border border-night-700 rounded-xl p-6 bg-night-900 hover:border-brand-500/50 hover:bg-night-800 transition-colors">
+      <h3 class="text-xl font-semibold text-night-50 group-hover:text-brand-400">Using Bitcoin dust transactions to prevent website spam</h3>
+      <p class="mt-2 text-sm font-mono text-night-400">2015-01-30</p>
+      <p class="mt-2 text-night-300">Originally published on jonathanpatrick.me.</p>
+    </a>
+    
+    <a href="https://choreographr.com/blog/bitcoin-ecommerce/" class="group block border border-night-700 rounded-xl p-6 bg-night-900 hover:border-brand-500/50 hover:bg-night-800 transition-colors">
+      <h3 class="text-xl font-semibold text-night-50 group-hover:text-brand-400">Ensuring security of funds and preserving anonymity when using Bitcoin for e-commerce</h3>
+      <p class="mt-2 text-sm font-mono text-night-400">2015-01-21</p>
+      <p class="mt-2 text-night-300">Originally published on jonathanpatrick.me.</p>
+    </a>
+    
+    <a href="https://choreographr.com/blog/hd-wallets-drupal/" class="group block border border-night-700 rounded-xl p-6 bg-night-900 hover:border-brand-500/50 hover:bg-night-800 transition-colors">
+      <h3 class="text-xl font-semibold text-night-50 group-hover:text-brand-400">Using HD Bitcoin wallets with Drupal Coin Tools</h3>
+      <p class="mt-2 text-sm font-mono text-night-400">2015-01-07</p>
+      <p class="mt-2 text-night-300">Originally published on jonathanpatrick.me.</p>
+    </a>
+    
+    <a href="https://choreographr.com/blog/bip70-pki-drupal/" class="group block border border-night-700 rounded-xl p-6 bg-night-900 hover:border-brand-500/50 hover:bg-night-800 transition-colors">
+      <h3 class="text-xl font-semibold text-night-50 group-hover:text-brand-400">Drupal / Bitcoin BIP 70 / PKI certificates</h3>
+      <p class="mt-2 text-sm font-mono text-night-400">2014-11-03</p>
+      <p class="mt-2 text-night-300">Originally published on jonathanpatrick.me.</p>
+    </a>
+    
+    <a href="https://choreographr.com/blog/bip70-drupal/" class="group block border border-night-700 rounded-xl p-6 bg-night-900 hover:border-brand-500/50 hover:bg-night-800 transition-colors">
+      <h3 class="text-xl font-semibold text-night-50 group-hover:text-brand-400">Update on Drupal / Bitcoin Payment Protocol (BIP 70) integration</h3>
+      <p class="mt-2 text-sm font-mono text-night-400">2014-10-30</p>
+      <p class="mt-2 text-night-300">Originally published on jonathanpatrick.me.</p>
+    </a>
+    
+    <a href="https://choreographr.com/blog/blockchain-crowdfunding/" class="group block border border-night-700 rounded-xl p-6 bg-night-900 hover:border-brand-500/50 hover:bg-night-800 transition-colors">
+      <h3 class="text-xl font-semibold text-night-50 group-hover:text-brand-400">How the blockchain will improve crowdfunding</h3>
+      <p class="mt-2 text-sm font-mono text-night-400">2014-10-18</p>
+      <p class="mt-2 text-night-300">Originally published on jonathanpatrick.me.</p>
+    </a>
+    
+    <a href="https://choreographr.com/blog/drupal-bitcoin/" class="group block border border-night-700 rounded-xl p-6 bg-night-900 hover:border-brand-500/50 hover:bg-night-800 transition-colors">
+      <h3 class="text-xl font-semibold text-night-50 group-hover:text-brand-400">Drupal &amp; Bitcoin</h3>
+      <p class="mt-2 text-sm font-mono text-night-400">2014-09-15</p>
+      <p class="mt-2 text-night-300">Originally published on jonathanpatrick.me.</p>
+    </a>
+    
+    <a href="https://choreographr.com/blog/bitcoin-exchange-rate-apis/" class="group block border border-night-700 rounded-xl p-6 bg-night-900 hover:border-brand-500/50 hover:bg-night-800 transition-colors">
+      <h3 class="text-xl font-semibold text-night-50 group-hover:text-brand-400">Review of Bitcoin exchange rate APIs</h3>
+      <p class="mt-2 text-sm font-mono text-night-400">2014-03-07</p>
+      <p class="mt-2 text-night-300">Originally published on jonathanpatrick.me.</p>
+    </a>
+    
   </div>
 </div>
 
@@ -215,7 +599,7 @@
     <div class="grid gap-10 md:grid-cols-3">
       <div>
         <div class="font-mono text-lg font-bold tracking-tight">
-          <span class="text-brand-500">choreo</span><span class="text-night-50">graphr</span>
+          <span class="text-brand-500">choreo</span><span class="text-night-50">graphr</span>&ensp;<span class="text-brand-500">&gt;</span><span class="text-night-50">_</span>
         </div>
         <p class="mt-3 text-sm text-night-300 max-w-xs">
           An all-purpose, extensible AI agent written in Rust. Runs locally or in the cloud. Open source under Apache-2.0.
@@ -224,7 +608,7 @@
       <div>
         <h3 class="text-sm font-semibold text-night-50 uppercase tracking-wider mb-3">Explore</h3>
         <ul class="space-y-2 text-sm text-night-300">
-          <li><a href="https://choreographr.com/docs" class="hover:text-brand-400">Documentation</a></li>
+          <li><a href="https://choreographr.com/agent/docs" class="hover:text-brand-400">Agent docs</a></li>
           <li><a href="https://choreographr.com/blog" class="hover:text-brand-400">Blog</a></li>
           <li><a href="https://choreographr.com/consulting" class="hover:text-brand-400">Consulting</a></li>
           <li><a href="https://choreographr.com/search" class="hover:text-brand-400">Search</a></li>

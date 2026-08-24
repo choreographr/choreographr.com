@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="night">
+<head>
+  <meta charset="UTF-8">
+  <!-- color-scheme hint: lets the browser paint the dark canvas background
+       as soon as the head is parsed, before ANY CSS has been applied.
+       This is the one thing that closes the residual flash on Firefox/Zen,
+       which paints its default (white) canvas frame during navigation,
+       unlike Chromium which defers first paint until the inline CSS exists. -->
+  <meta name="color-scheme" content="dark">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Federated Ethereum Blockchains — Choreographr Blog</title>
+  <meta name="description" content="In the aftermath of the DAO fork it occurred to me that there might be a better way for large Ethereum projects to exist on the Blockchain.">
+  <meta name="theme-color" content="#06080b">
+
+  
+  <!-- Canonical: every page (incl. trailing-slash and /index.html variants)
+       resolves to one authoritative URL, which also matches the sitemap. -->
+  <link rel="canonical" href="https://choreographr.com/blog/federated-ethereum-blockchains/">
+  
+
+  <!-- Open Graph / social sharing. og:title / og:description are overridden
+       per template so they always match the <title> and meta description. -->
+  <meta property="og:site_name" content="Choreographr">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Federated Ethereum Blockchains — Choreographr Blog">
+  <meta property="og:description" content="In the aftermath of the DAO fork it occurred to me that there might be a better way for large Ethereum projects to exist on the Blockchain.">
+  <meta property="og:url" content="https://choreographr.com/blog/federated-ethereum-blockchains/">
+  
+  <meta property="og:image" content="https://choreographr.com/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Choreographr — your all-purpose AI agent, written in Rust">
+  
+  <meta property="og:locale" content="en_US">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <!-- Critical inline CSS: paint the dark theme immediately, before
+       main.css (or the webfont stylesheet) finishes loading, so the
+       page never flashes white on navigation. -->
+  <style>
+    html { background-color: #06080b; color-scheme: dark; }
+    body { background-color: #06080b; color: #d3dae3; }
+  </style>
+
+  <!-- Self-hosted fonts (same-origin): preload the two variable woff2
+       files so they're available at first paint — no visible swap. -->
+  <link rel="preload" href="https://choreographr.com/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="https://choreographr.com/fonts/jetbrains-mono.woff2" as="font" type="font/woff2" crossorigin>
+
+  <link rel="icon" type="image/svg+xml" href="https://choreographr.com/favicon.svg">
+  <link rel="stylesheet" href="https://choreographr.com/css/main.css?h=2d812d12b3967d2e0fb0">
+
+  <!-- Firefox/Zen can paint a frame before this stylesheet has been
+       applied if a layout flush happens while it loads (Bugzilla
+       1459305) — unlike Chromium, which blocks the parser on the
+       <link>. This synchronous script is the standard workaround: it
+       cannot execute until main.css is ready, and while it is pending
+       the <body> has not been parsed, so nothing unstyled can paint.
+       Result: same first-paint behaviour as Chromium, no FOUC. -->
+  <script>
+    // No-op: exists only to hold first paint until main.css is applied.
+  </script>
+
+  
+  <link rel="alternate" type="application/atom+xml" title="Choreographr Blog" href="https://choreographr.com/atom.xml">
+  
+
+  
+
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Federated Ethereum Blockchains",
+  "description": "In the aftermath of the DAO fork it occurred to me that there might be a better way for large Ethereum projects to exist on the Blockchain.",
+  "datePublished": "2016-07-25",
+  "dateModified": "2016-07-25",
+  "mainEntityOfPage": "https://choreographr.com/blog/federated-ethereum-blockchains/",
+  "image": "https://choreographr.com/og-image.png",
+  "author": [{ "@type": "Person", "name": "Jonathan Brown" }],
+  "publisher": { "@type": "Organization", "name": "Choreographr", "url": "https://choreographr.com/" }
+}
+</script>
+
+</head>
+<body class="min-h-screen flex flex-col">
+
+  <header class="sticky top-0 z-40 w-full border-b border-night-700 bg-night-950/90 backdrop-blur">
+  <nav class="navbar mx-auto max-w-7xl px-4 sm:px-6">
+    <div class="navbar-start">
+      <div class="dropdown lg:hidden">
+        <div tabindex="0" role="button" class="btn btn-ghost btn-square" aria-label="Menu">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </div>
+        <ul tabindex="0" class="dropdown-content menu bg-night-900 border border-night-700 rounded-box z-50 mt-3 w-52 p-2 shadow-2xl">
+          
+          <li>
+            <a href="/agent/"  class="">
+              Agent
+            </a>
+          </li>
+          
+          <li>
+            <a href="/platform/"  class="">
+              Platform
+            </a>
+          </li>
+          
+          <li>
+            <a href="/blog/"  class="text-brand-500">
+              Blog
+            </a>
+          </li>
+          
+          <li>
+            <a href="/consulting/"  class="">
+              Consulting
+            </a>
+          </li>
+          
+          <li>
+            <a href="https://github.com/choreographr/choreographr" target="_blank" rel="noopener" class="">
+              GitHub<span class="text-night-400 text-xs">↗</span>
+            </a>
+          </li>
+          
+          <li>
+            <a href="https://t.me/choreographr" target="_blank" rel="noopener" class="">
+              Telegram<span class="text-night-400 text-xs">↗</span>
+            </a>
+          </li>
+          
+        </ul>
+      </div>
+      <a href="/" class="font-mono text-lg font-bold tracking-tight select-none">
+        <span class="text-brand-500">choreo</span><span class="text-night-50">graphr</span>&ensp;<span class="text-brand-500">&gt;</span><span class="text-night-50">_</span>
+      </a>
+    </div>
+    <div class="navbar-end hidden lg:flex">
+      <ul class="menu menu-horizontal px-1 gap-1 text-sm">
+        
+        <li>
+          <a href="/agent/"
+             
+             class="text-night-200 hover:text-night-50">
+            Agent
+          </a>
+        </li>
+        
+        <li>
+          <a href="/platform/"
+             
+             class="text-night-200 hover:text-night-50">
+            Platform
+          </a>
+        </li>
+        
+        <li>
+          <a href="/blog/"
+             
+             class="text-brand-500 font-semibold">
+            Blog
+          </a>
+        </li>
+        
+        <li>
+          <a href="/consulting/"
+             
+             class="text-night-200 hover:text-night-50">
+            Consulting
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://github.com/choreographr/choreographr"
+             target="_blank" rel="noopener"
+             class="">
+            GitHub<span class="text-night-400 text-xs">↗</span>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://t.me/choreographr"
+             target="_blank" rel="noopener"
+             class="">
+            Telegram<span class="text-night-400 text-xs">↗</span>
+          </a>
+        </li>
+        
+      </ul>
+    </div>
+  </nav>
+</header>
+
+
+  <main class="flex-1">
+    
+    
+      
+    
+    
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 pt-5">
+      
+
+
+
+
+<nav aria-label="Breadcrumb" class="font-mono text-sm text-night-400">
+  <span class="flex flex-wrap items-center">
+    <a href="/" class="hover:text-brand-400">home</a>
+    
+    
+      
+    
+      
+        
+        
+        <span class="text-night-600">/</span>
+        
+        <a href="/blog/" class="hover:text-brand-400">blog</a>
+        
+      
+    
+      
+        
+        
+        <span class="text-night-600">/</span>
+        
+        <span class="text-night-200 font-medium">federated-ethereum-blockchains</span>
+        
+      
+    
+      
+    
+  </span>
+</nav>
+
+    </div>
+    
+    
+
+<div class="mx-auto max-w-3xl px-4 sm:px-6 py-12">
+  <a href="https://choreographr.com/blog" class="text-sm text-night-400 hover:text-brand-400 font-mono">← Back to blog</a>
+  <article class="mt-6">
+    <h1 class="text-3xl font-bold text-night-50 tracking-tight">Federated Ethereum Blockchains</h1>
+    <div class="mt-4 flex flex-wrap items-center gap-x-5 gap-y-3">
+      
+      
+      
+      
+      <a href="https://choreographr.com/blog/authors/jonathan-brown/" class="flex items-center gap-2 group/author">
+        
+        <img src="https://choreographr.com/me.jpg" alt="Jonathan Brown" class="h-9 w-9 rounded-full object-cover border border-brand-500/40" />
+        
+        <span class="text-sm font-medium text-night-200 group-hover/author:text-brand-400">Jonathan Brown</span>
+      </a>
+      
+      
+      <span class="text-sm font-mono text-night-400">
+        2016-07-25
+        
+      </span>
+    </div>
+    <div class="prose mt-8">
+      <p><em>Originally published on jonathanpatrick.me. <a rel="noopener external" target="_blank" href="https://web.archive.org/web/20190917043658/http://jonathanpatrick.me/blog/federated-ethereum-blockchains">Retrieved</a> from the Wayback Machine.</em></p>
+<p>In the aftermath of the DAO fork it occurred to me that there might be a better way for large Ethereum projects to exist on the Blockchain.</p>
+<p>The idea is this: large projects should not use the main Ethereum or Ethereum Classic chains. Instead they should create their own independent blockchain specifically for their project. Smaller Ethereum projects could decide which of the Ethereum blockchains is the most appropriate to use. Which smart contracts do they need to integrate with most?</p>
+<p>How would this work?</p>
+<h2>Native token</h2>
+<p>It is common for large Ethereum projects to issue a token. If a project exists on its own blockchain this token would be the native transaction crypto-fuel that gets mined. It can optionally have a pre-issue for initial investors (like Ether). This can serve as a means of revenue generation for the project. Even if the tokens do not have additional meaning specific to the project, they are still required for transaction fees and therefore will have value if the chain becomes popular. For a fixed quantity of tokens the block reward could be removed completely.</p>
+<h2>Sharding</h2>
+<p>One of the problems with current blockchain technology is that every node has to store everything. With Ethereum there are plans to implement sharding at some point in the future. Implementing a fresh blockchain for each major project is way to have sharding today. Ethereum full nodes would only sync the blockchains that they are utilising. If a project is going to be storing a very large amount of data on-chain, using a separate blockchain means not subjecting everyone else to huge storage requirements.</p>
+<h2>Siloed communities</h2>
+<p>The DAO fork has fractured our community. Many immutability fundamentalists such as myself found it highly distressing for a hard fork to be implemented to fix a problem in an individual smart contract. If The DAO had been implemented on its own blockchain the fork could have been implemented just on that blockchain. Those not using The DAO would not have cared as the immutability of their chains would not have been affected. The DAO community would definitely have forked the DAO chain as it would have been essentially useless without it. All of the strife could have been avoided.</p>
+<p>In this way each community can have the level of immutability they require and the damaging effects of hard forks can be isolated.</p>
+<h2>2-way peg</h2>
+<p>The <a target="_blank" href="https://web.archive.org/web/20190917043658/https://medium.com/@ConsenSys/taking-stock-bitcoin-and-ethereum-4382f0a2f17">clever technique</a> called Sidechains or 2-way peg essentially allows tokens to be teleported back and forth between different blockchains. In this way Ether could have been teleported into the DAO blockchain in return for the DAO token.</p>
+<h2>Token conversion</h2>
+<p>Of course if each big project has a separate blockchain then it becomes necessary to have different tokens to pay for transactions in different projects. This can be eased by using services like ShapeShift. It should also be possible to convert tokens in an automated manner using smart contracts. One possibility that has been previously discussed is the ability to pay transaction fees using any token.</p>
+<h2>Inter-blockchain communication</h2>
+<p>It should certainly be possible for smart contracts to read state and issue transactions on other blockchains. This is a very new and evolving area. Essentially it would involve checking Merkle proofs from a foreign blockchain in a smart contract.</p>
+<h2>More conservative adoption of new features</h2>
+<p>Ethereum is changing rapidly. Every hard fork that introduces new functionality also runs the risk of something going wrong. By observing how new features perform on other Ethereum blockchains before deploying to app-specific blockchains risk can be reduced.</p>
+<h2>Custom functionality</h2>
+<p>Separate blockchains can of course modify how Ethereum works. Potentially making substantial changes to support a specific use case.</p>
+<h2>Cheaper transactions</h2>
+<p>Ethereum is still considered as too expensive for many applications. Transaction price in real terms is expected to go down eventually (scaling, mature fee market). With a custom chain many parameters relating to the price can be modified. Also a new chain may initially have a much lower price per token.</p>
+<h2>Bigger transactions</h2>
+<p>On the main Ethereum chains the transaction size is still quiet limited. This can cause problems for developers and users alike. With a custom chain the mining software can be configured to vote for bigger transactions.</p>
+<h2>Token standard</h2>
+<p>One of the advatages of creating tokens on the main Ethereum chains is that they can implement the token interface. This means software can be written to integrate any token. However this does not apply to tokens that are the crypto-fuel for other blockchains or tokens implemented on other blockchains. A standard needs to be defined so such tokens can be integrated in a generic fashion.</p>
+<h2>Trans-blockchain accounts</h2>
+<p>Ideally, account keys could be shared across multiple blockchains to ease identity management. However this enables transaction replay attacks. One way to solve this is to use different transaction nonces like the Ethereum testnet. However a <a target="_blank" href="https://github.com/ethereum/EIPs/issues/134">more generic solution</a> to this problem should be found.</p>
+<h2>Blockchain-independent Mist</h2>
+<p>The upcoming Ethereum dapp browser <a target="_blank" href="https://web.archive.org/web/20190917043658/https://github.com/ethereum/mist/releases">Mist</a> can only operate on one blockchain at a time. It would be really amazing if it could connect to multiple Ethereum blockchains simultaneously.</p>
+<h2>Merged mining</h2>
+<p>While Ethereum does not currently support merged mining, it is still possible in theory. If all Ethereum blockchains could share the same proof of work this would solve the problem of small blockchains being able to be attacked by a single actor with a large mining capacity.</p>
+<p>I hereby encourage everyone starting a big project on Ethereum to consider implementing it on an independent blockchain and to improve blockchain interoperability.</p>
+
+    </div>
+  </article>
+</div>
+
+  </main>
+
+  <footer class="border-t border-night-700 bg-night-900">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 py-12">
+    <div class="grid gap-10 md:grid-cols-3">
+      <div>
+        <div class="font-mono text-lg font-bold tracking-tight">
+          <span class="text-brand-500">choreo</span><span class="text-night-50">graphr</span>&ensp;<span class="text-brand-500">&gt;</span><span class="text-night-50">_</span>
+        </div>
+        <p class="mt-3 text-sm text-night-300 max-w-xs">
+          An all-purpose, extensible AI agent written in Rust. Runs locally or in the cloud. Open source under Apache-2.0.
+        </p>
+      </div>
+      <div>
+        <h3 class="text-sm font-semibold text-night-50 uppercase tracking-wider mb-3">Explore</h3>
+        <ul class="space-y-2 text-sm text-night-300">
+          <li><a href="https://choreographr.com/agent/docs" class="hover:text-brand-400">Agent docs</a></li>
+          <li><a href="https://choreographr.com/blog" class="hover:text-brand-400">Blog</a></li>
+          <li><a href="https://choreographr.com/consulting" class="hover:text-brand-400">Consulting</a></li>
+          <li><a href="https://choreographr.com/search" class="hover:text-brand-400">Search</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3 class="text-sm font-semibold text-night-50 uppercase tracking-wider mb-3">Community</h3>
+        <ul class="space-y-2 text-sm text-night-300">
+          <li><a href="https://github.com/choreographr/choreographr" target="_blank" rel="noopener" class="hover:text-brand-400">GitHub</a></li>
+          <li><a href="https://t.me/choreographr" target="_blank" rel="noopener" class="hover:text-brand-400">Telegram</a></li>
+          <li><a href="https://choreographr.com/atom.xml" class="hover:text-brand-400">RSS Feed</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="mt-10 border-t border-night-700 pt-6 flex flex-col sm:flex-row justify-between gap-3 text-xs text-night-400">
+      <p>© 2026 Choreographr. Released under the Apache-2.0 license.</p>
+      <p class="font-mono">100% Rust · written by <a href="https://github.com/choreographr/choreographr" target="_blank" rel="noopener" class="text-night-300 hover:text-brand-400">choreographr</a></p>
+    </div>
+  </div>
+</footer>
+
+
+  
+
+  <script>
+    // Click-to-copy buttons for every code block. Wraps each <pre> in a
+    // .code-block container and adds a corner button that copies the block's
+    // text via the async Clipboard API, with an execCommand fallback for
+    // non-secure contexts. The button sits OUTSIDE the <pre> so it stays in
+    // the corner while horizontally-overflowing code scrolls inside the block.
+    (function () {
+      var COPY_ICON =
+        '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
+      var CHECK_ICON =
+        '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
+
+      function fallbackCopy(text) {
+        var ta = document.createElement('textarea');
+        ta.value = text;
+        ta.setAttribute('readonly', '');
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        try { document.execCommand('copy'); } catch (e) { /* ignore */ }
+        document.body.removeChild(ta);
+      }
+
+      document.querySelectorAll('pre').forEach(function (pre) {
+        // Skip daisyUI terminal mockups (mockup-code): every line is its
+        // own <pre>, so per-line copy buttons would be noise. Real code
+        // blocks are a single <pre> that is not inside a .mockup-code.
+        if (pre.closest('.mockup-code')) return;
+
+        // Idempotent: don't re-wrap if the script runs more than once.
+        if (pre.parentElement && pre.parentElement.classList.contains('code-block')) return;
+
+        var wrap = document.createElement('div');
+        wrap.className = 'code-block';
+        pre.parentNode.insertBefore(wrap, pre);
+        wrap.appendChild(pre);
+
+        var btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'code-copy';
+        btn.setAttribute('aria-label', 'Copy code to clipboard');
+        btn.innerHTML = COPY_ICON;
+        wrap.appendChild(btn);
+
+        btn.addEventListener('click', function () {
+          var text = pre.innerText;
+          var done = function () {
+            btn.classList.add('copied');
+            btn.innerHTML = CHECK_ICON;
+            btn.setAttribute('aria-label', 'Copied');
+            setTimeout(function () {
+              btn.classList.remove('copied');
+              btn.innerHTML = COPY_ICON;
+              btn.setAttribute('aria-label', 'Copy code to clipboard');
+            }, 1500);
+          };
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(text).then(done, function () { fallbackCopy(text); done(); });
+          } else {
+            fallbackCopy(text);
+            done();
+          }
+        });
+      });
+    })();
+  </script>
+</body>
+</html>
