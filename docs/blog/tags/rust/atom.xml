@@ -166,7 +166,7 @@ course, are another story. &lt;!-- TODO: add real measured numbers here (idle RS
 (Substrate)&lt;/strong&gt;, compiled into the release binaries. From any session you can
 read balances, inspect blocks and transactions, make read-only contract calls,
 resolve ENS names, and query Substrate storage — see the
-&lt;a href=&quot;https://choreographr.com/agent/docs/tools/#blockchain-tools&quot;&gt;blockchain tools&lt;/a&gt; reference. Solana support
+&lt;a href=&quot;https://choreographr.com/agent/docs/tools/blockchain/&quot;&gt;blockchain tools&lt;/a&gt; reference. Solana support
 is on the roadmap.&lt;/p&gt;
 &lt;p&gt;Why this matters:&lt;/p&gt;
 &lt;ul&gt;
@@ -198,7 +198,7 @@ AES-256-GCM; the server starts locked and decrypts in memory only after
 unlock. See &lt;a href=&quot;https://choreographr.com/agent/docs/security/&quot;&gt;security&lt;/a&gt;.&lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;Agent database&lt;/strong&gt; — a persistent, session-scoped key-value store (&lt;code&gt;redb&lt;/code&gt;)
 the agent writes to and reads back. See
-&lt;a href=&quot;https://choreographr.com/agent/docs/tools/#database-tools&quot;&gt;database tools&lt;/a&gt;.&lt;/li&gt;
+&lt;a href=&quot;https://choreographr.com/agent/docs/tools/databases/&quot;&gt;database tools&lt;/a&gt;.&lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;MCP client&lt;/strong&gt; — spawn Model Context Protocol servers, discover their tools,
 and call them from any session.&lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;ACP bridge&lt;/strong&gt; — drive sessions from ACP-compatible editors like Claude Code

@@ -49,7 +49,7 @@
   <link rel="preload" href="https://choreographr.com/fonts/jetbrains-mono.woff2" as="font" type="font/woff2" crossorigin>
 
   <link rel="icon" type="image/svg+xml" href="https://choreographr.com/favicon.svg">
-  <link rel="stylesheet" href="https://choreographr.com/css/main.css?h=2d812d12b3967d2e0fb0">
+  <link rel="stylesheet" href="https://choreographr.com/css/main.css?h=1e7ca4db154432c2c120">
 
   <!-- Firefox/Zen can paint a frame before this stylesheet has been
        applied if a layout flush happens while it loads (Bugzilla
@@ -110,6 +110,12 @@
           </li>
           
           <li>
+            <a href="/portal/"  class="">
+              Portal
+            </a>
+          </li>
+          
+          <li>
             <a href="/blog/"  class="text-brand-500">
               Blog
             </a>
@@ -155,6 +161,14 @@
              
              class="text-night-200 hover:text-night-50">
             Platform
+          </a>
+        </li>
+        
+        <li>
+          <a href="/portal/"
+             
+             class="text-night-200 hover:text-night-50">
+            Portal
           </a>
         </li>
         
@@ -410,7 +424,7 @@ course, are another story. <!-- TODO: add real measured numbers here (idle RSS, 
 (Substrate)</strong>, compiled into the release binaries. From any session you can
 read balances, inspect blocks and transactions, make read-only contract calls,
 resolve ENS names, and query Substrate storage — see the
-<a href="https://choreographr.com/agent/docs/tools/#blockchain-tools">blockchain tools</a> reference. Solana support
+<a href="https://choreographr.com/agent/docs/tools/blockchain/">blockchain tools</a> reference. Solana support
 is on the roadmap.</p>
 <p>Why this matters:</p>
 <ul>
@@ -442,7 +456,7 @@ AES-256-GCM; the server starts locked and decrypts in memory only after
 unlock. See <a href="https://choreographr.com/agent/docs/security/">security</a>.</li>
 <li><strong>Agent database</strong> — a persistent, session-scoped key-value store (<code>redb</code>)
 the agent writes to and reads back. See
-<a href="https://choreographr.com/agent/docs/tools/#database-tools">database tools</a>.</li>
+<a href="https://choreographr.com/agent/docs/tools/databases/">database tools</a>.</li>
 <li><strong>MCP client</strong> — spawn Model Context Protocol servers, discover their tools,
 and call them from any session.</li>
 <li><strong>ACP bridge</strong> — drive sessions from ACP-compatible editors like Claude Code
@@ -496,7 +510,8 @@ what's in v0.1.0.</p>
         <h3 class="text-sm font-semibold text-night-50 uppercase tracking-wider mb-3">Explore</h3>
         <ul class="space-y-2 text-sm text-night-300">
           <li><a href="https://choreographr.com/agent/docs" class="hover:text-brand-400">Agent docs</a></li>
-          <li><a href="https://choreographr.com/blog" class="hover:text-brand-400">Blog</a></li>
+          <li><a href="https://choreographr.com/platform" class="hover:text-brand-400">Platform</a></li>
+          <li><a href="https://choreographr.com/portal" class="hover:text-brand-400">Portal</a></li>
           <li><a href="https://choreographr.com/consulting" class="hover:text-brand-400">Consulting</a></li>
           <li><a href="https://choreographr.com/search" class="hover:text-brand-400">Search</a></li>
         </ul>

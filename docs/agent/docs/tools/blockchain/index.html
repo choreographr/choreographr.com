@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="night">
+<head>
+  <meta charset="UTF-8">
+  <!-- color-scheme hint: lets the browser paint the dark canvas background
+       as soon as the head is parsed, before ANY CSS has been applied.
+       This is the one thing that closes the residual flash on Firefox/Zen,
+       which paints its default (white) canvas frame during navigation,
+       unlike Chromium which defers first paint until the inline CSS exists. -->
+  <meta name="color-scheme" content="dark">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Blockchain tools — Choreographr</title>
+  <meta name="description" content="Read-only EVM and Substrate/Polkadot queries (alloy/subxt).">
+  <meta name="theme-color" content="#06080b">
+
+  
+  <!-- Canonical: every page (incl. trailing-slash and /index.html variants)
+       resolves to one authoritative URL, which also matches the sitemap. -->
+  <link rel="canonical" href="https://choreographr.com/agent/docs/tools/blockchain/">
+  
+
+  <!-- Open Graph / social sharing. og:title / og:description are overridden
+       per template so they always match the <title> and meta description. -->
+  <meta property="og:site_name" content="Choreographr">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Blockchain tools — Choreographr">
+  <meta property="og:description" content="Read-only EVM and Substrate/Polkadot queries (alloy/subxt).">
+  <meta property="og:url" content="https://choreographr.com/agent/docs/tools/blockchain/">
+  
+  <meta property="og:image" content="https://choreographr.com/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Choreographr — your all-purpose AI agent, written in Rust">
+  
+  <meta property="og:locale" content="en_US">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <!-- Critical inline CSS: paint the dark theme immediately, before
+       main.css (or the webfont stylesheet) finishes loading, so the
+       page never flashes white on navigation. -->
+  <style>
+    html { background-color: #06080b; color-scheme: dark; }
+    body { background-color: #06080b; color: #d3dae3; }
+  </style>
+
+  <!-- Self-hosted fonts (same-origin): preload the two variable woff2
+       files so they're available at first paint — no visible swap. -->
+  <link rel="preload" href="https://choreographr.com/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="https://choreographr.com/fonts/jetbrains-mono.woff2" as="font" type="font/woff2" crossorigin>
+
+  <link rel="icon" type="image/svg+xml" href="https://choreographr.com/favicon.svg">
+  <link rel="stylesheet" href="https://choreographr.com/css/main.css?h=1e7ca4db154432c2c120">
+
+  <!-- Firefox/Zen can paint a frame before this stylesheet has been
+       applied if a layout flush happens while it loads (Bugzilla
+       1459305) — unlike Chromium, which blocks the parser on the
+       <link>. This synchronous script is the standard workaround: it
+       cannot execute until main.css is ready, and while it is pending
+       the <body> has not been parsed, so nothing unstyled can paint.
+       Result: same first-paint behaviour as Chromium, no FOUC. -->
+  <script>
+    // No-op: exists only to hold first paint until main.css is applied.
+  </script>
+
+  
+  <link rel="alternate" type="application/atom+xml" title="Choreographr Blog" href="https://choreographr.com/atom.xml">
+  
+
+  
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://choreographr.com/" },
+    { "@type": "ListItem", "position": 2, "name": "Agent docs", "item": "https://choreographr.com/agent/docs/" },
+    { "@type": "ListItem", "position": 3, "name": "Blockchain tools" }
+  ]
+}
+</script>
+
+
+
+</head>
+<body class="min-h-screen flex flex-col">
+
+  <header class="sticky top-0 z-40 w-full border-b border-night-700 bg-night-950/90 backdrop-blur">
+  <nav class="navbar mx-auto max-w-7xl px-4 sm:px-6">
+    <div class="navbar-start">
+      <div class="dropdown lg:hidden">
+        <div tabindex="0" role="button" class="btn btn-ghost btn-square" aria-label="Menu">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </div>
+        <ul tabindex="0" class="dropdown-content menu bg-night-900 border border-night-700 rounded-box z-50 mt-3 w-52 p-2 shadow-2xl">
+          
+          <li>
+            <a href="/agent/"  class="text-brand-500">
+              Agent
+            </a>
+          </li>
+          
+          <li>
+            <a href="/platform/"  class="">
+              Platform
+            </a>
+          </li>
+          
+          <li>
+            <a href="/portal/"  class="">
+              Portal
+            </a>
+          </li>
+          
+          <li>
+            <a href="/blog/"  class="">
+              Blog
+            </a>
+          </li>
+          
+          <li>
+            <a href="/consulting/"  class="">
+              Consulting
+            </a>
+          </li>
+          
+          <li>
+            <a href="https://github.com/choreographr/choreographr" target="_blank" rel="noopener" class="">
+              GitHub<span class="text-night-400 text-xs">↗</span>
+            </a>
+          </li>
+          
+          <li>
+            <a href="https://t.me/choreographr" target="_blank" rel="noopener" class="">
+              Telegram<span class="text-night-400 text-xs">↗</span>
+            </a>
+          </li>
+          
+        </ul>
+      </div>
+      <a href="/" class="font-mono text-lg font-bold tracking-tight select-none">
+        <span class="text-brand-500">choreo</span><span class="text-night-50">graphr</span>&ensp;<span class="text-brand-500">&gt;</span><span class="text-night-50">_</span>
+      </a>
+    </div>
+    <div class="navbar-end hidden lg:flex">
+      <ul class="menu menu-horizontal px-1 gap-1 text-sm">
+        
+        <li>
+          <a href="/agent/"
+             
+             class="text-brand-500 font-semibold">
+            Agent
+          </a>
+        </li>
+        
+        <li>
+          <a href="/platform/"
+             
+             class="text-night-200 hover:text-night-50">
+            Platform
+          </a>
+        </li>
+        
+        <li>
+          <a href="/portal/"
+             
+             class="text-night-200 hover:text-night-50">
+            Portal
+          </a>
+        </li>
+        
+        <li>
+          <a href="/blog/"
+             
+             class="text-night-200 hover:text-night-50">
+            Blog
+          </a>
+        </li>
+        
+        <li>
+          <a href="/consulting/"
+             
+             class="text-night-200 hover:text-night-50">
+            Consulting
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://github.com/choreographr/choreographr"
+             target="_blank" rel="noopener"
+             class="">
+            GitHub<span class="text-night-400 text-xs">↗</span>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://t.me/choreographr"
+             target="_blank" rel="noopener"
+             class="">
+            Telegram<span class="text-night-400 text-xs">↗</span>
+          </a>
+        </li>
+        
+      </ul>
+    </div>
+  </nav>
+</header>
+
+
+  <main class="flex-1">
+    
+    
+      
+    
+    
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 pt-5">
+      
+
+
+
+
+<nav aria-label="Breadcrumb" class="font-mono text-sm text-night-400">
+  <span class="flex flex-wrap items-center">
+    <a href="/" class="hover:text-brand-400">home</a>
+    
+    
+      
+    
+      
+        
+        
+        <span class="text-night-600">/</span>
+        
+        <a href="/agent/" class="hover:text-brand-400">agent</a>
+        
+      
+    
+      
+        
+        
+        <span class="text-night-600">/</span>
+        
+        <a href="/agent/docs/" class="hover:text-brand-400">docs</a>
+        
+      
+    
+      
+        
+        
+        <span class="text-night-600">/</span>
+        
+        <a href="/agent/docs/tools/" class="hover:text-brand-400">tools</a>
+        
+      
+    
+      
+        
+        
+        <span class="text-night-600">/</span>
+        
+        <span class="text-night-200 font-medium">blockchain</span>
+        
+      
+    
+      
+    
+  </span>
+</nav>
+
+    </div>
+    
+    
+
+<div class="mx-auto max-w-7xl px-4 sm:px-6 py-8 lg:py-12">
+  <div class="flex flex-col lg:flex-row gap-10">
+    <aside class="lg:w-60 shrink-0">
+      <div class="lg:sticky lg:top-24">
+        
+
+
+
+<nav class="w-full">
+  <p class="px-3 mb-2 text-xs font-semibold uppercase tracking-wider text-night-400">Agent docs</p>
+  <ul class="menu menu-sm w-full p-0 gap-0.5">
+    
+    <li>
+      <a href="https://choreographr.com/agent/docs/installation/"
+         class="text-night-200 hover:text-night-50">
+        Installation
+      </a>
+    </li>
+    
+    
+    <li>
+      <a href="https://choreographr.com/agent/docs/quick-start/"
+         class="text-night-200 hover:text-night-50">
+        Quick start
+      </a>
+    </li>
+    
+    
+    <li>
+      <a href="https://choreographr.com/agent/docs/configuration/"
+         class="text-night-200 hover:text-night-50">
+        Configuration
+      </a>
+    </li>
+    
+    
+    <li>
+      <a href="https://choreographr.com/agent/docs/accounts-and-providers/"
+         class="text-night-200 hover:text-night-50">
+        Accounts &amp; providers
+      </a>
+    </li>
+    
+    
+    <li>
+      <a href="https://choreographr.com/agent/docs/slash-commands/"
+         class="text-night-200 hover:text-night-50">
+        Slash commands
+      </a>
+    </li>
+    
+    
+    <li>
+      <a href="https://choreographr.com/agent/docs/terminal/"
+         class="text-night-200 hover:text-night-50">
+        Terminal client
+      </a>
+    </li>
+    
+    
+    <li>
+      <a href="https://choreographr.com/agent/docs/concepts/"
+         class="text-night-200 hover:text-night-50">
+        Concepts
+      </a>
+    </li>
+    
+    
+    <li>
+      <a href="https://choreographr.com/agent/docs/tools/"
+         class="text-night-200 hover:text-night-50">
+        Tools
+      </a>
+    </li>
+    
+    <li>
+      <a href="https://choreographr.com/agent/docs/tools/core/"
+         class="pl-5 text-night-300 hover:text-night-50">
+        Core tools
+      </a>
+    </li>
+    
+    <li>
+      <a href="https://choreographr.com/agent/docs/tools/git/"
+         class="pl-5 text-night-300 hover:text-night-50">
+        Git tools
+      </a>
+    </li>
+    
+    <li>
+      <a href="https://choreographr.com/agent/docs/tools/shell/"
+         class="pl-5 text-night-300 hover:text-night-50">
+        Shell tools
+      </a>
+    </li>
+    
+    <li>
+      <a href="https://choreographr.com/agent/docs/tools/databases/"
+         class="pl-5 text-night-300 hover:text-night-50">
+        Database tools
+      </a>
+    </li>
+    
+    <li>
+      <a href="https://choreographr.com/agent/docs/tools/x/"
+         class="pl-5 text-night-300 hover:text-night-50">
+        X (Twitter) tools
+      </a>
+    </li>
+    
+    <li>
+      <a href="https://choreographr.com/agent/docs/tools/blockchain/"
+         class="pl-5 text-brand-400 font-semibold">
+        Blockchain tools
+      </a>
+    </li>
+    
+    <li>
+      <a href="https://choreographr.com/agent/docs/tools/coordination/"
+         class="pl-5 text-night-300 hover:text-night-50">
+        Coordination Platform tools
+      </a>
+    </li>
+    
+    <li>
+      <a href="https://choreographr.com/agent/docs/tools/diagnostics/"
+         class="pl-5 text-night-300 hover:text-night-50">
+        Diagnostic tools
+      </a>
+    </li>
+    
+    <li>
+      <a href="https://choreographr.com/agent/docs/tools/riscv/"
+         class="pl-5 text-night-300 hover:text-night-50">
+        RISC-V VM tool
+      </a>
+    </li>
+    
+    <li>
+      <a href="https://choreographr.com/agent/docs/tools/mcp/"
+         class="pl-5 text-night-300 hover:text-night-50">
+        MCP servers
+      </a>
+    </li>
+    
+    
+    
+    <li>
+      <a href="https://choreographr.com/agent/docs/why-rust/"
+         class="text-night-200 hover:text-night-50">
+        Why Rust?
+      </a>
+    </li>
+    
+    
+    <li>
+      <a href="https://choreographr.com/agent/docs/architecture/"
+         class="text-night-200 hover:text-night-50">
+        Architecture
+      </a>
+    </li>
+    
+    
+    <li>
+      <a href="https://choreographr.com/agent/docs/security/"
+         class="text-night-200 hover:text-night-50">
+        Security
+      </a>
+    </li>
+    
+    
+    <li>
+      <a href="https://choreographr.com/agent/docs/monitoring/"
+         class="text-night-200 hover:text-night-50">
+        Monitoring
+      </a>
+    </li>
+    
+    
+    <li>
+      <a href="https://choreographr.com/agent/docs/testing/"
+         class="text-night-200 hover:text-night-50">
+        Testing &amp; development
+      </a>
+    </li>
+    
+    
+    <li>
+      <a href="https://choreographr.com/agent/docs/troubleshooting/"
+         class="text-night-200 hover:text-night-50">
+        Troubleshooting
+      </a>
+    </li>
+    
+    
+    <li>
+      <a href="https://choreographr.com/agent/docs/faq/"
+         class="text-night-200 hover:text-night-50">
+        FAQ
+      </a>
+    </li>
+    
+    
+  </ul>
+</nav>
+
+      </div>
+    </aside>
+    <article class="prose min-w-0 flex-1 max-w-3xl">
+      <h1>Blockchain tools</h1>
+      <div class="text-sm text-night-400 font-mono mb-6">
+        /agent/docs/tools/blockchain/
+      </div>
+      <p>The <code>blockchain</code> group adds read-only query tools for EVM
+(Ethereum-compatible) and Substrate/Polkadot chains, built on <code>alloy</code> and
+<code>subxt</code>. It is not active by default — activate it with
+<code>load_tools blockchain</code>. The group is compiled in only when the daemon is
+built with the <code>blockchain</code> cargo feature (enabled in the release binaries);
+see <a href="https://choreographr.com/agent/docs/installation/#blockchain-tools">Installation</a>.</p>
+<h2 id="evm-tools">EVM tools
+<a class="zola-anchor" href="#evm-tools" aria-label="Anchor link for: evm-tools">
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+</a>
+</h2>
+<p>Every EVM tool takes the node's JSON-RPC URL as <code>rpc_url</code> (any public or
+private Ethereum-compatible endpoint works, e.g.
+<code>https://ethereum-rpc.publicnode.com</code>).</p>
+<table><thead><tr><th>Tool</th><th>What it does</th></tr></thead><tbody>
+<tr><td><code>evm_chain</code></td><td>Chain ID, latest block number, gas price, max priority fee, and client version</td></tr>
+<tr><td><code>evm_balance</code></td><td>Native ETH/coin balance of an address</td></tr>
+<tr><td><code>evm_token_balance</code></td><td>ERC-20 token balance for an address (<code>token_address</code>, <code>address</code>), plus the token symbol</td></tr>
+<tr><td><code>evm_block</code></td><td>Block details: number, hash, timestamp, transaction count, gas used/limit, base fee</td></tr>
+<tr><td><code>evm_transaction</code></td><td>Transaction details by hash: block number, from/to, gas used, effective gas price, log count</td></tr>
+<tr><td><code>evm_call</code></td><td>Read-only contract call (<code>to</code>, <code>data</code>, optional <code>block_tag</code>) — returns raw hex result bytes</td></tr>
+<tr><td><code>evm_gas</code></td><td>Gas fee estimates: gas price, max priority fee, EIP-1559 fee estimation</td></tr>
+<tr><td><code>evm_logs</code></td><td>Event logs, optionally filtered by <code>address</code>, <code>topic0</code>, and <code>from_block</code>/<code>to_block</code></td></tr>
+<tr><td><code>evm_nonce</code></td><td>Transaction count (nonce) for an address</td></tr>
+<tr><td><code>evm_resolve</code></td><td>Resolve an ENS name to an address, or reverse-resolve an address to a name</td></tr>
+</tbody></table>
+<p>Block numbers and <code>block_tag</code>s accept a decimal number, <code>0x</code>-hex, or the
+named tags <code>latest</code>, <code>finalized</code>, <code>safe</code>, <code>pending</code>, and <code>earliest</code>.</p>
+<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;" ><code data-lang="json"><span class="giallo-l"><span style="color: #9399B2;">{ &quot;</span><span style="color: #89B4FA;">name</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;evm_chain&quot;</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">arguments</span><span style="color: #9399B2;">&quot;: { &quot;</span><span style="color: #89B4FA;">rpc_url</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;https://ethereum-rpc.publicnode.com&quot;</span><span style="color: #9399B2;"> } }</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">{ &quot;</span><span style="color: #89B4FA;">name</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;evm_balance&quot;</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">arguments</span><span style="color: #9399B2;">&quot;: { &quot;</span><span style="color: #89B4FA;">rpc_url</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;https://ethereum-rpc.publicnode.com&quot;</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">address</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045&quot;</span><span style="color: #9399B2;"> } }</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">{ &quot;</span><span style="color: #89B4FA;">name</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;evm_call&quot;</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">arguments</span><span style="color: #9399B2;">&quot;: { &quot;</span><span style="color: #89B4FA;">rpc_url</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;https://ethereum-rpc.publicnode.com&quot;</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">to</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;0x6B175474E89094C44Da98b954EedeAC495271d0F&quot;</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">data</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;0x70a08231000000000000000000000000d8dA6BF26964aF9D7eEd9e03E53415D37aA96045&quot;</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">block_tag</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;latest&quot;</span><span style="color: #9399B2;"> } }</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">{ &quot;</span><span style="color: #89B4FA;">name</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;evm_resolve&quot;</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">arguments</span><span style="color: #9399B2;">&quot;: { &quot;</span><span style="color: #89B4FA;">rpc_url</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;https://ethereum-rpc.publicnode.com&quot;</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">name_or_address</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;vitalik.eth&quot;</span><span style="color: #9399B2;"> } }</span></span></code></pre><h2 id="substrate-polkadot-tools">Substrate/Polkadot tools
+<a class="zola-anchor" href="#substrate-polkadot-tools" aria-label="Anchor link for: substrate-polkadot-tools">
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+</a>
+</h2>
+<p>Each Substrate tool takes an optional <code>ws_url</code> (WebSocket endpoint); it
+defaults to the public Polkadot RPC, <code>wss://rpc.polkadot.io</code>.</p>
+<table><thead><tr><th>Tool</th><th>What it does</th></tr></thead><tbody>
+<tr><td><code>subxt_chain</code></td><td>Chain name, chain type, node name/version, genesis hash, best/finalized block, system properties, and health</td></tr>
+<tr><td><code>subxt_balance</code></td><td>Account balance for an SS58 address — <code>System.Account</code> info (free, reserved, frozen)</td></tr>
+<tr><td><code>subxt_query</code></td><td>Decode a storage value by <code>pallet</code> and <code>storage_item</code> name (e.g. <code>System</code> / <code>Account</code>), with optional hex <code>key</code> bytes — returns JSON</td></tr>
+<tr><td><code>subxt_block</code></td><td>Block details: number, hash, parent hash, state root, extrinsics root, and full block JSON</td></tr>
+</tbody></table>
+<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;" ><code data-lang="json"><span class="giallo-l"><span style="color: #9399B2;">{ &quot;</span><span style="color: #89B4FA;">name</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;subxt_chain&quot;</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">arguments</span><span style="color: #9399B2;">&quot;: {} }</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">{ &quot;</span><span style="color: #89B4FA;">name</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;subxt_balance&quot;</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">arguments</span><span style="color: #9399B2;">&quot;: { &quot;</span><span style="color: #89B4FA;">address</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;15oF4uVJwmo4TdGW7VfQxNLavjCXviqxT9S1MgbjMNHr6Sp5&quot;</span><span style="color: #9399B2;"> } }</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">{ &quot;</span><span style="color: #89B4FA;">name</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;subxt_query&quot;</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">arguments</span><span style="color: #9399B2;">&quot;: { &quot;</span><span style="color: #89B4FA;">pallet</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;System&quot;</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">storage_item</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;TotalIssuance&quot;</span><span style="color: #9399B2;"> } }</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">{ &quot;</span><span style="color: #89B4FA;">name</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;subxt_block&quot;</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">arguments</span><span style="color: #9399B2;">&quot;: { &quot;</span><span style="color: #89B4FA;">block_number</span><span style="color: #9399B2;">&quot;:</span><span style="color: #FAB387;"> 20</span><span>_</span><span style="color: #FAB387;">000</span><span>_</span><span style="color: #FAB387;">000</span><span style="color: #9399B2;"> } }</span></span></code></pre>
+<blockquote>
+<p>All blockchain tools are <strong>read-only</strong> — they query nodes over HTTP/WebSocket
+and never sign transactions or move funds. The RPC endpoint is passed per
+call as an argument; no credentials are required.</p>
+</blockquote>
+
+      
+    </article>
+  </div>
+</div>
+
+
+  </main>
+
+  <footer class="border-t border-night-700 bg-night-900">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 py-12">
+    <div class="grid gap-10 md:grid-cols-3">
+      <div>
+        <div class="font-mono text-lg font-bold tracking-tight">
+          <span class="text-brand-500">choreo</span><span class="text-night-50">graphr</span>&ensp;<span class="text-brand-500">&gt;</span><span class="text-night-50">_</span>
+        </div>
+        <p class="mt-3 text-sm text-night-300 max-w-xs">
+          An all-purpose, extensible AI agent written in Rust. Runs locally or in the cloud. Open source under Apache-2.0.
+        </p>
+      </div>
+      <div>
+        <h3 class="text-sm font-semibold text-night-50 uppercase tracking-wider mb-3">Explore</h3>
+        <ul class="space-y-2 text-sm text-night-300">
+          <li><a href="https://choreographr.com/agent/docs" class="hover:text-brand-400">Agent docs</a></li>
+          <li><a href="https://choreographr.com/platform" class="hover:text-brand-400">Platform</a></li>
+          <li><a href="https://choreographr.com/portal" class="hover:text-brand-400">Portal</a></li>
+          <li><a href="https://choreographr.com/consulting" class="hover:text-brand-400">Consulting</a></li>
+          <li><a href="https://choreographr.com/search" class="hover:text-brand-400">Search</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3 class="text-sm font-semibold text-night-50 uppercase tracking-wider mb-3">Community</h3>
+        <ul class="space-y-2 text-sm text-night-300">
+          <li><a href="https://github.com/choreographr/choreographr" target="_blank" rel="noopener" class="hover:text-brand-400">GitHub</a></li>
+          <li><a href="https://t.me/choreographr" target="_blank" rel="noopener" class="hover:text-brand-400">Telegram</a></li>
+          <li><a href="https://choreographr.com/atom.xml" class="hover:text-brand-400">RSS Feed</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="mt-10 border-t border-night-700 pt-6 flex flex-col sm:flex-row justify-between gap-3 text-xs text-night-400">
+      <p>© 2026 Choreographr. Released under the Apache-2.0 license.</p>
+      <p class="font-mono">100% Rust · written by <a href="https://github.com/choreographr/choreographr" target="_blank" rel="noopener" class="text-night-300 hover:text-brand-400">choreographr</a></p>
+    </div>
+  </div>
+</footer>
+
+
+  
+
+  <script>
+    // Click-to-copy buttons for every code block. Wraps each <pre> in a
+    // .code-block container and adds a corner button that copies the block's
+    // text via the async Clipboard API, with an execCommand fallback for
+    // non-secure contexts. The button sits OUTSIDE the <pre> so it stays in
+    // the corner while horizontally-overflowing code scrolls inside the block.
+    (function () {
+      var COPY_ICON =
+        '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
+      var CHECK_ICON =
+        '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
+
+      function fallbackCopy(text) {
+        var ta = document.createElement('textarea');
+        ta.value = text;
+        ta.setAttribute('readonly', '');
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        try { document.execCommand('copy'); } catch (e) { /* ignore */ }
+        document.body.removeChild(ta);
+      }
+
+      document.querySelectorAll('pre').forEach(function (pre) {
+        // Skip daisyUI terminal mockups (mockup-code): every line is its
+        // own <pre>, so per-line copy buttons would be noise. Real code
+        // blocks are a single <pre> that is not inside a .mockup-code.
+        if (pre.closest('.mockup-code')) return;
+
+        // Idempotent: don't re-wrap if the script runs more than once.
+        if (pre.parentElement && pre.parentElement.classList.contains('code-block')) return;
+
+        var wrap = document.createElement('div');
+        wrap.className = 'code-block';
+        pre.parentNode.insertBefore(wrap, pre);
+        wrap.appendChild(pre);
+
+        var btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'code-copy';
+        btn.setAttribute('aria-label', 'Copy code to clipboard');
+        btn.innerHTML = COPY_ICON;
+        wrap.appendChild(btn);
+
+        btn.addEventListener('click', function () {
+          var text = pre.innerText;
+          var done = function () {
+            btn.classList.add('copied');
+            btn.innerHTML = CHECK_ICON;
+            btn.setAttribute('aria-label', 'Copied');
+            setTimeout(function () {
+              btn.classList.remove('copied');
+              btn.innerHTML = COPY_ICON;
+              btn.setAttribute('aria-label', 'Copy code to clipboard');
+            }, 1500);
+          };
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(text).then(done, function () { fallbackCopy(text); done(); });
+          } else {
+            fallbackCopy(text);
+            done();
+          }
+        });
+      });
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,253 @@
+{% extends "base.html" %}
+
+{% block title %}Portal — Choreographr{% endblock title %}
+{% block description %}Fund the Choreographr platform with CHOR — stake for a rolling service allowance, or convert CHOR to USD credits — and spend one USD balance on inference, IPFS pinning, and the Acuity Index.{% endblock description %}
+{% block og_title %}Portal — Choreographr{% endblock og_title %}
+{% block og_description %}Fund the Choreographr platform with CHOR — stake for a rolling service allowance, or convert CHOR to USD credits — and spend one USD balance on inference, IPFS pinning, and the Acuity Index.{% endblock og_description %}
+
+{% block extra_head %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Choreographr Portal",
+  "applicationCategory": "BlockchainApplication",
+  "description": "A single USD-denominated prepaid balance that pays for the metered services of the Choreographr platform — inference, IPFS pinning, and the Acuity Index — funded by staking CHOR or converting CHOR to credits.",
+  "url": "https://choreographr.com/portal/",
+  "isAccessibleForFree": false,
+  "offers": { "@type": "Offer", "priceCurrency": "USD" }
+}
+</script>
+{% endblock extra_head %}
+
+{% block content %}
+
+{# ============================== NOT-LAUNCHED BANNER ============================== #}
+<section class="border-b border-warning/30 bg-warning/5">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 py-4 flex items-start gap-3">
+    <span class="text-warning text-lg leading-none mt-0.5">⚠️</span>
+    <p class="text-sm text-night-200 leading-relaxed">
+      <strong class="text-warning">The Portal is not yet live.</strong> This page describes how it
+      will work once the chain relaunches and the portal pallet is built. The chain is being
+      rebuilt from the Acuity snapshot; nothing here is usable today.
+    </p>
+  </div>
+</section>
+
+{# ============================== HERO ============================== #}
+<section class="relative overflow-hidden">
+  <div class="absolute inset-0 bg-grid"></div>
+  <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(222,165,132,0.12),transparent_55%)]"></div>
+
+  <div class="relative mx-auto max-w-7xl px-4 sm:px-6 pt-20 pb-16 lg:pt-28 lg:pb-24">
+    <div class="grid lg:grid-cols-2 gap-12 lg:gap-8 items-center">
+      <div>
+        <div class="flex flex-wrap items-center gap-2 mb-6">
+          <span class="badge badge-outline badge-sm border-brand-500/40 text-brand-400 font-mono">CHOR</span>
+          <span class="badge badge-outline badge-sm border-night-500 text-night-300 font-mono">Polkadot · NPoS</span>
+          <span class="badge badge-outline badge-sm border-night-500 text-night-300 font-mono">not yet live</span>
+        </div>
+
+        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-night-50 leading-[1.1]">
+          One balance for<br>
+          <span class="text-brand-500 glow-brand">a paid platform.</span>
+        </h1>
+
+        <p class="mt-6 text-lg text-night-200 leading-relaxed max-w-xl">
+          The Portal is the payment rail of the Choreographr platform. Fund it with
+          <strong class="text-night-50">CHOR</strong> — by staking for a rolling service allowance,
+          or by converting to credits — and spend a single
+          <strong class="text-night-50">USD balance</strong> on the platform's metered services:
+          inference, IPFS pinning, and the Acuity Index.
+        </p>
+
+        <div class="mt-8 flex flex-wrap gap-3">
+          <a href="#how-it-works" class="btn btn-primary btn-lg">How it works</a>
+          <a href="#services" class="btn btn-outline btn-lg border-night-500 text-night-100 hover:border-brand-500 hover:text-brand-400">The services</a>
+          <a href="#pricing" class="btn btn-ghost btn-lg text-night-200 hover:text-brand-400">Pricing</a>
+        </div>
+      </div>
+
+      {# A small funding-flow mockup. #}
+      <div class="relative min-w-0">
+        <div class="absolute -inset-4 bg-brand-500/10 blur-2xl rounded-3xl"></div>
+        <div class="relative mockup-code bg-night-900 border border-night-600 text-sm shadow-2xl">
+          <pre data-prefix=">"><code>fund the portal</code></pre>
+          <pre data-prefix=" "><code></code></pre>
+          <pre data-prefix="✓"><code>stake CHOR · allowance proportional to stake</code></pre>
+          <pre data-prefix="✓"><code>  stake is never reduced by use</code></pre>
+          <pre data-prefix="✓"><code>convert CHOR → USD credits · non-refundable</code></pre>
+          <pre data-prefix=" "><code></code></pre>
+          <pre data-prefix=">"><code>spend the one balance</code></pre>
+          <pre data-prefix=" "><code>  inference        per token</code></pre>
+          <pre data-prefix=" "><code>  IPFS pinning     per byte-month</code></pre>
+          <pre data-prefix=" "><code>  Acuity Index     per query</code></pre>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{# ============================== FUNDING ============================== #}
+<section id="how-it-works" class="border-t border-night-700 bg-night-900/50">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 py-20">
+    <div class="max-w-2xl">
+      <h2 class="text-3xl font-bold text-night-50 tracking-tight">How you fund it</h2>
+      <p class="mt-4 text-night-300">Two ways in, one balance. CHOR is the token; the balance you spend is USD.</p>
+    </div>
+
+    <div class="mt-12 grid gap-6 lg:grid-cols-2">
+      <div class="card bg-night-900 border border-night-700">
+        <div class="card-body p-8">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="text-3xl text-brand-500">🧩</div>
+            <div class="flex-1">
+              <div class="font-mono text-xs text-brand-400">funding · hero</div>
+              <h3 class="card-title text-night-50 text-xl">Stake CHOR</h3>
+            </div>
+          </div>
+          <p class="text-night-300 text-sm leading-relaxed">
+            Lock CHOR in the portal pallet and receive a <strong class="text-night-50">rolling free-service
+            allowance</strong>, proportional to the amount staked, issued at a fixed published rate.
+            Your stake is <strong class="text-night-50">never reduced by use</strong> — it is a membership
+            right, not a drawdown. Unstake anytime to recover your CHOR.
+          </p>
+          <ul class="mt-4 space-y-2 text-sm text-night-200">
+            <li class="flex gap-3"><span class="text-brand-500 font-mono">▸</span> Allowance refreshes every period based on what you hold</li>
+            <li class="flex gap-3"><span class="text-brand-500 font-mono">▸</span> Fixed published rate — predictable, regardless of yield variance</li>
+            <li class="flex gap-3"><span class="text-brand-500 font-mono">▸</span> Unused allowance does not roll over</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card bg-night-900 border border-night-700">
+        <div class="card-body p-8">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="text-3xl text-brand-500">💳</div>
+            <div class="flex-1">
+              <div class="font-mono text-xs text-brand-400">funding · on-ramp</div>
+              <h3 class="card-title text-night-50 text-xl">Convert to credits</h3>
+            </div>
+          </div>
+          <p class="text-night-300 text-sm leading-relaxed">
+            Convert CHOR to <strong class="text-night-50">USD Portal credits</strong> at deposit time,
+            at the on-chain CHOR/USD rate. No lockup, no position — the low-friction way to start
+            and to top up as you go.
+          </p>
+          <ul class="mt-4 space-y-2 text-sm text-night-200">
+            <li class="flex gap-3"><span class="text-brand-500 font-mono">▸</span> Denominated in USD — you budget in real money</li>
+            <li class="flex gap-3"><span class="text-brand-500 font-mono">▸</span> Non-refundable, and never expire</li>
+            <li class="flex gap-3"><span class="text-brand-500 font-mono">▸</span> Rate read on-chain, so each conversion is auditable</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-6 border border-night-700 rounded-2xl bg-night-900/60 p-6">
+      <h3 class="text-night-50 font-semibold text-base mb-2">Spend order</h3>
+      <p class="text-sm text-night-300">
+        Both inputs feed the <strong class="text-night-50">same USD balance</strong>. When you spend, your free
+        stake allowance is drawn down <strong class="text-night-50">first</strong>, then your credits — so
+        staked CHOR always gets first use before the credits you bought.
+      </p>
+    </div>
+  </div>
+</section>
+
+{# ============================== SERVICES ============================== #}
+<section id="services" class="border-t border-night-700">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 py-20">
+    <div class="max-w-2xl">
+      <h2 class="text-3xl font-bold text-night-50 tracking-tight">What the balance pays for</h2>
+      <p class="mt-4 text-night-300">Three metered services, all priced in USD, all drawing down the one balance.</p>
+    </div>
+
+    <div class="mt-12 grid gap-6 md:grid-cols-3">
+      <div class="card bg-night-900 border border-night-700"><div class="card-body"><div class="text-2xl text-brand-500">🤖</div><h3 class="card-title text-night-50 text-lg">Inference</h3><p class="text-sm text-night-300">Per-token (input/output) charges for the model providers the Choreographr agent supports — the same catalog the agent already speaks to.</p><div class="mt-3 font-mono text-sm text-brand-400">per token</div></div></div>
+      <div class="card bg-night-900 border border-night-700"><div class="card-body"><div class="text-2xl text-brand-500">🧷</div><h3 class="card-title text-night-50 text-lg">IPFS pinning</h3><p class="text-sm text-night-300">Per-object and per byte-month charges to guarantee content published on the platform stays available and retrievable.</p><div class="mt-3 font-mono text-sm text-brand-400">per byte-month</div></div></div>
+      <div class="card bg-night-900 border border-night-700"><div class="card-body"><div class="text-2xl text-brand-500">🔍</div><h3 class="card-title text-night-50 text-lg">Acuity Index</h3><p class="text-sm text-night-300">Per-query and per-subscription charges against the Choreographr chain's event index — the fast, searchable view of content, revisions, links, and reactions.</p><div class="mt-3 font-mono text-sm text-brand-400">per query</div></div></div>
+    </div>
+  </div>
+</section>
+
+{# ============================== PRICING ============================== #}
+<section id="pricing" class="border-t border-night-700 bg-night-900/50">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 py-20">
+    <div class="grid lg:grid-cols-2 gap-12 items-center">
+      <div>
+        <h2 class="text-3xl font-bold text-night-50 tracking-tight">Priced in USD, funded in CHOR</h2>
+        <p class="mt-4 text-night-300 leading-relaxed">
+          Services are priced in <strong class="text-night-50">USD</strong> — the same unit the
+          underlying infrastructure (GPU time, storage and bandwidth, indexer servers) is bought
+          in. CHOR is the funding and settlement token. The
+          <strong class="text-night-50">on-chain CHOR/USD rate</strong> is read at deposit time, so
+          every conversion is auditable on-chain and no single company controls the price.
+        </p>
+        <ul class="mt-6 space-y-3 text-sm text-night-200">
+          <li class="flex gap-3"><span class="text-brand-500 font-mono">▸</span> <strong class="text-night-50">USD price sheet</strong> — stable, comparable to other providers</li>
+          <li class="flex gap-3"><span class="text-brand-500 font-mono">▸</span> <strong class="text-night-50">CHOR settles</strong> — the token is how you fund, not a volatile meter</li>
+          <li class="flex gap-3"><span class="text-brand-500 font-mono">▸</span> <strong class="text-night-50">On-chain rate</strong> — verifiable, not a vendor promise</li>
+        </ul>
+      </div>
+      <div class="border border-night-700 rounded-2xl bg-night-900/60 p-6 font-mono text-sm">
+        <div class="flex gap-1.5 mb-4">
+          <span class="w-3 h-3 rounded-full bg-error/70"></span>
+          <span class="w-3 h-3 rounded-full bg-warning/70"></span>
+          <span class="w-3 h-3 rounded-full bg-success/70"></span>
+        </div>
+        <pre class="text-night-200 leading-relaxed whitespace-pre-wrap">
+<span class="text-night-400"># priced in USD, settled in CHOR</span>
+<span class="text-success">✓</span> 1,000  CHOR  →  $42.00  of Portal credits
+<span class="text-success">✓</span> rate read on-chain at deposit
+
+<span class="text-night-400"># one balance, drawn down by metered services</span>
+<span class="text-success">✓</span> inference     $0.24 / 1M tokens
+<span class="text-success">✓</span> IPFS pinning  $0.02 / GiB-month
+<span class="text-success">✓</span> Acuity Index  $0.01 / query</pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+{# ============================== PORTAL vs CONSENSUS ============================== #}
+<section class="border-t border-night-700">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 py-20">
+    <div class="max-w-2xl">
+      <h2 class="text-3xl font-bold text-night-50 tracking-tight">A portal pallet, not consensus staking</h2>
+      <p class="mt-4 text-night-300">
+        The Portal is deliberately a <strong class="text-night-50">separate mechanism</strong> from the
+        chain's NPoS consensus staking. The two are never conflated.
+      </p>
+    </div>
+
+    <div class="mt-12 grid gap-6 md:grid-cols-2">
+      <div class="card bg-night-900 border border-night-700"><div class="card-body"><div class="font-mono text-sm text-brand-400">portal pallet</div><h3 class="card-title text-night-50 text-base">Service entitlement</h3><p class="text-sm text-night-300">Holds CHOR locked by users and issues an allowance receipt. This is a consumer service gate — anyone using the platform's services participates, not just validators.</p></div></div>
+      <div class="card bg-night-900 border border-night-700"><div class="card-body"><div class="font-mono text-sm text-brand-400">NPoS consensus</div><h3 class="card-title text-night-50 text-base">Chain security</h3><p class="text-sm text-night-300">Secures the chain and pays validators and nominators for that security. The yield it generates is what backs the free stake allowance — decentralized, not a centralized subsidy.</p></div></div>
+    </div>
+
+    <div class="mt-6 border border-night-700 rounded-2xl bg-night-900/60 p-6 text-sm text-night-300">
+      Consensus staking exists to <strong class="text-night-50">secure the network</strong>. Portal
+      access is a <strong class="text-night-50">service entitlement</strong> for its users. They
+      produce different returns, serve different actors, and live at different layers — so they are
+      separate. The yield from running staked CHOR through NPoS is what funds the free allowance;
+      the portal pallet's lock is what holds it.
+    </div>
+  </div>
+</section>
+
+{# ============================== CTA ============================== #}
+<section class="border-t border-night-700">
+  <div class="mx-auto max-w-4xl px-4 sm:px-6 py-20 text-center">
+    <h2 class="text-3xl sm:text-4xl font-bold text-night-50 tracking-tight">The payment rail of the rebuild</h2>
+    <p class="mt-4 text-night-300">
+      CHOR funds the platform, and the platform's services run against it. Follow the rebuild and
+      join the community to hear when the Portal opens.
+    </p>
+    <div class="mt-8 flex flex-wrap justify-center gap-3">
+      <a href="{{ get_url(path='/platform/') }}" class="btn btn-primary btn-lg">See the platform</a>
+      <a href="{{ config.extra.telegram }}" target="_blank" rel="noopener" class="btn btn-outline btn-lg border-night-500 text-night-100 hover:border-brand-500 hover:text-brand-400">Join the Telegram</a>
+    </div>
+  </div>
+</section>
+
+{% endblock content %}

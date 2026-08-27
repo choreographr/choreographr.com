@@ -48,6 +48,36 @@
     <loc>https://choreographr.com/agent/docs/tools/</loc>
   </url>
   <url>
+    <loc>https://choreographr.com/agent/docs/tools/blockchain/</loc>
+  </url>
+  <url>
+    <loc>https://choreographr.com/agent/docs/tools/coordination/</loc>
+  </url>
+  <url>
+    <loc>https://choreographr.com/agent/docs/tools/core/</loc>
+  </url>
+  <url>
+    <loc>https://choreographr.com/agent/docs/tools/databases/</loc>
+  </url>
+  <url>
+    <loc>https://choreographr.com/agent/docs/tools/diagnostics/</loc>
+  </url>
+  <url>
+    <loc>https://choreographr.com/agent/docs/tools/git/</loc>
+  </url>
+  <url>
+    <loc>https://choreographr.com/agent/docs/tools/mcp/</loc>
+  </url>
+  <url>
+    <loc>https://choreographr.com/agent/docs/tools/riscv/</loc>
+  </url>
+  <url>
+    <loc>https://choreographr.com/agent/docs/tools/shell/</loc>
+  </url>
+  <url>
+    <loc>https://choreographr.com/agent/docs/tools/x/</loc>
+  </url>
+  <url>
     <loc>https://choreographr.com/agent/docs/troubleshooting/</loc>
   </url>
   <url>
@@ -295,5 +325,8 @@
   </url>
   <url>
     <loc>https://choreographr.com/platform/docs/why/</loc><lastmod>2025-04-25T08:00:00Z</lastmod>
+  </url>
+  <url>
+    <loc>https://choreographr.com/portal/</loc>
   </url>
 </urlset>

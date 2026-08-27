@@ -6,8 +6,8 @@
 > providers work out of the box. Open source, Apache-2.0.
 >
 > This file contains the complete text of the site's Markdown content — the
-> documentation, FAQ, blog post, consulting and AI training pages — for LLM
-> crawlers. The short index is at /llms.txt.
+> documentation, FAQ, platform, portal, blog post, consulting and AI training
+> pages — for LLM crawlers. The short index is at /llms.txt.
 
 # Documentation
 
@@ -20,7 +20,7 @@ guide, then the [quick start](@/agent/docs/quick-start.md), or jump straight to 
 - **Getting started** — [installation](@/agent/docs/installation.md), [quick start](@/agent/docs/quick-start.md)
 - **Configuration** — [configuration](@/agent/docs/configuration.md), [accounts & providers](@/agent/docs/accounts-and-providers.md)
 - **Using the client** — [terminal client](@/agent/docs/terminal.md), [slash commands](@/agent/docs/slash-commands.md)
-- **Under the hood** — [concepts](@/agent/docs/concepts.md), [tools](@/agent/docs/tools.md), [why Rust](@/agent/docs/why-rust.md), [architecture](@/agent/docs/architecture.md)
+- **Under the hood** — [concepts](@/agent/docs/concepts.md), [tools](@/agent/docs/tools/_index.md), [why Rust](@/agent/docs/why-rust.md), [architecture](@/agent/docs/architecture.md)
 - **Operations** — [security](@/agent/docs/security.md), [monitoring](@/agent/docs/monitoring.md), [testing](@/agent/docs/testing.md), [troubleshooting](@/agent/docs/troubleshooting.md)
 - **Reference** — [FAQ](@/agent/docs/faq.md)
 
@@ -110,7 +110,7 @@ cargo install choreographr --locked
 ```
 
 Requirements: a [Rust toolchain](https://rustup.rs/) — minimum supported Rust
-version (MSRV) is **1.91** — and a **Zig 0.16.0** toolchain on your `PATH`.
+version (MSRV) is **1.94.1** — and a **Zig 0.16.0** toolchain on your `PATH`.
 Zig compiles the [`zlob`](https://crates.io/crates/zlob) crate, a
 SIMD-accelerated globbing and file-walking library that powers the agent's
 `find`, `grep`, and related file tools; its build script compiles Zig source
@@ -121,7 +121,7 @@ at build time. Install Zig 0.16.0 from [ziglang.org](https://ziglang.org/downloa
 ## Blockchain tools
 
 The EVM and Substrate/Polkadot blockchain tools (`evm_*`, `subxt_*` — see the
-[tools reference](@/agent/docs/tools.md#blockchain-tools)) are compiled in behind the
+[tools reference](@/agent/docs/tools/blockchain.md)) are compiled in behind the
 `blockchain` cargo feature. The release binaries enable it; when building from
 source, opt in explicitly:
 
@@ -136,7 +136,7 @@ running, activate the group per session with `load_tools blockchain`.
 
 ## RISC-V VM tooling
 
-The [`run_riscv`](@/agent/docs/tools.md#risc-v-vm-tool) tool compiles guest Rust
+The [`run_riscv`](@/agent/docs/tools/riscv.md) tool compiles guest Rust
 programs **at runtime**, so the daemon needs the RISC-V bare-metal target
 installed for its stable toolchain:
 
@@ -154,6 +154,26 @@ The daemon invokes `rustc +stable --target riscv64imac-unknown-none-elf`
 whenever a `run_riscv` call passes a `source` snippet, so the target must be
 installed wherever the daemon runs. Passing pre-compiled bytecode
 (`program` / `program_path`) doesn't require it.
+
+## Web page rendering
+
+The [`retrieve_webpage`](@/agent/docs/tools/core.md#web-page-rendering-retrieve-webpage)
+tool needs a **Chromium or Chrome binary installed on the host** — it does not
+auto-download a browser. It prefers `chromium` on your `PATH`, then the various
+Chrome bundles, and honors `CHROMIUM_BIN` / `CHROME_BIN` to point at a specific
+path. Install it via your package manager (e.g. `apt install chromium`,
+`brew install --cask chromium`).
+
+## Coordination Platform tools
+
+The [`coord`](@/agent/docs/tools/coordination.md) tool group is
+always compiled in and active by default. The read tools work out of the box
+against the configured platform endpoints. The **write tools** sign
+transactions and need a **Substrate (Polkadot) account credential** in the
+keystore, plus an unlocked daemon — see
+[Accounts & providers](@/agent/docs/accounts-and-providers.md#accounts) for how
+to add one (the Polkadot import wizard in the TUI, `p` on the accounts page,
+imports a Polkadot-JS keystore `.json` export).
 
 Ready to chat? Head over to the [quick start](@/agent/docs/quick-start.md).
 
@@ -279,8 +299,12 @@ commands available in `choreo-tui`.
 Accounts can be managed either in the TUI or via `~/.config/choreographr/accounts.toml`.
 
 In the TUI, press `Ctrl+A` to open the **accounts** page, then `n` to add an
-account (choose a provider, name it, and paste its API credential). See the
-[quick start](@/agent/docs/quick-start.md) for the full walkthrough.
+account (choose a provider, name it, and paste its API credential). Press `p`
+from the same page to run the **Polkadot-account import wizard**, which imports
+a Polkadot-JS keystore `.json` export (name, keystore path, password) and stores
+a Substrate account credential — required by the
+[Coordination Platform write tools](@/agent/docs/tools/coordination.md).
+See the [quick start](@/agent/docs/quick-start.md) for the full walkthrough.
 
 If you prefer to edit the file directly, accounts are configured via
 `~/.config/choreographr/accounts.toml`. Account
@@ -311,7 +335,7 @@ retry_max_attempts = 3
 
 ## Providers
 
-Choreographr supports **70+ providers** across three wire protocols:
+Choreographr supports **200+ providers** across three wire protocols:
 
 - **OpenAI-compatible** — OpenAI, DeepSeek, Mistral, xAI, Groq, Together AI,
   OpenRouter, Hugging Face, GitHub Models, NVIDIA NIM, Cerebras, Fireworks AI,
@@ -321,11 +345,12 @@ Choreographr supports **70+ providers** across three wire protocols:
   Code, and more.
 - **Google Generative AI** — Google Gemini.
 
-Each provider has its own data file under
-`choreo-ai-protocols/src/catalog/<slug>.toml` with a curated model list,
-context windows, reasoning levels, and the API format each model uses. Adding a
-new OpenAI-compatible provider requires only a catalog TOML file — zero client
-code.
+The provider/model catalog is derived from **[models.dev](https://models.dev)**
+at runtime: a bundled, normalized snapshot is merged with a policy overlay
+(`models-overlay.toml`), and the daemon re-fetches a fresh catalog from
+models.dev with a runtime refresh (conditional GET against a cached etag,
+with a cooldown between attempts, plus a local user overlay). Adding a new
+OpenAI-compatible provider needs no client code.
 
 ### Account overrides
 
@@ -393,8 +418,11 @@ All commands in `choreo-tui` use the `/` prefix.
 | `Ctrl+M` | Open the model selector popup (kitty keyboard protocol required) |
 
 `Ctrl+A` opens the accounts page — list accounts, remove with `r`, set an API
-key with `c`, or start the new-account wizard with `n`. The wizard is a
-two-phase flow: pick a provider, then enter a slug.
+key with `c`, start the new-account wizard with `n`, or run the
+**Polkadot-account import wizard** with `p` (imports a Polkadot-JS keystore
+`.json` export as a Substrate account credential). The wizard is a
+three-step flow (name, keystore path, password); the import dialog zeroizes
+the password from memory when it closes.
 
 ## Reasoning
 
@@ -444,7 +472,8 @@ very long sessions.
 ## What the TUI renders
 
 - **Markdown** — headings, lists, code blocks, tables, links, blockquotes,
-  emphasis, inline code, and math, wrapped to the terminal width.
+  emphasis, inline code, and LaTeX math rendered as pretty Unicode, all wrapped
+  to the terminal width.
 - **Syntax highlighting** — code in tool output is highlighted with syntect
   themes.
 - **Images** — when the agent calls `display_image` (PNG, JPEG, or SVG), the
@@ -452,6 +481,13 @@ very long sessions.
   Click an image to open it fullscreen; press `Esc` to dismiss.
 - **Tool results** — streaming execution descriptions, collapsible per-result
   bodies, and live token estimates in the status bar.
+- **Selection & copy** — drag with the mouse to select text in the history pane
+  and copy it via OSC 52 (a cross-terminal clipboard escape). Selection follows
+  the cursor while scrolling, stays anchored to the text mid-gesture, and is
+  copied as unwrapped text.
+- **Per-session drafts** — an unsent prompt is kept per session, so switching
+  sessions and returning preserves what you were typing; `Ctrl+Backspace` clears
+  the draft.
 
 ## Image rendering
 
@@ -524,14 +560,16 @@ and so on. Tools implement the `Tool` trait (name, group, description, JSON
 Schema, `execute`) and are registered in a `ToolRegistry` at daemon startup.
 Every tool also provides a human-readable invocation description.
 
-See the [tools reference](@/agent/docs/tools.md) for the complete, up-to-date list
+See the [tools reference](@/agent/docs/tools/_index.md) for the complete, up-to-date list
 of every built-in tool and how to call it.
 
 Available tool groups include **core** (filesystem, HTTP, images, PDF
-classification, search, random, time), **git**, **shell**, **vm**, **x**,
-**db**, and **blockchain** (EVM and Substrate/Polkadot queries,
-when the daemon is built with the `blockchain` feature). Only `core`,
-`git`, and `shell` are active by default.
+classification, search, random, time, vision input, web-page rendering),
+**git**, **shell**, **vm**, **x**, **debug** (read-only diagnostics),
+**db**, **coord** (the Choreographr Coordination Platform), and **blockchain**
+(EVM and Substrate/Polkadot queries, when the daemon is built with the
+`blockchain` feature). Only `core`, `git`, `shell`, and `coord` are active by
+default; the rest are opt-in via `load_tools`.
 
 ### Tool groups
 
@@ -570,6 +608,29 @@ syscalls, or files outside the VM without going through registered tools.
 LLMs can create persistent key/value databases. The LLM / VM can store data and
 retrieve it later — data survives restarts.
 
+## Vision input
+
+The `read_image` tool (in `core`) reads an image file from the workspace and
+feeds it to a **vision-capable model** as image input on the next request.
+It normalizes the image (resize / MIME / re-encode, with EXIF orientation
+baked in), reports a text handle, and carries the normalized bytes durably in
+the `session_attachments` table. This is the input counterpart to
+`display_image`, which renders an image *out* to you.
+
+## Coordination Platform
+
+The `coord` group (always active) connects the agent to the **Choreographr
+Coordination Platform** — a decentralized, content-addressed, timestamped
+system for agents and humans to publish and coordinate over. It composes a
+Substrate chain, the `acuity-index` event indexer, and a local IPFS daemon.
+The agent can read items, revisions, events, account profiles, and platform
+health, and — with a Substrate account credential — publish items and
+revisions, apply lifecycle transitions, pin/unpin items, and set profiles.
+
+> Groups are a **discovery mechanism, not access control** — the RISC-V VM
+> always has access to all tools. See the
+> [tools reference](@/agent/docs/tools/coordination.md).
+
 ## Multiple live sessions
 
 Each server can run multiple sessions simultaneously (limited only by system
@@ -585,428 +646,6 @@ The daemon automatically discovers project context files (`AGENTS.md`,
 model call via fingerprint-based caching. Subdirectory hints are appended to
 tool results when filesystem tools dive into subdirectories that contain their
 own context files.
-
-
-## Tools
-
-
-Tools are the functions the LLM — and the RISC-V VM — can call to interact
-with the outside world: reading and writing files, running shell commands,
-making HTTP requests, managing Git repositories, querying a persistent
-database, posting to X, and more. This page is the complete reference: how
-tools work, how they are grouped, and what each one does.
-
-## How tools work
-
-Every tool implements the `Tool` trait (name, group, description, JSON Schema,
-and `execute`) and is registered in a `ToolRegistry` at daemon startup. Before
-each model call, the daemon advertises the JSON Schemas of the tools in the
-session's **active groups**; the model can call any of them, and the daemon
-executes the call and returns the result. The JSON Schema *is* the interface —
-the model learns exactly what arguments each tool expects.
-
-### Tool call lifecycle
-
-1. The model emits a tool call: a name plus arguments as JSON.
-2. The daemon validates the arguments against the tool's schema and executes
-   the tool with the session's working directory and credentials.
-3. Streaming tools (`sh`, `exec`, `find`, `grep`, `run_series`, `run_riscv`)
-   deliver output in chunks as it is produced; other tools return their result
-   in the next turn append.
-4. The result is appended to the conversation and the agent loop continues.
-
-Every tool also produces a human-readable **invocation description**
-(e.g. "Reading `src/main.rs`.") that the client displays while the call runs,
-and tools with structured return types expose an `output_schema` for
-[programmatic tool calling](https://developers.openai.com/api/docs/guides/tools-programmatic-tool-calling)
-(Responses API, gpt-5.6+ models).
-
-### Tool groups
-
-Tools are organized into **groups** to keep the model's context small. Only
-**`core`**, **`git`**, and **`shell`** are active by default. The model can
-activate additional groups with `load_tools` and deactivate them with
-`unload_tools`; `core` is always active and cannot be unloaded.
-
-> Groups are a **discovery mechanism, not access control** — the RISC-V VM
-> always has access to all tools.
-
-| Group | Description | Active by default |
-|---|---|---|
-| `core` | Filesystem, HTTP, images, PDF, search, random, time, sessions, series | ✅ always |
-| `git` | Local Git operations (status, diff, log, add, commit, push, show) | ✅ |
-| `shell` | Shell execution (bash, nushell, fish, exec) | ✅ |
-| `db` | Session-scoped key-value database (redb) | — |
-| `x` | X/Twitter API (post, search, user lookup) | — |
-| `vm` | RISC-V sandboxed code execution | — |
-| `blockchain` | EVM and Substrate/Polkadot blockchain queries (alloy/subxt) | — |
-| `mcp/<server>` | One dynamic group per configured MCP server | — |
-
-> The `blockchain` group exists only when the daemon is built with the
-> `blockchain` cargo feature (the release binaries enable it). The tools live
-> in the `choreo-blockchain` crate, which also owns the tokio sidecar runtime
-> the alloy/subxt clients run on.
-
-Activate a group from the model side:
-
-```json
-{ "name": "load_tools", "arguments": { "groups": ["db", "x"] } }
-```
-
-and deactivate it with `unload_tools`. Groups can also be passed to
-`spawn_subsession` via its `categories` argument so a subsession starts with
-exactly the tools it needs.
-
-## Core tools
-
-`core` is always active. It covers file operations, HTTP, images, PDFs,
-search, randomness, time, session management, and orchestration.
-
-| Tool | What it does |
-|---|---|
-| `read_file` | Read a UTF-8 text file; rejects binary files; output is capped and truncation is reported |
-| `read_file_range` | Read a line range from a UTF-8 text file (max 500 lines per call) |
-| `list_files` | List files in a directory with sizes, symlink targets, and subdirectory entry counts |
-| `write_file` | Write a UTF-8 text file to the workspace |
-| `edit_file` | Apply one or more exact text replacements to a file |
-| `delete_files` | Delete files or directories; supports literal paths and glob patterns |
-| `line_count` | Count the lines in a UTF-8 text file |
-| `grep` | Search file contents for a literal or regex pattern |
-| `find` | Find files and directories by name (substring or glob) |
-| `http_request` | Make an HTTP request; returns status, headers, and body text |
-| `display_image` | Display a PNG, JPEG, or SVG image in the client UI |
-| `pdf_classify` | Classify a PDF as text, scanned, image-based, or mixed (fast, no OCR) |
-| `pdf_to_markdown` | Convert a text-based PDF to Markdown (headings, tables, code blocks) |
-| `random` | Generate random integers, floats, booleans, bytes, or UUID v4 (seedable) |
-| `get_current_time` | Get the current Unix timestamp in milliseconds |
-| `run_series` | Execute a sequence of tool calls one at a time in order |
-| `load_tools` / `unload_tools` | Activate / deactivate tool groups |
-| `load_skill` | Load a skill's full instructions by name |
-| `set_working_dir` | Change the session's working directory |
-| `set_session_title` | Set the session's display title |
-| `spawn_subsession` | Spawn a child session to work autonomously on a task |
-| `list_sessions` | List all sessions known to the daemon |
-| `get_session` | Read the full message history of a session by ID |
-
-### File tools
-
-```json
-{ "name": "read_file", "arguments": { "path": "src/main.rs" } }
-{ "name": "edit_file", "arguments": {
-    "path": "src/main.rs",
-    "edits": [
-      { "old_text": "old", "new_text": "new" },
-      { "old_text": "x", "new_text": "y", "replace_all": true }
-    ] } }
-```
-
-- `read_file` resolves relative paths against the session's working directory
-  and streams output through a bounded reader, so memory use stays capped even
-  for very large files. `read_file_range` reads a specific 1-based line range
-  (`start_line`, `max_lines`) — the right tool for big files.
-- `edit_file` takes a list of exact `old_text` → `new_text` replacements. Each
-  edit must match at least once; edits without `replace_all` must match exactly
-  once. This keeps the model from guessing at file contents.
-- `delete_files` auto-detects glob patterns (`*`, `?`, `[`). Patterns without
-  `/` match against the file's basename; patterns with `/` match full paths
-  from the working directory.
-
-### Search tools
-
-```json
-{ "name": "grep", "arguments": { "pattern": "fn main", "include": "*.rs" } }
-{ "name": "grep", "arguments": { "pattern": "pub fn \\w+", "regex": true, "path": "src" } }
-{ "name": "find", "arguments": { "pattern": "*.md", "path": "docs" } }
-```
-
-- `grep` treats the pattern as a literal substring by default — set
-  `regex: true` for regular expressions (required if your pattern contains
-  `|`, `(`, `^`, `$`, `+`, etc.). `include` filters files by glob; results are
-  returned as `file:line:content`. Both tools respect `.gitignore`, hidden
-  files, and binary files, and cap results to protect the model's context.
-- `find` searches by file name. Glob mode is auto-detected when the pattern
-  contains wildcards; set `glob` explicitly to force or disable it.
-
-  Both tools run on the [`zlob`](https://crates.io/crates/zlob) globbing and
-  file-walking engine — SIMD-accelerated, with `.gitignore` support — which is
-  also why building Choreographr requires a Zig toolchain: zlob is written in
-  Zig and is compiled at build time (see [Installation](@/agent/docs/installation.md)).
-
-### HTTP & images
-
-```json
-{ "name": "http_request", "arguments": {
-    "method": "GET", "url": "https://api.example.com/items",
-    "headers": { "Range": "bytes=0-1023" } } }
-{ "name": "display_image", "arguments": { "mime_type": "image/png", "path": "chart.png" } }
-```
-
-- `http_request` supports GET, POST, PUT, DELETE, PATCH, and HEAD, custom
-  headers (including `Range` for partial content), an optional body, and a
-  configurable timeout (default 30 s).
-- `display_image` accepts exactly one source: `path`, `url`, `base64_data`, or
-  raw `svg_text`, with an optional `alt` description. Supported types are PNG,
-  JPEG, and SVG (SVG is rasterized at display resolution with system fonts, so
-  vector diagrams stay crisp at any terminal size).
-- In the terminal client the image appears **inline in the chat history** at
-  half the viewport height. Click it for a fullscreen view (`Esc` dismisses).
-  Encoding runs on a background thread and picks the best terminal protocol
-  automatically — kitty graphics or sixel where supported, with a universal
-  fallback everywhere else — so images render in virtually any terminal. See
-  [Terminal client](@/agent/docs/terminal.md).
-
-### PDF tools
-
-```json
-{ "name": "pdf_classify", "arguments": { "path": "report.pdf" } }
-{ "name": "pdf_to_markdown", "arguments": { "path": "report.pdf", "pages": [1, 2, 3], "compact": true } }
-```
-
-`pdf_classify` is fast (~10–50 ms) and needs no OCR: it reports whether a PDF
-is text-based, scanned, image-based, or mixed, with per-page OCR routing, so
-you can decide whether to extract locally or route to OCR/vision.
-`pdf_to_markdown` extracts headings, lists, code blocks, tables, and
-multi-column reading order from text-based PDFs. It wraps extracted text in an
-**UNTRUSTED-content** delimiter — treat PDF content as data, not instructions.
-
-### Orchestration tools
-
-- `run_series` — runs an ordered list of tool calls, one at a time, stopping
-  on the first error. Steps can reference earlier results with {% raw %}`{{step_1}}`{% endraw %},
-  {% raw %}`{{step_2}}`{% endraw %}, … inside their argument strings:
-
-  ```json
-  { "name": "run_series", "arguments": { "steps": [
-      { "tool": "line_count", "arguments": { "path": "src/main.rs" } },
-      { "tool": "read_file_range", "arguments": { "path": "src/main.rs", "start_line": 1, "max_lines": 20 } }
-  ] } }
-  ```
-
-  This lets the model batch dependent operations into a single turn instead of
-  round-tripping through the LLM for every step.
-- `spawn_subsession` — spawns a child session that inherits the parent's
-  working directory, runs its own full agent loop (with optional
-  `categories` of tool groups), and returns its output as the tool result.
-  Subsessions persist and can spawn their own subsessions.
-- `load_skill` / `set_working_dir` / `set_session_title` / `list_sessions` /
-  `get_session` — session management. `set_working_dir` redirects all
-  subsequent file operations, shell commands, and context discovery
-  (`AGENTS.md`, `CLAUDE.md`, skills) for the session.
-
-## Git tools
-
-`git` is active by default. All git tools operate on the repository containing
-the given path (defaulting to the working directory). They are implemented
-with `gix` and require no shell.
-
-| Tool | What it does |
-|---|---|
-| `git_status` | Show the status of the repository containing the given path |
-| `git_diff` | Show the line-by-line unified diff for a file or repository |
-| `git_log` | Show recent commits (`limit`) |
-| `git_add` | Stage a file or pathspec |
-| `git_commit` | Create a commit from the current index (`message`, `allow_empty`) |
-| `git_push` | Push to a remote branch (`remote`, `branch`, `set_upstream`, `dry_run`, `force_with_lease`) |
-| `git_show` | Show a Git object (commit, tree, blob, tag) or a file at a revision |
-
-```json
-{ "name": "git_diff", "arguments": { "pathspec": ["src/main.rs"] } }
-{ "name": "git_commit", "arguments": { "message": "Fix off-by-one in the parser" } }
-{ "name": "git_push", "arguments": { "remote": "origin", "branch": "main", "set_upstream": true } }
-```
-
-## Shell tools
-
-`shell` is active by default. All shell tools are **non-interactive** —
-commands that read from stdin will hang — and share a common timeout
-(default 30 s) and `workdir`.
-
-| Tool | What it does |
-|---|---|
-| `exec` | Execute a single program directly, no shell parsing (e.g. `cargo build`) |
-| `sh` | Execute a command with a POSIX-compatible shell (`bash`, `dash`, or `zsh`), with pipes, redirects, globs, and env vars |
-| `nushell` | Execute a nushell command (registered only if `nu` is installed) |
-| `fish` | Execute a fish shell command (registered only if `fish` is installed) |
-
-```json
-{ "name": "exec", "arguments": { "command": "cargo", "args": ["build"], "timeout": 120000 } }
-{ "name": "sh", "arguments": { "command": "cargo test | tail -20", "shell": "bash" } }
-```
-
-Rule of thumb: use `exec` when you are certain the program exists and needs no
-shell features; use `sh` (or `nushell`/`fish`) for anything that needs pipes,
-globs, or environment variables.
-
-## Database tools
-
-The `db` group provides a persistent, session-scoped key-value store backed by
-`redb`. Data survives daemon restarts. Values are arbitrary binary (`Vec<u8>`);
-`db_get` returns a lossy UTF-8 conversion.
-
-| Tool | What it does |
-|---|---|
-| `db_set` | Insert or overwrite a key-value pair |
-| `db_get` | Retrieve a value by key |
-| `db_delete` | Remove a single key |
-| `db_delete_range` | Delete all keys in `[start, end)` |
-| `db_get_range` | Retrieve all key-value pairs in `[start, end)` |
-| `db_list` | List key names in `[start, end)` |
-| `db_count` | Count keys, optionally filtered by `prefix` |
-
-```json
-{ "name": "db_set", "arguments": { "key": "todo", "value": "review PR #42" } }
-{ "name": "db_get", "arguments": { "key": "todo" } }
-{ "name": "db_list", "arguments": {} }
-```
-
-Use the database to remember facts, notes, and state across turns and sessions.
-
-## X (Twitter) tools
-
-The `x` group wraps the X API v2. Each tool requires X credentials in the
-keystore (add them with `/add-x <service> <api_key> <api_key_secret>
-<access_token> <access_token_secret> <bearer_or_->_` in `choreo-tui`).
-
-| Tool | What it does |
-|---|---|
-| `x_post` | Post a tweet (`text`) |
-| `x_search_recent` | Search recent tweets (`query`, `max_results`) |
-| `x_user_lookup` | Look up a user by username or ID |
-
-## Blockchain tools
-
-The `blockchain` group adds read-only query tools for EVM
-(Ethereum-compatible) and Substrate/Polkadot chains, built on `alloy` and
-`subxt`. It is not active by default — activate it with
-`load_tools blockchain`. The group is compiled in only when the daemon is
-built with the `blockchain` cargo feature (enabled in the release binaries);
-see [Installation](@/agent/docs/installation.md#blockchain-tools).
-
-### EVM tools
-
-Every EVM tool takes the node's JSON-RPC URL as `rpc_url` (any public or
-private Ethereum-compatible endpoint works, e.g.
-`https://ethereum-rpc.publicnode.com`).
-
-| Tool | What it does |
-|---|---|
-| `evm_chain` | Chain ID, latest block number, gas price, max priority fee, and client version |
-| `evm_balance` | Native ETH/coin balance of an address |
-| `evm_token_balance` | ERC-20 token balance for an address (`token_address`, `address`), plus the token symbol |
-| `evm_block` | Block details: number, hash, timestamp, transaction count, gas used/limit, base fee |
-| `evm_transaction` | Transaction details by hash: block number, from/to, gas used, effective gas price, log count |
-| `evm_call` | Read-only contract call (`to`, `data`, optional `block_tag`) — returns raw hex result bytes |
-| `evm_gas` | Gas fee estimates: gas price, max priority fee, EIP-1559 fee estimation |
-| `evm_logs` | Event logs, optionally filtered by `address`, `topic0`, and `from_block`/`to_block` |
-| `evm_nonce` | Transaction count (nonce) for an address |
-| `evm_resolve` | Resolve an ENS name to an address, or reverse-resolve an address to a name |
-
-Block numbers and `block_tag`s accept a decimal number, `0x`-hex, or the
-named tags `latest`, `finalized`, `safe`, `pending`, and `earliest`.
-
-```json
-{ "name": "evm_chain", "arguments": { "rpc_url": "https://ethereum-rpc.publicnode.com" } }
-{ "name": "evm_balance", "arguments": { "rpc_url": "https://ethereum-rpc.publicnode.com", "address": "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045" } }
-{ "name": "evm_call", "arguments": { "rpc_url": "https://ethereum-rpc.publicnode.com", "to": "0x6B175474E89094C44Da98b954EedeAC495271d0F", "data": "0x70a08231000000000000000000000000d8dA6BF26964aF9D7eEd9e03E53415D37aA96045", "block_tag": "latest" } }
-{ "name": "evm_resolve", "arguments": { "rpc_url": "https://ethereum-rpc.publicnode.com", "name_or_address": "vitalik.eth" } }
-```
-
-### Substrate/Polkadot tools
-
-Each Substrate tool takes an optional `ws_url` (WebSocket endpoint); it
-defaults to the public Polkadot RPC, `wss://rpc.polkadot.io`.
-
-| Tool | What it does |
-|---|---|
-| `subxt_chain` | Chain name, chain type, node name/version, genesis hash, best/finalized block, system properties, and health |
-| `subxt_balance` | Account balance for an SS58 address — `System.Account` info (free, reserved, frozen) |
-| `subxt_query` | Decode a storage value by `pallet` and `storage_item` name (e.g. `System` / `Account`), with optional hex `key` bytes — returns JSON |
-| `subxt_block` | Block details: number, hash, parent hash, state root, extrinsics root, and full block JSON |
-
-```json
-{ "name": "subxt_chain", "arguments": {} }
-{ "name": "subxt_balance", "arguments": { "address": "15oF4uVJwmo4TdGW7VfQxNLavjCXviqxT9S1MgbjMNHr6Sp5" } }
-{ "name": "subxt_query", "arguments": { "pallet": "System", "storage_item": "TotalIssuance" } }
-{ "name": "subxt_block", "arguments": { "block_number": 20_000_000 } }
-```
-
-> All blockchain tools are **read-only** — they query nodes over HTTP/WebSocket
-> and never sign transactions or move funds. The RPC endpoint is passed per
-> call as an argument; no credentials are required.
-
-## RISC-V VM tool
-
-The `vm` group contains `run_riscv`, which compiles and runs Rust code in a
-sandboxed RISC-V VM (powered by [CKB VM](https://github.com/nervosnetwork/ckb-vm)) —
-either a `source` snippet or pre-compiled bytecode:
-
-| Argument | Meaning |
-|---|---|
-| `source` | A `fn main()` body; the tool auto-generates `#![no_std]`, `#[panic_handler]`, `_start`, and the `choreo` module |
-| `program` | Base64-encoded ELF compiled with the choreographr syscall ABI |
-| `program_path` | Path to an ELF file on disk (same ABI) |
-| `args` | Program arguments passed to the guest |
-| `max_cycles` | Cycle budget (default is documented in the tool schema) |
-| `memory_size` | Guest memory size |
-
-```json
-{ "name": "run_riscv", "arguments": { "source": "let n = 40; let r = choreo::http_request(\"GET\", \"https://api.example.com\", &[], None, None); choreo::write(r.as_bytes());" } }
-```
-
-The VM is a complete, observable replacement for the shell: all tool access
-goes through the same `ToolRegistry` as the host agent, with the same
-credentials and working directory — but inside an isolated single-hart VM with
-no host memory, syscalls, or filesystem access except through registered
-tools. Guests use the `choreo` convenience wrappers (which handle postcard
-encoding automatically):
-
-```rust
-choreo::read_file(path)                          // -> String
-choreo::write_file(path, content, overwrite)
-choreo::db_get(key)                              // -> Vec<u8>
-choreo::db_set(key, value)                       // value: &[u8]
-choreo::db_delete(key)                           // -> bool
-choreo::sh(command, shell, workdir, timeout_ms)  // -> String
-choreo::exec(command, args, workdir, timeout_ms) // -> String
-choreo::grep(pattern, regex, include, path, max_results)
-choreo::find(pattern, glob, path, max_results)
-choreo::http_request(method, url, headers, body, timeout_secs)
-choreo::write(bytes)                             // VM stdout
-choreo::exit(code)
-```
-
-> Notes: the A (atomic) extension is disabled, so guests must not use
-> `core::sync::atomic` read-modify-write operations. For `grep`, set
-> `regex: true` when using regex patterns (the default is literal matching).
-
-To compile a `source` snippet, the daemon shells out to
-`rustc +stable --target riscv64imac-unknown-none-elf`, so the RISC-V
-bare-metal target must be installed on the host (`rustup target add
-riscv64imac-unknown-none-elf` — see
-[Installation](@/agent/docs/installation.md#risc-v-vm-tooling)).
-
-> Use `choreo::write(...)` for VM output and `choreo::exit(code)` to finish.
-
-## MCP servers
-
-Choreographr is an MCP **client**. Configure servers in `mcp_servers.json`
-(the daemon's config directory); at startup the daemon spawns each server,
-discovers its tools, and registers them as a dynamic group `mcp/<slug>`. Tools
-appear as `mcp/<slug>/<tool-name>` and are callable once the group is loaded
-with `load_tools` — exactly like built-in tools, but dispatched to the MCP
-server over JSON-RPC stdio.
-
-## Security model
-
-- **Groups are discovery, not access control.** Loading `git` or `shell` just
-  adds tool definitions to the model's context; it does not enforce what the
-  model may do. The VM always has access to all tools.
-- **Callers.** Tools declare which callers may invoke them (`Direct` — the
-  model — and/or `Programmatic` — a VM guest). Session-config mutations like
-  `set_working_dir`, `load_tools`, and `unload_tools` are model-only, so a VM
-  program cannot silently redirect the session mid-task.
-- **Credentials.** Tools that need them (X, model APIs) pull credentials from
-  the encrypted keystore — never from prompt context.
 
 
 ## Why Rust?
@@ -1055,9 +694,10 @@ a piece of state into two threads, or share it without synchronization, without
 the borrow checker stopping you. The result is a threading model you can hold
 in your head — each thread owns its data, period — with none of the
 cancellation and `Send`-bound complexity that async runtimes impose. When a
-third-party library insists on async (the alloy and subxt clients behind the
-optional `blockchain` feature), a tokio runtime exists as a sidecar inside the
-`choreo-blockchain` crate; the daemon itself never needs one.
+third-party library insists on async — the `subxt`/`alloy` clients behind the
+Coordination Platform and blockchain tools — a tokio runtime exists as a
+sidecar inside the `choreo-coord` and optional `choreo-blockchain` crates; the
+daemon itself never needs one.
 
 ## The compiler as your agent-loop auditor
 
@@ -1178,10 +818,12 @@ main()
 ```
 
 This keeps the mental model simple — each thread owns its data — and avoids the
-complexity of async cancellation. The one exception is the optional
-`blockchain` feature: the `choreo-blockchain` crate (linked only then) holds a
-tokio sidecar runtime for the async alloy/subxt clients, and the daemon calls
-its synchronous `execute_*` entry points (which `block_on` internally).
+complexity of async cancellation. Two crates drive async clients behind a tokio
+sidecar runtime that the daemon calls through synchronous `execute_*` entry
+points (which `block_on` internally): `choreo-coord` (always linked, uses
+`subxt` for the Coordination Platform chain) and the optional
+`choreo-blockchain` (the alloy/subxt EVM + Substrate tools, linked only with
+the `blockchain` feature).
 
 ## Request flow
 
@@ -1202,7 +844,7 @@ serially to preserve ordering.
 
 ## Workspace topology
 
-Fourteen crates in a single Cargo workspace (resolver = "3"). The dependency
+Sixteen crates in a single Cargo workspace (resolver = "3"). The dependency
 spine is `choreo-proto` → `choreo-keystore` / `choreo-transport`, with
 `choreo-client-core` and the daemon on top, and clients (`choreo-tui`,
 `choreo-gui`, `choreo-im`, `choreo-acp`) as leaves. The daemon itself also
@@ -1212,11 +854,14 @@ sessions.
 | Crate | Description |
 |---|---|
 | `choreo-daemon` | The core engine — binary `choreographr`. Unix socket server that validates credentials, manages persistent sessions (with sub-sessions and working directories), runs requests with a tool-call loop, and streams responses. Also connects to other daemons over Noise-IK to handoff sessions and deploy work elsewhere |
-| `choreo-ai-protocols` | Provider protocols — OpenAI-compatible, Anthropic Messages, and Google Gemini clients, the `ProviderClient` trait, and the provider catalog (70+ providers) |
+| `choreo-ai-protocols` | Provider protocols — OpenAI-compatible, Anthropic Messages, and Google Gemini clients, the `ProviderClient` trait, and the provider catalog (200+ providers) |
 | `choreo-blockchain` | Blockchain tools — EVM (alloy) and Substrate/Polkadot (subxt) read-only queries plus the tokio sidecar runtime they run on; pulled in by the daemon's `blockchain` feature (off by default) |
+| `choreo-coord` | Coordination Platform orchestration — composes the chain / indexer / IPFS pipelines for the `coord` tool group (always linked) |
+| `choreo-image` | Image decode surface — raster decode with EXIF orientation baked in, HEIC decode (with a decompression-bomb guard), and SVG rasterization |
+| `choreo-sanitize` | Shared string-safety leaf — output sanitization (control chars, truncation, fenced-output safety) used across tools |
 | `choreo-proto` | Framed binary protocol (postcard + length prefix) shared between clients and daemon |
-| `choreo-keystore` | X25519 keypair + ECDH/AES-256-GCM crypto library for encrypted credentials |
-| `choreo-transport` | Noise-IK encrypted transport over TCP |
+| `choreo-keystore` | X25519 keypair + ECDH/AES-256-GCM crypto library for encrypted credentials; also Substrate (Polkadot) account credentials and Polkadot-JS keyring import |
+| `choreo-transport` | Noise-IK encrypted transport over TCP with message fragmentation and per-chunk locking |
 | `choreo-mcp` | MCP (Model Context Protocol) client — spawns subprocess servers, discovers tools, dispatches calls over JSON-RPC stdio |
 | `choreo-acp` | ACP (Agent Communication Protocol) bridge — translates JSON-RPC 2.0 over stdin/stdout into `choreo-proto` messages so ACP-compatible editors can drive sessions |
 | `choreo-tui` | Full-screen terminal UI client (ratatui + crossterm) |
@@ -1229,7 +874,29 @@ sessions.
 
 Client/daemon communication is a framed binary protocol (postcard + length
 prefix), defined in `choreo-proto`. Remote connections are wrapped in the
-Noise IK encrypted transport from `choreo-transport`.
+Noise IK encrypted transport from `choreo-transport`. The protocol is
+versioned (v3): streaming is **lossless** — each client has an unbounded
+outbound queue with lag-based eviction, and an `Evicted` event informs a slow
+client of dropped state instead of silently truncating a session. Session
+history is compressed with zstd (schema 1→2 migration) so long-running
+sessions stay compact on disk.
+
+## Vision & browsing
+
+- **Vision input** — `read_image` normalizes an image (resize / MIME /
+  re-encode, EXIF orientation baked in) and hands the bytes to a vision-capable
+  model; normalized bytes persist in the `session_attachments` table.
+- **Web page rendering** — `retrieve_webpage` launches a one-shot headless
+  Chromium/Chrome (run locally and offline) to capture HTML, text, screenshots,
+  or PDFs.
+
+## Coordination Platform
+
+The `coord` tool group (always linked) drives the Choreographr Coordination
+Platform through `choreo-coord`, which composes three pipelines: a Substrate
+chain (subxt, `block_on` into a tokio sidecar), the `acuity-index` event
+indexer, and a local IPFS daemon. Write tools sign extrinsics with the
+keystore's Substrate account credential.
 
 ## Provider architecture
 
@@ -1301,12 +968,40 @@ example, if the shell tool is enabled). An OS-level sandbox is planned:
 - **Linux** — [Landlock](https://landlock.io/)
 - **macOS** — [Seatbelt](https://theapplewiki.com/wiki/Dev:Seatbelt)
 
+## Coordination Platform credentials
+
+The [`coord`](@/agent/docs/tools/coordination.md) write tools
+(publish item / revision, lifecycle, pin/unpin, set profile) sign
+**Substrate extrinsics**. They need a **Substrate (Polkadot) account
+credential** in the keystore — add one via the Polkadot import wizard in the
+TUI (`p` on the accounts page, importing a Polkadot-JS keystore `.json`
+export). The credential is encrypted at rest like any other and decrypted only
+in memory after unlock; the daemon must be unlocked to publish. When a write
+tool is given a non-empty `account`, it validates the address against the
+credential's secret (a mismatch errors rather than signing with the wrong
+key).
+
+## Vision & web-page inputs
+
+- **`read_image`** — reads a local image file, normalizes it, and feeds it to a
+  vision model. The normalized bytes are persisted durably in the
+  `session_attachments` table so they survive restarts. Only local file paths
+  are accepted (URLs / clipboard paste are future work).
+- **`retrieve_webpage`** — renders a URL in a headless Chromium/Chrome launched
+  by the daemon. It accepts `http`, `https`, and `file` schemes; a `file://`
+  URL lets the browser read arbitrary local files from the daemon's host.
+  That reach is intentional — the browser process runs under the same OS-level
+  sandbox as the daemon — but `file://` input should be treated as equivalent
+  to reading a local file.
+
 ## Best practices
 
 - Keep the shell tool disabled and do everything through the VM for maximum
   control and observability.
 - Use `identity.pk.enc` with a strong passphrase for the private key at rest.
 - Lock the daemon (`/lock`) when you're done for the day.
+- Gate the sensitive `debug` / `blockchain` groups behind `load_tools`; only
+  `core`, `git`, `shell`, and `coord` are active by default.
 
 
 ## Monitoring
@@ -1354,7 +1049,7 @@ cargo clippy --workspace    # lints
 cargo fmt --all             # formatting
 ```
 
-The workspace targets an MSRV of **1.91**, declared via `rust-version` in every
+The workspace targets an MSRV of **1.94.1**, declared via `rust-version` in every
 crate manifest. Keep code and dependencies within this floor.
 
 ## Test infrastructure
@@ -1414,6 +1109,133 @@ on [GitHub](https://github.com/choreographr/choreographr).
 ## FAQ
 
 
+
+# Platform
+
+
+<!-- The human-facing copy lives in templates/platform.html. This body is the
+     plain-text version served to LLM crawlers via llms.txt / llms-full.txt. -->
+
+The Choreographr publishing platform is a decentralized publishing and
+coordination system. It was built and operated for years as Acuity (formerly
+LINK, then MIX) — an on-chain publishing platform — and is now being rebuilt as
+the Choreographr platform for the agent era.
+
+At its core it is a Substrate-based chain that stores content metadata on-chain
+and the content itself on IPFS, with every revision timestamped, content-
+addressed, and owned. An off-chain indexer makes it all queryable.
+
+What it is:
+
+- A decentralized wiki: content items with revision history, ownership, and
+  permanent, immutable records of who said what when.
+- A feed (X-like): account-scoped feeds, replies and comment hierarchies,
+  mentions, links, and emoji reactions.
+- Coordination for agents and humans: anyone — a Choreographr agent, any other
+  agent, or a person — can publish, read, and build on the same immutable
+  content graph.
+
+How it works (four layers):
+
+1. Chain: a Substrate runtime (FRAME) on the Polkadot SDK. It stores only the
+   immutable control state for each content item — owner, revision counter, and
+   lifecycle flags — keeping on-chain state minimal and transactions cheap.
+2. Content: content payloads are stored on IPFS, and each revision's IPFS hash
+   is emitted as an on-chain event. Content is content-addressed and permanent.
+3. Index: an off-chain event indexer (Acuity Index) decodes the event stream
+   and serves queries and subscriptions, so apps can read the full revision
+   history, link relationships, and reactions.
+4. Access: agents and apps publish via signed extrinsics and read via the
+   indexer and light clients.
+
+Key pallets (FRAME):
+
+- pallet_content: publish, revise, retract content items; derive deterministic
+  item IDs from account + nonce; set revisionable / retractable lifecycle flags.
+- pallet_account_content: account-scoped lists of owned content items.
+- pallet_account_profile: one profile pointer per account into owned content.
+- pallet_content_reactions: account-scoped emoji reactions on item revisions.
+- Balances, TransactionPayment, Utility, Sudo, and the parachain-system pallets.
+
+Content model:
+
+- ItemId: a deterministic identifier derived from blake2-256 of (account,
+  nonce, namespace) — so clients can compute an item's ID before it is created
+  and subscribe to it in advance.
+- Revisions: each revision is emitted as an event with its IPFS hash, links,
+  and mentions. Full edit history is preserved on-chain.
+- Flags: an item can be made revisionable, retractable, and retracted; owners
+  control their item's lifecycle.
+
+A note on the rebuild:
+
+The chain's long history — built before AI existed — is being relaunched with
+balance snapshots from the Acuity blockchain. The content pallets and indexer
+are being rebuilt into the Choreographr platform so that agents can participate
+as first-class publishers alongside humans.
+
+# Portal
+
+
+<!-- The human-facing copy lives in templates/portal.html. This body is the
+     plain-text version served to LLM crawlers. The Portal is not built yet:
+     this page describes how it will work once it is. -->
+
+The Choreographr Portal is a single prepaid balance, denominated in USD, that
+pays for the metered services of the Choreographr platform. It is funded in its
+native token, CHOR, the base token of the Choreographr blockchain — a Polkadot
+NPoS parachain being rebuilt from the Acuity snapshot.
+
+The Portal is not live. It documents how portal funding will work once the
+chain relaunches and the portal pallet is built. Nothing here is usable yet.
+
+How you fund the Portal — two ways, one balance:
+
+1. Stake CHOR in the portal pallet. You receive a rolling free-service allowance
+   proportional to the amount staked, issued at a fixed published rate. Your
+   stake is never reduced by use — it is a membership right, not a drawdown. You
+   can unstake at any time (with a cooldown) to recover your CHOR. The allowance
+   is a recurring, yield- and revenue-funded subsidy; unused allowance does not
+   carry over between periods.
+
+2. Convert CHOR to Portal credits at deposit time, at the on-chain CHOR/USD
+   rate. Credits are denominated in USD, are non-refundable, and never expire.
+   There is no lockup and no position — the low-friction way to start.
+
+Both feed the same USD-denominated credit balance. When you spend, the free
+stake allowance is drawn down first, then your credits.
+
+What the balance pays for — three metered services, all priced in USD:
+
+- Inference. Per-token (input/output) charges for the model providers the
+  Choreographr agent supports.
+- IPFS pinning. Per-object and per byte-month charges to guarantee content
+  generated on the platform stays available.
+- Acuity Index. Per-query and per-subscription charges against the Choreographr
+  chain's event index — the fast, searchable view of content, revisions, links,
+  and reactions.
+
+Pricing is published in USD, the same unit the underlying infrastructure (GPU
+time, storage and bandwidth, indexer servers) is bought in. CHOR is the funding
+and settlement token. The on-chain CHOR/USD rate is read at deposit time, so
+every conversion is auditable on-chain.
+
+The portal pallet is separate from the chain's consensus staking. Consensus
+staking (NPoS) exists to secure the chain and pays validators and nominators
+for that security. Portal access is a service entitlement, not a consensus
+incentive. The two are different mechanisms and never conflated: the portal
+pallet holds CHOR locked by users for an allowance receipt, while the yield
+that backs the free allowance comes from running that CHOR through the chain's
+NPoS system.
+
+Credits are non-refundable by design: because the CHOR is converted or staked
+at entry, the Portal does not hold user CHOR as a liability it must return. The
+agent can set per-API-key spend caps so a single integration cannot exhaust a
+whole balance, and requests that would exceed the remaining balance are
+rejected with an insufficient-balance error.
+
+The Portal is the payment rail the rebuild leads to: CHOR funds the platform,
+and the platform's services run against it.
 
 # Blog
 
@@ -1965,7 +1787,7 @@ Choreographr has **native tool calling for Ethereum (EVM) and Polkadot
 (Substrate)**, compiled into the release binaries. From any session you can
 read balances, inspect blocks and transactions, make read-only contract calls,
 resolve ENS names, and query Substrate storage — see the
-[blockchain tools](@/agent/docs/tools.md#blockchain-tools) reference. Solana support
+[blockchain tools](@/agent/docs/tools/blockchain.md) reference. Solana support
 is on the roadmap.
 
 Why this matters:
@@ -1996,7 +1818,7 @@ The rest of the feature list in brief:
   unlock. See [security](@/agent/docs/security.md).
 - **Agent database** — a persistent, session-scoped key-value store (`redb`)
   the agent writes to and reads back. See
-  [database tools](@/agent/docs/tools.md#database-tools).
+  [database tools](@/agent/docs/tools/databases.md).
 - **MCP client** — spawn Model Context Protocol servers, discover their tools,
   and call them from any session.
 - **ACP bridge** — drive sessions from ACP-compatible editors like Claude Code
