@@ -85,6 +85,7 @@ nav = [
   { name = "Agent", href = "/agent/" },
   { name = "Platform", href = "/platform/" },
   { name = "Portal", href = "/portal/" },
+  { name = "Regenesis", href = "/regenesis/" },
   { name = "Blog", href = "/blog/" },
   { name = "Consulting", href = "/consulting/" },
   { name = "GitHub", href = "https://github.com/choreographr/choreographr", external = true },
