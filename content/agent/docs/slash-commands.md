@@ -28,8 +28,11 @@ All commands in `choreo-tui` use the `/` prefix.
 | `Ctrl+M` | Open the model selector popup (kitty keyboard protocol required) |
 
 `Ctrl+A` opens the accounts page — list accounts, remove with `r`, set an API
-key with `c`, or start the new-account wizard with `n`. The wizard is a
-two-phase flow: pick a provider, then enter a slug.
+key with `c`, start the new-account wizard with `n`, or run the
+**Polkadot-account import wizard** with `p` (imports a Polkadot-JS keystore
+`.json` export as a Substrate account credential). The wizard is a
+three-step flow (name, keystore path, password); the import dialog zeroizes
+the password from memory when it closes.
 
 ## Reasoning
 

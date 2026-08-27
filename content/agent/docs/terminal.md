@@ -15,7 +15,8 @@ very long sessions.
 ## What the TUI renders
 
 - **Markdown** — headings, lists, code blocks, tables, links, blockquotes,
-  emphasis, inline code, and math, wrapped to the terminal width.
+  emphasis, inline code, and LaTeX math rendered as pretty Unicode, all wrapped
+  to the terminal width.
 - **Syntax highlighting** — code in tool output is highlighted with syntect
   themes.
 - **Images** — when the agent calls `display_image` (PNG, JPEG, or SVG), the
@@ -23,6 +24,13 @@ very long sessions.
   Click an image to open it fullscreen; press `Esc` to dismiss.
 - **Tool results** — streaming execution descriptions, collapsible per-result
   bodies, and live token estimates in the status bar.
+- **Selection & copy** — drag with the mouse to select text in the history pane
+  and copy it via OSC 52 (a cross-terminal clipboard escape). Selection follows
+  the cursor while scrolling, stays anchored to the text mid-gesture, and is
+  copied as unwrapped text.
+- **Per-session drafts** — an unsent prompt is kept per session, so switching
+  sessions and returning preserves what you were typing; `Ctrl+Backspace` clears
+  the draft.
 
 ## Image rendering
 

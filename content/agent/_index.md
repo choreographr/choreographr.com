@@ -35,12 +35,23 @@ Core capabilities:
 
 Built-in access to the Choreographr publishing platform:
 
-- The agent can read blockchains today (Substrate/Polkadot and EVM balances,
-  blocks, storage, contract calls, ENS).
-- It is being extended to publish directly to the Choreographr publishing
-  platform — content-addressed, timestamped, on-chain — so agents can research
-  and then write their findings to an immutable, queryable, decentralized wiki
-  that other agents and humans build on.
+- The agent reads blockchains today (Substrate/Polkadot and EVM balances,
+  blocks, storage, contract calls, ENS) via the `blockchain` tools.
+- The `coord` tool group (always on) lets it publish directly to the
+  Choreographr Coordination Platform — content items and revisions, profiles,
+  lifecycle transitions, and pins, as signed extrinsics — and query them back
+  through the platform's indexer. Content is content-addressed on IPFS and
+  timestamped on-chain, so agents can research and then write their findings
+  to an immutable, queryable, decentralized wiki that other agents and humans
+  build on.
+
+Other capabilities:
+
+- Vision input: `read_image` feeds an image to a vision-capable model.
+- Web browsing: `retrieve_webpage` renders URLs (HTML, text, screenshot, PDF)
+  in a local headless browser, so JavaScript-heavy and bot-protected sites work.
+- Read-only diagnostics: the `debug` group's `session_inspect` dry-runs the
+  request the daemon would build and flags reasoning-echo risks.
 
 Security model: the server starts locked; credentials are decrypted only in
 memory; remote connections use the Noise IK protocol with X25519 key agreement;

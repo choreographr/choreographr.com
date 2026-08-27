@@ -84,7 +84,7 @@ cargo install choreographr --locked
 ```
 
 Requirements: a [Rust toolchain](https://rustup.rs/) — minimum supported Rust
-version (MSRV) is **1.91** — and a **Zig 0.16.0** toolchain on your `PATH`.
+version (MSRV) is **1.94.1** — and a **Zig 0.16.0** toolchain on your `PATH`.
 Zig compiles the [`zlob`](https://crates.io/crates/zlob) crate, a
 SIMD-accelerated globbing and file-walking library that powers the agent's
 `find`, `grep`, and related file tools; its build script compiles Zig source
@@ -95,7 +95,7 @@ at build time. Install Zig 0.16.0 from [ziglang.org](https://ziglang.org/downloa
 ## Blockchain tools
 
 The EVM and Substrate/Polkadot blockchain tools (`evm_*`, `subxt_*` — see the
-[tools reference](@/agent/docs/tools.md#blockchain-tools)) are compiled in behind the
+[tools reference](@/agent/docs/tools/blockchain.md)) are compiled in behind the
 `blockchain` cargo feature. The release binaries enable it; when building from
 source, opt in explicitly:
 
@@ -110,7 +110,7 @@ running, activate the group per session with `load_tools blockchain`.
 
 ## RISC-V VM tooling
 
-The [`run_riscv`](@/agent/docs/tools.md#risc-v-vm-tool) tool compiles guest Rust
+The [`run_riscv`](@/agent/docs/tools/riscv.md) tool compiles guest Rust
 programs **at runtime**, so the daemon needs the RISC-V bare-metal target
 installed for its stable toolchain:
 
@@ -128,5 +128,25 @@ The daemon invokes `rustc +stable --target riscv64imac-unknown-none-elf`
 whenever a `run_riscv` call passes a `source` snippet, so the target must be
 installed wherever the daemon runs. Passing pre-compiled bytecode
 (`program` / `program_path`) doesn't require it.
+
+## Web page rendering
+
+The [`retrieve_webpage`](@/agent/docs/tools/core.md#web-page-rendering-retrieve-webpage)
+tool needs a **Chromium or Chrome binary installed on the host** — it does not
+auto-download a browser. It prefers `chromium` on your `PATH`, then the various
+Chrome bundles, and honors `CHROMIUM_BIN` / `CHROME_BIN` to point at a specific
+path. Install it via your package manager (e.g. `apt install chromium`,
+`brew install --cask chromium`).
+
+## Coordination Platform tools
+
+The [`coord`](@/agent/docs/tools/coordination.md) tool group is
+always compiled in and active by default. The read tools work out of the box
+against the configured platform endpoints. The **write tools** sign
+transactions and need a **Substrate (Polkadot) account credential** in the
+keystore, plus an unlocked daemon — see
+[Accounts & providers](@/agent/docs/accounts-and-providers.md#accounts) for how
+to add one (the Polkadot import wizard in the TUI, `p` on the accounts page,
+imports a Polkadot-JS keystore `.json` export).
 
 Ready to chat? Head over to the [quick start](@/agent/docs/quick-start.md).

@@ -58,9 +58,37 @@ example, if the shell tool is enabled). An OS-level sandbox is planned:
 - **Linux** — [Landlock](https://landlock.io/)
 - **macOS** — [Seatbelt](https://theapplewiki.com/wiki/Dev:Seatbelt)
 
+## Coordination Platform credentials
+
+The [`coord`](@/agent/docs/tools/coordination.md) write tools
+(publish item / revision, lifecycle, pin/unpin, set profile) sign
+**Substrate extrinsics**. They need a **Substrate (Polkadot) account
+credential** in the keystore — add one via the Polkadot import wizard in the
+TUI (`p` on the accounts page, importing a Polkadot-JS keystore `.json`
+export). The credential is encrypted at rest like any other and decrypted only
+in memory after unlock; the daemon must be unlocked to publish. When a write
+tool is given a non-empty `account`, it validates the address against the
+credential's secret (a mismatch errors rather than signing with the wrong
+key).
+
+## Vision & web-page inputs
+
+- **`read_image`** — reads a local image file, normalizes it, and feeds it to a
+  vision model. The normalized bytes are persisted durably in the
+  `session_attachments` table so they survive restarts. Only local file paths
+  are accepted (URLs / clipboard paste are future work).
+- **`retrieve_webpage`** — renders a URL in a headless Chromium/Chrome launched
+  by the daemon. It accepts `http`, `https`, and `file` schemes; a `file://`
+  URL lets the browser read arbitrary local files from the daemon's host.
+  That reach is intentional — the browser process runs under the same OS-level
+  sandbox as the daemon — but `file://` input should be treated as equivalent
+  to reading a local file.
+
 ## Best practices
 
 - Keep the shell tool disabled and do everything through the VM for maximum
   control and observability.
 - Use `identity.pk.enc` with a strong passphrase for the private key at rest.
 - Lock the daemon (`/lock`) when you're done for the day.
+- Gate the sensitive `debug` / `blockchain` groups behind `load_tools`; only
+  `core`, `git`, `shell`, and `coord` are active by default.

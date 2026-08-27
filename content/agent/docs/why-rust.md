@@ -47,9 +47,10 @@ a piece of state into two threads, or share it without synchronization, without
 the borrow checker stopping you. The result is a threading model you can hold
 in your head — each thread owns its data, period — with none of the
 cancellation and `Send`-bound complexity that async runtimes impose. When a
-third-party library insists on async (the alloy and subxt clients behind the
-optional `blockchain` feature), a tokio runtime exists as a sidecar inside the
-`choreo-blockchain` crate; the daemon itself never needs one.
+third-party library insists on async — the `subxt`/`alloy` clients behind the
+Coordination Platform and blockchain tools — a tokio runtime exists as a
+sidecar inside the `choreo-coord` and optional `choreo-blockchain` crates; the
+daemon itself never needs one.
 
 ## The compiler as your agent-loop auditor
 

@@ -1,6 +1,6 @@
 +++
 title = "Accounts & providers"
-description = "Configuring model accounts, API keys, and the 70+ provider catalog."
+description = "Configuring model accounts, API keys, and the 200+ provider catalog."
 weight = 4
 +++
 
@@ -9,8 +9,12 @@ weight = 4
 Accounts can be managed either in the TUI or via `~/.config/choreographr/accounts.toml`.
 
 In the TUI, press `Ctrl+A` to open the **accounts** page, then `n` to add an
-account (choose a provider, name it, and paste its API credential). See the
-[quick start](@/agent/docs/quick-start.md) for the full walkthrough.
+account (choose a provider, name it, and paste its API credential). Press `p`
+from the same page to run the **Polkadot-account import wizard**, which imports
+a Polkadot-JS keystore `.json` export (name, keystore path, password) and stores
+a Substrate account credential — required by the
+[Coordination Platform write tools](@/agent/docs/tools/coordination.md).
+See the [quick start](@/agent/docs/quick-start.md) for the full walkthrough.
 
 If you prefer to edit the file directly, accounts are configured via
 `~/.config/choreographr/accounts.toml`. Account
@@ -41,7 +45,7 @@ retry_max_attempts = 3
 
 ## Providers
 
-Choreographr supports **70+ providers** across three wire protocols:
+Choreographr supports **200+ providers** across three wire protocols:
 
 - **OpenAI-compatible** — OpenAI, DeepSeek, Mistral, xAI, Groq, Together AI,
   OpenRouter, Hugging Face, GitHub Models, NVIDIA NIM, Cerebras, Fireworks AI,
@@ -51,11 +55,12 @@ Choreographr supports **70+ providers** across three wire protocols:
   Code, and more.
 - **Google Generative AI** — Google Gemini.
 
-Each provider has its own data file under
-`choreo-ai-protocols/src/catalog/<slug>.toml` with a curated model list,
-context windows, reasoning levels, and the API format each model uses. Adding a
-new OpenAI-compatible provider requires only a catalog TOML file — zero client
-code.
+The provider/model catalog is derived from **[models.dev](https://models.dev)**
+at runtime: a bundled, normalized snapshot is merged with a policy overlay
+(`models-overlay.toml`), and the daemon re-fetches a fresh catalog from
+models.dev with a runtime refresh (conditional GET against a cached etag,
+with a cooldown between attempts, plus a local user overlay). Adding a new
+OpenAI-compatible provider needs no client code.
 
 ### Account overrides
 

@@ -11,7 +11,7 @@ cargo clippy --workspace    # lints
 cargo fmt --all             # formatting
 ```
 
-The workspace targets an MSRV of **1.91**, declared via `rust-version` in every
+The workspace targets an MSRV of **1.94.1**, declared via `rust-version` in every
 crate manifest. Keep code and dependencies within this floor.
 
 ## Test infrastructure

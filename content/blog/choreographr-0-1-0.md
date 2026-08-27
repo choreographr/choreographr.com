@@ -161,7 +161,7 @@ Choreographr has **native tool calling for Ethereum (EVM) and Polkadot
 (Substrate)**, compiled into the release binaries. From any session you can
 read balances, inspect blocks and transactions, make read-only contract calls,
 resolve ENS names, and query Substrate storage — see the
-[blockchain tools](@/agent/docs/tools.md#blockchain-tools) reference. Solana support
+[blockchain tools](@/agent/docs/tools/blockchain.md) reference. Solana support
 is on the roadmap.
 
 Why this matters:
@@ -192,7 +192,7 @@ The rest of the feature list in brief:
   unlock. See [security](@/agent/docs/security.md).
 - **Agent database** — a persistent, session-scoped key-value store (`redb`)
   the agent writes to and reads back. See
-  [database tools](@/agent/docs/tools.md#database-tools).
+  [database tools](@/agent/docs/tools/databases.md).
 - **MCP client** — spawn Model Context Protocol servers, discover their tools,
   and call them from any session.
 - **ACP bridge** — drive sessions from ACP-compatible editors like Claude Code

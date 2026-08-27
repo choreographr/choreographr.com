@@ -40,14 +40,16 @@ and so on. Tools implement the `Tool` trait (name, group, description, JSON
 Schema, `execute`) and are registered in a `ToolRegistry` at daemon startup.
 Every tool also provides a human-readable invocation description.
 
-See the [tools reference](@/agent/docs/tools.md) for the complete, up-to-date list
+See the [tools reference](@/agent/docs/tools/_index.md) for the complete, up-to-date list
 of every built-in tool and how to call it.
 
 Available tool groups include **core** (filesystem, HTTP, images, PDF
-classification, search, random, time), **git**, **shell**, **vm**, **x**,
-**db**, and **blockchain** (EVM and Substrate/Polkadot queries,
-when the daemon is built with the `blockchain` feature). Only `core`,
-`git`, and `shell` are active by default.
+classification, search, random, time, vision input, web-page rendering),
+**git**, **shell**, **vm**, **x**, **debug** (read-only diagnostics),
+**db**, **coord** (the Choreographr Coordination Platform), and **blockchain**
+(EVM and Substrate/Polkadot queries, when the daemon is built with the
+`blockchain` feature). Only `core`, `git`, `shell`, and `coord` are active by
+default; the rest are opt-in via `load_tools`.
 
 ### Tool groups
 
@@ -85,6 +87,29 @@ syscalls, or files outside the VM without going through registered tools.
 
 LLMs can create persistent key/value databases. The LLM / VM can store data and
 retrieve it later — data survives restarts.
+
+## Vision input
+
+The `read_image` tool (in `core`) reads an image file from the workspace and
+feeds it to a **vision-capable model** as image input on the next request.
+It normalizes the image (resize / MIME / re-encode, with EXIF orientation
+baked in), reports a text handle, and carries the normalized bytes durably in
+the `session_attachments` table. This is the input counterpart to
+`display_image`, which renders an image *out* to you.
+
+## Coordination Platform
+
+The `coord` group (always active) connects the agent to the **Choreographr
+Coordination Platform** — a decentralized, content-addressed, timestamped
+system for agents and humans to publish and coordinate over. It composes a
+Substrate chain, the `acuity-index` event indexer, and a local IPFS daemon.
+The agent can read items, revisions, events, account profiles, and platform
+health, and — with a Substrate account credential — publish items and
+revisions, apply lifecycle transitions, pin/unpin items, and set profiles.
+
+> Groups are a **discovery mechanism, not access control** — the RISC-V VM
+> always has access to all tools. See the
+> [tools reference](@/agent/docs/tools/coordination.md).
 
 ## Multiple live sessions
 

@@ -3,6 +3,13 @@
    can call {{<docs.sidebar current_path=... />}} without an import. #}
 {% component docs.sidebar(current_path) %}
 {% set docs = get_section(path="agent/docs/_index.md") %}
+{% set tools = get_section(path="agent/docs/tools/_index.md") %}
+{# The Tools reference lives in a sub-section (tools/), so it renders as a
+   nested group in place of the old single page. `docs.pages` is already sorted
+   by weight (the section sets sort_by="weight"); inject the Tools group right
+   after the "Concepts" entry, before "Why Rust", to keep the familiar order.
+   Note: `weight` is not exposed on pages in Zola, so the position is anchored
+   on the adjacent page title rather than a numeric comparison. #}
 <nav class="w-full">
   <p class="px-3 mb-2 text-xs font-semibold uppercase tracking-wider text-night-400">Agent docs</p>
   <ul class="menu menu-sm w-full p-0 gap-0.5">
@@ -13,6 +20,23 @@
         {{ p.title }}
       </a>
     </li>
+    {% if p.title == "Concepts" %}
+    {# Tools sub-section: its index link plus each child page. #}
+    <li>
+      <a href="{{ tools.permalink }}"
+         class="{% if current_path == tools.path %}bg-night-700 text-night-50 font-semibold{% else %}text-night-200 hover:text-night-50{% endif %}">
+        {{ tools.title }}
+      </a>
+    </li>
+    {% for sp in tools.pages %}
+    <li>
+      <a href="{{ sp.permalink }}"
+         class="pl-5 {% if current_path == sp.path %}text-brand-400 font-semibold{% else %}text-night-300 hover:text-night-50{% endif %}">
+        {{ sp.title }}
+      </a>
+    </li>
+    {% endfor %}
+    {% endif %}
     {% endfor %}
   </ul>
 </nav>
