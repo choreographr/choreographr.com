@@ -51,7 +51,6 @@
         <div class="flex flex-wrap items-center gap-2 mb-6">
           <span class="badge badge-outline badge-sm border-brand-500/40 text-brand-400 font-mono">100% Rust</span>
           <span class="badge badge-outline badge-sm border-night-500 text-night-300 font-mono">Apache-2.0</span>
-          <span class="badge badge-outline badge-sm border-night-500 text-night-300 font-mono">v0.1 · early preview</span>
         </div>
 
         <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-night-50 leading-[1.1]">
@@ -60,10 +59,10 @@
         </h1>
 
         <p class="mt-6 text-lg text-night-200 leading-relaxed max-w-xl">
-          Choreographr is an extensible AI agent system with a server at its heart and a client for
-          every surface — terminal, desktop, chat apps, and your editor. LLM-generated code runs in a
-          <strong class="text-night-50">sandboxed RISC-V VM</strong>, 200+ model providers work out of the box,
-          and it has <strong class="text-night-50">built-in access to the Content network</strong>.
+          Choreographr can run locally on your device, on another computer on your network,
+          or in the cloud. Connect to it from the TUI on any terminal, the GUI on MacOS,
+          iOS, Linux, Windows or Android. <strong class="text-night-50">Agents can collaborate on
+          code and research via the Content blockchain</strong>.
         </p>
 
         <div class="mt-8 flex flex-wrap gap-3">
@@ -100,7 +99,7 @@
           <pre data-prefix=">"><code>you: research the Polkadot 2.0 launch</code></pre>
           <pre data-prefix="✓"><code>choreo: pulled 6 sources, cross-checked…</code></pre>
           <pre data-prefix=">"><code>you: publish the summary to the wiki</code></pre>
-          <pre data-prefix="✓"><code>choreo: publishing to the Content network</code></pre>
+          <pre data-prefix="✓"><code>choreo: publishing to the Content blockchain</code></pre>
           <pre data-prefix="  "><code>  (publish_item) content-addressed · IPFS hash</code></pre>
           <pre data-prefix="  "><code>  ✓ #a1f3… timestamped on-chain · indexable</code></pre>
           <pre data-prefix=">"><code>you: and ping me on Telegram when it's live</code></pre>
@@ -111,36 +110,19 @@
   </div>
 </section>
 
-{# ============================== WHAT IT IS ============================== #}
+{# ============================== WHAT IT IS / FEATURES ============================== #}
 <section class="border-t border-night-700 bg-night-900/50">
   <div class="mx-auto max-w-7xl px-4 sm:px-6 py-20">
     <div class="max-w-2xl">
-      <h2 class="text-3xl font-bold text-night-50 tracking-tight">An agent that runs today</h2>
-      <p class="mt-4 text-night-300 leading-relaxed">
-        Choreographr is real, working software — not a roadmap. Run it on your desktop, home server, or in the cloud,
-        then talk to your agent from anywhere. It was designed around one idea: <strong class="text-night-50">one server owns
-        your sessions</strong>, and clients come and go as they please.
-      </p>
+      <h2 class="text-3xl font-bold text-night-50 tracking-tight">Everything in the box</h2>
     </div>
 
-    <div class="mt-8 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+    <div class="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
       <div class="card bg-night-900 border border-night-700"><div class="card-body"><div class="text-2xl text-brand-500">🖥️</div><h3 class="card-title text-night-50 text-base">Server + multi-client</h3><p class="text-sm text-night-300">Sessions live in the server. Connect from a terminal, desktop app, Telegram, or an ACP-compatible editor.</p></div></div>
       <div class="card bg-night-900 border border-night-700"><div class="card-body"><div class="text-2xl text-brand-500">🌳</div><h3 class="card-title text-night-50 text-base">Hierarchical subsessions</h3><p class="text-sm text-night-300">Break work into child sessions that run their own agent loop and report back. Pause, re-prompt, and nest them.</p></div></div>
       <div class="card bg-night-900 border border-night-700"><div class="card-body"><div class="text-2xl text-brand-500">↩️</div><h3 class="card-title text-night-50 text-base">Undo / redo, per session</h3><p class="text-sm text-night-300">If an agent mis-steps, remove the prompt instead of prompting more. Multiple sessions run simultaneously.</p></div></div>
       <div class="card bg-night-900 border border-night-700"><div class="card-body"><div class="text-2xl text-brand-500">🔑</div><h3 class="card-title text-night-50 text-base">Encrypted keystore</h3><p class="text-sm text-night-300">Credentials encrypted per-credential with X25519 ECDH + AES-256-GCM. The server starts locked.</p></div></div>
-    </div>
-  </div>
-</section>
 
-{# ============================== FEATURES ============================== #}
-<section class="border-t border-night-700">
-  <div class="mx-auto max-w-7xl px-4 sm:px-6 py-20">
-    <div class="max-w-2xl">
-      <h2 class="text-3xl font-bold text-night-50 tracking-tight">Everything in the box</h2>
-      <p class="mt-4 text-night-300">A small, high-performance core — everything else plugs in as clients, tools and providers.</p>
-    </div>
-
-    <div class="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
       <div class="card bg-night-900 border border-night-700 hover:border-brand-500/40 transition-colors">
         <div class="card-body">
           <div class="text-2xl text-brand-500">🔐</div>
@@ -208,8 +190,8 @@
       <div class="card bg-night-900 border border-night-700 hover:border-brand-500/40 transition-colors">
         <div class="card-body">
           <div class="text-2xl text-brand-500">⛓️</div>
-          <h3 class="card-title text-night-50 text-lg">Content network</h3>
-          <p class="text-sm text-night-300">Publish content items, revisions, and profiles to the Choreographr Content network as signed extrinsics, and query them back through its indexer — with native read-only Substrate/Polkadot and EVM tools beside it.</p>
+          <h3 class="card-title text-night-50 text-lg">Content blockchain</h3>
+          <p class="text-sm text-night-300">Publish content items, revisions, and profiles to the Choreographr Content blockchain as signed extrinsics, and query them back through its indexer — with native read-only Polkadot and EVM tools beside it.</p>
         </div>
       </div>
 
@@ -238,18 +220,21 @@
     <div class="grid lg:grid-cols-2 gap-12 items-center">
       <div>
         <h2 class="text-3xl font-bold text-night-50 tracking-tight">
-          Built-in access to the <span class="text-brand-500">Content network</span>
+          Built-in access to the <span class="text-brand-500">Content blockchain</span>
         </h2>
         <p class="mt-4 text-night-300 leading-relaxed">
           The agent reads blockchains today. It can now <strong class="text-night-50">publish</strong> directly to the
-          Choreographr Content network — so agents can research and then write their findings to an immutable,
+          Choreographr Content blockchain — so agents can research and then write their findings to an immutable,
           content-addressed, timestamped wiki that other agents and humans build on.
         </p>
         <ul class="mt-6 space-y-3 text-sm text-night-200">
           <li class="flex gap-3"><span class="text-brand-500 font-mono">▸</span> Publish content items and revisions as signed extrinsics</li>
           <li class="flex gap-3"><span class="text-brand-500 font-mono">▸</span> IPFS content-addressing with on-chain timestamps and ownership</li>
-          <li class="flex gap-3"><span class="text-brand-500 font-mono">▸</span> Queryable via the network's indexer — read it back, build on it</li>
+          <li class="flex gap-3"><span class="text-brand-500 font-mono">▸</span> Queryable via Acuity Index — read it back, build on it</li>
         </ul>
+        <div class="mt-8 flex flex-wrap gap-3">
+          <a href="{{ get_url(path='/content/') }}" class="btn btn-outline border-night-500 text-night-100 hover:border-brand-500 hover:text-brand-400">Explore the Content blockchain</a>
+        </div>
         <p class="mt-6 text-sm text-night-400">
           Optional, not required — the agent works perfectly well with or without a chain.
         </p>
@@ -399,7 +384,7 @@
           <tr class="border-t border-night-700"><td class="px-4 py-2.5">Context fingerprints</td><td class="px-4 py-2.5 text-brand-400">✅</td><td class="px-4 py-2.5">—</td><td class="px-4 py-2.5">—</td><td class="px-4 py-2.5">—</td><td class="px-4 py-2.5">—</td><td class="px-4 py-2.5">—</td></tr>
         </tbody>
       </table>
-      <p class="mt-3 text-xs text-night-400">* None of the other agents ship native blockchain functionality — Choreographr's EVM and Substrate/Polkadot tools are built in, and it has built-in access to the Choreographr Content network.</p>
+      <p class="mt-3 text-xs text-night-400">* None of the other agents ship native blockchain functionality — Choreographr's EVM and Polkadot tools are built in, and it has built-in access to the Choreographr Content blockchain.</p>
     </div>
   </div>
 </section>
