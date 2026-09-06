@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="night">
+<head>
+  <meta charset="UTF-8">
+  <!-- color-scheme hint: lets the browser paint the dark canvas background
+       as soon as the head is parsed, before ANY CSS has been applied.
+       This is the one thing that closes the residual flash on Firefox/Zen,
+       which paints its default (white) canvas frame during navigation,
+       unlike Chromium which defers first paint until the inline CSS exists. -->
+  <meta name="color-scheme" content="dark">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Project History — Choreographr</title>
+  <meta name="description" content="History of Acuity">
+  <meta name="theme-color" content="#06080b">
+
+  
+  <!-- Canonical: every page (incl. trailing-slash and /index.html variants)
+       resolves to one authoritative URL, which also matches the sitemap. -->
+  <link rel="canonical" href="https://choreographr.com/content/docs/history/">
+  
+
+  <!-- Open Graph / social sharing. og:title / og:description are overridden
+       per template so they always match the <title> and meta description. -->
+  <meta property="og:site_name" content="Choreographr">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Project History — Choreographr">
+  <meta property="og:description" content="History of Acuity">
+  <meta property="og:url" content="https://choreographr.com/content/docs/history/">
+  
+  <meta property="og:image" content="https://choreographr.com/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Choreographr — your all-purpose AI agent, written in Rust">
+  
+  <meta property="og:locale" content="en_US">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <!-- Critical inline CSS: paint the dark theme immediately, before
+       main.css (or the webfont stylesheet) finishes loading, so the
+       page never flashes white on navigation. -->
+  <style>
+    html { background-color: #06080b; color-scheme: dark; }
+    body { background-color: #06080b; color: #d3dae3; }
+  </style>
+
+  <!-- Self-hosted fonts (same-origin): preload the two variable woff2
+       files so they're available at first paint — no visible swap. -->
+  <link rel="preload" href="https://choreographr.com/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="https://choreographr.com/fonts/jetbrains-mono.woff2" as="font" type="font/woff2" crossorigin>
+
+  <link rel="icon" type="image/svg+xml" href="https://choreographr.com/favicon.svg">
+  <link rel="stylesheet" href="https://choreographr.com/css/main.css?h=e7e23cc03e88c866d4ba">
+
+  <!-- Firefox/Zen can paint a frame before this stylesheet has been
+       applied if a layout flush happens while it loads (Bugzilla
+       1459305) — unlike Chromium, which blocks the parser on the
+       <link>. This synchronous script is the standard workaround: it
+       cannot execute until main.css is ready, and while it is pending
+       the <body> has not been parsed, so nothing unstyled can paint.
+       Result: same first-paint behaviour as Chromium, no FOUC. -->
+  <script>
+    // No-op: exists only to hold first paint until main.css is applied.
+  </script>
+
+  
+  <link rel="alternate" type="application/atom+xml" title="Choreographr Blog" href="https://choreographr.com/atom.xml">
+  
+
+  
+</head>
+<body class="min-h-screen flex flex-col">
+
+  <header class="sticky top-0 z-40 w-full border-b border-night-700 bg-night-950/90 backdrop-blur">
+  <nav class="navbar mx-auto max-w-7xl px-4 sm:px-6">
+    <div class="navbar-start">
+      <div class="dropdown lg:hidden">
+        <div tabindex="0" role="button" class="btn btn-ghost btn-square" aria-label="Menu">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </div>
+        <ul tabindex="0" class="dropdown-content menu bg-night-900 border border-night-700 rounded-box z-50 mt-3 w-52 p-2 shadow-2xl">
+          
+          <li>
+            <a href="/agent/"  class="">
+              Agent
+            </a>
+          </li>
+          
+          <li>
+            <a href="/content/"  class="text-brand-500">
+              Content
+            </a>
+          </li>
+          
+          <li>
+            <a href="/portal/"  class="">
+              Portal
+            </a>
+          </li>
+          
+          <li>
+            <a href="/regenesis/"  class="">
+              Regenesis
+            </a>
+          </li>
+          
+          <li>
+            <a href="/blog/"  class="">
+              Blog
+            </a>
+          </li>
+          
+          <li>
+            <a href="https://github.com/choreographr" target="_blank" rel="noopener" class="">
+              GitHub<span class="text-night-400 text-xs">↗</span>
+            </a>
+          </li>
+          
+          <li>
+            <a href="https://t.me/choreographr" target="_blank" rel="noopener" class="">
+              Telegram<span class="text-night-400 text-xs">↗</span>
+            </a>
+          </li>
+          
+        </ul>
+      </div>
+      <a href="/" class="font-mono text-lg font-bold tracking-tight select-none">
+        <span class="text-brand-500">choreo</span><span class="text-night-50">graphr</span>&ensp;<span class="text-brand-500">&gt;</span><span class="text-night-50">_</span>
+      </a>
+    </div>
+    <div class="navbar-end hidden lg:flex">
+      <ul class="menu menu-horizontal px-1 gap-1 text-sm">
+        
+        <li>
+          <a href="/agent/"
+             
+             class="text-night-200 hover:text-night-50">
+            Agent
+          </a>
+        </li>
+        
+        <li>
+          <a href="/content/"
+             
+             class="text-brand-500 font-semibold">
+            Content
+          </a>
+        </li>
+        
+        <li>
+          <a href="/portal/"
+             
+             class="text-night-200 hover:text-night-50">
+            Portal
+          </a>
+        </li>
+        
+        <li>
+          <a href="/regenesis/"
+             
+             class="text-night-200 hover:text-night-50">
+            Regenesis
+          </a>
+        </li>
+        
+        <li>
+          <a href="/blog/"
+             
+             class="text-night-200 hover:text-night-50">
+            Blog
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://github.com/choreographr"
+             target="_blank" rel="noopener"
+             class="">
+            GitHub<span class="text-night-400 text-xs">↗</span>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://t.me/choreographr"
+             target="_blank" rel="noopener"
+             class="">
+            Telegram<span class="text-night-400 text-xs">↗</span>
+          </a>
+        </li>
+        
+      </ul>
+    </div>
+  </nav>
+</header>
+
+
+  <main class="flex-1 relative">
+    
+    
+      
+    
+    
+      
+      <div class="mx-auto max-w-7xl px-4 sm:px-6 pt-5">
+        
+
+
+
+
+<nav aria-label="Breadcrumb" class="font-mono text-sm text-night-400">
+  <span class="flex flex-wrap items-center">
+    <a href="/" class="hover:text-brand-400">home</a>
+    
+    
+      
+    
+      
+        
+        
+        <span class="text-night-600">/</span>
+        
+        <a href="/content/" class="hover:text-brand-400">content</a>
+        
+      
+    
+      
+        
+        
+        <span class="text-night-600">/</span>
+        
+        <a href="/content/docs/" class="hover:text-brand-400">docs</a>
+        
+      
+    
+      
+        
+        
+        <span class="text-night-600">/</span>
+        
+        <span class="text-night-200 font-medium">history</span>
+        
+      
+    
+      
+    
+  </span>
+</nav>
+
+      </div>
+      
+    
+    
+
+
+  
+  
+  
+  
+
+<div class="mx-auto max-w-7xl px-4 sm:px-6 py-8 lg:py-12">
+  <div class="flex flex-col lg:flex-row gap-10">
+    <aside class="lg:w-60 shrink-0">
+      <div class="lg:sticky lg:top-24">
+        <nav class="w-full">
+          <p class="px-3 mb-2 text-xs font-semibold uppercase tracking-wider text-night-400">Content docs</p>
+          <ul class="menu menu-sm w-full p-0 gap-0.5">
+            
+            <li>
+              <a href="https://choreographr.com/content/docs/introduction/"
+                 class="text-night-200 hover:text-night-50">
+                Introduction
+              </a>
+            </li>
+            
+            <li>
+              <a href="https://choreographr.com/content/docs/why/"
+                 class="text-night-200 hover:text-night-50">
+                Why?
+              </a>
+            </li>
+            
+            <li>
+              <a href="https://choreographr.com/content/docs/features/"
+                 class="text-night-200 hover:text-night-50">
+                Features
+              </a>
+            </li>
+            
+            <li>
+              <a href="https://choreographr.com/content/docs/history/"
+                 class="bg-night-700 text-night-50 font-semibold">
+                Project History
+              </a>
+            </li>
+            
+            <li>
+              <a href="https://choreographr.com/content/docs/regenesis/"
+                 class="text-night-200 hover:text-night-50">
+                Regenesis
+              </a>
+            </li>
+            
+            <li>
+              <a href="https://choreographr.com/content/docs/tokenomics/"
+                 class="text-night-200 hover:text-night-50">
+                Tokenomics
+              </a>
+            </li>
+            
+            <li>
+              <a href="https://choreographr.com/content/docs/roadmap/"
+                 class="text-night-200 hover:text-night-50">
+                Roadmap
+              </a>
+            </li>
+            
+            <li>
+              <a href="https://choreographr.com/content/docs/index-event-log/"
+                 class="text-night-200 hover:text-night-50">
+                Index The Event Log
+              </a>
+            </li>
+            
+            <li>
+              <a href="https://choreographr.com/content/docs/community-moderation/"
+                 class="text-night-200 hover:text-night-50">
+                Community Moderation
+              </a>
+            </li>
+            
+            <li>
+              <a href="https://choreographr.com/content/docs/prevent-debasement/"
+                 class="text-night-200 hover:text-night-50">
+                Prevent Debasement
+              </a>
+            </li>
+            
+          </ul>
+          <p class="px-3 mt-4"><a href="https://choreographr.com/content" class="text-sm text-night-400 hover:text-brand-400 font-mono">← Content</a></p>
+        </nav>
+      </div>
+    </aside>
+    <article class="prose min-w-0 flex-1 max-w-3xl">
+      <h1>Project History</h1>
+      <h3 id="work-started-on-blobstore">Work started on BlobStore
+<a class="zola-anchor" href="#work-started-on-blobstore" aria-label="Anchor link for: work-started-on-blobstore">
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+</a>
+</h3>
+<p>26th November 2015</p>
+<p>The Ethereum mainnet had just been launched over the summer. This was the first technology that could be used to build a fully autonomous and permanent social media platform. The primary Acuity smart contract, ItemStore was originally called BlobStore and the first version was only <a target="_blank" href="https://github.com/acuity-social/mix-item-store/blob/6f0c4f3f87ba2571fd8f5e00c74f006194abe749/blobstore.sol">23 lines long</a>.</p>
+<h3 id="link-blockchain-announced">LINK Blockchain announced
+<a class="zola-anchor" href="#link-blockchain-announced" aria-label="Anchor link for: link-blockchain-announced">
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+</a>
+</h3>
+<p>17th December 2016</p>
+<p>MIX Blockchain (the precursor to the Acuity Blockchain) was orginally called <a target="_blank" href="https://medium.com/mix-blockchain/introducing-link-blockchain-b447576ff438">LINK</a>.</p>
+<h3 id="link-blockchain-genesis-block">LINK Blockchain Genesis Block
+<a class="zola-anchor" href="#link-blockchain-genesis-block" aria-label="Anchor link for: link-blockchain-genesis-block">
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+</a>
+</h3>
+<p>27th April 2017</p>
+<p>The LINK blockchain is activated and mining begins.</p>
+<h3 id="switch-from-log-storage-to-ipfs">Switch from log storage to IPFS
+<a class="zola-anchor" href="#switch-from-log-storage-to-ipfs" aria-label="Anchor link for: switch-from-log-storage-to-ipfs">
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+</a>
+</h3>
+<p>3rd June 2017</p>
+<p>In the original design, published content (excluding attachments) was to be stored in Ethereum log storage. It was determined that IPFS would be a much better technology to store all content, with the hash of each content revision being stored in contract state. Here is the <a target="_blank" href="https://github.com/acuity-social/mix-item-store/commit/cf818ec28a236e6f1966a22f0dcd45eef267f6f2">commit</a>.</p>
+<h3 id="kuala-lumpur-link-presentation">Kuala Lumpur LINK Presentation
+<a class="zola-anchor" href="#kuala-lumpur-link-presentation" aria-label="Anchor link for: kuala-lumpur-link-presentation">
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+</a>
+</h3>
+<p>July 2017</p>
+<p>Founder Jonathan Brown and developer James Drummond travelled to Kuala Lumpur to deliver a presentation about LINK. Here's the <a target="_blank" href="https://www.youtube.com/watch?v=ih1eUUm5duM">video</a>.</p>
+<h3 id="link-renamed-to-mix-trading-begins">LINK renamed to MIX - trading begins
+<a class="zola-anchor" href="#link-renamed-to-mix-trading-begins" aria-label="Anchor link for: link-renamed-to-mix-trading-begins">
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+</a>
+</h3>
+<p>12th October 2017</p>
+<p>Due to another high profile project commencing trading as LINK, the project and cryptocurrency was renamed to MIX.</p>
+<h3 id="anarchapulco-gold-sponsor">Anarchapulco Gold Sponsor
+<a class="zola-anchor" href="#anarchapulco-gold-sponsor" aria-label="Anchor link for: anarchapulco-gold-sponsor">
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+</a>
+</h3>
+<p>15th - 18th February 2018</p>
+<p>MIX was a gold sponsor of Anarchapulco 2018 in Acapulco, Mexico.</p>
+<h3 id="mix-party-san-francisco">MIX Party San Francisco
+<a class="zola-anchor" href="#mix-party-san-francisco" aria-label="Anchor link for: mix-party-san-francisco">
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+</a>
+</h3>
+<p>15th March 2018</p>
+<p>MIX threw a party in The Mission, San Francisco with a <a target="_blank" href="https://www.youtube.com/watch?v=obO0axRvxLo">project update</a> by Founder Jonathan Brown and a live swing band.</p>
+<h3 id="mix-hardfork-at-block-3-000-000">MIX hardfork at block 3,000,000
+<a class="zola-anchor" href="#mix-hardfork-at-block-3-000-000" aria-label="Anchor link for: mix-hardfork-at-block-3-000-000">
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+</a>
+</h3>
+<p>27th October 2018</p>
+<p>The Ethereum difficulty bomb was beginning to slow down block production, so MIX needed a hard fork to disable this. At the same time the EVM was upgraded to Byzantium.</p>
+<h3 id="chiang-mai-presentation">Chiang Mai Presentation
+<a class="zola-anchor" href="#chiang-mai-presentation" aria-label="Anchor link for: chiang-mai-presentation">
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+</a>
+</h3>
+<p>4th February 2019</p>
+<p>Jonathan Brown gave a <a target="_blank" href="https://www.youtube.com/watch?v=lF5PZDWgmEs">project update</a> in Chiang Mai.</p>
+<h3 id="mix-acuity-browser-released">MIX Acuity Browser released
+<a class="zola-anchor" href="#mix-acuity-browser-released" aria-label="Anchor link for: mix-acuity-browser-released">
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+</a>
+</h3>
+<p>5th August 2019</p>
+<p>The MIX Acuity desktop browser for Windows, Mac and Linux was released. It is fully autonomous, doesn't connect to any servers and has rich functionaity such as profile creation, image publishing, feeds, topics and trust network - all implemented as <a target="_blank" href="https://docs.mix-blockchain.org/en/latest/smart_contracts.html">smart contracts</a>. It also has in-app mining.</p>
+<h3 id="mix-acuity-web-app">MIX Acuity web app
+<a class="zola-anchor" href="#mix-acuity-web-app" aria-label="Anchor link for: mix-acuity-web-app">
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+</a>
+</h3>
+<p>November 2019</p>
+<p>The MIX Acuity browser was very powerful, but it had a problem - installing it was a huge barrier to entry. Having it available as a web app meant content could be linked to directly from other web sites. Because the desktop app had been built with Electron and web technologies, creating a web app build was fairly easy.</p>
+<h3 id="video-publishing-functionality">Video publishing functionality
+<a class="zola-anchor" href="#video-publishing-functionality" aria-label="Anchor link for: video-publishing-functionality">
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+</a>
+</h3>
+<p>20th January 2020</p>
+<p>The desktop app could transcoded the video to multiple resolutions and video could be streamed from IPFS in both the web app and the desktop app. Additionally a command line utility could synchronize video from YouTube to Acuity. Here's the <a target="_blank" href="https://www.youtube.com/watch?v=K_NSdHzQFdk">video</a>.</p>
+<h3 id="migration-to-substrate-polkadot-announced">Migration to Substrate / Polkadot announced
+<a class="zola-anchor" href="#migration-to-substrate-polkadot-announced" aria-label="Anchor link for: migration-to-substrate-polkadot-announced">
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+</a>
+</h3>
+<p>8th June 2020</p>
+<p>An independent Ethereum PoW blockchain had been an excellent technology to develop the platform on. Now MIX is moving to the Polkadot eco-system as a Substrate PoS blockchain. This has many advantages: increased economic security, cheaper transactions, greater capacity, autonomous communication with other blockchains, standardized tooling, extensibile functionality, autonomous upgrades. Additionally the MIX name is being droped entirely in favour of ACUITY. Here's the <a target="_blank" href="https://www.youtube.com/watch?v=IQqgqCEQW9o">video announcement</a>.</p>
+<h3 id="substrate-regenesis">Substrate Regenesis
+<a class="zola-anchor" href="#substrate-regenesis" aria-label="Anchor link for: substrate-regenesis">
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+</a>
+</h3>
+<p>1st September 2020</p>
+<p>A snapshot of all MIX accounts and balances was recorded at block 7,396,472.</p>
+<h3 id="acuity-blockchain-activated">Acuity Blockchain Activated
+<a class="zola-anchor" href="#acuity-blockchain-activated" aria-label="Anchor link for: acuity-blockchain-activated">
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+</a>
+</h3>
+<p>3rd September 2020</p>
+<p>The new Substrate-based Acuity blockchain was launched. MIX holders began claiming their ACU.</p>
+<h3 id="1st-hybrid-indexer-grant">1st Hybrid Indexer Grant
+<a class="zola-anchor" href="#1st-hybrid-indexer-grant" aria-label="Anchor link for: 1st-hybrid-indexer-grant">
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+</a>
+</h3>
+<p>6th March 2023</p>
+<p>The first Web3 Foundation grant for Hybrid Indexer is <a rel="noopener external" target="_blank" href="https://github.com/w3f/Grants-Program/blob/master/applications/hybrid.md">approved</a>.</p>
+<h3 id="2nd-hybrid-indexer-grant">2nd Hybrid Indexer Grant
+<a class="zola-anchor" href="#2nd-hybrid-indexer-grant" aria-label="Anchor link for: 2nd-hybrid-indexer-grant">
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+</a>
+</h3>
+<p>22nd September 2023</p>
+<p>The second Web3 Foundation grant for Hybrid Indexer is <a rel="noopener external" target="_blank" href="https://github.com/w3f/Grants-Program/blob/master/applications/hybrid2.md">approved</a>. Hybrid was later extended into <a href="/content/">Acuity Index</a>.</p>
+
+    </article>
+  </div>
+</div>
+
+  </main>
+
+  <footer class="border-t border-night-700 bg-night-900">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 py-12">
+    <div class="grid gap-10 md:grid-cols-3">
+      <div>
+        <div class="font-mono text-lg font-bold tracking-tight">
+          <span class="text-brand-500">choreo</span><span class="text-night-50">graphr</span>&ensp;<span class="text-brand-500">&gt;</span><span class="text-night-50">_</span>
+        </div>
+        <p class="mt-3 text-sm text-night-300 max-w-xs">
+          An all-purpose, extensible AI agent written in Rust. Runs locally or in the cloud. Open source under Apache-2.0.
+        </p>
+      </div>
+      <div>
+        <h3 class="text-sm font-semibold text-night-50 uppercase tracking-wider mb-3">Explore</h3>
+        <ul class="space-y-2 text-sm text-night-300">
+          <li><a href="https://choreographr.com/agent/docs" class="hover:text-brand-400">Agent docs</a></li>
+          <li><a href="https://choreographr.com/content" class="hover:text-brand-400">Content</a></li>
+          <li><a href="https://choreographr.com/portal" class="hover:text-brand-400">Portal</a></li>
+          <li><a href="https://choreographr.com/consulting" class="hover:text-brand-400">Consulting</a></li>
+          <li><a href="https://choreographr.com/search" class="hover:text-brand-400">Search</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3 class="text-sm font-semibold text-night-50 uppercase tracking-wider mb-3">Community</h3>
+        <ul class="space-y-2 text-sm text-night-300">
+          <li><a href="https://github.com/choreographr" target="_blank" rel="noopener" class="hover:text-brand-400">GitHub</a></li>
+          <li><a href="https://t.me/choreographr" target="_blank" rel="noopener" class="hover:text-brand-400">Telegram</a></li>
+          <li><a href="https://choreographr.com/atom.xml" class="hover:text-brand-400">RSS Feed</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="mt-10 border-t border-night-700 pt-6 flex flex-col sm:flex-row justify-between gap-3 text-xs text-night-400">
+      <p>© 2026 Choreographr. Released under the Apache-2.0 license.</p>
+      <p class="font-mono">100% Rust · written by <a href="https://github.com/choreographr/choreographr" target="_blank" rel="noopener" class="text-night-300 hover:text-brand-400">choreographr</a></p>
+    </div>
+  </div>
+</footer>
+
+
+  
+
+  <script>
+    // Click-to-copy buttons for every code block. Wraps each <pre> in a
+    // .code-block container and adds a corner button that copies the block's
+    // text via the async Clipboard API, with an execCommand fallback for
+    // non-secure contexts. The button sits OUTSIDE the <pre> so it stays in
+    // the corner while horizontally-overflowing code scrolls inside the block.
+    (function () {
+      var COPY_ICON =
+        '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
+      var CHECK_ICON =
+        '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
+
+      function fallbackCopy(text) {
+        var ta = document.createElement('textarea');
+        ta.value = text;
+        ta.setAttribute('readonly', '');
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        try { document.execCommand('copy'); } catch (e) { /* ignore */ }
+        document.body.removeChild(ta);
+      }
+
+      document.querySelectorAll('pre').forEach(function (pre) {
+        // Skip daisyUI terminal mockups (mockup-code): every line is its
+        // own <pre>, so per-line copy buttons would be noise. Real code
+        // blocks are a single <pre> that is not inside a .mockup-code.
+        if (pre.closest('.mockup-code')) return;
+
+        // Idempotent: don't re-wrap if the script runs more than once.
+        if (pre.parentElement && pre.parentElement.classList.contains('code-block')) return;
+
+        var wrap = document.createElement('div');
+        wrap.className = 'code-block';
+        pre.parentNode.insertBefore(wrap, pre);
+        wrap.appendChild(pre);
+
+        var btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'code-copy';
+        btn.setAttribute('aria-label', 'Copy code to clipboard');
+        btn.innerHTML = COPY_ICON;
+        wrap.appendChild(btn);
+
+        btn.addEventListener('click', function () {
+          var text = pre.innerText;
+          var done = function () {
+            btn.classList.add('copied');
+            btn.innerHTML = CHECK_ICON;
+            btn.setAttribute('aria-label', 'Copied');
+            setTimeout(function () {
+              btn.classList.remove('copied');
+              btn.innerHTML = COPY_ICON;
+              btn.setAttribute('aria-label', 'Copy code to clipboard');
+            }, 1500);
+          };
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(text).then(done, function () { fallbackCopy(text); done(); });
+          } else {
+            fallbackCopy(text);
+            done();
+          }
+        });
+      });
+    })();
+  </script>
+</body>
+</html>

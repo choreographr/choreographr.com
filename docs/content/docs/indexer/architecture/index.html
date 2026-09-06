@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="night">
+<head>
+  <meta charset="UTF-8">
+  <!-- color-scheme hint: lets the browser paint the dark canvas background
+       as soon as the head is parsed, before ANY CSS has been applied.
+       This is the one thing that closes the residual flash on Firefox/Zen,
+       which paints its default (white) canvas frame during navigation,
+       unlike Chromium which defers first paint until the inline CSS exists. -->
+  <meta name="color-scheme" content="dark">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Architecture — Choreographr</title>
+  <meta name="description" content="Choreographr is an all-purpose AI agent, written in Rust, with built-in access to the Content network — a decentralized, content-addressed, timestamped publication layer on the Choreographr chain. A daemon with many clients, a sandboxed RISC-V VM, and 200+ model providers.">
+  <meta name="theme-color" content="#06080b">
+
+  
+  <!-- Canonical: every page (incl. trailing-slash and /index.html variants)
+       resolves to one authoritative URL, which also matches the sitemap. -->
+  <link rel="canonical" href="https://choreographr.com/content/docs/indexer/architecture/">
+  
+
+  <!-- Open Graph / social sharing. og:title / og:description are overridden
+       per template so they always match the <title> and meta description. -->
+  <meta property="og:site_name" content="Choreographr">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Architecture — Choreographr">
+  <meta property="og:description" content="Choreographr is an all-purpose AI agent, written in Rust, with built-in access to the Content network — a decentralized, content-addressed, timestamped publication layer on the Choreographr chain. A daemon with many clients, a sandboxed RISC-V VM, and 200+ model providers.">
+  <meta property="og:url" content="https://choreographr.com/content/docs/indexer/architecture/">
+  
+  <meta property="og:image" content="https://choreographr.com/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Choreographr — your all-purpose AI agent, written in Rust">
+  
+  <meta property="og:locale" content="en_US">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <!-- Critical inline CSS: paint the dark theme immediately, before
+       main.css (or the webfont stylesheet) finishes loading, so the
+       page never flashes white on navigation. -->
+  <style>
+    html { background-color: #06080b; color-scheme: dark; }
+    body { background-color: #06080b; color: #d3dae3; }
+  </style>
+
+  <!-- Self-hosted fonts (same-origin): preload the two variable woff2
+       files so they're available at first paint — no visible swap. -->
+  <link rel="preload" href="https://choreographr.com/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="https://choreographr.com/fonts/jetbrains-mono.woff2" as="font" type="font/woff2" crossorigin>
+
+  <link rel="icon" type="image/svg+xml" href="https://choreographr.com/favicon.svg">
+  <link rel="stylesheet" href="https://choreographr.com/css/main.css?h=e7e23cc03e88c866d4ba">
+
+  <!-- Firefox/Zen can paint a frame before this stylesheet has been
+       applied if a layout flush happens while it loads (Bugzilla
+       1459305) — unlike Chromium, which blocks the parser on the
+       <link>. This synchronous script is the standard workaround: it
+       cannot execute until main.css is ready, and while it is pending
+       the <body> has not been parsed, so nothing unstyled can paint.
+       Result: same first-paint behaviour as Chromium, no FOUC. -->
+  <script>
+    // No-op: exists only to hold first paint until main.css is applied.
+  </script>
+
+  
+  <link rel="alternate" type="application/atom+xml" title="Choreographr Blog" href="https://choreographr.com/atom.xml">
+  
+
+  
+</head>
+<body class="min-h-screen flex flex-col">
+
+  <header class="sticky top-0 z-40 w-full border-b border-night-700 bg-night-950/90 backdrop-blur">
+  <nav class="navbar mx-auto max-w-7xl px-4 sm:px-6">
+    <div class="navbar-start">
+      <div class="dropdown lg:hidden">
+        <div tabindex="0" role="button" class="btn btn-ghost btn-square" aria-label="Menu">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </div>
+        <ul tabindex="0" class="dropdown-content menu bg-night-900 border border-night-700 rounded-box z-50 mt-3 w-52 p-2 shadow-2xl">
+          
+          <li>
+            <a href="/agent/"  class="">
+              Agent
+            </a>
+          </li>
+          
+          <li>
+            <a href="/content/"  class="text-brand-500">
+              Content
+            </a>
+          </li>
+          
+          <li>
+            <a href="/portal/"  class="">
+              Portal
+            </a>
+          </li>
+          
+          <li>
+            <a href="/regenesis/"  class="">
+              Regenesis
+            </a>
+          </li>
+          
+          <li>
+            <a href="/blog/"  class="">
+              Blog
+            </a>
+          </li>
+          
+          <li>
+            <a href="https://github.com/choreographr" target="_blank" rel="noopener" class="">
+              GitHub<span class="text-night-400 text-xs">↗</span>
+            </a>
+          </li>
+          
+          <li>
+            <a href="https://t.me/choreographr" target="_blank" rel="noopener" class="">
+              Telegram<span class="text-night-400 text-xs">↗</span>
+            </a>
+          </li>
+          
+        </ul>
+      </div>
+      <a href="/" class="font-mono text-lg font-bold tracking-tight select-none">
+        <span class="text-brand-500">choreo</span><span class="text-night-50">graphr</span>&ensp;<span class="text-brand-500">&gt;</span><span class="text-night-50">_</span>
+      </a>
+    </div>
+    <div class="navbar-end hidden lg:flex">
+      <ul class="menu menu-horizontal px-1 gap-1 text-sm">
+        
+        <li>
+          <a href="/agent/"
+             
+             class="text-night-200 hover:text-night-50">
+            Agent
+          </a>
+        </li>
+        
+        <li>
+          <a href="/content/"
+             
+             class="text-brand-500 font-semibold">
+            Content
+          </a>
+        </li>
+        
+        <li>
+          <a href="/portal/"
+             
+             class="text-night-200 hover:text-night-50">
+            Portal
+          </a>
+        </li>
+        
+        <li>
+          <a href="/regenesis/"
+             
+             class="text-night-200 hover:text-night-50">
+            Regenesis
+          </a>
+        </li>
+        
+        <li>
+          <a href="/blog/"
+             
+             class="text-night-200 hover:text-night-50">
+            Blog
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://github.com/choreographr"
+             target="_blank" rel="noopener"
+             class="">
+            GitHub<span class="text-night-400 text-xs">↗</span>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://t.me/choreographr"
+             target="_blank" rel="noopener"
+             class="">
+            Telegram<span class="text-night-400 text-xs">↗</span>
+          </a>
+        </li>
+        
+      </ul>
+    </div>
+  </nav>
+</header>
+
+
+  <main class="flex-1 relative">
+    
+    
+      
+    
+    
+      
+      <div class="mx-auto max-w-7xl px-4 sm:px-6 pt-5">
+        
+
+
+
+
+<nav aria-label="Breadcrumb" class="font-mono text-sm text-night-400">
+  <span class="flex flex-wrap items-center">
+    <a href="/" class="hover:text-brand-400">home</a>
+    
+    
+      
+    
+      
+        
+        
+        <span class="text-night-600">/</span>
+        
+        <a href="/content/" class="hover:text-brand-400">content</a>
+        
+      
+    
+      
+        
+        
+        <span class="text-night-600">/</span>
+        
+        <a href="/content/docs/" class="hover:text-brand-400">docs</a>
+        
+      
+    
+      
+        
+        
+        <span class="text-night-600">/</span>
+        
+        <a href="/content/docs/indexer/" class="hover:text-brand-400">indexer</a>
+        
+      
+    
+      
+        
+        
+        <span class="text-night-600">/</span>
+        
+        <span class="text-night-200 font-medium">architecture</span>
+        
+      
+    
+      
+    
+  </span>
+</nav>
+
+      </div>
+      
+    
+    
+
+
+  
+  
+  
+  
+
+<div class="mx-auto max-w-7xl px-4 sm:px-6 py-8 lg:py-12">
+  <div class="flex flex-col lg:flex-row gap-10">
+    <aside class="lg:w-60 shrink-0">
+      <div class="lg:sticky lg:top-24">
+        <nav class="w-full">
+          <p class="px-3 mb-2 text-xs font-semibold uppercase tracking-wider text-night-400">Indexer docs</p>
+          <ul class="menu menu-sm w-full p-0 gap-0.5">
+            
+            <li>
+              <a href="https://choreographr.com/content/docs/indexer/problem/"
+                 class="text-night-200 hover:text-night-50">
+                The Problem
+              </a>
+            </li>
+            
+            <li>
+              <a href="https://choreographr.com/content/docs/indexer/solution/"
+                 class="text-night-200 hover:text-night-50">
+                The Solution
+              </a>
+            </li>
+            
+            <li>
+              <a href="https://choreographr.com/content/docs/indexer/features/"
+                 class="text-night-200 hover:text-night-50">
+                Features
+              </a>
+            </li>
+            
+            <li>
+              <a href="https://choreographr.com/content/docs/indexer/architecture/"
+                 class="bg-night-700 text-night-50 font-semibold">
+                Architecture
+              </a>
+            </li>
+            
+            <li>
+              <a href="https://choreographr.com/content/docs/indexer/installation/"
+                 class="text-night-200 hover:text-night-50">
+                Installation
+              </a>
+            </li>
+            
+            <li>
+              <a href="https://choreographr.com/content/docs/indexer/quick-start/"
+                 class="text-night-200 hover:text-night-50">
+                Quick Start
+              </a>
+            </li>
+            
+            <li>
+              <a href="https://choreographr.com/content/docs/indexer/configuration/"
+                 class="text-night-200 hover:text-night-50">
+                Configuration
+              </a>
+            </li>
+            
+            <li>
+              <a href="https://choreographr.com/content/docs/indexer/api/"
+                 class="text-night-200 hover:text-night-50">
+                WebSocket API
+              </a>
+            </li>
+            
+          </ul>
+          <p class="px-3 mt-4"><a href="https://choreographr.com/content/docs" class="text-sm text-night-400 hover:text-brand-400 font-mono">← Content docs</a></p>
+        </nav>
+      </div>
+    </aside>
+    <article class="prose min-w-0 flex-1 max-w-3xl">
+      <h1>Architecture</h1>
+      <p>Acuity Index is a config-driven event indexer for Substrate chains. It decodes
+runtime events with <code>subxt</code>, derives query keys from TOML config, stores index
+entries in <code>sled</code>, and serves query access over WebSocket.</p>
+<h2 id="main-components">Main Components
+<a class="zola-anchor" href="#main-components" aria-label="Anchor link for: main-components">
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+</a>
+</h2>
+<ul>
+<li><code>src/main.rs</code>: startup, config loading, database initialization, watcher setup,
+metrics listener, and reconnect supervisor loop</li>
+<li><code>src/indexer.rs</code>: indexing pipeline, resume logic, live-head tailing, event key
+derivation, notification fanout</li>
+<li><code>src/config.rs</code>: TOML schema and mapping resolution</li>
+<li><code>src/websockets.rs</code>: public API implementation, connection lifecycle, and optional finalized proof inclusion for <code>GetEvents</code></li>
+<li><code>src/shared.rs</code>: wire types, sled key layouts, shared runtime state, and finalized-mode gating for proof responses</li>
+<li><code>src/event_hydration.rs</code>: decoded-event hydration plus finalized <code>System.Events</code> proof fetching</li>
+<li><code>src/config_gen.rs</code>: live metadata to starter spec generation</li>
+<li><code>src/metrics.rs</code>: metrics registry and HTTP export</li>
+<li><code>src/synthetic_devnet.rs</code>: synthetic local chain helpers and shared test types</li>
+</ul>
+<p>The repository also includes a checked-in example spec, plus node-backed
+integration and benchmarking paths. The synthetic runtime has its own dedicated
+page in
+Synthetic Devnet.</p>
+<h2 id="startup-sequence">Startup Sequence
+<a class="zola-anchor" href="#startup-sequence" aria-label="Anchor link for: startup-sequence">
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+</a>
+</h2>
+<p>The normal startup path is:</p>
+<ol>
+<li>parse CLI args</li>
+<li>load the required index spec</li>
+<li>validate config and resolve runtime options</li>
+<li>open <code>sled</code></li>
+<li>verify or initialize <code>genesis_hash</code></li>
+<li>start long-lived tasks such as WebSocket serving and spec watching</li>
+<li>enter the RPC reconnect and indexing supervisor loop</li>
+</ol>
+<p>The long-lived tasks created before entering the supervisor loop are important:</p>
+<ul>
+<li>a bounded subscription dispatcher task</li>
+<li>a single process-lifetime WebSocket listener</li>
+<li>an optional metrics listener serving <code>/metrics</code></li>
+<li>an index-spec watcher for accepted file changes</li>
+</ul>
+<p>The shared runtime state also tracks whether the current run is indexing
+finalized blocks so WebSocket proof responses stay aligned with the active mode.</p>
+<h2 id="data-model">Data Model
+<a class="zola-anchor" href="#data-model" aria-label="Anchor link for: data-model">
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+</a>
+</h2>
+<p>The <code>sled</code> database is organized into trees opened by <code>Trees::open</code> in
+<code>src/shared.rs</code>:</p>
+<ul>
+<li><code>root</code>: database-level values such as <code>genesis_hash</code></li>
+<li><code>span</code>: indexed block spans for resume and reindex logic</li>
+<li><code>variant</code>: event references keyed by pallet and variant indices</li>
+<li><code>index</code>: custom and built-in query keys with <code>(block_number, event_index)</code> suffixes</li>
+<li><code>events</code>: decoded event JSON keyed by <code>(block_number, event_index)</code></li>
+</ul>
+<p>The two main query surfaces are:</p>
+<ul>
+<li>variant queries via the <code>variant</code> tree</li>
+<li>all other key queries via the <code>index</code> tree</li>
+</ul>
+<p><code>Key::Custom</code> covers every declared query key from <code>[keys]</code> in the TOML spec.</p>
+<h2 id="indexing-flow">Indexing Flow
+<a class="zola-anchor" href="#indexing-flow" aria-label="Anchor link for: indexing-flow">
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+</a>
+</h2>
+<p>The main indexing loop lives in <code>run_indexer</code> in <code>src/indexer.rs</code>.</p>
+<p>High-level behavior:</p>
+<ul>
+<li>determine the starting head block</li>
+<li>load previously indexed spans</li>
+<li>resume an existing tail span or index the current head immediately</li>
+<li>run backward backfill and live-head tracking concurrently</li>
+</ul>
+<p>If finalized mode is enabled, the same finalized-only setting also governs
+whether API callers can receive verifiable proof material for <code>GetEvents</code>.</p>
+<p>Per-block indexing follows this shape:</p>
+<ol>
+<li>fetch block hash from RPC</li>
+<li>create a block-scoped <code>subxt</code> view with <code>api.at_block(hash)</code></li>
+<li>fetch and iterate decoded runtime events</li>
+<li>for each event:</li>
+<li>read pallet name, event name, pallet index, and variant index</li>
+<li>optionally write a variant index record if <code>index_variant</code> is enabled</li>
+<li>decode fields schema-lessly into `scale_value::Composite&lt;()&gt;</li>
+<li>derive indexing keys from explicit config</li>
+<li>write event references for each derived key</li>
+<li>store event refs locally and hydrate decoded event payloads from the node when queries or subscriptions need them</li>
+</ol>
+<p>When <code>GetEvents</code> requests <code>includeProofs = true</code>, the WebSocket layer also asks
+for one proof object per returned block. That proof is built from the block
+header plus <code>state_get_read_proof</code> over the <code>System.Events</code> storage key.</p>
+<p>Malformed persisted sled data is handled defensively during decode. Corrupt span
+records or malformed index keys are skipped with logging instead of panicking.</p>
+<h2 id="historical-state-requirement">Historical State Requirement
+<a class="zola-anchor" href="#historical-state-requirement" aria-label="Anchor link for: historical-state-requirement">
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+</a>
+</h2>
+<p><code>Indexer::index_block</code> requires historical state to be available for
+<code>api.at_block(hash)</code>. If the node prunes historical state, the process exits with
+an explicit misconfiguration error and instructs the operator to run the node
+with <code>--state-pruning archive-canonical</code>.</p>
+<h2 id="concurrency-model">Concurrency Model
+<a class="zola-anchor" href="#concurrency-model" aria-label="Anchor link for: concurrency-model">
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+</a>
+</h2>
+<p>The indexer uses one async loop that multiplexes several inputs with
+<code>tokio::select!</code>:</p>
+<ul>
+<li>exit notifications</li>
+<li>new chain head notifications from <code>subxt</code></li>
+<li>queued live-head indexing futures</li>
+<li>queued backfill indexing futures</li>
+<li>periodic stats logging</li>
+</ul>
+<p>Two queues are maintained inside the loop:</p>
+<ul>
+<li>backfill queue for descending historical blocks</li>
+<li>live-head queue for ascending new blocks</li>
+</ul>
+<p><code>queue_depth</code> applies to both queues. Multiple outstanding block-indexing futures
+are allowed so the process can catch up against a fast-moving node.</p>
+<p>Because futures can complete out of order, the code uses orphan maps:</p>
+<ul>
+<li><code>orphans</code> for backfill continuity</li>
+<li><code>head_orphans</code> for live-head continuity</li>
+</ul>
+<p>Blocks only extend active spans once contiguity is satisfied.</p>
+<h2 id="catchup-and-rapidly-syncing-nodes">Catchup And Rapidly Syncing Nodes
+<a class="zola-anchor" href="#catchup-and-rapidly-syncing-nodes" aria-label="Anchor link for: catchup-and-rapidly-syncing-nodes">
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+</a>
+</h2>
+<p>When a node jumps ahead quickly, the indexer does not poll for lag. It reacts to
+new announced head blocks, updates <code>latest_seen_head</code>, and fills the live-head
+queue immediately up to <code>queue_depth</code>.</p>
+<p>This is the main reason <code>--queue-depth</code> is the primary tuning lever for catchup.
+The same mechanism keeps both head-following and backward backfill saturated.</p>
+<h2 id="span-and-resume-semantics">Span And Resume Semantics
+<a class="zola-anchor" href="#span-and-resume-semantics" aria-label="Anchor link for: span-and-resume-semantics">
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+</a>
+</h2>
+<p>Each stored span means a contiguous <code>start..=end</code> block range has been indexed
+for a specific config revision.</p>
+<p>Span values persist revision boundary information derived from
+<code>IndexSpec.spec_change_blocks</code>.</p>
+<p>When loading spans, the indexer may trim or discard stale sections if the active
+spec introduces new historical revision boundaries.</p>
+<p>Important invariants:</p>
+<ul>
+<li>the active in-memory span is not always persisted immediately</li>
+<li>on shutdown or recoverable failure, <code>save_current_span(...)</code> persists progress</li>
+<li>if the upstream block stream closes, the indexer returns a recoverable error so
+the supervisor loop can reconnect and resume</li>
+</ul>
+<p>Changes to <code>index_variant</code> only trigger historical reindexing
+when the spec revision advances via <code>spec_change_blocks</code>.</p>
+<h2 id="rpc-reconnection-and-spec-reload">RPC Reconnection And Spec Reload
+<a class="zola-anchor" href="#rpc-reconnection-and-spec-reload" aria-label="Anchor link for: rpc-reconnection-and-spec-reload">
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+</a>
+</h2>
+<p><code>src/main.rs</code> wraps the indexer in a supervisor loop that handles transient RPC
+failures and accepted spec reloads without data loss.</p>
+<p>Recoverable errors trigger reconnect with exponential backoff. Fatal errors cause
+process exit.</p>
+<p>Supervisor behavior, in practice:</p>
+<ol>
+<li>derive the effective RPC URL from the latest accepted config snapshot</li>
+<li>attempt RPC connection</li>
+<li>verify chain genesis hash</li>
+<li>publish the fresh RPC handle into shared runtime state</li>
+<li>spawn the indexer task</li>
+<li>wait for signals, watcher updates, or indexer completion</li>
+<li>on accepted spec reload, stop only the current indexer and restart it</li>
+<li>on recoverable indexer failure, reconnect and resume</li>
+<li>on fatal failure, log and exit</li>
+</ol>
+<p>The spec watcher validates the entire updated file before publishing it and
+rejects changes to <code>name</code> or <code>genesis_hash</code>.</p>
+<h2 id="synthetic-devnet-architecture">Synthetic Devnet Architecture
+<a class="zola-anchor" href="#synthetic-devnet-architecture" aria-label="Anchor link for: synthetic-devnet-architecture">
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+</a>
+</h2>
+<p>The local synthetic stack stays intentionally close to production architecture.</p>
+<p>Layers:</p>
+<ol>
+<li><code>runtime/</code> builds a small Polkadot SDK runtime WASM</li>
+<li><code>polkadot-omni-node</code> runs that runtime locally</li>
+<li><code>src/synthetic_devnet.rs</code> renders the matching index spec</li>
+<li><code>seed_synthetic_runtime</code> writes deterministic chain data</li>
+<li>tests and benchmarks validate the public WebSocket API against the real indexer</li>
+</ol>
+<p>This is not a mocked shortcut. It exercises the normal RPC, metadata decoding,
+indexing, persistence, and query surfaces end to end.</p>
+<p>For proof-oriented tests, the local node is started in a libp2p-enabled mode
+instead of instant-seal dev mode so finalized proof verification can run against a
+more realistic finalized-chain setup.</p>
+<h2 id="invariants">Invariants
+<a class="zola-anchor" href="#invariants" aria-label="Anchor link for: invariants">
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+</a>
+</h2>
+<ul>
+<li>a database path belongs to exactly one chain identity</li>
+<li>accepted spec reloads should not take down the public service</li>
+<li>the synthetic test path should stay close to production architecture</li>
+<li>public API correctness is validated end to end, not only through unit tests</li>
+</ul>
+
+    </article>
+  </div>
+</div>
+
+  </main>
+
+  <footer class="border-t border-night-700 bg-night-900">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 py-12">
+    <div class="grid gap-10 md:grid-cols-3">
+      <div>
+        <div class="font-mono text-lg font-bold tracking-tight">
+          <span class="text-brand-500">choreo</span><span class="text-night-50">graphr</span>&ensp;<span class="text-brand-500">&gt;</span><span class="text-night-50">_</span>
+        </div>
+        <p class="mt-3 text-sm text-night-300 max-w-xs">
+          An all-purpose, extensible AI agent written in Rust. Runs locally or in the cloud. Open source under Apache-2.0.
+        </p>
+      </div>
+      <div>
+        <h3 class="text-sm font-semibold text-night-50 uppercase tracking-wider mb-3">Explore</h3>
+        <ul class="space-y-2 text-sm text-night-300">
+          <li><a href="https://choreographr.com/agent/docs" class="hover:text-brand-400">Agent docs</a></li>
+          <li><a href="https://choreographr.com/content" class="hover:text-brand-400">Content</a></li>
+          <li><a href="https://choreographr.com/portal" class="hover:text-brand-400">Portal</a></li>
+          <li><a href="https://choreographr.com/consulting" class="hover:text-brand-400">Consulting</a></li>
+          <li><a href="https://choreographr.com/search" class="hover:text-brand-400">Search</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3 class="text-sm font-semibold text-night-50 uppercase tracking-wider mb-3">Community</h3>
+        <ul class="space-y-2 text-sm text-night-300">
+          <li><a href="https://github.com/choreographr" target="_blank" rel="noopener" class="hover:text-brand-400">GitHub</a></li>
+          <li><a href="https://t.me/choreographr" target="_blank" rel="noopener" class="hover:text-brand-400">Telegram</a></li>
+          <li><a href="https://choreographr.com/atom.xml" class="hover:text-brand-400">RSS Feed</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="mt-10 border-t border-night-700 pt-6 flex flex-col sm:flex-row justify-between gap-3 text-xs text-night-400">
+      <p>© 2026 Choreographr. Released under the Apache-2.0 license.</p>
+      <p class="font-mono">100% Rust · written by <a href="https://github.com/choreographr/choreographr" target="_blank" rel="noopener" class="text-night-300 hover:text-brand-400">choreographr</a></p>
+    </div>
+  </div>
+</footer>
+
+
+  
+
+  <script>
+    // Click-to-copy buttons for every code block. Wraps each <pre> in a
+    // .code-block container and adds a corner button that copies the block's
+    // text via the async Clipboard API, with an execCommand fallback for
+    // non-secure contexts. The button sits OUTSIDE the <pre> so it stays in
+    // the corner while horizontally-overflowing code scrolls inside the block.
+    (function () {
+      var COPY_ICON =
+        '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
+      var CHECK_ICON =
+        '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
+
+      function fallbackCopy(text) {
+        var ta = document.createElement('textarea');
+        ta.value = text;
+        ta.setAttribute('readonly', '');
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        try { document.execCommand('copy'); } catch (e) { /* ignore */ }
+        document.body.removeChild(ta);
+      }
+
+      document.querySelectorAll('pre').forEach(function (pre) {
+        // Skip daisyUI terminal mockups (mockup-code): every line is its
+        // own <pre>, so per-line copy buttons would be noise. Real code
+        // blocks are a single <pre> that is not inside a .mockup-code.
+        if (pre.closest('.mockup-code')) return;
+
+        // Idempotent: don't re-wrap if the script runs more than once.
+        if (pre.parentElement && pre.parentElement.classList.contains('code-block')) return;
+
+        var wrap = document.createElement('div');
+        wrap.className = 'code-block';
+        pre.parentNode.insertBefore(wrap, pre);
+        wrap.appendChild(pre);
+
+        var btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'code-copy';
+        btn.setAttribute('aria-label', 'Copy code to clipboard');
+        btn.innerHTML = COPY_ICON;
+        wrap.appendChild(btn);
+
+        btn.addEventListener('click', function () {
+          var text = pre.innerText;
+          var done = function () {
+            btn.classList.add('copied');
+            btn.innerHTML = CHECK_ICON;
+            btn.setAttribute('aria-label', 'Copied');
+            setTimeout(function () {
+              btn.classList.remove('copied');
+              btn.innerHTML = COPY_ICON;
+              btn.setAttribute('aria-label', 'Copy code to clipboard');
+            }, 1500);
+          };
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(text).then(done, function () { fallbackCopy(text); done(); });
+          } else {
+            fallbackCopy(text);
+            done();
+          }
+        });
+      });
+    })();
+  </script>
+</body>
+</html>

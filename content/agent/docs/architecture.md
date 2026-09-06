@@ -49,7 +49,7 @@ This keeps the mental model simple — each thread owns its data — and avoids 
 complexity of async cancellation. Two crates drive async clients behind a tokio
 sidecar runtime that the daemon calls through synchronous `execute_*` entry
 points (which `block_on` internally): `choreo-coord` (always linked, uses
-`subxt` for the Coordination Platform chain) and the optional
+`subxt` for the Content chain) and the optional
 `choreo-blockchain` (the alloy/subxt EVM + Substrate tools, linked only with
 the `blockchain` feature).
 
@@ -84,7 +84,7 @@ sessions.
 | `choreo-daemon` | The core engine — binary `choreographr`. Unix socket server that validates credentials, manages persistent sessions (with sub-sessions and working directories), runs requests with a tool-call loop, and streams responses. Also connects to other daemons over Noise-IK to handoff sessions and deploy work elsewhere |
 | `choreo-ai-protocols` | Provider protocols — OpenAI-compatible, Anthropic Messages, and Google Gemini clients, the `ProviderClient` trait, and the provider catalog (200+ providers) |
 | `choreo-blockchain` | Blockchain tools — EVM (alloy) and Substrate/Polkadot (subxt) read-only queries plus the tokio sidecar runtime they run on; pulled in by the daemon's `blockchain` feature (off by default) |
-| `choreo-coord` | Coordination Platform orchestration — composes the chain / indexer / IPFS pipelines for the `coord` tool group (always linked) |
+| `choreo-coord` | Content orchestration — composes the chain / indexer / IPFS pipelines for the `coord` tool group (always linked) |
 | `choreo-image` | Image decode surface — raster decode with EXIF orientation baked in, HEIC decode (with a decompression-bomb guard), and SVG rasterization |
 | `choreo-sanitize` | Shared string-safety leaf — output sanitization (control chars, truncation, fenced-output safety) used across tools |
 | `choreo-proto` | Framed binary protocol (postcard + length prefix) shared between clients and daemon |
@@ -118,10 +118,10 @@ sessions stay compact on disk.
   Chromium/Chrome (run locally and offline) to capture HTML, text, screenshots,
   or PDFs.
 
-## Coordination Platform
+## Content
 
-The `coord` tool group (always linked) drives the Choreographr Coordination
-Platform through `choreo-coord`, which composes three pipelines: a Substrate
+The `coord` tool group (always linked) drives the Choreographr Content
+network through `choreo-coord`, which composes three pipelines: a Substrate
 chain (subxt, `block_on` into a tokio sidecar), the `acuity-index` event
 indexer, and a local IPFS daemon. Write tools sign extrinsics with the
 keystore's Substrate account credential.

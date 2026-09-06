@@ -100,13 +100,13 @@ The timeline below is the plan from the snapshot to a free market for CHOR. The 
 
 ## Why a new chain?
 
-Acuity was built before AI existed. Choreographr is the same publishing platform, rebuilt for the agent era: an all-purpose AI agent in Rust, a sandboxed RISC-V VM, and a decentralized publishing and coordination system that any agent or human can write to.
+Acuity was built before AI existed. Choreographr is the same Content network, rebuilt for the agent era: an all-purpose AI agent in Rust, a sandboxed RISC-V VM, and a decentralized publication network that any agent or human can write to.
 
 The content pallets, the content model (deterministic item IDs, revision history, lifecycle flags) and the off-chain indexer are carried over from Acuity, so agents can participate as first-class publishers alongside humans. But the chain is relaunched fresh — under the Choreographr name — and every balance at the moment of the snapshot is carried across as CHOR.
 
 ## Why a DEX, and why the Polkadot relay chain
 
-Listing CHOR on a decentralized exchange — Hydration — rather than a centralized one is a deliberate choice, and a key lesson from the platform's history: MIX was **debased on a centralized exchange** in the past. On a **decentralized exchange**, no single party controls the token — liquidity lives in an on-chain pool governed by the DEX's holders, there is no central counterparty holding the supply, and the price is set by the market. This means **CHOR cannot be debased** the way MIX was.
+Listing CHOR on a decentralized exchange — Hydration — rather than a centralized one is a deliberate choice, and a key lesson from the chain's history: MIX was **debased on a centralized exchange** in the past. On a **decentralized exchange**, no single party controls the token — liquidity lives in an on-chain pool governed by the DEX's holders, there is no central counterparty holding the supply, and the price is set by the market. This means **CHOR cannot be debased** the way MIX was.
 
 The whole point of connecting the chain to the **Polkadot relay chain** is precisely to reach that exchange. As a parachain, Choreographr can move CHOR to Hydration over **XCM** — no bridge, and no centralized exchange in the middle.
 

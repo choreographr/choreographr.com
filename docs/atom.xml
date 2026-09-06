@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
     <title>Choreographr</title>
-    <subtitle>Choreographr is an all-purpose AI agent, written in Rust, and the decentralized publishing platform it writes to. A daemon with many clients, a sandboxed RISC-V VM, 200+ model providers, and built-in access to the Choreographr publishing platform.</subtitle>
+    <subtitle>Choreographr is an all-purpose AI agent, written in Rust, with built-in access to the Content network — a decentralized, content-addressed, timestamped publication layer on the Choreographr chain. A daemon with many clients, a sandboxed RISC-V VM, and 200+ model providers.</subtitle>
     <link rel="self" type="application/atom+xml" href="https://choreographr.com/atom.xml"/>
     <link rel="alternate" type="text/html" href="https://choreographr.com/"/>
     <generator uri="https://www.getzola.org/">Zola</generator>
@@ -176,7 +176,7 @@ trading bot, for example.&lt;/li&gt;
 like GitHub, which is proving unreliable. On-chain coordination is the
 natural next step.&lt;/li&gt;
 &lt;li&gt;Existing on-chain publishing technologies, like my other project
-&lt;a href=&quot;/platform/&quot;&gt;Acuity&lt;/a&gt;, are a perfect fit for agents.&lt;/li&gt;
+&lt;a href=&quot;/content/&quot;&gt;Acuity&lt;/a&gt;, are a perfect fit for agents.&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;It will also be possible to pay for model access with cryptocurrency directly
 in the TUI/GUI.&lt;/p&gt;
@@ -269,7 +269,7 @@ what&#39;s in v0.1.0.&lt;/p&gt;
   &lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;16&quot; height=&quot;16&quot; viewBox=&quot;0 0 24 24&quot; fill=&quot;none&quot; stroke=&quot;currentColor&quot; stroke-width=&quot;2.5&quot; stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot; aria-hidden=&quot;true&quot;&gt;&lt;path d=&quot;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&quot;/&gt;&lt;path d=&quot;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&quot;/&gt;&lt;/svg&gt;
 &lt;/a&gt;
 &lt;/h2&gt;
-&lt;p&gt;&lt;a href=&quot;/platform/&quot;&gt;Acuity Index&lt;/a&gt; is part of the broader &lt;a href=&quot;/platform/&quot;&gt;Acuity&lt;/a&gt; decentralized CMS.&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;/content/&quot;&gt;Acuity Index&lt;/a&gt; is part of the broader &lt;a href=&quot;/content/&quot;&gt;Acuity&lt;/a&gt; decentralized CMS.&lt;/p&gt;
 &lt;p&gt;It is a federated, multi-chain Polkadot event indexer with finality proofs, primarily intended to make dapps fully decentralized.&lt;/p&gt;
 &lt;p&gt;It was originally called Hybrid and was funded by two (&lt;a rel=&quot;noopener external&quot; target=&quot;_blank&quot; href=&quot;https://github.com/w3f/Grants-Program/blob/master/applications/hybrid.md&quot;&gt;1&lt;/a&gt;, &lt;a rel=&quot;noopener external&quot; target=&quot;_blank&quot; href=&quot;https://github.com/w3f/Grants-Program/blob/master/applications/hybrid2.md&quot;&gt;2&lt;/a&gt;) Web3 Foundation grants and a Kusama Treasury &lt;a rel=&quot;noopener external&quot; target=&quot;_blank&quot; href=&quot;https://kusama.subsquare.io/referenda/534&quot;&gt;referendum&lt;/a&gt;. A second funding referendum &lt;a rel=&quot;noopener external&quot; target=&quot;_blank&quot; href=&quot;https://kusama.subsquare.io/referenda/567&quot;&gt;failed&lt;/a&gt;. Treasury funding for a Kusama Forum based on Acuity Index has been &lt;a rel=&quot;noopener external&quot; target=&quot;_blank&quot; href=&quot;https://kusama.subsquare.io/referenda/603&quot;&gt;secured&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;&lt;a rel=&quot;noopener external&quot; target=&quot;_blank&quot; href=&quot;https://crates.io/crates/acuity-index/0.8.0&quot;&gt;Acuity Index 0.8.0&lt;/a&gt; has just been released for experimentation. It has the following features:&lt;/p&gt;
@@ -286,7 +286,7 @@ what&#39;s in v0.1.0.&lt;/p&gt;
 &lt;li&gt;Prometheus / OpenMetrics monitoring&lt;/li&gt;
 &lt;li&gt;Full unit and integration testing&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;Examine the &lt;a href=&quot;/platform/&quot;&gt;documentation&lt;/a&gt; to see how it works.&lt;/p&gt;
+&lt;p&gt;Examine the &lt;a href=&quot;/content/&quot;&gt;documentation&lt;/a&gt; to see how it works.&lt;/p&gt;
 &lt;p&gt;Here&#39;s a screencast showing how a dapp can query events with Acuity Index to create a rich user interface:&lt;/p&gt;
 &lt;p&gt;&lt;a rel=&quot;noopener external&quot; target=&quot;_blank&quot; href=&quot;https://youtu.be/V5QZNv3niKo?t=150&quot;&gt;&lt;img src=&quot;/take-back-the-web.jpg&quot; style=&quot;width: 100%; height: auto;&quot;&gt;&lt;/img&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;Here&#39;s the &lt;a rel=&quot;noopener external&quot; target=&quot;_blank&quot; href=&quot;https://github.com/acuity-network/acuity-dioxus&quot;&gt;repo&lt;/a&gt; for the dapp.&lt;/p&gt;
@@ -515,7 +515,7 @@ The idea is that anyone can host a standardized index and potentially get paid t
 &lt;p&gt;In the case of an airline DAO, those who control the backend will end up controlling the airline instead of the token holders.&lt;/p&gt;
 &lt;p&gt;Having a truely decentralized backend is not very practical. You could try to store all transaction history in state, but this is very expensive. Full text search, content recommendation and AI queries are inheritantly centralized - they require extensive resources such that only the most committed power user could run personally.&lt;/p&gt;
 &lt;p&gt;The solution is to have a free market of rich backend providers that use a standardized API.&lt;/p&gt;
-&lt;p&gt;I received 2 grants (&lt;a rel=&quot;noopener external&quot; target=&quot;_blank&quot; href=&quot;https://github.com/w3f/Grants-Program/blob/master/applications/hybrid.md&quot;&gt;1&lt;/a&gt;,&lt;a rel=&quot;noopener external&quot; target=&quot;_blank&quot; href=&quot;https://github.com/w3f/Grants-Program/blob/master/applications/hybrid2.md&quot;&gt;2&lt;/a&gt;) from the &lt;a rel=&quot;noopener external&quot; target=&quot;_blank&quot; href=&quot;https://grants.web3.foundation/&quot;&gt;Web3 Foundation&lt;/a&gt; to develop an event indexer for Polkadot blockchains. This has now been renamed to &lt;a href=&quot;/platform/&quot;&gt;Acuity Index&lt;/a&gt; and will serve as the basis for a free market of indexing nodes for Acuity.&lt;/p&gt;
+&lt;p&gt;I received 2 grants (&lt;a rel=&quot;noopener external&quot; target=&quot;_blank&quot; href=&quot;https://github.com/w3f/Grants-Program/blob/master/applications/hybrid.md&quot;&gt;1&lt;/a&gt;,&lt;a rel=&quot;noopener external&quot; target=&quot;_blank&quot; href=&quot;https://github.com/w3f/Grants-Program/blob/master/applications/hybrid2.md&quot;&gt;2&lt;/a&gt;) from the &lt;a rel=&quot;noopener external&quot; target=&quot;_blank&quot; href=&quot;https://grants.web3.foundation/&quot;&gt;Web3 Foundation&lt;/a&gt; to develop an event indexer for Polkadot blockchains. This has now been renamed to &lt;a href=&quot;/content/&quot;&gt;Acuity Index&lt;/a&gt; and will serve as the basis for a free market of indexing nodes for Acuity.&lt;/p&gt;
 </content>
         
     </entry>
@@ -528,10 +528,10 @@ The idea is that anyone can host a standardized index and potentially get paid t
           <name>Unknown</name>
         </author>
         
-        <link rel="alternate" type="text/html" href="https://choreographr.com/platform/docs/history/"/>
-        <id>https://choreographr.com/platform/docs/history/</id>
+        <link rel="alternate" type="text/html" href="https://choreographr.com/content/docs/history/"/>
+        <id>https://choreographr.com/content/docs/history/</id>
         
-        <content type="html" xml:base="https://choreographr.com/platform/docs/history/">&lt;h3 id=&quot;work-started-on-blobstore&quot;&gt;Work started on BlobStore
+        <content type="html" xml:base="https://choreographr.com/content/docs/history/">&lt;h3 id=&quot;work-started-on-blobstore&quot;&gt;Work started on BlobStore
 &lt;a class=&quot;zola-anchor&quot; href=&quot;#work-started-on-blobstore&quot; aria-label=&quot;Anchor link for: work-started-on-blobstore&quot;&gt;
   &lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;16&quot; height=&quot;16&quot; viewBox=&quot;0 0 24 24&quot; fill=&quot;none&quot; stroke=&quot;currentColor&quot; stroke-width=&quot;2.5&quot; stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot; aria-hidden=&quot;true&quot;&gt;&lt;path d=&quot;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&quot;/&gt;&lt;path d=&quot;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&quot;/&gt;&lt;/svg&gt;
 &lt;/a&gt;
@@ -656,7 +656,7 @@ The idea is that anyone can host a standardized index and potentially get paid t
 &lt;/a&gt;
 &lt;/h3&gt;
 &lt;p&gt;22nd September 2023&lt;/p&gt;
-&lt;p&gt;The second Web3 Foundation grant for Hybrid Indexer is &lt;a rel=&quot;noopener external&quot; target=&quot;_blank&quot; href=&quot;https://github.com/w3f/Grants-Program/blob/master/applications/hybrid2.md&quot;&gt;approved&lt;/a&gt;. Hybrid was later extended into &lt;a href=&quot;/platform/&quot;&gt;Acuity Index&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;The second Web3 Foundation grant for Hybrid Indexer is &lt;a rel=&quot;noopener external&quot; target=&quot;_blank&quot; href=&quot;https://github.com/w3f/Grants-Program/blob/master/applications/hybrid2.md&quot;&gt;approved&lt;/a&gt;. Hybrid was later extended into &lt;a href=&quot;/content/&quot;&gt;Acuity Index&lt;/a&gt;.&lt;/p&gt;
 </content>
         
     </entry>
@@ -669,17 +669,17 @@ The idea is that anyone can host a standardized index and potentially get paid t
           <name>Unknown</name>
         </author>
         
-        <link rel="alternate" type="text/html" href="https://choreographr.com/platform/docs/index-event-log/"/>
-        <id>https://choreographr.com/platform/docs/index-event-log/</id>
+        <link rel="alternate" type="text/html" href="https://choreographr.com/content/docs/index-event-log/"/>
+        <id>https://choreographr.com/content/docs/index-event-log/</id>
         
-        <content type="html" xml:base="https://choreographr.com/platform/docs/index-event-log/">&lt;p&gt;As part of the original research for Acuity, a blog post was published in January 2016, &lt;a href=&quot;/platform/blog/ethereum-text-publishing/&quot;&gt;Text publishing technologies for Ethereum dapps&lt;/a&gt;. It analysed the properties of the various blockchain data storage locations.&lt;/p&gt;
+        <content type="html" xml:base="https://choreographr.com/content/docs/index-event-log/">&lt;p&gt;As part of the original research for Acuity, a blog post was published in January 2016, &lt;a href=&quot;/content/blog/ethereum-text-publishing/&quot;&gt;Text publishing technologies for Ethereum dapps&lt;/a&gt;. It analysed the properties of the various blockchain data storage locations.&lt;/p&gt;
 &lt;p&gt;For the pevious version of Acuity (called MIX, an independent Ethereum chain) it was ultimately decided to store content in IPFS and store the IPFS hash and timestamp directly in &lt;a rel=&quot;noopener external&quot; target=&quot;_blank&quot; href=&quot;https://github.com/acuity-network/acuity-contracts/blob/7dc93b1be8dc66ee11c88ec1379432df43ef2acc/src/acuity-item-store/AcuityItemStoreIpfsSha256.sol&quot;&gt;contract state&lt;/a&gt;. This meant that for a given content item, a dapp could query contract state directly to get a list of the IPFS hash of each revision of the content. The content of the revision could then be retrieved from the IPFS network (if it is available).&lt;/p&gt;
 &lt;p&gt;While this kept things as simple as possible, it made transactions unnecessarily heavy.&lt;/p&gt;
 &lt;p&gt;In general data should only be stored in on-chain state if it needs to be able to be read by an on-chain program at a later time. For example, an account balance needs to be stored in state because a later transaction will need to check the current balance before a transfer can occur. A record of balance transfers does not need to be stored in state because it is not anticipated that this information would need to be read by any on-chain program.&lt;/p&gt;
 &lt;p&gt;Everything an on-chain program does should be recorded in the event log. Node software can store these events with the block that it was logged from. On-chain programs should guarantee that emitted logs are correct.&lt;/p&gt;
 &lt;p&gt;For the new version of Acuity (built on Polkadot) it was decided to emit content IPFS hashes as events instead of storing them in state. This massively reduces transaction weight and increases scalablity of the platform as a whole.&lt;/p&gt;
 &lt;p&gt;But how can a dapp find the IPFS hashes of revisions of a given content item?&lt;/p&gt;
-&lt;p&gt;In 2023, the Web3 Foundation funded the development of Hybrid Indexer (now called &lt;a href=&quot;/platform/&quot;&gt;Acuity Index&lt;/a&gt;) with 2 grants (&lt;a rel=&quot;noopener external&quot; target=&quot;_blank&quot; href=&quot;https://github.com/w3f/Grants-Program/blob/master/applications/hybrid.md&quot;&gt;1&lt;/a&gt;,&lt;a rel=&quot;noopener external&quot; target=&quot;_blank&quot; href=&quot;https://github.com/w3f/Grants-Program/blob/master/applications/hybrid2.md&quot;&gt;2&lt;/a&gt;). For each Polkadot blockchain it facilitates the creation of an &quot;indexing node&quot; that can run alongside an archival node. The indexing node reads the events from all historical blocks and stores them in an indexed database for high performance querying.&lt;/p&gt;
+&lt;p&gt;In 2023, the Web3 Foundation funded the development of Hybrid Indexer (now called &lt;a href=&quot;/content/&quot;&gt;Acuity Index&lt;/a&gt;) with 2 grants (&lt;a rel=&quot;noopener external&quot; target=&quot;_blank&quot; href=&quot;https://github.com/w3f/Grants-Program/blob/master/applications/hybrid.md&quot;&gt;1&lt;/a&gt;,&lt;a rel=&quot;noopener external&quot; target=&quot;_blank&quot; href=&quot;https://github.com/w3f/Grants-Program/blob/master/applications/hybrid2.md&quot;&gt;2&lt;/a&gt;). For each Polkadot blockchain it facilitates the creation of an &quot;indexing node&quot; that can run alongside an archival node. The indexing node reads the events from all historical blocks and stores them in an indexed database for high performance querying.&lt;/p&gt;
 &lt;p&gt;A dapp running on Acuity can query an indexing node to get the IPFS hashes. Similarly, a wallet dapp can query an indexing node to get the record of balance transfers for an account.&lt;/p&gt;
 &lt;p&gt;Acuity Index will be extended to financially incentivize a network of &quot;rich nodes&quot; that will also provide pinning / searching of IPFS content, recommendation engines (the Algorithm), querying the mempool, AI queries and media transcoding. This will facilitate the creation of an on-chain content web with feature rich dapps.&lt;/p&gt;
 </content>
@@ -694,10 +694,10 @@ The idea is that anyone can host a standardized index and potentially get paid t
           <name>Unknown</name>
         </author>
         
-        <link rel="alternate" type="text/html" href="https://choreographr.com/platform/docs/prevent-debasement/"/>
-        <id>https://choreographr.com/platform/docs/prevent-debasement/</id>
+        <link rel="alternate" type="text/html" href="https://choreographr.com/content/docs/prevent-debasement/"/>
+        <id>https://choreographr.com/content/docs/prevent-debasement/</id>
         
-        <content type="html" xml:base="https://choreographr.com/platform/docs/prevent-debasement/">&lt;p&gt;A devastating problem that occurred with the token of the original project (MIX) was that it was debased by a centralized exchange between 2019 and 2020, ultimately crashing the price to 0 in May 2020.&lt;/p&gt;
+        <content type="html" xml:base="https://choreographr.com/content/docs/prevent-debasement/">&lt;p&gt;A devastating problem that occurred with the token of the original project (MIX) was that it was debased by a centralized exchange between 2019 and 2020, ultimately crashing the price to 0 in May 2020.&lt;/p&gt;
 &lt;p&gt;Something that is not understood by almost everyone is that once a fungible asset has been listed on a centralized exchange, the operators of that exchange have the technical ability to create extra currency simply by editing their database.&lt;/p&gt;
 &lt;p&gt;For example, when Bitcoin is deposited into a centralized exchange, the exchange operators receive real BTC and the depositor is credited with &quot;BTC&quot; that is just an entry in the database of the exchange. Once this &quot;paper&quot; BTC is considered by the community to be equivalent to real BTC, the exchange operator essentially has root access to the BTC supply.&lt;/p&gt;
 &lt;p&gt;When Mt. Gox was erroneously crediting failed BTC deposits the effective circulation of BTC was increased beyond that hard-coded in the node software. FTX were deliberately fractional reserve, debasing all coins listed on their exchange several times over, with the possible exception of Solana.&lt;/p&gt;
@@ -718,10 +718,10 @@ The idea is that anyone can host a standardized index and potentially get paid t
           <name>Unknown</name>
         </author>
         
-        <link rel="alternate" type="text/html" href="https://choreographr.com/platform/docs/regenesis/"/>
-        <id>https://choreographr.com/platform/docs/regenesis/</id>
+        <link rel="alternate" type="text/html" href="https://choreographr.com/content/docs/regenesis/"/>
+        <id>https://choreographr.com/content/docs/regenesis/</id>
         
-        <content type="html" xml:base="https://choreographr.com/platform/docs/regenesis/">&lt;h2 id=&quot;why-did-acuity-have-a-regenesis&quot;&gt;Why did Acuity have a Regenesis?
+        <content type="html" xml:base="https://choreographr.com/content/docs/regenesis/">&lt;h2 id=&quot;why-did-acuity-have-a-regenesis&quot;&gt;Why did Acuity have a Regenesis?
 &lt;a class=&quot;zola-anchor&quot; href=&quot;#why-did-acuity-have-a-regenesis&quot; aria-label=&quot;Anchor link for: why-did-acuity-have-a-regenesis&quot;&gt;
   &lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;16&quot; height=&quot;16&quot; viewBox=&quot;0 0 24 24&quot; fill=&quot;none&quot; stroke=&quot;currentColor&quot; stroke-width=&quot;2.5&quot; stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot; aria-hidden=&quot;true&quot;&gt;&lt;path d=&quot;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&quot;/&gt;&lt;path d=&quot;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&quot;/&gt;&lt;/svg&gt;
 &lt;/a&gt;
@@ -788,15 +788,15 @@ ACU can be claimed by signing a message from a MIX address using MyCrypto, MyEth
           <name>Unknown</name>
         </author>
         
-        <link rel="alternate" type="text/html" href="https://choreographr.com/platform/docs/roadmap/"/>
-        <id>https://choreographr.com/platform/docs/roadmap/</id>
+        <link rel="alternate" type="text/html" href="https://choreographr.com/content/docs/roadmap/"/>
+        <id>https://choreographr.com/content/docs/roadmap/</id>
         
-        <content type="html" xml:base="https://choreographr.com/platform/docs/roadmap/">&lt;h2 id=&quot;acuity-index&quot;&gt;Acuity Index
+        <content type="html" xml:base="https://choreographr.com/content/docs/roadmap/">&lt;h2 id=&quot;acuity-index&quot;&gt;Acuity Index
 &lt;a class=&quot;zola-anchor&quot; href=&quot;#acuity-index&quot; aria-label=&quot;Anchor link for: acuity-index&quot;&gt;
   &lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;16&quot; height=&quot;16&quot; viewBox=&quot;0 0 24 24&quot; fill=&quot;none&quot; stroke=&quot;currentColor&quot; stroke-width=&quot;2.5&quot; stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot; aria-hidden=&quot;true&quot;&gt;&lt;path d=&quot;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&quot;/&gt;&lt;path d=&quot;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&quot;/&gt;&lt;/svg&gt;
 &lt;/a&gt;
 &lt;/h2&gt;
-&lt;p&gt;Currently &lt;a href=&quot;/platform/&quot;&gt;Acuity Index&lt;/a&gt; can index Polkadot, Kusama, Westend and Paseo. A release needs to be made so that the Acuity blockchain can be indexed.&lt;/p&gt;
+&lt;p&gt;Currently &lt;a href=&quot;/content/&quot;&gt;Acuity Index&lt;/a&gt; can index Polkadot, Kusama, Westend and Paseo. A release needs to be made so that the Acuity blockchain can be indexed.&lt;/p&gt;
 &lt;h2 id=&quot;forum&quot;&gt;Forum
 &lt;a class=&quot;zola-anchor&quot; href=&quot;#forum&quot; aria-label=&quot;Anchor link for: forum&quot;&gt;
   &lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;16&quot; height=&quot;16&quot; viewBox=&quot;0 0 24 24&quot; fill=&quot;none&quot; stroke=&quot;currentColor&quot; stroke-width=&quot;2.5&quot; stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot; aria-hidden=&quot;true&quot;&gt;&lt;path d=&quot;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&quot;/&gt;&lt;path d=&quot;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&quot;/&gt;&lt;/svg&gt;
@@ -855,10 +855,10 @@ ACU can be claimed by signing a message from a MIX address using MyCrypto, MyEth
           <name>Unknown</name>
         </author>
         
-        <link rel="alternate" type="text/html" href="https://choreographr.com/platform/docs/tokenomics/"/>
-        <id>https://choreographr.com/platform/docs/tokenomics/</id>
+        <link rel="alternate" type="text/html" href="https://choreographr.com/content/docs/tokenomics/"/>
+        <id>https://choreographr.com/content/docs/tokenomics/</id>
         
-        <content type="html" xml:base="https://choreographr.com/platform/docs/tokenomics/">&lt;p&gt;The first Acuity parachain is ACU. It is for account profile, structured content (like a book) and feed-based content (like X, YouTube, RSS). The block explorer is at &lt;a href=&quot;/platform/&quot;&gt;chains.acuity.network&lt;/a&gt;.&lt;/p&gt;
+        <content type="html" xml:base="https://choreographr.com/content/docs/tokenomics/">&lt;p&gt;The first Acuity parachain is ACU. It is for account profile, structured content (like a book) and feed-based content (like X, YouTube, RSS). The block explorer is at &lt;a href=&quot;/content/&quot;&gt;chains.acuity.network&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;ACU is a regenesis of the original MIX content chain that was built with PoW Ethereum. All MIX accounts were converted into ACU accounts 1:1 on 1st September 2020.&lt;/p&gt;
 &lt;p&gt;MIX was funded by a &lt;a rel=&quot;noopener external&quot; target=&quot;_blank&quot; href=&quot;https://docs.mix-blockchain.org/en/latest/issuance.html&quot;&gt;2000 day linear vesting&lt;/a&gt; from 27th April 2017 of 55 million MIX.&lt;/p&gt;
 &lt;p&gt;ACU operates essentially the same as MIX, except instead of EVM smart contracts it is implemented as Substrate pallets and uses an index network as a decentralized backend. It is &lt;a rel=&quot;noopener external&quot; target=&quot;_blank&quot; href=&quot;https://docs.polkadot.com/polkadot-protocol/architecture/polkadot-chain/pos-consensus/#&quot;&gt;NPoS&lt;/a&gt; instead of PoW.&lt;/p&gt;
@@ -875,10 +875,10 @@ ACU can be claimed by signing a message from a MIX address using MyCrypto, MyEth
           <name>Unknown</name>
         </author>
         
-        <link rel="alternate" type="text/html" href="https://choreographr.com/platform/docs/community-moderation/"/>
-        <id>https://choreographr.com/platform/docs/community-moderation/</id>
+        <link rel="alternate" type="text/html" href="https://choreographr.com/content/docs/community-moderation/"/>
+        <id>https://choreographr.com/content/docs/community-moderation/</id>
         
-        <content type="html" xml:base="https://choreographr.com/platform/docs/community-moderation/">&lt;p&gt;When the project was originally promoted in 2016 idea was that the community would organically grow by itself, which it did. A community Discord server was created and physical presentations around were being made without any direction from the founder.&lt;/p&gt;
+        <content type="html" xml:base="https://choreographr.com/content/docs/community-moderation/">&lt;p&gt;When the project was originally promoted in 2016 idea was that the community would organically grow by itself, which it did. A community Discord server was created and physical presentations around were being made without any direction from the founder.&lt;/p&gt;
 &lt;p&gt;However what has now become clear is that moderation of shared community spaces is critical to grow the community in the right direction. As a sculptor removes rock to realize his imagination, moderation policies are a means by which the founder can guide the community.&lt;/p&gt;
 &lt;p&gt;Futhermore, moderation needs to be consistent. Community members are taught the rules by enforcement. There must be a shared understanding of what is acceptable and what the repurcussions are for breaking the rules.&lt;/p&gt;
 &lt;p&gt;The &quot;offical&quot; shared space will be the Acuity Discourse. One of the key rules of this space is that discussion of the ACU price is not permitted.&lt;/p&gt;
@@ -896,10 +896,10 @@ ACU can be claimed by signing a message from a MIX address using MyCrypto, MyEth
           <name>Unknown</name>
         </author>
         
-        <link rel="alternate" type="text/html" href="https://choreographr.com/platform/docs/features/"/>
-        <id>https://choreographr.com/platform/docs/features/</id>
+        <link rel="alternate" type="text/html" href="https://choreographr.com/content/docs/features/"/>
+        <id>https://choreographr.com/content/docs/features/</id>
         
-        <content type="html" xml:base="https://choreographr.com/platform/docs/features/">&lt;p&gt;All of these features have already been implemented in the Acuity Browser running on MIX Blockchain and will be ported in full to the new Acuity Substrate-based blockchain.&lt;/p&gt;
+        <content type="html" xml:base="https://choreographr.com/content/docs/features/">&lt;p&gt;All of these features have already been implemented in the Acuity Browser running on MIX Blockchain and will be ported in full to the new Acuity Substrate-based blockchain.&lt;/p&gt;
 &lt;h2 id=&quot;permanent&quot;&gt;Permanent
 &lt;a class=&quot;zola-anchor&quot; href=&quot;#permanent&quot; aria-label=&quot;Anchor link for: permanent&quot;&gt;
   &lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;16&quot; height=&quot;16&quot; viewBox=&quot;0 0 24 24&quot; fill=&quot;none&quot; stroke=&quot;currentColor&quot; stroke-width=&quot;2.5&quot; stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot; aria-hidden=&quot;true&quot;&gt;&lt;path d=&quot;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&quot;/&gt;&lt;path d=&quot;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&quot;/&gt;&lt;/svg&gt;
@@ -999,10 +999,10 @@ ACU can be claimed by signing a message from a MIX address using MyCrypto, MyEth
           <name>Unknown</name>
         </author>
         
-        <link rel="alternate" type="text/html" href="https://choreographr.com/platform/docs/introduction/"/>
-        <id>https://choreographr.com/platform/docs/introduction/</id>
+        <link rel="alternate" type="text/html" href="https://choreographr.com/content/docs/introduction/"/>
+        <id>https://choreographr.com/content/docs/introduction/</id>
         
-        <content type="html" xml:base="https://choreographr.com/platform/docs/introduction/">&lt;p&gt;The Web is in decline due to &lt;a rel=&quot;noopener external&quot; target=&quot;_blank&quot; href=&quot;https://en.wikipedia.org/wiki/Enshittification&quot;&gt;enshittification&lt;/a&gt;, a term popularized by Cory Doctorow. Although Doctorow does not know this, open source decentralized applications (dapps) reaching state consensus via the blockchain is critical to overcome this problem and for the Web to succeed in its mission to save humanity.&lt;/p&gt;
+        <content type="html" xml:base="https://choreographr.com/content/docs/introduction/">&lt;p&gt;The Web is in decline due to &lt;a rel=&quot;noopener external&quot; target=&quot;_blank&quot; href=&quot;https://en.wikipedia.org/wiki/Enshittification&quot;&gt;enshittification&lt;/a&gt;, a term popularized by Cory Doctorow. Although Doctorow does not know this, open source decentralized applications (dapps) reaching state consensus via the blockchain is critical to overcome this problem and for the Web to succeed in its mission to save humanity.&lt;/p&gt;
 &lt;p&gt;The underlying reason why enshittification occurs is because popular web platforms are owned and controlled by centralized organizations that ultimately do not do what is best for their users. Real blockchains on the other hand are either fully autonomous (never change), or are governed by a decentralized autonomous organization (DAO).&lt;/p&gt;
 &lt;p&gt;Acuity is a &lt;a rel=&quot;noopener external&quot; target=&quot;_blank&quot; href=&quot;https://en.wikipedia.org/wiki/Web3&quot;&gt;Web3&lt;/a&gt; replacement for the World Wide Web, in development since 2015.&lt;/p&gt;
 &lt;p&gt;Perhaps the best analogy for Acuity is that it is an on-chain &lt;a rel=&quot;noopener external&quot; target=&quot;_blank&quot; href=&quot;https://en.wikipedia.org/wiki/Content_management_system&quot;&gt;Content Management System&lt;/a&gt;. With a Web 2.0 CMS such as WordPress, the web browser is acting like a dumb terminal, rendering HTML and CSS. Wordpress understands the semantic meaning of the content, but the browser does not. There is no standized way to publish or query content on the Web because there are endless different backends that work in different ways.&lt;/p&gt;
@@ -1027,13 +1027,13 @@ ACU can be claimed by signing a message from a MIX address using MyCrypto, MyEth
 &lt;li&gt;querying unconfirmed transactions&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;Currently dapps either utilize a centralized backend that will be subject to enshittification, or try to make do with only querying and verifying state directly.&lt;/p&gt;
-&lt;p&gt;The purpose of &lt;a href=&quot;/platform/&quot;&gt;Acuity Index&lt;/a&gt; is to provide decentralized indexing for dapps, starting with event log indexing for Polkadot blockchains.&lt;/p&gt;
+&lt;p&gt;The purpose of &lt;a href=&quot;/content/&quot;&gt;Acuity Index&lt;/a&gt; is to provide decentralized indexing for dapps, starting with event log indexing for Polkadot blockchains.&lt;/p&gt;
 &lt;h2 id=&quot;quick-start&quot;&gt;Quick Start
 &lt;a class=&quot;zola-anchor&quot; href=&quot;#quick-start&quot; aria-label=&quot;Anchor link for: quick-start&quot;&gt;
   &lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;16&quot; height=&quot;16&quot; viewBox=&quot;0 0 24 24&quot; fill=&quot;none&quot; stroke=&quot;currentColor&quot; stroke-width=&quot;2.5&quot; stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot; aria-hidden=&quot;true&quot;&gt;&lt;path d=&quot;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&quot;/&gt;&lt;path d=&quot;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&quot;/&gt;&lt;/svg&gt;
 &lt;/a&gt;
 &lt;/h2&gt;
-&lt;p&gt;The Acuity blockchain can be accessed at &lt;a href=&quot;/platform/&quot;&gt;chains.acuity.network&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;The Acuity blockchain can be accessed at &lt;a href=&quot;/content/&quot;&gt;chains.acuity.network&lt;/a&gt;&lt;/p&gt;
 </content>
         
     </entry>
@@ -1046,10 +1046,10 @@ ACU can be claimed by signing a message from a MIX address using MyCrypto, MyEth
           <name>Unknown</name>
         </author>
         
-        <link rel="alternate" type="text/html" href="https://choreographr.com/platform/docs/why/"/>
-        <id>https://choreographr.com/platform/docs/why/</id>
+        <link rel="alternate" type="text/html" href="https://choreographr.com/content/docs/why/"/>
+        <id>https://choreographr.com/content/docs/why/</id>
         
-        <content type="html" xml:base="https://choreographr.com/platform/docs/why/">&lt;p&gt;Social media has to a large degree taken over from publishing content on websites. There are a lot of good reasons for this. Having everyone together instead of on separate websites enables rich interactions and social networks to emerge. In many ways this has been an incredible tool for humanity, but it hasn&#39;t quite realized its potential. Major platforms have many issues that they are not intending to resolve properly. There is no point in blaming these platforms. The real issue is that we need social media to be decentralized so we can reclaim the Web - &lt;a target=&quot;_blank&quot; href=&quot;https://www.techdirt.com/2015/07/17/protocols-instead-platforms-rethinking-reddit-twitter-moderation-free-speech/&quot;&gt;protocols instead of platforms&lt;/a&gt;.&lt;/p&gt;
+        <content type="html" xml:base="https://choreographr.com/content/docs/why/">&lt;p&gt;Social media has to a large degree taken over from publishing content on websites. There are a lot of good reasons for this. Having everyone together instead of on separate websites enables rich interactions and social networks to emerge. In many ways this has been an incredible tool for humanity, but it hasn&#39;t quite realized its potential. Major platforms have many issues that they are not intending to resolve properly. There is no point in blaming these platforms. The real issue is that we need social media to be decentralized so we can reclaim the Web - &lt;a target=&quot;_blank&quot; href=&quot;https://www.techdirt.com/2015/07/17/protocols-instead-platforms-rethinking-reddit-twitter-moderation-free-speech/&quot;&gt;protocols instead of platforms&lt;/a&gt;.&lt;/p&gt;
 &lt;h2 id=&quot;no-backend&quot;&gt;No backend
 &lt;a class=&quot;zola-anchor&quot; href=&quot;#no-backend&quot; aria-label=&quot;Anchor link for: no-backend&quot;&gt;
   &lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;16&quot; height=&quot;16&quot; viewBox=&quot;0 0 24 24&quot; fill=&quot;none&quot; stroke=&quot;currentColor&quot; stroke-width=&quot;2.5&quot; stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot; aria-hidden=&quot;true&quot;&gt;&lt;path d=&quot;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&quot;/&gt;&lt;path d=&quot;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&quot;/&gt;&lt;/svg&gt;
@@ -1129,7 +1129,7 @@ ACU can be claimed by signing a message from a MIX address using MyCrypto, MyEth
 &lt;li&gt;adds to gas cost&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;In fact some startups such as GhostLogs and Shadow are promoting the harmful idea that events should not be emitted on-chain at all, and centralized services should determine the events. This is a non-starter because in order to prove by light client that an event occurred it needs to be emitted by the contract on the blockchain.&lt;/p&gt;
-&lt;p&gt;&lt;a rel=&quot;noopener external&quot; target=&quot;_blank&quot; href=&quot;https://polkadot.com/platform/sdk/&quot;&gt;Polkadot SDK&lt;/a&gt; has a much simpler approach to events than the EVM. Events are emitted on-chain, but there is no additional transaction weight to indicate that they should be indexed.&lt;/p&gt;
+&lt;p&gt;&lt;a rel=&quot;noopener external&quot; target=&quot;_blank&quot; href=&quot;https://polkadot.com/content/sdk/&quot;&gt;Polkadot SDK&lt;/a&gt; has a much simpler approach to events than the EVM. Events are emitted on-chain, but there is no additional transaction weight to indicate that they should be indexed.&lt;/p&gt;
 &lt;p&gt;Both &lt;a rel=&quot;noopener external&quot; target=&quot;_blank&quot; href=&quot;https://www.youtube.com/watch?v=ZHNrAXf3RDE&quot;&gt;Ethereum&lt;/a&gt; and &lt;a rel=&quot;noopener external&quot; target=&quot;_blank&quot; href=&quot;https://www.youtube.com/watch?v=xzC9KJXtidE&quot;&gt;Substrate&lt;/a&gt; are implementing improvements to their light client protocols so they will actually be useable.&lt;/p&gt;
 &lt;p&gt;Acuity Index is a decentralized event index for all chain types. It has the following properties:&lt;/p&gt;
 &lt;ul&gt;
@@ -1880,10 +1880,10 @@ The following deliverables have been completed:&lt;/p&gt;
           <name>Unknown</name>
         </author>
         
-        <link rel="alternate" type="text/html" href="https://choreographr.com/platform/docs/indexer/api/"/>
-        <id>https://choreographr.com/platform/docs/indexer/api/</id>
+        <link rel="alternate" type="text/html" href="https://choreographr.com/content/docs/indexer/api/"/>
+        <id>https://choreographr.com/content/docs/indexer/api/</id>
         
-        <content type="html" xml:base="https://choreographr.com/platform/docs/indexer/api/">&lt;p&gt;The public API is a JSON-over-WebSocket protocol exposed on &lt;code&gt;ws://localhost:8172&lt;/code&gt;
+        <content type="html" xml:base="https://choreographr.com/content/docs/indexer/api/">&lt;p&gt;The public API is a JSON-over-WebSocket protocol exposed on &lt;code&gt;ws://localhost:8172&lt;/code&gt;
 by default.&lt;/p&gt;
 &lt;p&gt;There are two message classes:&lt;/p&gt;
 &lt;ul&gt;
@@ -2125,10 +2125,10 @@ storage proof for that value.&lt;/p&gt;
           <name>Unknown</name>
         </author>
         
-        <link rel="alternate" type="text/html" href="https://choreographr.com/platform/docs/indexer/architecture/"/>
-        <id>https://choreographr.com/platform/docs/indexer/architecture/</id>
+        <link rel="alternate" type="text/html" href="https://choreographr.com/content/docs/indexer/architecture/"/>
+        <id>https://choreographr.com/content/docs/indexer/architecture/</id>
         
-        <content type="html" xml:base="https://choreographr.com/platform/docs/indexer/architecture/">&lt;p&gt;Acuity Index is a config-driven event indexer for Substrate chains. It decodes
+        <content type="html" xml:base="https://choreographr.com/content/docs/indexer/architecture/">&lt;p&gt;Acuity Index is a config-driven event indexer for Substrate chains. It decodes
 runtime events with &lt;code&gt;subxt&lt;/code&gt;, derives query keys from TOML config, stores index
 entries in &lt;code&gt;sled&lt;/code&gt;, and serves query access over WebSocket.&lt;/p&gt;
 &lt;h2 id=&quot;main-components&quot;&gt;Main Components
@@ -2361,10 +2361,10 @@ more realistic finalized-chain setup.&lt;/p&gt;
           <name>Unknown</name>
         </author>
         
-        <link rel="alternate" type="text/html" href="https://choreographr.com/platform/docs/indexer/configuration/"/>
-        <id>https://choreographr.com/platform/docs/indexer/configuration/</id>
+        <link rel="alternate" type="text/html" href="https://choreographr.com/content/docs/indexer/configuration/"/>
+        <id>https://choreographr.com/content/docs/indexer/configuration/</id>
         
-        <content type="html" xml:base="https://choreographr.com/platform/docs/indexer/configuration/">&lt;p&gt;Acuity Index uses two configuration layers:&lt;/p&gt;
+        <content type="html" xml:base="https://choreographr.com/content/docs/indexer/configuration/">&lt;p&gt;Acuity Index uses two configuration layers:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;an index specification TOML that describes chain identity and indexing rules&lt;/li&gt;
 &lt;li&gt;an optional runtime options TOML passed via &lt;code&gt;--options-config&lt;/code&gt;&lt;/li&gt;
@@ -2478,10 +2478,10 @@ shape is accepted, but the response reports proofs as unavailable.&lt;/p&gt;
           <name>Unknown</name>
         </author>
         
-        <link rel="alternate" type="text/html" href="https://choreographr.com/platform/docs/indexer/features/"/>
-        <id>https://choreographr.com/platform/docs/indexer/features/</id>
+        <link rel="alternate" type="text/html" href="https://choreographr.com/content/docs/indexer/features/"/>
+        <id>https://choreographr.com/content/docs/indexer/features/</id>
         
-        <content type="html" xml:base="https://choreographr.com/platform/docs/indexer/features/">&lt;ul&gt;
+        <content type="html" xml:base="https://choreographr.com/content/docs/indexer/features/">&lt;ul&gt;
 &lt;li&gt;Config-driven indexing with support for compound keys and multi-keys&lt;/li&gt;
 &lt;li&gt;Index specification checkpointing. When a new checkpoint is added re-indexing will occur from that block.&lt;/li&gt;
 &lt;li&gt;Hot reload for accepted index-spec changes&lt;/li&gt;
@@ -2506,10 +2506,10 @@ shape is accepted, but the response reports proofs as unavailable.&lt;/p&gt;
           <name>Unknown</name>
         </author>
         
-        <link rel="alternate" type="text/html" href="https://choreographr.com/platform/docs/indexer/installation/"/>
-        <id>https://choreographr.com/platform/docs/indexer/installation/</id>
+        <link rel="alternate" type="text/html" href="https://choreographr.com/content/docs/indexer/installation/"/>
+        <id>https://choreographr.com/content/docs/indexer/installation/</id>
         
-        <content type="html" xml:base="https://choreographr.com/platform/docs/indexer/installation/">&lt;h2 id=&quot;requirements&quot;&gt;Requirements
+        <content type="html" xml:base="https://choreographr.com/content/docs/indexer/installation/">&lt;h2 id=&quot;requirements&quot;&gt;Requirements
 &lt;a class=&quot;zola-anchor&quot; href=&quot;#requirements&quot; aria-label=&quot;Anchor link for: requirements&quot;&gt;
   &lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;16&quot; height=&quot;16&quot; viewBox=&quot;0 0 24 24&quot; fill=&quot;none&quot; stroke=&quot;currentColor&quot; stroke-width=&quot;2.5&quot; stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot; aria-hidden=&quot;true&quot;&gt;&lt;path d=&quot;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&quot;/&gt;&lt;path d=&quot;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&quot;/&gt;&lt;/svg&gt;
 &lt;/a&gt;
@@ -2535,10 +2535,10 @@ shape is accepted, but the response reports proofs as unavailable.&lt;/p&gt;
           <name>Unknown</name>
         </author>
         
-        <link rel="alternate" type="text/html" href="https://choreographr.com/platform/docs/indexer/problem/"/>
-        <id>https://choreographr.com/platform/docs/indexer/problem/</id>
+        <link rel="alternate" type="text/html" href="https://choreographr.com/content/docs/indexer/problem/"/>
+        <id>https://choreographr.com/content/docs/indexer/problem/</id>
         
-        <content type="html" xml:base="https://choreographr.com/platform/docs/indexer/problem/">&lt;p&gt;Dapps need to write to and query blockchain state, events (logs) and decentralized filesystems such as &lt;a rel=&quot;noopener external&quot; target=&quot;_blank&quot; href=&quot;https://ipfs.tech/&quot;&gt;IPFS&lt;/a&gt;. Current state can be read and modified on-chain by extrinsics (transactions). Historic state can only be read off-chain. Events can be written by extrinsics, but only read off-chain. Files on IPFS can only be written and read off-chain, but a cryptographic hash of the file can be stored on-chain in state or an event.&lt;/p&gt;
+        <content type="html" xml:base="https://choreographr.com/content/docs/indexer/problem/">&lt;p&gt;Dapps need to write to and query blockchain state, events (logs) and decentralized filesystems such as &lt;a rel=&quot;noopener external&quot; target=&quot;_blank&quot; href=&quot;https://ipfs.tech/&quot;&gt;IPFS&lt;/a&gt;. Current state can be read and modified on-chain by extrinsics (transactions). Historic state can only be read off-chain. Events can be written by extrinsics, but only read off-chain. Files on IPFS can only be written and read off-chain, but a cryptographic hash of the file can be stored on-chain in state or an event.&lt;/p&gt;
 &lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;&lt;/th&gt;&lt;th&gt;Read&lt;/th&gt;&lt;th&gt;Write&lt;/th&gt;&lt;th&gt;Modify&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;
 &lt;tr&gt;&lt;td&gt;Current State&lt;/td&gt;&lt;td&gt;on/off-chain&lt;/td&gt;&lt;td&gt;on-chain&lt;/td&gt;&lt;td&gt;on-chain&lt;/td&gt;&lt;/tr&gt;
 &lt;tr&gt;&lt;td&gt;Historic State&lt;/td&gt;&lt;td&gt;off-chain&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;/tr&gt;
@@ -2630,10 +2630,10 @@ shape is accepted, but the response reports proofs as unavailable.&lt;/p&gt;
           <name>Unknown</name>
         </author>
         
-        <link rel="alternate" type="text/html" href="https://choreographr.com/platform/docs/indexer/solution/"/>
-        <id>https://choreographr.com/platform/docs/indexer/solution/</id>
+        <link rel="alternate" type="text/html" href="https://choreographr.com/content/docs/indexer/solution/"/>
+        <id>https://choreographr.com/content/docs/indexer/solution/</id>
         
-        <content type="html" xml:base="https://choreographr.com/platform/docs/indexer/solution/">&lt;p&gt;&lt;img src=&quot;/acuity-index.svg&quot; style=&quot;width: 100%; height: auto;&quot;&gt;&lt;/img&gt;&lt;/p&gt;
+        <content type="html" xml:base="https://choreographr.com/content/docs/indexer/solution/">&lt;p&gt;&lt;img src=&quot;/acuity-index.svg&quot; style=&quot;width: 100%; height: auto;&quot;&gt;&lt;/img&gt;&lt;/p&gt;
 &lt;p&gt;One solution is for the user to run their own full node for each chain that is being queried, but this is almost never practical. Running a full node typically requires terabytes of storage &amp;amp; bandwidth and can take weeks to become fully synchronized.&lt;/p&gt;
 &lt;p&gt;Dapps can query full nodes and use a light client to cryptographically verify the results are correct. In fact, &lt;a rel=&quot;noopener external&quot; target=&quot;_blank&quot; href=&quot;https://www.youtube.com/watch?v=ZHNrAXf3RDE&quot;&gt;Ethereum&lt;/a&gt; and &lt;a rel=&quot;noopener external&quot; target=&quot;_blank&quot; href=&quot;https://www.youtube.com/watch?v=xzC9KJXtidE&quot;&gt;Substrate&lt;/a&gt; are both introducing improvements to their light client technology. This solves the problem of incorrect data.&lt;/p&gt;
 &lt;p&gt;However, this does not solve all the other problems.&lt;/p&gt;
@@ -2684,10 +2684,10 @@ shape is accepted, but the response reports proofs as unavailable.&lt;/p&gt;
           <name>Unknown</name>
         </author>
         
-        <link rel="alternate" type="text/html" href="https://choreographr.com/platform/docs/indexer/quick-start/"/>
-        <id>https://choreographr.com/platform/docs/indexer/quick-start/</id>
+        <link rel="alternate" type="text/html" href="https://choreographr.com/content/docs/indexer/quick-start/"/>
+        <id>https://choreographr.com/content/docs/indexer/quick-start/</id>
         
-        <content type="html" xml:base="https://choreographr.com/platform/docs/indexer/quick-start/">&lt;h2 id=&quot;1-generate-a-starter-spec&quot;&gt;1. Generate A Starter Spec
+        <content type="html" xml:base="https://choreographr.com/content/docs/indexer/quick-start/">&lt;h2 id=&quot;1-generate-a-starter-spec&quot;&gt;1. Generate A Starter Spec
 &lt;a class=&quot;zola-anchor&quot; href=&quot;#1-generate-a-starter-spec&quot; aria-label=&quot;Anchor link for: 1-generate-a-starter-spec&quot;&gt;
   &lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;16&quot; height=&quot;16&quot; viewBox=&quot;0 0 24 24&quot; fill=&quot;none&quot; stroke=&quot;currentColor&quot; stroke-width=&quot;2.5&quot; stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot; aria-hidden=&quot;true&quot;&gt;&lt;path d=&quot;M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71&quot;/&gt;&lt;path d=&quot;M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71&quot;/&gt;&lt;/svg&gt;
 &lt;/a&gt;

@@ -138,11 +138,11 @@ Chrome bundles, and honors `CHROMIUM_BIN` / `CHROME_BIN` to point at a specific
 path. Install it via your package manager (e.g. `apt install chromium`,
 `brew install --cask chromium`).
 
-## Coordination Platform tools
+## Content tools
 
 The [`coord`](@/agent/docs/tools/coordination.md) tool group is
 always compiled in and active by default. The read tools work out of the box
-against the configured platform endpoints. The **write tools** sign
+against the configured network endpoints. The **write tools** sign
 transactions and need a **Substrate (Polkadot) account credential** in the
 keystore, plus an unlocked daemon — see
 [Accounts & providers](@/agent/docs/accounts-and-providers.md#accounts) for how

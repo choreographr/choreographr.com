@@ -29,7 +29,7 @@ a = "Generated code runs in an isolated RISC-V VM by default, which is a complet
 
 [[extra.faq]]
 q = "Does it require an async runtime?"
-a = "No — the daemon uses pure OS threads with message passing. No async code in its own logic, no `Arc<Mutex>` shared state. Two crates drive async clients behind a tokio sidecar runtime that the daemon calls through synchronous entry points: `choreo-coord` (always linked, for the Coordination Platform chain) and the optional `choreo-blockchain` (the EVM/Substrate tools). Without the `blockchain` feature, only the small coord sidecar is present."
+a = "No — the daemon uses pure OS threads with message passing. No async code in its own logic, no `Arc<Mutex>` shared state. Two crates drive async clients behind a tokio sidecar runtime that the daemon calls through synchronous entry points: `choreo-coord` (always linked, for the Content chain) and the optional `choreo-blockchain` (the EVM/Substrate tools). Without the `blockchain` feature, only the small coord sidecar is present."
 
 [[extra.faq]]
 q = "Can it talk to blockchains?"
@@ -37,7 +37,7 @@ a = "Yes — the `blockchain` tool group adds read-only EVM and Substrate/Polkad
 
 [[extra.faq]]
 q = "Can it publish to a blockchain?"
-a = "Yes — the `coord` tool group (always on) lets the agent read and publish to the Choreographr Coordination Platform: content items, revisions, profiles, lifecycle transitions, and pins, plus queries through the platform's indexer. Write tools need a Substrate (Polkadot) account credential and an unlocked daemon. Separately, the `blockchain` group adds read-only EVM and Substrate/Polkadot queries. See [tools](@/agent/docs/tools/coordination.md)."
+a = "Yes — the `coord` tool group (always on) lets the agent read and publish to the Content network: content items, revisions, profiles, lifecycle transitions, and pins, plus queries through the network's indexer. Write tools need a Substrate (Polkadot) account credential and an unlocked daemon. Separately, the `blockchain` group adds read-only EVM and Substrate/Polkadot queries. See [tools](@/agent/docs/tools/coordination.md)."
 
 [[extra.faq]]
 q = "Is it open source?"

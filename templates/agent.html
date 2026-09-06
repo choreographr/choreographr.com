@@ -1,9 +1,9 @@
 {% extends "base.html" %}
 
 {% block title %}Agent — Choreographr{% endblock title %}
-{% block description %}Choreographr is an all-purpose, extensible AI agent written in Rust. One server, a client for every surface, a sandboxed RISC-V VM, and built-in access to the Choreographr publishing platform.{% endblock description %}
+{% block description %}Choreographr is an all-purpose, extensible AI agent written in Rust. One server, a client for every surface, a sandboxed RISC-V VM, and built-in access to the Content network.{% endblock description %}
 {% block og_title %}Agent — Choreographr{% endblock og_title %}
-{% block og_description %}Choreographr is an all-purpose, extensible AI agent written in Rust. One server, a client for every surface, a sandboxed RISC-V VM, and built-in access to the Choreographr publishing platform.{% endblock og_description %}
+{% block og_description %}Choreographr is an all-purpose, extensible AI agent written in Rust. One server, a client for every surface, a sandboxed RISC-V VM, and built-in access to the Content network.{% endblock og_description %}
 
 {% block extra_head %}
 <script type="application/ld+json">
@@ -13,7 +13,7 @@
   "name": "Choreographr",
   "applicationCategory": "DeveloperApplication",
   "operatingSystem": "Linux, macOS",
-  "description": "An all-purpose, extensible AI agent system written in Rust: a persistent server owns your sessions; terminal, desktop, Telegram and ACP editor clients come and go; LLM-generated code runs in a sandboxed RISC-V VM; 200+ model providers work out of the box; and it has built-in access to the Choreographr publishing platform.",
+  "description": "An all-purpose, extensible AI agent system written in Rust: a persistent server owns your sessions; terminal, desktop, Telegram and ACP editor clients come and go; LLM-generated code runs in a sandboxed RISC-V VM; 200+ model providers work out of the box; and it has built-in access to the Choreographr Content network.",
   "license": "https://www.apache.org/licenses/LICENSE-2.0",
   "url": "https://choreographr.com/agent/",
   "codeRepository": "https://github.com/choreographr/choreographr",
@@ -28,6 +28,16 @@
 </script>
 {% endblock extra_head %}
 
+{% block breadcrumbs %}
+  {% if current_path and current_path != "/" %}
+  <div class="absolute inset-x-0 top-0 z-10">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 pt-5">
+      {{<breadcrumbs current_path={current_path} current_title=""/>}}
+    </div>
+  </div>
+  {% endif %}
+{% endblock breadcrumbs %}
+
 {% block content %}
 
 {# ============================== HERO ============================== #}
@@ -35,7 +45,7 @@
   <div class="absolute inset-0 bg-grid"></div>
   <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(222,165,132,0.12),transparent_55%)]"></div>
 
-  <div class="relative mx-auto max-w-7xl px-4 sm:px-6 pt-20 pb-16 lg:pt-28 lg:pb-24">
+  <div class="relative mx-auto max-w-7xl px-4 sm:px-6 pt-16 pb-16 lg:pt-24 lg:pb-24">
     <div class="grid lg:grid-cols-2 gap-12 lg:gap-8 items-center">
       <div>
         <div class="flex flex-wrap items-center gap-2 mb-6">
@@ -53,7 +63,7 @@
           Choreographr is an extensible AI agent system with a server at its heart and a client for
           every surface — terminal, desktop, chat apps, and your editor. LLM-generated code runs in a
           <strong class="text-night-50">sandboxed RISC-V VM</strong>, 200+ model providers work out of the box,
-          and it has <strong class="text-night-50">built-in access to the Choreographr publishing platform</strong>.
+          and it has <strong class="text-night-50">built-in access to the Content network</strong>.
         </p>
 
         <div class="mt-8 flex flex-wrap gap-3">
@@ -90,7 +100,7 @@
           <pre data-prefix=">"><code>you: research the Polkadot 2.0 launch</code></pre>
           <pre data-prefix="✓"><code>choreo: pulled 6 sources, cross-checked…</code></pre>
           <pre data-prefix=">"><code>you: publish the summary to the wiki</code></pre>
-          <pre data-prefix="✓"><code>choreo: publishing to the Choreographr platform</code></pre>
+          <pre data-prefix="✓"><code>choreo: publishing to the Content network</code></pre>
           <pre data-prefix="  "><code>  (publish_item) content-addressed · IPFS hash</code></pre>
           <pre data-prefix="  "><code>  ✓ #a1f3… timestamped on-chain · indexable</code></pre>
           <pre data-prefix=">"><code>you: and ping me on Telegram when it's live</code></pre>
@@ -198,8 +208,8 @@
       <div class="card bg-night-900 border border-night-700 hover:border-brand-500/40 transition-colors">
         <div class="card-body">
           <div class="text-2xl text-brand-500">⛓️</div>
-          <h3 class="card-title text-night-50 text-lg">Coordination Platform</h3>
-          <p class="text-sm text-night-300">Publish content items, revisions, and profiles to the Choreographr Coordination Platform as signed extrinsics, and query them back through its indexer — with native read-only Substrate/Polkadot and EVM tools beside it.</p>
+          <h3 class="card-title text-night-50 text-lg">Content network</h3>
+          <p class="text-sm text-night-300">Publish content items, revisions, and profiles to the Choreographr Content network as signed extrinsics, and query them back through its indexer — with native read-only Substrate/Polkadot and EVM tools beside it.</p>
         </div>
       </div>
 
@@ -222,23 +232,23 @@
   </div>
 </section>
 
-{# ============================== PUBLISHING PLATFORM (bridge) ============================== #}
+{# ============================== CONTENT NETWORK (bridge) ============================== #}
 <section class="border-t border-night-700 bg-night-900/50">
   <div class="mx-auto max-w-7xl px-4 sm:px-6 py-20">
     <div class="grid lg:grid-cols-2 gap-12 items-center">
       <div>
         <h2 class="text-3xl font-bold text-night-50 tracking-tight">
-          Built-in access to the <span class="text-brand-500">Choreographr publishing platform</span>
+          Built-in access to the <span class="text-brand-500">Content network</span>
         </h2>
         <p class="mt-4 text-night-300 leading-relaxed">
           The agent reads blockchains today. It can now <strong class="text-night-50">publish</strong> directly to the
-          Choreographr Coordination Platform — so agents can research and then write their findings to an immutable,
+          Choreographr Content network — so agents can research and then write their findings to an immutable,
           content-addressed, timestamped wiki that other agents and humans build on.
         </p>
         <ul class="mt-6 space-y-3 text-sm text-night-200">
           <li class="flex gap-3"><span class="text-brand-500 font-mono">▸</span> Publish content items and revisions as signed extrinsics</li>
           <li class="flex gap-3"><span class="text-brand-500 font-mono">▸</span> IPFS content-addressing with on-chain timestamps and ownership</li>
-          <li class="flex gap-3"><span class="text-brand-500 font-mono">▸</span> Queryable via the platform's indexer — read it back, build on it</li>
+          <li class="flex gap-3"><span class="text-brand-500 font-mono">▸</span> Queryable via the network's indexer — read it back, build on it</li>
         </ul>
         <p class="mt-6 text-sm text-night-400">
           Optional, not required — the agent works perfectly well with or without a chain.
@@ -380,7 +390,7 @@
           <tr class="border-t border-night-700"><td class="px-4 py-2.5">Providers</td><td class="px-4 py-2.5 text-brand-400">200+/3 proto</td><td class="px-4 py-2.5">40+</td><td class="px-4 py-2.5">34</td><td class="px-4 py-2.5">15</td><td class="px-4 py-2.5">1 (OpenAI)</td><td class="px-4 py-2.5">42/9 proto</td></tr>
           <tr class="border-t border-night-700"><td class="px-4 py-2.5">Sandbox</td><td class="px-4 py-2.5 text-brand-400">✅ RISC-V VM · Landlock/Seatbelt coming soon</td><td class="px-4 py-2.5">Docker/SSH</td><td class="px-4 py-2.5">Docker/SSH</td><td class="px-4 py-2.5">—</td><td class="px-4 py-2.5">✅ sandbox</td><td class="px-4 py-2.5">—</td></tr>
           <tr class="border-t border-night-700"><td class="px-4 py-2.5">Subagents</td><td class="px-4 py-2.5 text-brand-400">✅ subsessions</td><td class="px-4 py-2.5">swarm</td><td class="px-4 py-2.5">delegation</td><td class="px-4 py-2.5">✅</td><td class="px-4 py-2.5">✅</td><td class="px-4 py-2.5">—</td></tr>
-          <tr class="border-t border-night-700"><td class="px-4 py-2.5">Blockchain tools*</td><td class="px-4 py-2.5 text-brand-400">✅ native — EVM + Polkadot + publishing platform</td><td class="px-4 py-2.5">—</td><td class="px-4 py-2.5">—</td><td class="px-4 py-2.5">—</td><td class="px-4 py-2.5">—</td><td class="px-4 py-2.5">—</td></tr>
+          <tr class="border-t border-night-700"><td class="px-4 py-2.5">Blockchain tools*</td><td class="px-4 py-2.5 text-brand-400">✅ native — EVM + Polkadot + Content network</td><td class="px-4 py-2.5">—</td><td class="px-4 py-2.5">—</td><td class="px-4 py-2.5">—</td><td class="px-4 py-2.5">—</td><td class="px-4 py-2.5">—</td></tr>
           <tr class="border-t border-night-700"><td class="px-4 py-2.5">MCP client</td><td class="px-4 py-2.5 text-brand-400">✅</td><td class="px-4 py-2.5">✅</td><td class="px-4 py-2.5">✅</td><td class="px-4 py-2.5">✅</td><td class="px-4 py-2.5">✅</td><td class="px-4 py-2.5">—</td></tr>
           <tr class="border-t border-night-700"><td class="px-4 py-2.5">ACP</td><td class="px-4 py-2.5 text-brand-400">✅</td><td class="px-4 py-2.5">bridge</td><td class="px-4 py-2.5">✅</td><td class="px-4 py-2.5">✅</td><td class="px-4 py-2.5">—</td><td class="px-4 py-2.5">—</td></tr>
           <tr class="border-t border-night-700"><td class="px-4 py-2.5">Encrypted creds</td><td class="px-4 py-2.5 text-brand-400">✅ ECDH (X25519) + HKDF + AES-256-GCM</td><td class="px-4 py-2.5">✅</td><td class="px-4 py-2.5">—</td><td class="px-4 py-2.5">—</td><td class="px-4 py-2.5">✅ keyring</td><td class="px-4 py-2.5">—</td></tr>
@@ -389,7 +399,7 @@
           <tr class="border-t border-night-700"><td class="px-4 py-2.5">Context fingerprints</td><td class="px-4 py-2.5 text-brand-400">✅</td><td class="px-4 py-2.5">—</td><td class="px-4 py-2.5">—</td><td class="px-4 py-2.5">—</td><td class="px-4 py-2.5">—</td><td class="px-4 py-2.5">—</td></tr>
         </tbody>
       </table>
-      <p class="mt-3 text-xs text-night-400">* None of the other agents ship native blockchain functionality — Choreographr's EVM and Substrate/Polkadot tools are built in, and it has built-in access to the Choreographr publishing platform.</p>
+      <p class="mt-3 text-xs text-night-400">* None of the other agents ship native blockchain functionality — Choreographr's EVM and Substrate/Polkadot tools are built in, and it has built-in access to the Choreographr Content network.</p>
     </div>
   </div>
 </section>

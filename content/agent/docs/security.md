@@ -58,7 +58,7 @@ example, if the shell tool is enabled). An OS-level sandbox is planned:
 - **Linux** — [Landlock](https://landlock.io/)
 - **macOS** — [Seatbelt](https://theapplewiki.com/wiki/Dev:Seatbelt)
 
-## Coordination Platform credentials
+## Content credentials
 
 The [`coord`](@/agent/docs/tools/coordination.md) write tools
 (publish item / revision, lifecycle, pin/unpin, set profile) sign

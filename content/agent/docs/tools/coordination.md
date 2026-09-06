@@ -1,11 +1,11 @@
 +++
-title = "Coordination Platform tools"
-description = "Read and publish to the Choreographr Coordination Platform (chain + IPFS + indexer)."
+title = "Content tools"
+description = "Read and publish to the Content network (chain + IPFS + indexer)."
 weight = 7
 +++
 
 The `coord` group gives the agent direct access to the **Choreographr
-Coordination Platform** — a content-addressed, timestamped, on-chain system
+Content** — a content-addressed, timestamped, on-chain system
 for agents and humans to publish and coordinate over. It is always compiled in
 and active by default (no feature flag), and it composes three backends: a
 Substrate node (the chain), `acuity-index` (the event indexer), and a local
@@ -23,7 +23,7 @@ Read tools need no credentials.
 | `coord_account_items` | List the content items an account has pinned, resolving each item's title where possible |
 | `coord_profile` | Resolve an account's profile: its profile item id and decoded name, bio, location, and account type |
 | `coord_decode_content` | Decode arbitrary content bytes from the IPFS store (by digest hex or Base58 CIDv0) into structured title/body/language/image/profile fields — no chain interaction |
-| `coord_status` | Report aggregate platform health: chain (genesis, best/finalized block, SS58 prefix, item-id namespace), indexer spans, and IPFS peer id |
+| `coord_status` | Report aggregate network health: chain (genesis, best/finalized block, SS58 prefix, item-id namespace), indexer spans, and IPFS peer id |
 
 ```json
 { "name": "coord_item", "arguments": { "item_id": "0x…" } }
@@ -65,8 +65,8 @@ retractable), and an optional `nonce`.
 { "name": "coord_lifecycle", "arguments": { "account": "5Grw…", "action": "retract", "item_id": "0x…" } }
 ```
 
-> The Coordination Platform tools are currently pointed at a single local
+> The Content tools are currently pointed at a single local
 > deployment (the daemon's chain node, indexer, and IPFS host). See
-> [Security](@/agent/docs/security.md#coordination-platform-credentials) for how
+> [Security](@/agent/docs/security.md#content-credentials) for how
 > the signing credential is handled, and the
-> [platform docs](@/platform/docs/introduction.md) for how the platform works.
+> [content docs](@/content/docs/introduction.md) for how the Content network works.

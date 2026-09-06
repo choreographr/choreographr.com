@@ -49,7 +49,7 @@
   <link rel="preload" href="https://choreographr.com/fonts/jetbrains-mono.woff2" as="font" type="font/woff2" crossorigin>
 
   <link rel="icon" type="image/svg+xml" href="https://choreographr.com/favicon.svg">
-  <link rel="stylesheet" href="https://choreographr.com/css/main.css?h=cc916fb7e2fc6c3f3574">
+  <link rel="stylesheet" href="https://choreographr.com/css/main.css?h=e7e23cc03e88c866d4ba">
 
   <!-- Firefox/Zen can paint a frame before this stylesheet has been
        applied if a layout flush happens while it loads (Bugzilla
@@ -101,8 +101,8 @@
           </li>
           
           <li>
-            <a href="/platform/"  class="">
-              Platform
+            <a href="/content/"  class="">
+              Content
             </a>
           </li>
           
@@ -125,13 +125,7 @@
           </li>
           
           <li>
-            <a href="/consulting/"  class="">
-              Consulting
-            </a>
-          </li>
-          
-          <li>
-            <a href="https://github.com/choreographr/choreographr" target="_blank" rel="noopener" class="">
+            <a href="https://github.com/choreographr" target="_blank" rel="noopener" class="">
               GitHub<span class="text-night-400 text-xs">↗</span>
             </a>
           </li>
@@ -160,10 +154,10 @@
         </li>
         
         <li>
-          <a href="/platform/"
+          <a href="/content/"
              
              class="text-night-200 hover:text-night-50">
-            Platform
+            Content
           </a>
         </li>
         
@@ -192,15 +186,7 @@
         </li>
         
         <li>
-          <a href="/consulting/"
-             
-             class="text-night-200 hover:text-night-50">
-            Consulting
-          </a>
-        </li>
-        
-        <li>
-          <a href="https://github.com/choreographr/choreographr"
+          <a href="https://github.com/choreographr"
              target="_blank" rel="noopener"
              class="">
             GitHub<span class="text-night-400 text-xs">↗</span>
@@ -221,14 +207,15 @@
 </header>
 
 
-  <main class="flex-1">
+  <main class="flex-1 relative">
     
     
       
     
     
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 pt-5">
       
+      <div class="mx-auto max-w-7xl px-4 sm:px-6 pt-5">
+        
 
 
 
@@ -272,7 +259,8 @@
   </span>
 </nav>
 
-    </div>
+      </div>
+      
     
     
 
@@ -396,7 +384,7 @@
     <li>
       <a href="https://choreographr.com/agent/docs/tools/coordination/"
          class="pl-5 text-night-300 hover:text-night-50">
-        Coordination Platform tools
+        Content tools
       </a>
     </li>
     
@@ -533,7 +521,7 @@ blocking <code>std</code> APIs on dedicated threads:</p>
 complexity of async cancellation. Two crates drive async clients behind a tokio
 sidecar runtime that the daemon calls through synchronous <code>execute_*</code> entry
 points (which <code>block_on</code> internally): <code>choreo-coord</code> (always linked, uses
-<code>subxt</code> for the Coordination Platform chain) and the optional
+<code>subxt</code> for the Content chain) and the optional
 <code>choreo-blockchain</code> (the alloy/subxt EVM + Substrate tools, linked only with
 the <code>blockchain</code> feature).</p>
 <h2 id="request-flow">Request flow
@@ -567,7 +555,7 @@ sessions.</p>
 <tr><td><code>choreo-daemon</code></td><td>The core engine — binary <code>choreographr</code>. Unix socket server that validates credentials, manages persistent sessions (with sub-sessions and working directories), runs requests with a tool-call loop, and streams responses. Also connects to other daemons over Noise-IK to handoff sessions and deploy work elsewhere</td></tr>
 <tr><td><code>choreo-ai-protocols</code></td><td>Provider protocols — OpenAI-compatible, Anthropic Messages, and Google Gemini clients, the <code>ProviderClient</code> trait, and the provider catalog (200+ providers)</td></tr>
 <tr><td><code>choreo-blockchain</code></td><td>Blockchain tools — EVM (alloy) and Substrate/Polkadot (subxt) read-only queries plus the tokio sidecar runtime they run on; pulled in by the daemon's <code>blockchain</code> feature (off by default)</td></tr>
-<tr><td><code>choreo-coord</code></td><td>Coordination Platform orchestration — composes the chain / indexer / IPFS pipelines for the <code>coord</code> tool group (always linked)</td></tr>
+<tr><td><code>choreo-coord</code></td><td>Content orchestration — composes the chain / indexer / IPFS pipelines for the <code>coord</code> tool group (always linked)</td></tr>
 <tr><td><code>choreo-image</code></td><td>Image decode surface — raster decode with EXIF orientation baked in, HEIC decode (with a decompression-bomb guard), and SVG rasterization</td></tr>
 <tr><td><code>choreo-sanitize</code></td><td>Shared string-safety leaf — output sanitization (control chars, truncation, fenced-output safety) used across tools</td></tr>
 <tr><td><code>choreo-proto</code></td><td>Framed binary protocol (postcard + length prefix) shared between clients and daemon</td></tr>
@@ -607,13 +595,13 @@ model; normalized bytes persist in the <code>session_attachments</code> table.</
 Chromium/Chrome (run locally and offline) to capture HTML, text, screenshots,
 or PDFs.</li>
 </ul>
-<h2 id="coordination-platform">Coordination Platform
-<a class="zola-anchor" href="#coordination-platform" aria-label="Anchor link for: coordination-platform">
+<h2 id="content">Content
+<a class="zola-anchor" href="#content" aria-label="Anchor link for: content">
   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
 </a>
 </h2>
-<p>The <code>coord</code> tool group (always linked) drives the Choreographr Coordination
-Platform through <code>choreo-coord</code>, which composes three pipelines: a Substrate
+<p>The <code>coord</code> tool group (always linked) drives the Choreographr Content
+network through <code>choreo-coord</code>, which composes three pipelines: a Substrate
 chain (subxt, <code>block_on</code> into a tokio sidecar), the <code>acuity-index</code> event
 indexer, and a local IPFS daemon. Write tools sign extrinsics with the
 keystore's Substrate account credential.</p>
@@ -656,7 +644,7 @@ levels. Adding a provider is a data-file edit, not code.</li>
         <h3 class="text-sm font-semibold text-night-50 uppercase tracking-wider mb-3">Explore</h3>
         <ul class="space-y-2 text-sm text-night-300">
           <li><a href="https://choreographr.com/agent/docs" class="hover:text-brand-400">Agent docs</a></li>
-          <li><a href="https://choreographr.com/platform" class="hover:text-brand-400">Platform</a></li>
+          <li><a href="https://choreographr.com/content" class="hover:text-brand-400">Content</a></li>
           <li><a href="https://choreographr.com/portal" class="hover:text-brand-400">Portal</a></li>
           <li><a href="https://choreographr.com/consulting" class="hover:text-brand-400">Consulting</a></li>
           <li><a href="https://choreographr.com/search" class="hover:text-brand-400">Search</a></li>
@@ -665,7 +653,7 @@ levels. Adding a provider is a data-file edit, not code.</li>
       <div>
         <h3 class="text-sm font-semibold text-night-50 uppercase tracking-wider mb-3">Community</h3>
         <ul class="space-y-2 text-sm text-night-300">
-          <li><a href="https://github.com/choreographr/choreographr" target="_blank" rel="noopener" class="hover:text-brand-400">GitHub</a></li>
+          <li><a href="https://github.com/choreographr" target="_blank" rel="noopener" class="hover:text-brand-400">GitHub</a></li>
           <li><a href="https://t.me/choreographr" target="_blank" rel="noopener" class="hover:text-brand-400">Telegram</a></li>
           <li><a href="https://choreographr.com/atom.xml" class="hover:text-brand-400">RSS Feed</a></li>
         </ul>

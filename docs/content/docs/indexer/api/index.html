@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="night">
+<head>
+  <meta charset="UTF-8">
+  <!-- color-scheme hint: lets the browser paint the dark canvas background
+       as soon as the head is parsed, before ANY CSS has been applied.
+       This is the one thing that closes the residual flash on Firefox/Zen,
+       which paints its default (white) canvas frame during navigation,
+       unlike Chromium which defers first paint until the inline CSS exists. -->
+  <meta name="color-scheme" content="dark">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WebSocket API — Choreographr</title>
+  <meta name="description" content="Choreographr is an all-purpose AI agent, written in Rust, with built-in access to the Content network — a decentralized, content-addressed, timestamped publication layer on the Choreographr chain. A daemon with many clients, a sandboxed RISC-V VM, and 200+ model providers.">
+  <meta name="theme-color" content="#06080b">
+
+  
+  <!-- Canonical: every page (incl. trailing-slash and /index.html variants)
+       resolves to one authoritative URL, which also matches the sitemap. -->
+  <link rel="canonical" href="https://choreographr.com/content/docs/indexer/api/">
+  
+
+  <!-- Open Graph / social sharing. og:title / og:description are overridden
+       per template so they always match the <title> and meta description. -->
+  <meta property="og:site_name" content="Choreographr">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="WebSocket API — Choreographr">
+  <meta property="og:description" content="Choreographr is an all-purpose AI agent, written in Rust, with built-in access to the Content network — a decentralized, content-addressed, timestamped publication layer on the Choreographr chain. A daemon with many clients, a sandboxed RISC-V VM, and 200+ model providers.">
+  <meta property="og:url" content="https://choreographr.com/content/docs/indexer/api/">
+  
+  <meta property="og:image" content="https://choreographr.com/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Choreographr — your all-purpose AI agent, written in Rust">
+  
+  <meta property="og:locale" content="en_US">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <!-- Critical inline CSS: paint the dark theme immediately, before
+       main.css (or the webfont stylesheet) finishes loading, so the
+       page never flashes white on navigation. -->
+  <style>
+    html { background-color: #06080b; color-scheme: dark; }
+    body { background-color: #06080b; color: #d3dae3; }
+  </style>
+
+  <!-- Self-hosted fonts (same-origin): preload the two variable woff2
+       files so they're available at first paint — no visible swap. -->
+  <link rel="preload" href="https://choreographr.com/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="https://choreographr.com/fonts/jetbrains-mono.woff2" as="font" type="font/woff2" crossorigin>
+
+  <link rel="icon" type="image/svg+xml" href="https://choreographr.com/favicon.svg">
+  <link rel="stylesheet" href="https://choreographr.com/css/main.css?h=e7e23cc03e88c866d4ba">
+
+  <!-- Firefox/Zen can paint a frame before this stylesheet has been
+       applied if a layout flush happens while it loads (Bugzilla
+       1459305) — unlike Chromium, which blocks the parser on the
+       <link>. This synchronous script is the standard workaround: it
+       cannot execute until main.css is ready, and while it is pending
+       the <body> has not been parsed, so nothing unstyled can paint.
+       Result: same first-paint behaviour as Chromium, no FOUC. -->
+  <script>
+    // No-op: exists only to hold first paint until main.css is applied.
+  </script>
+
+  
+  <link rel="alternate" type="application/atom+xml" title="Choreographr Blog" href="https://choreographr.com/atom.xml">
+  
+
+  
+</head>
+<body class="min-h-screen flex flex-col">
+
+  <header class="sticky top-0 z-40 w-full border-b border-night-700 bg-night-950/90 backdrop-blur">
+  <nav class="navbar mx-auto max-w-7xl px-4 sm:px-6">
+    <div class="navbar-start">
+      <div class="dropdown lg:hidden">
+        <div tabindex="0" role="button" class="btn btn-ghost btn-square" aria-label="Menu">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </div>
+        <ul tabindex="0" class="dropdown-content menu bg-night-900 border border-night-700 rounded-box z-50 mt-3 w-52 p-2 shadow-2xl">
+          
+          <li>
+            <a href="/agent/"  class="">
+              Agent
+            </a>
+          </li>
+          
+          <li>
+            <a href="/content/"  class="text-brand-500">
+              Content
+            </a>
+          </li>
+          
+          <li>
+            <a href="/portal/"  class="">
+              Portal
+            </a>
+          </li>
+          
+          <li>
+            <a href="/regenesis/"  class="">
+              Regenesis
+            </a>
+          </li>
+          
+          <li>
+            <a href="/blog/"  class="">
+              Blog
+            </a>
+          </li>
+          
+          <li>
+            <a href="https://github.com/choreographr" target="_blank" rel="noopener" class="">
+              GitHub<span class="text-night-400 text-xs">↗</span>
+            </a>
+          </li>
+          
+          <li>
+            <a href="https://t.me/choreographr" target="_blank" rel="noopener" class="">
+              Telegram<span class="text-night-400 text-xs">↗</span>
+            </a>
+          </li>
+          
+        </ul>
+      </div>
+      <a href="/" class="font-mono text-lg font-bold tracking-tight select-none">
+        <span class="text-brand-500">choreo</span><span class="text-night-50">graphr</span>&ensp;<span class="text-brand-500">&gt;</span><span class="text-night-50">_</span>
+      </a>
+    </div>
+    <div class="navbar-end hidden lg:flex">
+      <ul class="menu menu-horizontal px-1 gap-1 text-sm">
+        
+        <li>
+          <a href="/agent/"
+             
+             class="text-night-200 hover:text-night-50">
+            Agent
+          </a>
+        </li>
+        
+        <li>
+          <a href="/content/"
+             
+             class="text-brand-500 font-semibold">
+            Content
+          </a>
+        </li>
+        
+        <li>
+          <a href="/portal/"
+             
+             class="text-night-200 hover:text-night-50">
+            Portal
+          </a>
+        </li>
+        
+        <li>
+          <a href="/regenesis/"
+             
+             class="text-night-200 hover:text-night-50">
+            Regenesis
+          </a>
+        </li>
+        
+        <li>
+          <a href="/blog/"
+             
+             class="text-night-200 hover:text-night-50">
+            Blog
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://github.com/choreographr"
+             target="_blank" rel="noopener"
+             class="">
+            GitHub<span class="text-night-400 text-xs">↗</span>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://t.me/choreographr"
+             target="_blank" rel="noopener"
+             class="">
+            Telegram<span class="text-night-400 text-xs">↗</span>
+          </a>
+        </li>
+        
+      </ul>
+    </div>
+  </nav>
+</header>
+
+
+  <main class="flex-1 relative">
+    
+    
+      
+    
+    
+      
+      <div class="mx-auto max-w-7xl px-4 sm:px-6 pt-5">
+        
+
+
+
+
+<nav aria-label="Breadcrumb" class="font-mono text-sm text-night-400">
+  <span class="flex flex-wrap items-center">
+    <a href="/" class="hover:text-brand-400">home</a>
+    
+    
+      
+    
+      
+        
+        
+        <span class="text-night-600">/</span>
+        
+        <a href="/content/" class="hover:text-brand-400">content</a>
+        
+      
+    
+      
+        
+        
+        <span class="text-night-600">/</span>
+        
+        <a href="/content/docs/" class="hover:text-brand-400">docs</a>
+        
+      
+    
+      
+        
+        
+        <span class="text-night-600">/</span>
+        
+        <a href="/content/docs/indexer/" class="hover:text-brand-400">indexer</a>
+        
+      
+    
+      
+        
+        
+        <span class="text-night-600">/</span>
+        
+        <span class="text-night-200 font-medium">api</span>
+        
+      
+    
+      
+    
+  </span>
+</nav>
+
+      </div>
+      
+    
+    
+
+
+  
+  
+  
+  
+
+<div class="mx-auto max-w-7xl px-4 sm:px-6 py-8 lg:py-12">
+  <div class="flex flex-col lg:flex-row gap-10">
+    <aside class="lg:w-60 shrink-0">
+      <div class="lg:sticky lg:top-24">
+        <nav class="w-full">
+          <p class="px-3 mb-2 text-xs font-semibold uppercase tracking-wider text-night-400">Indexer docs</p>
+          <ul class="menu menu-sm w-full p-0 gap-0.5">
+            
+            <li>
+              <a href="https://choreographr.com/content/docs/indexer/problem/"
+                 class="text-night-200 hover:text-night-50">
+                The Problem
+              </a>
+            </li>
+            
+            <li>
+              <a href="https://choreographr.com/content/docs/indexer/solution/"
+                 class="text-night-200 hover:text-night-50">
+                The Solution
+              </a>
+            </li>
+            
+            <li>
+              <a href="https://choreographr.com/content/docs/indexer/features/"
+                 class="text-night-200 hover:text-night-50">
+                Features
+              </a>
+            </li>
+            
+            <li>
+              <a href="https://choreographr.com/content/docs/indexer/architecture/"
+                 class="text-night-200 hover:text-night-50">
+                Architecture
+              </a>
+            </li>
+            
+            <li>
+              <a href="https://choreographr.com/content/docs/indexer/installation/"
+                 class="text-night-200 hover:text-night-50">
+                Installation
+              </a>
+            </li>
+            
+            <li>
+              <a href="https://choreographr.com/content/docs/indexer/quick-start/"
+                 class="text-night-200 hover:text-night-50">
+                Quick Start
+              </a>
+            </li>
+            
+            <li>
+              <a href="https://choreographr.com/content/docs/indexer/configuration/"
+                 class="text-night-200 hover:text-night-50">
+                Configuration
+              </a>
+            </li>
+            
+            <li>
+              <a href="https://choreographr.com/content/docs/indexer/api/"
+                 class="bg-night-700 text-night-50 font-semibold">
+                WebSocket API
+              </a>
+            </li>
+            
+          </ul>
+          <p class="px-3 mt-4"><a href="https://choreographr.com/content/docs" class="text-sm text-night-400 hover:text-brand-400 font-mono">← Content docs</a></p>
+        </nav>
+      </div>
+    </aside>
+    <article class="prose min-w-0 flex-1 max-w-3xl">
+      <h1>WebSocket API</h1>
+      <p>The public API is a JSON-over-WebSocket protocol exposed on <code>ws://localhost:8172</code>
+by default.</p>
+<p>There are two message classes:</p>
+<ul>
+<li>request/response messages, which always carry an <code>id</code></li>
+<li>notifications, which never carry an <code>id</code></li>
+</ul>
+<h2 id="requests">Requests
+<a class="zola-anchor" href="#requests" aria-label="Anchor link for: requests">
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+</a>
+</h2>
+<p>Every request includes:</p>
+<ul>
+<li><code>id</code>: client-selected unsigned integer</li>
+<li><code>type</code>: request discriminator</li>
+</ul>
+<p>Example:</p>
+<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;" ><code data-lang="json"><span class="giallo-l"><span style="color: #9399B2;">{&quot;</span><span style="color: #89B4FA;">id</span><span style="color: #9399B2;">&quot;:</span><span style="color: #FAB387;">1</span><span style="color: #9399B2;">,&quot;</span><span style="color: #89B4FA;">type</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;">&quot;Status&quot;</span><span style="color: #9399B2;">}</span></span></code></pre><h2 id="responses">Responses
+<a class="zola-anchor" href="#responses" aria-label="Anchor link for: responses">
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+</a>
+</h2>
+<p>Every successful or failed request receives a response with the same <code>id</code>.</p>
+<p>Example:</p>
+<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;" ><code data-lang="json"><span class="giallo-l"><span style="color: #9399B2;">{</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">  &quot;</span><span style="color: #89B4FA;">id</span><span style="color: #9399B2;">&quot;:</span><span style="color: #FAB387;"> 1</span><span style="color: #9399B2;">,</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">  &quot;</span><span style="color: #89B4FA;">type</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;status&quot;</span><span style="color: #9399B2;">,</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">  &quot;</span><span style="color: #89B4FA;">data</span><span style="color: #9399B2;">&quot;: []</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">}</span></span></code></pre><h2 id="main-request-types">Main Request Types
+<a class="zola-anchor" href="#main-request-types" aria-label="Anchor link for: main-request-types">
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+</a>
+</h2>
+<ul>
+<li><code>Status</code>: returns indexed block spans</li>
+<li><code>Variants</code>: returns pallet and event variant metadata</li>
+<li><code>GetEvents</code>: queries indexed events for a key, optionally paginated with <code>before</code>
+and optionally enriched with finalized proofs via <code>includeProofs</code></li>
+<li><code>SubscribeStatus</code>: subscribes to status changes</li>
+<li><code>SubscribeEvents</code>: subscribes to updates for one key</li>
+<li><code>UnsubscribeStatus</code>: removes a status subscription</li>
+<li><code>UnsubscribeEvents</code>: removes an event subscription</li>
+<li><code>SizeOnDisk</code>: returns current database size</li>
+</ul>
+<h2 id="status"><code>Status</code>
+<a class="zola-anchor" href="#status" aria-label="Anchor link for: status">
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+</a>
+</h2>
+<p>Request:</p>
+<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;" ><code data-lang="json"><span class="giallo-l"><span style="color: #9399B2;">{&quot;</span><span style="color: #89B4FA;">id</span><span style="color: #9399B2;">&quot;:</span><span style="color: #FAB387;">1</span><span style="color: #9399B2;">,&quot;</span><span style="color: #89B4FA;">type</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;">&quot;Status&quot;</span><span style="color: #9399B2;">}</span></span></code></pre>
+<p>Response type: <code>status</code></p>
+<p>Response payload:</p>
+<ul>
+<li>array of indexed block spans</li>
+<li>each span has <code>start</code> and <code>end</code></li>
+</ul>
+<p>Example:</p>
+<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;" ><code data-lang="json"><span class="giallo-l"><span style="color: #9399B2;">{</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">  &quot;</span><span style="color: #89B4FA;">id</span><span style="color: #9399B2;">&quot;:</span><span style="color: #FAB387;"> 1</span><span style="color: #9399B2;">,</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">  &quot;</span><span style="color: #89B4FA;">type</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;status&quot;</span><span style="color: #9399B2;">,</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">  &quot;</span><span style="color: #89B4FA;">data</span><span style="color: #9399B2;">&quot;: [</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">    {&quot;</span><span style="color: #89B4FA;">start</span><span style="color: #9399B2;">&quot;:</span><span style="color: #FAB387;"> 1</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">end</span><span style="color: #9399B2;">&quot;:</span><span style="color: #FAB387;"> 1000</span><span style="color: #9399B2;">}</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">  ]</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">}</span></span></code></pre><h2 id="variants"><code>Variants</code>
+<a class="zola-anchor" href="#variants" aria-label="Anchor link for: variants">
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+</a>
+</h2>
+<p>Request:</p>
+<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;" ><code data-lang="json"><span class="giallo-l"><span style="color: #9399B2;">{&quot;</span><span style="color: #89B4FA;">id</span><span style="color: #9399B2;">&quot;:</span><span style="color: #FAB387;">2</span><span style="color: #9399B2;">,&quot;</span><span style="color: #89B4FA;">type</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;">&quot;Variants&quot;</span><span style="color: #9399B2;">}</span></span></code></pre>
+<p>Response type: <code>variants</code></p>
+<p>Response payload:</p>
+<ul>
+<li>array of pallets</li>
+<li>each pallet has <code>index</code>, <code>name</code>, and <code>events</code></li>
+<li>each event variant has <code>index</code> and <code>name</code></li>
+</ul>
+<p>Example:</p>
+<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;" ><code data-lang="json"><span class="giallo-l"><span style="color: #9399B2;">{</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">  &quot;</span><span style="color: #89B4FA;">id</span><span style="color: #9399B2;">&quot;:</span><span style="color: #FAB387;"> 2</span><span style="color: #9399B2;">,</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">  &quot;</span><span style="color: #89B4FA;">type</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;variants&quot;</span><span style="color: #9399B2;">,</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">  &quot;</span><span style="color: #89B4FA;">data</span><span style="color: #9399B2;">&quot;: [</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">    {</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">      &quot;</span><span style="color: #89B4FA;">index</span><span style="color: #9399B2;">&quot;:</span><span style="color: #FAB387;"> 42</span><span style="color: #9399B2;">,</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">      &quot;</span><span style="color: #89B4FA;">name</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;Referenda&quot;</span><span style="color: #9399B2;">,</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">      &quot;</span><span style="color: #89B4FA;">events</span><span style="color: #9399B2;">&quot;: [</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">        {&quot;</span><span style="color: #89B4FA;">index</span><span style="color: #9399B2;">&quot;:</span><span style="color: #FAB387;"> 0</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">name</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;Submitted&quot;</span><span style="color: #9399B2;">}</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">      ]</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">    }</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">  ]</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">}</span></span></code></pre><h2 id="example-getevents">Example <code>GetEvents</code>
+<a class="zola-anchor" href="#example-getevents" aria-label="Anchor link for: example-getevents">
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+</a>
+</h2>
+<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;" ><code data-lang="json"><span class="giallo-l"><span style="color: #9399B2;">{</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">  &quot;</span><span style="color: #89B4FA;">id</span><span style="color: #9399B2;">&quot;:</span><span style="color: #FAB387;"> 3</span><span style="color: #9399B2;">,</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">  &quot;</span><span style="color: #89B4FA;">type</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;GetEvents&quot;</span><span style="color: #9399B2;">,</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">  &quot;</span><span style="color: #89B4FA;">key</span><span style="color: #9399B2;">&quot;: {</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">    &quot;</span><span style="color: #89B4FA;">type</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;Custom&quot;</span><span style="color: #9399B2;">,</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">    &quot;</span><span style="color: #89B4FA;">value</span><span style="color: #9399B2;">&quot;: {&quot;</span><span style="color: #89B4FA;">name</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;ref_index&quot;</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">kind</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;u32&quot;</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">value</span><span style="color: #9399B2;">&quot;:</span><span style="color: #FAB387;"> 42</span><span style="color: #9399B2;">}</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">  },</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">  &quot;</span><span style="color: #89B4FA;">limit</span><span style="color: #9399B2;">&quot;:</span><span style="color: #FAB387;"> 100</span><span style="color: #9399B2;">,</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">  &quot;</span><span style="color: #89B4FA;">before</span><span style="color: #9399B2;">&quot;:</span><span style="color: #FAB387;"> null</span><span style="color: #9399B2;">,</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">  &quot;</span><span style="color: #89B4FA;">includeProofs</span><span style="color: #9399B2;">&quot;:</span><span style="color: #FAB387;"> false</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">}</span></span></code></pre>
+<p>Request fields:</p>
+<ul>
+<li><code>key</code>: query key</li>
+<li><code>limit</code>: optional <code>u16</code>, default <code>100</code></li>
+<li><code>before</code>: optional event cursor</li>
+<li><code>includeProofs</code>: optional boolean, default <code>false</code></li>
+</ul>
+<p>Response type: <code>events</code></p>
+<p>Response payload:</p>
+<ul>
+<li><code>key</code>: the queried key</li>
+<li><code>events</code>: matching event refs, newest first</li>
+<li><code>decodedEvents</code>: decoded payloads when event storage is enabled</li>
+<li><code>proofsByBlock</code>: omitted unless proofs were requested; <code>null</code> if requested but unavailable</li>
+<li><code>proofsStatus</code>: omitted unless proofs were requested</li>
+</ul>
+<p>Proofs are only returned while the indexer is running in finalized mode. When
+available, the response includes one proof object per returned block containing
+the finalized block hash, header, <code>System.Events</code> storage key/value pair, and the
+storage proof for that value.</p>
+<p>Each <code>EventRef</code> contains:</p>
+<ul>
+<li><code>blockNumber</code></li>
+<li><code>eventIndex</code></li>
+</ul>
+<p>Each decoded event object contains:</p>
+<ul>
+<li><code>specVersion</code></li>
+<li><code>palletName</code></li>
+<li><code>eventName</code></li>
+<li><code>palletIndex</code></li>
+<li><code>variantIndex</code></li>
+<li><code>eventIndex</code></li>
+<li><code>fields</code></li>
+</ul>
+<p>Each proof object contains:</p>
+<ul>
+<li><code>blockNumber</code></li>
+<li><code>blockHash</code></li>
+<li><code>header</code></li>
+<li><code>storageKey</code></li>
+<li><code>storageValue</code></li>
+<li><code>storageProof</code></li>
+</ul>
+<p><code>proofsStatus</code> contains:</p>
+<ul>
+<li><code>available</code></li>
+<li><code>reason</code></li>
+<li><code>message</code></li>
+</ul>
+<p>Example response:</p>
+<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;" ><code data-lang="json"><span class="giallo-l"><span style="color: #9399B2;">{</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">  &quot;</span><span style="color: #89B4FA;">id</span><span style="color: #9399B2;">&quot;:</span><span style="color: #FAB387;"> 3</span><span style="color: #9399B2;">,</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">  &quot;</span><span style="color: #89B4FA;">type</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;events&quot;</span><span style="color: #9399B2;">,</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">  &quot;</span><span style="color: #89B4FA;">data</span><span style="color: #9399B2;">&quot;: {</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">    &quot;</span><span style="color: #89B4FA;">key</span><span style="color: #9399B2;">&quot;: {&quot;</span><span style="color: #89B4FA;">type</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;Custom&quot;</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">value</span><span style="color: #9399B2;">&quot;: {&quot;</span><span style="color: #89B4FA;">name</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;ref_index&quot;</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">kind</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;u32&quot;</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">value</span><span style="color: #9399B2;">&quot;:</span><span style="color: #FAB387;"> 42</span><span style="color: #9399B2;">}},</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">    &quot;</span><span style="color: #89B4FA;">events</span><span style="color: #9399B2;">&quot;: [</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">      {&quot;</span><span style="color: #89B4FA;">blockNumber</span><span style="color: #9399B2;">&quot;:</span><span style="color: #FAB387;"> 50</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">eventIndex</span><span style="color: #9399B2;">&quot;:</span><span style="color: #FAB387;"> 3</span><span style="color: #9399B2;">}</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">    ],</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">    &quot;</span><span style="color: #89B4FA;">decodedEvents</span><span style="color: #9399B2;">&quot;: [</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">      {</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">        &quot;</span><span style="color: #89B4FA;">blockNumber</span><span style="color: #9399B2;">&quot;:</span><span style="color: #FAB387;"> 50</span><span style="color: #9399B2;">,</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">        &quot;</span><span style="color: #89B4FA;">eventIndex</span><span style="color: #9399B2;">&quot;:</span><span style="color: #FAB387;"> 3</span><span style="color: #9399B2;">,</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">        &quot;</span><span style="color: #89B4FA;">event</span><span style="color: #9399B2;">&quot;: {</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">          &quot;</span><span style="color: #89B4FA;">specVersion</span><span style="color: #9399B2;">&quot;:</span><span style="color: #FAB387;"> 1234</span><span style="color: #9399B2;">,</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">          &quot;</span><span style="color: #89B4FA;">palletName</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;Referenda&quot;</span><span style="color: #9399B2;">,</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">          &quot;</span><span style="color: #89B4FA;">eventName</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;Submitted&quot;</span><span style="color: #9399B2;">,</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">          &quot;</span><span style="color: #89B4FA;">palletIndex</span><span style="color: #9399B2;">&quot;:</span><span style="color: #FAB387;"> 42</span><span style="color: #9399B2;">,</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">          &quot;</span><span style="color: #89B4FA;">variantIndex</span><span style="color: #9399B2;">&quot;:</span><span style="color: #FAB387;"> 0</span><span style="color: #9399B2;">,</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">          &quot;</span><span style="color: #89B4FA;">eventIndex</span><span style="color: #9399B2;">&quot;:</span><span style="color: #FAB387;"> 3</span><span style="color: #9399B2;">,</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">          &quot;</span><span style="color: #89B4FA;">fields</span><span style="color: #9399B2;">&quot;: {</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">            &quot;</span><span style="color: #89B4FA;">index</span><span style="color: #9399B2;">&quot;:</span><span style="color: #FAB387;"> 42</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">          }</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">        }</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">      }</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">    ],</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">    &quot;</span><span style="color: #89B4FA;">proofsByBlock</span><span style="color: #9399B2;">&quot;: [</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">      {</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">        &quot;</span><span style="color: #89B4FA;">blockNumber</span><span style="color: #9399B2;">&quot;:</span><span style="color: #FAB387;"> 50</span><span style="color: #9399B2;">,</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">        &quot;</span><span style="color: #89B4FA;">blockHash</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;0xabc123...&quot;</span><span style="color: #9399B2;">,</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">        &quot;</span><span style="color: #89B4FA;">header</span><span style="color: #9399B2;">&quot;: {</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">          &quot;</span><span style="color: #89B4FA;">parent_hash</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;0x...&quot;</span><span style="color: #9399B2;">,</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">          &quot;</span><span style="color: #89B4FA;">number</span><span style="color: #9399B2;">&quot;:</span><span style="color: #FAB387;"> 50</span><span style="color: #9399B2;">,</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">          &quot;</span><span style="color: #89B4FA;">state_root</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;0x...&quot;</span><span style="color: #9399B2;">,</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">          &quot;</span><span style="color: #89B4FA;">extrinsics_root</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;0x...&quot;</span><span style="color: #9399B2;">,</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">          &quot;</span><span style="color: #89B4FA;">digest</span><span style="color: #9399B2;">&quot;: {&quot;</span><span style="color: #89B4FA;">logs</span><span style="color: #9399B2;">&quot;: []}</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">        },</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">        &quot;</span><span style="color: #89B4FA;">storageKey</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;0x26aa394eea5630e07c48ae0c9558cef780d41e5e16056765bc8461851072c9d7&quot;</span><span style="color: #9399B2;">,</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">        &quot;</span><span style="color: #89B4FA;">storageValue</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;0x...&quot;</span><span style="color: #9399B2;">,</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">        &quot;</span><span style="color: #89B4FA;">storageProof</span><span style="color: #9399B2;">&quot;: [</span><span style="color: #A6E3A1;">&quot;0x...&quot;</span><span style="color: #9399B2;">]</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">      }</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">    ],</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">    &quot;</span><span style="color: #89B4FA;">proofsStatus</span><span style="color: #9399B2;">&quot;: {</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">      &quot;</span><span style="color: #89B4FA;">available</span><span style="color: #9399B2;">&quot;:</span><span style="color: #FAB387;"> true</span><span style="color: #9399B2;">,</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">      &quot;</span><span style="color: #89B4FA;">reason</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;included&quot;</span><span style="color: #9399B2;">,</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">      &quot;</span><span style="color: #89B4FA;">message</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;Finalized event proofs included.&quot;</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">    }</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">  }</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">}</span></span></code></pre>
+<p>If proofs were requested while the indexer is not running in finalized mode,
+<code>proofsByBlock</code> is returned as <code>null</code> and <code>proofsStatus.reason</code> is
+<code>finalized_proofs_unavailable</code>.</p>
+<h2 id="composite-custom-keys">Composite Custom Keys
+<a class="zola-anchor" href="#composite-custom-keys" aria-label="Anchor link for: composite-custom-keys">
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+</a>
+</h2>
+<p>Composite keys use an ordered array of typed values:</p>
+<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;" ><code data-lang="json"><span class="giallo-l"><span style="color: #9399B2;">{</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">  &quot;</span><span style="color: #89B4FA;">id</span><span style="color: #9399B2;">&quot;:</span><span style="color: #FAB387;"> 3</span><span style="color: #9399B2;">,</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">  &quot;</span><span style="color: #89B4FA;">type</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;GetEvents&quot;</span><span style="color: #9399B2;">,</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">  &quot;</span><span style="color: #89B4FA;">key</span><span style="color: #9399B2;">&quot;: {</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">    &quot;</span><span style="color: #89B4FA;">type</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;Custom&quot;</span><span style="color: #9399B2;">,</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">    &quot;</span><span style="color: #89B4FA;">value</span><span style="color: #9399B2;">&quot;: {</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">      &quot;</span><span style="color: #89B4FA;">name</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;item_revision&quot;</span><span style="color: #9399B2;">,</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">      &quot;</span><span style="color: #89B4FA;">kind</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;composite&quot;</span><span style="color: #9399B2;">,</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">      &quot;</span><span style="color: #89B4FA;">value</span><span style="color: #9399B2;">&quot;: [</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">        {&quot;</span><span style="color: #89B4FA;">kind</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;bytes32&quot;</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">value</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;0xabc123...&quot;</span><span style="color: #9399B2;">},</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">        {&quot;</span><span style="color: #89B4FA;">kind</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;u32&quot;</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">value</span><span style="color: #9399B2;">&quot;:</span><span style="color: #FAB387;"> 7</span><span style="color: #9399B2;">}</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">      ]</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">    }</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">  }</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">}</span></span></code></pre>
+    </article>
+  </div>
+</div>
+
+  </main>
+
+  <footer class="border-t border-night-700 bg-night-900">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 py-12">
+    <div class="grid gap-10 md:grid-cols-3">
+      <div>
+        <div class="font-mono text-lg font-bold tracking-tight">
+          <span class="text-brand-500">choreo</span><span class="text-night-50">graphr</span>&ensp;<span class="text-brand-500">&gt;</span><span class="text-night-50">_</span>
+        </div>
+        <p class="mt-3 text-sm text-night-300 max-w-xs">
+          An all-purpose, extensible AI agent written in Rust. Runs locally or in the cloud. Open source under Apache-2.0.
+        </p>
+      </div>
+      <div>
+        <h3 class="text-sm font-semibold text-night-50 uppercase tracking-wider mb-3">Explore</h3>
+        <ul class="space-y-2 text-sm text-night-300">
+          <li><a href="https://choreographr.com/agent/docs" class="hover:text-brand-400">Agent docs</a></li>
+          <li><a href="https://choreographr.com/content" class="hover:text-brand-400">Content</a></li>
+          <li><a href="https://choreographr.com/portal" class="hover:text-brand-400">Portal</a></li>
+          <li><a href="https://choreographr.com/consulting" class="hover:text-brand-400">Consulting</a></li>
+          <li><a href="https://choreographr.com/search" class="hover:text-brand-400">Search</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3 class="text-sm font-semibold text-night-50 uppercase tracking-wider mb-3">Community</h3>
+        <ul class="space-y-2 text-sm text-night-300">
+          <li><a href="https://github.com/choreographr" target="_blank" rel="noopener" class="hover:text-brand-400">GitHub</a></li>
+          <li><a href="https://t.me/choreographr" target="_blank" rel="noopener" class="hover:text-brand-400">Telegram</a></li>
+          <li><a href="https://choreographr.com/atom.xml" class="hover:text-brand-400">RSS Feed</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="mt-10 border-t border-night-700 pt-6 flex flex-col sm:flex-row justify-between gap-3 text-xs text-night-400">
+      <p>© 2026 Choreographr. Released under the Apache-2.0 license.</p>
+      <p class="font-mono">100% Rust · written by <a href="https://github.com/choreographr/choreographr" target="_blank" rel="noopener" class="text-night-300 hover:text-brand-400">choreographr</a></p>
+    </div>
+  </div>
+</footer>
+
+
+  
+
+  <script>
+    // Click-to-copy buttons for every code block. Wraps each <pre> in a
+    // .code-block container and adds a corner button that copies the block's
+    // text via the async Clipboard API, with an execCommand fallback for
+    // non-secure contexts. The button sits OUTSIDE the <pre> so it stays in
+    // the corner while horizontally-overflowing code scrolls inside the block.
+    (function () {
+      var COPY_ICON =
+        '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
+      var CHECK_ICON =
+        '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
+
+      function fallbackCopy(text) {
+        var ta = document.createElement('textarea');
+        ta.value = text;
+        ta.setAttribute('readonly', '');
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        try { document.execCommand('copy'); } catch (e) { /* ignore */ }
+        document.body.removeChild(ta);
+      }
+
+      document.querySelectorAll('pre').forEach(function (pre) {
+        // Skip daisyUI terminal mockups (mockup-code): every line is its
+        // own <pre>, so per-line copy buttons would be noise. Real code
+        // blocks are a single <pre> that is not inside a .mockup-code.
+        if (pre.closest('.mockup-code')) return;
+
+        // Idempotent: don't re-wrap if the script runs more than once.
+        if (pre.parentElement && pre.parentElement.classList.contains('code-block')) return;
+
+        var wrap = document.createElement('div');
+        wrap.className = 'code-block';
+        pre.parentNode.insertBefore(wrap, pre);
+        wrap.appendChild(pre);
+
+        var btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'code-copy';
+        btn.setAttribute('aria-label', 'Copy code to clipboard');
+        btn.innerHTML = COPY_ICON;
+        wrap.appendChild(btn);
+
+        btn.addEventListener('click', function () {
+          var text = pre.innerText;
+          var done = function () {
+            btn.classList.add('copied');
+            btn.innerHTML = CHECK_ICON;
+            btn.setAttribute('aria-label', 'Copied');
+            setTimeout(function () {
+              btn.classList.remove('copied');
+              btn.innerHTML = COPY_ICON;
+              btn.setAttribute('aria-label', 'Copy code to clipboard');
+            }, 1500);
+          };
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(text).then(done, function () { fallbackCopy(text); done(); });
+          } else {
+            fallbackCopy(text);
+            done();
+          }
+        });
+      });
+    })();
+  </script>
+</body>
+</html>

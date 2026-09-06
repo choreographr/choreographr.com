@@ -35,8 +35,8 @@ OpenRouter. Native EVM and Substrate/Polkadot blockchain tools are built in.
 ## Important pages
 
 - [Home](https://choreographr.com/): overview, features, and comparison table
-- [Platform](https://choreographr.com/platform/): the decentralized publishing platform — content-addressed, timestamped, rebuilt from Acuity
-- [Portal](https://choreographr.com/portal/): fund the platform with CHOR — stake for a rolling service allowance, or convert CHOR to USD credits — for inference, IPFS pinning, and the Acuity Index
+- [Content](https://choreographr.com/content/): the decentralized publication layer — content-addressed, timestamped, rebuilt from Acuity
+- [Portal](https://choreographr.com/portal/): fund the network with CHOR — stake for a rolling service allowance, or convert CHOR to USD credits — for inference, IPFS pinning, and the Acuity Index
 - [Quick start](https://choreographr.com/agent/docs/quick-start/): first conversation in minutes
 - [Installation](https://choreographr.com/agent/docs/installation/): Homebrew, .deb/.rpm, tarball, Cargo
 - [Documentation](https://choreographr.com/agent/docs/): full agent documentation index
@@ -52,7 +52,7 @@ OpenRouter. Native EVM and Substrate/Polkadot blockchain tools are built in.
 
 ## Full text
 
-The complete text of the site (docs, FAQ, platform, portal, blog, consulting
+The complete text of the site (docs, FAQ, content, portal, blog, consulting
 and AI training pages) is available as Markdown at
 [/llms-full.txt](https://choreographr.com/llms-full.txt).
 

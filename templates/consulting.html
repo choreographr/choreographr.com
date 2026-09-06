@@ -5,6 +5,16 @@
 {% block og_title %}Consulting — {{ config.title }}{% endblock og_title %}
 {% block og_description %}{{ page.description }}{% endblock og_description %}
 
+{% block breadcrumbs %}
+  {% if current_path and current_path != "/" %}
+  <div class="absolute inset-x-0 top-0 z-10">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 pt-5">
+      {{<breadcrumbs current_path={current_path} current_title=""/>}}
+    </div>
+  </div>
+  {% endif %}
+{% endblock breadcrumbs %}
+
 {% block content %}
 
 {# ============================== HERO ============================== #}

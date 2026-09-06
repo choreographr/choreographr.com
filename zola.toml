@@ -3,7 +3,7 @@
 # canonical URL at build time (and "/" when serving locally).
 base_url = "/"
 title = "Choreographr"
-description = "Choreographr is an all-purpose AI agent, written in Rust, and the decentralized publishing platform it writes to. A daemon with many clients, a sandboxed RISC-V VM, 200+ model providers, and built-in access to the Choreographr publishing platform."
+description = "Choreographr is an all-purpose AI agent, written in Rust, with built-in access to the Content network — a decentralized, content-addressed, timestamped publication layer on the Choreographr chain. A daemon with many clients, a sandboxed RISC-V VM, and 200+ model providers."
 generate_feeds = true
 feed_filenames = ["atom.xml"]
 build_search_index = true
@@ -50,7 +50,7 @@ error_on_missing_language = true
 # mistakes, so don't fail `zola check` on them.
 skip_prefixes = [
   "https://medium.com/mix-blockchain/",
-  "https://polkadot.com/platform/sdk/",
+  "https://polkadot.com/content/sdk/",
 ]
 
 [[taxonomies]]
@@ -83,11 +83,10 @@ tool_count = 75
 # `href` is a site-relative path.
 nav = [
   { name = "Agent", href = "/agent/" },
-  { name = "Platform", href = "/platform/" },
+  { name = "Content", href = "/content/" },
   { name = "Portal", href = "/portal/" },
   { name = "Regenesis", href = "/regenesis/" },
   { name = "Blog", href = "/blog/" },
-  { name = "Consulting", href = "/consulting/" },
-  { name = "GitHub", href = "https://github.com/choreographr/choreographr", external = true },
+  { name = "GitHub", href = "https://github.com/choreographr", external = true },
   { name = "Telegram", href = "https://t.me/choreographr", external = true },
 ]

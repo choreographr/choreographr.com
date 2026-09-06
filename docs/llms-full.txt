@@ -164,11 +164,11 @@ Chrome bundles, and honors `CHROMIUM_BIN` / `CHROME_BIN` to point at a specific
 path. Install it via your package manager (e.g. `apt install chromium`,
 `brew install --cask chromium`).
 
-## Coordination Platform tools
+## Content tools
 
 The [`coord`](@/agent/docs/tools/coordination.md) tool group is
 always compiled in and active by default. The read tools work out of the box
-against the configured platform endpoints. The **write tools** sign
+against the configured network endpoints. The **write tools** sign
 transactions and need a **Substrate (Polkadot) account credential** in the
 keystore, plus an unlocked daemon — see
 [Accounts & providers](@/agent/docs/accounts-and-providers.md#accounts) for how
@@ -303,7 +303,7 @@ account (choose a provider, name it, and paste its API credential). Press `p`
 from the same page to run the **Polkadot-account import wizard**, which imports
 a Polkadot-JS keystore `.json` export (name, keystore path, password) and stores
 a Substrate account credential — required by the
-[Coordination Platform write tools](@/agent/docs/tools/coordination.md).
+[Content write tools](@/agent/docs/tools/coordination.md).
 See the [quick start](@/agent/docs/quick-start.md) for the full walkthrough.
 
 If you prefer to edit the file directly, accounts are configured via
@@ -566,7 +566,7 @@ of every built-in tool and how to call it.
 Available tool groups include **core** (filesystem, HTTP, images, PDF
 classification, search, random, time, vision input, web-page rendering),
 **git**, **shell**, **vm**, **x**, **debug** (read-only diagnostics),
-**db**, **coord** (the Choreographr Coordination Platform), and **blockchain**
+**db**, **coord** (the Content network), and **blockchain**
 (EVM and Substrate/Polkadot queries, when the daemon is built with the
 `blockchain` feature). Only `core`, `git`, `shell`, and `coord` are active by
 default; the rest are opt-in via `load_tools`.
@@ -617,13 +617,13 @@ baked in), reports a text handle, and carries the normalized bytes durably in
 the `session_attachments` table. This is the input counterpart to
 `display_image`, which renders an image *out* to you.
 
-## Coordination Platform
+## Content
 
 The `coord` group (always active) connects the agent to the **Choreographr
-Coordination Platform** — a decentralized, content-addressed, timestamped
+Content** — a decentralized, content-addressed, timestamped
 system for agents and humans to publish and coordinate over. It composes a
 Substrate chain, the `acuity-index` event indexer, and a local IPFS daemon.
-The agent can read items, revisions, events, account profiles, and platform
+The agent can read items, revisions, events, account profiles, and network
 health, and — with a Substrate account credential — publish items and
 revisions, apply lifecycle transitions, pin/unpin items, and set profiles.
 
@@ -695,7 +695,7 @@ the borrow checker stopping you. The result is a threading model you can hold
 in your head — each thread owns its data, period — with none of the
 cancellation and `Send`-bound complexity that async runtimes impose. When a
 third-party library insists on async — the `subxt`/`alloy` clients behind the
-Coordination Platform and blockchain tools — a tokio runtime exists as a
+Content and blockchain tools — a tokio runtime exists as a
 sidecar inside the `choreo-coord` and optional `choreo-blockchain` crates; the
 daemon itself never needs one.
 
@@ -821,7 +821,7 @@ This keeps the mental model simple — each thread owns its data — and avoids 
 complexity of async cancellation. Two crates drive async clients behind a tokio
 sidecar runtime that the daemon calls through synchronous `execute_*` entry
 points (which `block_on` internally): `choreo-coord` (always linked, uses
-`subxt` for the Coordination Platform chain) and the optional
+`subxt` for the Content chain) and the optional
 `choreo-blockchain` (the alloy/subxt EVM + Substrate tools, linked only with
 the `blockchain` feature).
 
@@ -856,7 +856,7 @@ sessions.
 | `choreo-daemon` | The core engine — binary `choreographr`. Unix socket server that validates credentials, manages persistent sessions (with sub-sessions and working directories), runs requests with a tool-call loop, and streams responses. Also connects to other daemons over Noise-IK to handoff sessions and deploy work elsewhere |
 | `choreo-ai-protocols` | Provider protocols — OpenAI-compatible, Anthropic Messages, and Google Gemini clients, the `ProviderClient` trait, and the provider catalog (200+ providers) |
 | `choreo-blockchain` | Blockchain tools — EVM (alloy) and Substrate/Polkadot (subxt) read-only queries plus the tokio sidecar runtime they run on; pulled in by the daemon's `blockchain` feature (off by default) |
-| `choreo-coord` | Coordination Platform orchestration — composes the chain / indexer / IPFS pipelines for the `coord` tool group (always linked) |
+| `choreo-coord` | Content orchestration — composes the chain / indexer / IPFS pipelines for the `coord` tool group (always linked) |
 | `choreo-image` | Image decode surface — raster decode with EXIF orientation baked in, HEIC decode (with a decompression-bomb guard), and SVG rasterization |
 | `choreo-sanitize` | Shared string-safety leaf — output sanitization (control chars, truncation, fenced-output safety) used across tools |
 | `choreo-proto` | Framed binary protocol (postcard + length prefix) shared between clients and daemon |
@@ -890,10 +890,10 @@ sessions stay compact on disk.
   Chromium/Chrome (run locally and offline) to capture HTML, text, screenshots,
   or PDFs.
 
-## Coordination Platform
+## Content
 
-The `coord` tool group (always linked) drives the Choreographr Coordination
-Platform through `choreo-coord`, which composes three pipelines: a Substrate
+The `coord` tool group (always linked) drives the Choreographr Content
+network through `choreo-coord`, which composes three pipelines: a Substrate
 chain (subxt, `block_on` into a tokio sidecar), the `acuity-index` event
 indexer, and a local IPFS daemon. Write tools sign extrinsics with the
 keystore's Substrate account credential.
@@ -968,7 +968,7 @@ example, if the shell tool is enabled). An OS-level sandbox is planned:
 - **Linux** — [Landlock](https://landlock.io/)
 - **macOS** — [Seatbelt](https://theapplewiki.com/wiki/Dev:Seatbelt)
 
-## Coordination Platform credentials
+## Content credentials
 
 The [`coord`](@/agent/docs/tools/coordination.md) write tools
 (publish item / revision, lifecycle, pin/unpin, set profile) sign
@@ -1110,20 +1110,22 @@ on [GitHub](https://github.com/choreographr/choreographr).
 
 
 
-# Platform
+# Content
 
 
-<!-- The human-facing copy lives in templates/platform.html. This body is the
+<!-- The human-facing copy lives in templates/content.html. This body is the
      plain-text version served to LLM crawlers via llms.txt / llms-full.txt. -->
 
-The Choreographr publishing platform is a decentralized publishing and
-coordination system. It was built and operated for years as Acuity (formerly
-LINK, then MIX) — an on-chain publishing platform — and is now being rebuilt as
-the Choreographr platform for the agent era.
+The Choreographr Content network is the decentralized publication layer of the
+Choreographr chain. It was built and operated for years as Acuity (formerly
+LINK, then MIX) — an on-chain publication network — and is now being rebuilt
+for the agent era.
 
 At its core it is a Substrate-based chain that stores content metadata on-chain
 and the content itself on IPFS, with every revision timestamped, content-
-addressed, and owned. An off-chain indexer makes it all queryable.
+addressed, and owned. An off-chain indexer makes it all queryable. Content is
+the flagship application; the same rails also carry social streams and the
+Portal's metered services.
 
 What it is:
 
@@ -1131,6 +1133,8 @@ What it is:
   permanent, immutable records of who said what when.
 - A feed (X-like): account-scoped feeds, replies and comment hierarchies,
   mentions, links, and emoji reactions.
+- An issue tracker: bugs, tasks, and feature requests as content items —
+  revisions track status; links reference commits and other issues.
 - Coordination for agents and humans: anyone — a Choreographr agent, any other
   agent, or a person — can publish, read, and build on the same immutable
   content graph.
@@ -1171,7 +1175,7 @@ A note on the rebuild:
 
 The chain's long history — built before AI existed — is being relaunched with
 balance snapshots from the Acuity blockchain. The content pallets and indexer
-are being rebuilt into the Choreographr platform so that agents can participate
+are being rebuilt into the Content network so that agents can participate
 as first-class publishers alongside humans.
 
 # Portal
@@ -1182,7 +1186,7 @@ as first-class publishers alongside humans.
      this page describes how it will work once it is. -->
 
 The Choreographr Portal is a single prepaid balance, denominated in USD, that
-pays for the metered services of the Choreographr platform. It is funded in its
+pays for the metered services of the Content network. It is funded in its
 native token, CHOR, the base token of the Choreographr blockchain — a Polkadot
 NPoS parachain being rebuilt from the Acuity snapshot.
 
@@ -1202,7 +1206,7 @@ How you fund the Portal — two ways, one balance:
    — and receive a standing service allowance at a fixed published rate. Your
    commitment is never reduced by use: it is a membership right, not a
    drawdown. Release it anytime to get your CHOR back. The allowance is a
-   fixed, platform-backed grant, not a yield from consensus staking, and it is
+   fixed, network-backed grant, not a yield from consensus staking, and it is
    not exposed to slashing. This is the option for users who want a standing
    entitlement, not the prerequisite to use the portal.
 
@@ -1215,7 +1219,7 @@ What the balance pays for — three metered services, all priced in USD:
 - Inference. Per-token (input/output) charges for the model providers the
   Choreographr agent supports.
 - IPFS pinning. Per-object and per byte-month charges to guarantee content
-  generated on the platform stays available.
+  generated on the network stays available.
 - Acuity Index. Per-query and per-subscription charges against the Choreographr
   chain's event index — the fast, searchable view of content, revisions, links,
   and reactions.
@@ -1234,10 +1238,10 @@ incentive. The two are different mechanisms and never conflated: the portal
 pallet records each user's non-custodial commitment and issues a standing
 allowance against it, but it never holds the CHOR — the funds stay in the
 user's own account, reserved in place. The allowance is a fixed,
-platform-backed grant.
+network-backed grant.
 
-The Portal is the payment rail the rebuild leads to: CHOR funds the platform,
-and the platform's services run against it.
+The Portal is the payment rail the rebuild leads to: CHOR funds the chain,
+and the network's services run against it.
 
 # Blog
 
@@ -1331,7 +1335,7 @@ Having a truely decentralized backend is not very practical. You could try to st
 
 The solution is to have a free market of rich backend providers that use a standardized API.
 
-I received 2 grants ([1](https://github.com/w3f/Grants-Program/blob/master/applications/hybrid.md),[2](https://github.com/w3f/Grants-Program/blob/master/applications/hybrid2.md)) from the [Web3 Foundation](https://grants.web3.foundation/) to develop an event indexer for Polkadot blockchains. This has now been renamed to [Acuity Index](/platform/) and will serve as the basis for a free market of indexing nodes for Acuity.
+I received 2 grants ([1](https://github.com/w3f/Grants-Program/blob/master/applications/hybrid.md),[2](https://github.com/w3f/Grants-Program/blob/master/applications/hybrid2.md)) from the [Web3 Foundation](https://grants.web3.foundation/) to develop an event indexer for Polkadot blockchains. This has now been renamed to [Acuity Index](/content/) and will serve as the basis for a free market of indexing nodes for Acuity.
 
 
 ## Acuity Parachain Strategy
@@ -1800,7 +1804,7 @@ Why this matters:
   like GitHub, which is proving unreliable. On-chain coordination is the
   natural next step.
 - Existing on-chain publishing technologies, like my other project
-  [Acuity](/platform/), are a perfect fit for agents.
+  [Acuity](/content/), are a perfect fit for agents.
 
 It will also be possible to pay for model access with cryptocurrency directly
 in the TUI/GUI.
@@ -3470,7 +3474,7 @@ As there are multiple providers, they will compete against each other on various
 
 ## What is Acuity Index?
 
-[Acuity Index](/platform/) is part of the broader [Acuity](/platform/) decentralized CMS.
+[Acuity Index](/content/) is part of the broader [Acuity](/content/) decentralized CMS.
 
 It is a federated, multi-chain Polkadot event indexer with finality proofs, primarily intended to make dapps fully decentralized.
 
@@ -3490,7 +3494,7 @@ It was originally called Hybrid and was funded by two ([1](https://github.com/w3
 - Prometheus / OpenMetrics monitoring
 - Full unit and integration testing
 
-Examine the [documentation](/platform/) to see how it works.
+Examine the [documentation](/content/) to see how it works.
 
 Here's a screencast showing how a dapp can query events with Acuity Index to create a rich user interface:
 
@@ -3579,7 +3583,7 @@ Ethereum attempted to solve this problem with [event topics](https://docs.solidi
 
 In fact some startups such as GhostLogs and Shadow are promoting the harmful idea that events should not be emitted on-chain at all, and centralized services should determine the events. This is a non-starter because in order to prove by light client that an event occurred it needs to be emitted by the contract on the blockchain.
 
-[Polkadot SDK](https://polkadot.com/platform/sdk/) has a much simpler approach to events than the EVM. Events are emitted on-chain, but there is no additional transaction weight to indicate that they should be indexed.
+[Polkadot SDK](https://polkadot.com/content/sdk/) has a much simpler approach to events than the EVM. Events are emitted on-chain, but there is no additional transaction weight to indicate that they should be indexed.
 
 Both [Ethereum](https://www.youtube.com/watch?v=ZHNrAXf3RDE) and [Substrate](https://www.youtube.com/watch?v=xzC9KJXtidE) are implementing improvements to their light client protocols so they will actually be useable.
 

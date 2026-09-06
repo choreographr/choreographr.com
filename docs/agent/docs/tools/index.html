@@ -49,7 +49,7 @@
   <link rel="preload" href="https://choreographr.com/fonts/jetbrains-mono.woff2" as="font" type="font/woff2" crossorigin>
 
   <link rel="icon" type="image/svg+xml" href="https://choreographr.com/favicon.svg">
-  <link rel="stylesheet" href="https://choreographr.com/css/main.css?h=cc916fb7e2fc6c3f3574">
+  <link rel="stylesheet" href="https://choreographr.com/css/main.css?h=e7e23cc03e88c866d4ba">
 
   <!-- Firefox/Zen can paint a frame before this stylesheet has been
        applied if a layout flush happens while it loads (Bugzilla
@@ -86,8 +86,8 @@
           </li>
           
           <li>
-            <a href="/platform/"  class="">
-              Platform
+            <a href="/content/"  class="">
+              Content
             </a>
           </li>
           
@@ -110,13 +110,7 @@
           </li>
           
           <li>
-            <a href="/consulting/"  class="">
-              Consulting
-            </a>
-          </li>
-          
-          <li>
-            <a href="https://github.com/choreographr/choreographr" target="_blank" rel="noopener" class="">
+            <a href="https://github.com/choreographr" target="_blank" rel="noopener" class="">
               GitHub<span class="text-night-400 text-xs">↗</span>
             </a>
           </li>
@@ -145,10 +139,10 @@
         </li>
         
         <li>
-          <a href="/platform/"
+          <a href="/content/"
              
              class="text-night-200 hover:text-night-50">
-            Platform
+            Content
           </a>
         </li>
         
@@ -177,15 +171,7 @@
         </li>
         
         <li>
-          <a href="/consulting/"
-             
-             class="text-night-200 hover:text-night-50">
-            Consulting
-          </a>
-        </li>
-        
-        <li>
-          <a href="https://github.com/choreographr/choreographr"
+          <a href="https://github.com/choreographr"
              target="_blank" rel="noopener"
              class="">
             GitHub<span class="text-night-400 text-xs">↗</span>
@@ -206,14 +192,15 @@
 </header>
 
 
-  <main class="flex-1">
+  <main class="flex-1 relative">
     
     
       
     
     
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 pt-5">
       
+      <div class="mx-auto max-w-7xl px-4 sm:px-6 pt-5">
+        
 
 
 
@@ -257,7 +244,8 @@
   </span>
 </nav>
 
-    </div>
+      </div>
+      
     
     
 <div class="mx-auto max-w-7xl px-4 sm:px-6 py-8 lg:py-12">
@@ -380,7 +368,7 @@
     <li>
       <a href="https://choreographr.com/agent/docs/tools/coordination/"
          class="pl-5 text-night-300 hover:text-night-50">
-        Coordination Platform tools
+        Content tools
       </a>
     </li>
     
@@ -473,7 +461,7 @@
 with the outside world: reading and writing files, running shell commands,
 making HTTP requests, managing Git repositories, querying a persistent
 database, reading images into a vision model, browsing the web, posting to X,
-publishing to the Choreographr Coordination Platform, and more. This section
+publishing to the Content network, and more. This section
 is the complete reference: how tools work, how they are grouped, and what each
 one does.</p>
 <ul>
@@ -487,8 +475,8 @@ push, show.</li>
 <li><strong><a href="https://choreographr.com/agent/docs/tools/x/">X (Twitter) tools</a></strong> — post, search, user lookup.</li>
 <li><strong><a href="https://choreographr.com/agent/docs/tools/blockchain/">Blockchain tools</a></strong> — EVM and
 Substrate/Polkadot read-only queries.</li>
-<li><strong><a href="https://choreographr.com/agent/docs/tools/coordination/">Coordination Platform tools</a></strong> — the
-on-chain publishing and coordination platform.</li>
+<li><strong><a href="https://choreographr.com/agent/docs/tools/coordination/">Content tools</a></strong> — the
+on-chain publication network.</li>
 <li><strong><a href="https://choreographr.com/agent/docs/tools/diagnostics/">Diagnostic tools</a></strong> — <code>session_inspect</code>.</li>
 <li><strong><a href="https://choreographr.com/agent/docs/tools/riscv/">RISC-V VM tool</a></strong> — <code>run_riscv</code>.</li>
 <li><strong><a href="https://choreographr.com/agent/docs/tools/mcp/">MCP servers</a></strong> — dynamic groups from MCP servers.</li>
@@ -540,7 +528,7 @@ always has access to all tools.</p>
 <tr><td><code>core</code></td><td>Filesystem, HTTP, images, display, PDF, web page rendering, vision (read_image), search, random, time, sessions, series</td><td>✅ always</td></tr>
 <tr><td><code>git</code></td><td>Local Git operations (status, diff, log, add, commit, push, show)</td><td>✅</td></tr>
 <tr><td><code>shell</code></td><td>Shell execution (bash, nushell, fish, exec)</td><td>✅</td></tr>
-<tr><td><code>coord</code></td><td>Choreographr Coordination Platform (blockchain content registry + IPFS + indexer)</td><td>✅ always</td></tr>
+<tr><td><code>coord</code></td><td>the Content network (blockchain content registry + IPFS + indexer)</td><td>✅ always</td></tr>
 <tr><td><code>db</code></td><td>Session-scoped key-value database (redb)</td><td>—</td></tr>
 <tr><td><code>x</code></td><td>X/Twitter API (post, search, user lookup)</td><td>—</td></tr>
 <tr><td><code>vm</code></td><td>RISC-V sandboxed code execution</td><td>—</td></tr>
@@ -550,7 +538,7 @@ always has access to all tools.</p>
 </tbody></table>
 <blockquote>
 <p>The <code>coord</code> group is <strong>always compiled in and active by default</strong>, like
-<code>core</code>, <code>git</code>, and <code>shell</code> — the Coordination Platform tools need no feature
+<code>core</code>, <code>git</code>, and <code>shell</code> — the Content tools need no feature
 flag. The <code>blockchain</code> group exists only when the daemon is built with the
 <code>blockchain</code> cargo feature (the release binaries enable it). The tools live
 in the <code>choreo-blockchain</code> crate, which also owns the tokio sidecar runtime
@@ -595,7 +583,7 @@ the encrypted keystore — never from prompt context.</li>
         
         <li><a href="https://choreographr.com/agent/docs/tools/blockchain/">Blockchain tools</a></li>
         
-        <li><a href="https://choreographr.com/agent/docs/tools/coordination/">Coordination Platform tools</a></li>
+        <li><a href="https://choreographr.com/agent/docs/tools/coordination/">Content tools</a></li>
         
         <li><a href="https://choreographr.com/agent/docs/tools/diagnostics/">Diagnostic tools</a></li>
         
@@ -626,7 +614,7 @@ the encrypted keystore — never from prompt context.</li>
         <h3 class="text-sm font-semibold text-night-50 uppercase tracking-wider mb-3">Explore</h3>
         <ul class="space-y-2 text-sm text-night-300">
           <li><a href="https://choreographr.com/agent/docs" class="hover:text-brand-400">Agent docs</a></li>
-          <li><a href="https://choreographr.com/platform" class="hover:text-brand-400">Platform</a></li>
+          <li><a href="https://choreographr.com/content" class="hover:text-brand-400">Content</a></li>
           <li><a href="https://choreographr.com/portal" class="hover:text-brand-400">Portal</a></li>
           <li><a href="https://choreographr.com/consulting" class="hover:text-brand-400">Consulting</a></li>
           <li><a href="https://choreographr.com/search" class="hover:text-brand-400">Search</a></li>
@@ -635,7 +623,7 @@ the encrypted keystore — never from prompt context.</li>
       <div>
         <h3 class="text-sm font-semibold text-night-50 uppercase tracking-wider mb-3">Community</h3>
         <ul class="space-y-2 text-sm text-night-300">
-          <li><a href="https://github.com/choreographr/choreographr" target="_blank" rel="noopener" class="hover:text-brand-400">GitHub</a></li>
+          <li><a href="https://github.com/choreographr" target="_blank" rel="noopener" class="hover:text-brand-400">GitHub</a></li>
           <li><a href="https://t.me/choreographr" target="_blank" rel="noopener" class="hover:text-brand-400">Telegram</a></li>
           <li><a href="https://choreographr.com/atom.xml" class="hover:text-brand-400">RSS Feed</a></li>
         </ul>

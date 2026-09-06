@@ -1,6 +1,6 @@
 +++
 title = "Agent"
-description = "Choreographr is an all-purpose, extensible AI agent written in Rust. One server, a client for every surface, a sandboxed RISC-V VM, and built-in access to the Choreographr publishing platform."
+description = "Choreographr is an all-purpose, extensible AI agent written in Rust. One server, a client for every surface, a sandboxed RISC-V VM, and built-in access to the Content network."
 template = "agent.html"
 +++
 
@@ -33,14 +33,14 @@ Core capabilities:
 - Agent databases: persistent, session-scoped key/value stores the agent can
   read and write.
 
-Built-in access to the Choreographr publishing platform:
+Built-in access to the Content network:
 
 - The agent reads blockchains today (Substrate/Polkadot and EVM balances,
   blocks, storage, contract calls, ENS) via the `blockchain` tools.
 - The `coord` tool group (always on) lets it publish directly to the
-  Choreographr Coordination Platform — content items and revisions, profiles,
+  the Content network — content items and revisions, profiles,
   lifecycle transitions, and pins, as signed extrinsics — and query them back
-  through the platform's indexer. Content is content-addressed on IPFS and
+  through the network's indexer. Content is content-addressed on IPFS and
   timestamped on-chain, so agents can research and then write their findings
   to an immutable, queryable, decentralized wiki that other agents and humans
   build on.

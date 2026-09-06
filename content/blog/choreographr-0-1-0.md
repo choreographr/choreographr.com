@@ -172,7 +172,7 @@ Why this matters:
   like GitHub, which is proving unreliable. On-chain coordination is the
   natural next step.
 - Existing on-chain publishing technologies, like my other project
-  [Acuity](/platform/), are a perfect fit for agents.
+  [Acuity](/content/), are a perfect fit for agents.
 
 It will also be possible to pay for model access with cryptocurrency directly
 in the TUI/GUI.

@@ -1,9 +1,9 @@
 {% extends "base.html" %}
 
 {% block title %}Portal — Choreographr{% endblock title %}
-{% block description %}Buy USD credits with CHOR and spend them on inference, IPFS pinning, and the Acuity Index — or commit CHOR for a standing allowance. Non-custodial, one balance.{% endblock description %}
+{% block description %}Easy access to everything you need to participate in the Choreographr chain — inference, content publication and IPFS pinning, and the Acuity Index — paid in CHOR. Non-custodial, one balance.{% endblock description %}
 {% block og_title %}Portal — Choreographr{% endblock og_title %}
-{% block og_description %}Buy USD credits with CHOR and spend them on inference, IPFS pinning, and the Acuity Index — or commit CHOR for a standing allowance. Non-custodial, one balance.{% endblock og_description %}
+{% block og_description %}Easy access to everything you need to participate in the Choreographr chain — inference, content publication and IPFS pinning, and the Acuity Index — paid in CHOR. Non-custodial, one balance.{% endblock og_description %}
 
 {% block extra_head %}
 <script type="application/ld+json">
@@ -12,7 +12,7 @@
   "@type": "WebApplication",
   "name": "Choreographr Portal",
   "applicationCategory": "BlockchainApplication",
-  "description": "A single USD-denominated prepaid balance that pays for the metered services of the Choreographr platform — inference, IPFS pinning, and the Acuity Index — funded by staking CHOR or converting CHOR to credits.",
+  "description": "The Choreographr Portal: easy access to everything you need to participate in the Choreographr chain — inference, content publication and IPFS pinning, and the Acuity Index — paid in CHOR via a single USD-denominated prepaid balance or a committed standing allowance.",
   "url": "https://choreographr.com/portal/",
   "isAccessibleForFree": false,
   "offers": { "@type": "Offer", "priceCurrency": "USD" }
@@ -20,26 +20,24 @@
 </script>
 {% endblock extra_head %}
 
-{% block content %}
-
-{# ============================== NOT-LAUNCHED BANNER ============================== #}
-<section class="border-b border-warning/30 bg-warning/5">
-  <div class="mx-auto max-w-7xl px-4 sm:px-6 py-4 flex items-start gap-3">
-    <span class="text-warning text-lg leading-none mt-0.5">⚠️</span>
-    <p class="text-sm text-night-200 leading-relaxed">
-      <strong class="text-warning">The Portal is not yet live.</strong> This page describes how it
-      will work once the chain relaunches and the portal pallet is built. The chain is being
-      rebuilt from the Acuity snapshot; nothing here is usable today.
-    </p>
+{% block breadcrumbs %}
+  {% if current_path and current_path != "/" %}
+  <div class="absolute inset-x-0 top-0 z-10">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 pt-5">
+      {{<breadcrumbs current_path={current_path} current_title=""/>}}
+    </div>
   </div>
-</section>
+  {% endif %}
+{% endblock breadcrumbs %}
+
+{% block content %}
 
 {# ============================== HERO ============================== #}
 <section class="relative overflow-hidden">
   <div class="absolute inset-0 bg-grid"></div>
   <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(222,165,132,0.12),transparent_55%)]"></div>
 
-  <div class="relative mx-auto max-w-7xl px-4 sm:px-6 pt-20 pb-16 lg:pt-28 lg:pb-24">
+  <div class="relative mx-auto max-w-7xl px-4 sm:px-6 pt-16 pb-16 lg:pt-24 lg:pb-24">
     <div class="grid lg:grid-cols-2 gap-12 lg:gap-8 items-center">
       <div>
         <div class="flex flex-wrap items-center gap-2 mb-6">
@@ -49,16 +47,15 @@
         </div>
 
         <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-night-50 leading-[1.1]">
-          One balance for<br>
-          <span class="text-brand-500 glow-brand">a paid platform.</span>
+          Everything you need to<br>
+          <span class="text-brand-500 glow-brand">participate.</span>
         </h1>
 
         <p class="mt-6 text-lg text-night-200 leading-relaxed max-w-xl">
-          The Portal is the payment rail of the Choreographr platform. Buy
-          <strong class="text-night-50">USD credits</strong> with CHOR and spend them on the
-          platform's metered services — inference, IPFS pinning, and the Acuity Index.
-          Or <strong class="text-night-50">commit CHOR to own your capacity</strong> with a standing
-          allowance. One balance, either way.
+          The Portal is your access point to the Choreographr network's services:
+          <strong class="text-night-50">inference</strong> from 200+ model providers,
+          <strong class="text-night-50">content publication</strong> with IPFS pinning, and queries against
+          the <strong class="text-night-50">Acuity Index</strong> — all paid in CHOR.
         </p>
 
         <div class="mt-8 flex flex-wrap gap-3">
@@ -81,7 +78,7 @@
           <pre data-prefix="✓"><code>  non-custodial — stays in your account</code></pre>
           <pre data-prefix="✓"><code>  standing allowance · stake never reduced</code></pre>
           <pre data-prefix=" "><code></code></pre>
-          <pre data-prefix=">"><code>spend on the platform's services</code></pre>
+          <pre data-prefix=">"><code>spend on the network's services</code></pre>
           <pre data-prefix=" "><code>  inference · IPFS pinning · Acuity Index</code></pre>
         </div>
       </div>
@@ -168,7 +165,7 @@
 
     <div class="mt-12 grid gap-6 md:grid-cols-3">
       <div class="card bg-night-900 border border-night-700"><div class="card-body"><div class="text-2xl text-brand-500">🤖</div><h3 class="card-title text-night-50 text-lg">Inference</h3><p class="text-sm text-night-300">Per-token (input/output) charges for the model providers the Choreographr agent supports — the same catalog the agent already speaks to.</p><div class="mt-3 font-mono text-sm text-brand-400">per token</div></div></div>
-      <div class="card bg-night-900 border border-night-700"><div class="card-body"><div class="text-2xl text-brand-500">🧷</div><h3 class="card-title text-night-50 text-lg">IPFS pinning</h3><p class="text-sm text-night-300">Per-object and per byte-month charges to guarantee content published on the platform stays available and retrievable.</p><div class="mt-3 font-mono text-sm text-brand-400">per byte-month</div></div></div>
+      <div class="card bg-night-900 border border-night-700"><div class="card-body"><div class="text-2xl text-brand-500">🧷</div><h3 class="card-title text-night-50 text-lg">IPFS pinning</h3><p class="text-sm text-night-300">Per-object and per byte-month charges to guarantee content published on the network stays available and retrievable.</p><div class="mt-3 font-mono text-sm text-brand-400">per byte-month</div></div></div>
       <div class="card bg-night-900 border border-night-700"><div class="card-body"><div class="text-2xl text-brand-500">🔍</div><h3 class="card-title text-night-50 text-lg">Acuity Index</h3><p class="text-sm text-night-300">Per-query and per-subscription charges against the Choreographr chain's event index — the fast, searchable view of content, revisions, links, and reactions.</p><div class="mt-3 font-mono text-sm text-brand-400">per query</div></div></div>
     </div>
   </div>
@@ -225,7 +222,7 @@
     </div>
 
     <div class="mt-12 grid gap-6 md:grid-cols-2">
-      <div class="card bg-night-900 border border-night-700"><div class="card-body"><div class="font-mono text-sm text-brand-400">portal pallet</div><h3 class="card-title text-night-50 text-base">Service entitlement</h3><p class="text-sm text-night-300">Records each user's non-custodial commitment and issues a standing allowance against it. It <strong class="text-night-50">never holds the CHOR</strong> — the funds stay in the user's own account — and it is a consumer service gate, open to anyone using the platform.</p></div></div>
+      <div class="card bg-night-900 border border-night-700"><div class="card-body"><div class="font-mono text-sm text-brand-400">portal pallet</div><h3 class="card-title text-night-50 text-base">Service entitlement</h3><p class="text-sm text-night-300">Records each user's non-custodial commitment and issues a standing allowance against it. It <strong class="text-night-50">never holds the CHOR</strong> — the funds stay in the user's own account — and it is a consumer service gate, open to anyone using the network.</p></div></div>
       <div class="card bg-night-900 border border-night-700"><div class="card-body"><div class="font-mono text-sm text-brand-400">NPoS consensus</div><h3 class="card-title text-night-50 text-base">Chain security</h3><p class="text-sm text-night-300">Completely separate. It secures the chain and pays validators and nominators for that security. It is never used to gate or price portal access.</p></div></div>
     </div>
 
@@ -234,7 +231,7 @@
       access is a <strong class="text-night-50">service entitlement</strong> for its users. They
       produce different returns, serve different actors, and live at different layers — so they are
       separate. The committed CHOR stays <strong class="text-night-50">in the user's own account</strong>,
-      non-custodially reserved, and the allowance is a fixed, platform-backed grant — not a yield
+      non-custodially reserved, and the allowance is a fixed, network-backed grant — not a yield
       from consensus, and not exposed to slashing.
     </div>
   </div>
@@ -245,11 +242,11 @@
   <div class="mx-auto max-w-4xl px-4 sm:px-6 py-20 text-center">
     <h2 class="text-3xl sm:text-4xl font-bold text-night-50 tracking-tight">The payment rail of the rebuild</h2>
     <p class="mt-4 text-night-300">
-      CHOR funds the platform, and the platform's services run against it. Follow the rebuild and
+      CHOR funds the chain, and the network's services run against it. Follow the rebuild and
       join the community to hear when the Portal opens.
     </p>
     <div class="mt-8 flex flex-wrap justify-center gap-3">
-      <a href="{{ get_url(path='/platform/') }}" class="btn btn-primary btn-lg">See the platform</a>
+      <a href="{{ get_url(path='/content/') }}" class="btn btn-primary btn-lg">See Content</a>
       <a href="{{ config.extra.telegram }}" target="_blank" rel="noopener" class="btn btn-outline btn-lg border-night-500 text-night-100 hover:border-brand-500 hover:text-brand-400">Join the Telegram</a>
     </div>
   </div>

@@ -13,7 +13,7 @@ account (choose a provider, name it, and paste its API credential). Press `p`
 from the same page to run the **Polkadot-account import wizard**, which imports
 a Polkadot-JS keystore `.json` export (name, keystore path, password) and stores
 a Substrate account credential — required by the
-[Coordination Platform write tools](@/agent/docs/tools/coordination.md).
+[Content write tools](@/agent/docs/tools/coordination.md).
 See the [quick start](@/agent/docs/quick-start.md) for the full walkthrough.
 
 If you prefer to edit the file directly, accounts are configured via

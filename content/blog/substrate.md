@@ -28,7 +28,7 @@ Ethereum attempted to solve this problem with [event topics](https://docs.solidi
 
 In fact some startups such as GhostLogs and Shadow are promoting the harmful idea that events should not be emitted on-chain at all, and centralized services should determine the events. This is a non-starter because in order to prove by light client that an event occurred it needs to be emitted by the contract on the blockchain.
 
-[Polkadot SDK](https://polkadot.com/platform/sdk/) has a much simpler approach to events than the EVM. Events are emitted on-chain, but there is no additional transaction weight to indicate that they should be indexed.
+[Polkadot SDK](https://polkadot.com/content/sdk/) has a much simpler approach to events than the EVM. Events are emitted on-chain, but there is no additional transaction weight to indicate that they should be indexed.
 
 Both [Ethereum](https://www.youtube.com/watch?v=ZHNrAXf3RDE) and [Substrate](https://www.youtube.com/watch?v=xzC9KJXtidE) are implementing improvements to their light client protocols so they will actually be useable.
 

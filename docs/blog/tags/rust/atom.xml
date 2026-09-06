@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
     <title>Choreographr - rust</title>
-    <subtitle>Choreographr is an all-purpose AI agent, written in Rust, and the decentralized publishing platform it writes to. A daemon with many clients, a sandboxed RISC-V VM, 200+ model providers, and built-in access to the Choreographr publishing platform.</subtitle>
+    <subtitle>Choreographr is an all-purpose AI agent, written in Rust, with built-in access to the Content network — a decentralized, content-addressed, timestamped publication layer on the Choreographr chain. A daemon with many clients, a sandboxed RISC-V VM, and 200+ model providers.</subtitle>
     <link rel="self" type="application/atom+xml" href="https://choreographr.com/blog/tags/rust/atom.xml"/>
     <link rel="alternate" type="text/html" href="https://choreographr.com/"/>
     <generator uri="https://www.getzola.org/">Zola</generator>
@@ -176,7 +176,7 @@ trading bot, for example.&lt;/li&gt;
 like GitHub, which is proving unreliable. On-chain coordination is the
 natural next step.&lt;/li&gt;
 &lt;li&gt;Existing on-chain publishing technologies, like my other project
-&lt;a href=&quot;/platform/&quot;&gt;Acuity&lt;/a&gt;, are a perfect fit for agents.&lt;/li&gt;
+&lt;a href=&quot;/content/&quot;&gt;Acuity&lt;/a&gt;, are a perfect fit for agents.&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;It will also be possible to pay for model access with cryptocurrency directly
 in the TUI/GUI.&lt;/p&gt;

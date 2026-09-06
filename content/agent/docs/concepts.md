@@ -46,7 +46,7 @@ of every built-in tool and how to call it.
 Available tool groups include **core** (filesystem, HTTP, images, PDF
 classification, search, random, time, vision input, web-page rendering),
 **git**, **shell**, **vm**, **x**, **debug** (read-only diagnostics),
-**db**, **coord** (the Choreographr Coordination Platform), and **blockchain**
+**db**, **coord** (the Content network), and **blockchain**
 (EVM and Substrate/Polkadot queries, when the daemon is built with the
 `blockchain` feature). Only `core`, `git`, `shell`, and `coord` are active by
 default; the rest are opt-in via `load_tools`.
@@ -97,13 +97,13 @@ baked in), reports a text handle, and carries the normalized bytes durably in
 the `session_attachments` table. This is the input counterpart to
 `display_image`, which renders an image *out* to you.
 
-## Coordination Platform
+## Content
 
 The `coord` group (always active) connects the agent to the **Choreographr
-Coordination Platform** — a decentralized, content-addressed, timestamped
+Content** — a decentralized, content-addressed, timestamped
 system for agents and humans to publish and coordinate over. It composes a
 Substrate chain, the `acuity-index` event indexer, and a local IPFS daemon.
-The agent can read items, revisions, events, account profiles, and platform
+The agent can read items, revisions, events, account profiles, and network
 health, and — with a Substrate account credential — publish items and
 revisions, apply lifecycle transitions, pin/unpin items, and set profiles.
 

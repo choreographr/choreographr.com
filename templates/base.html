@@ -72,10 +72,14 @@
 
   {% include "partials/nav.html" %}
 
-  <main class="flex-1">
-    {# Global breadcrumb — a subtle monospace trail directly under the site
-       header on every page (except the homepage). The leaf uses the current
-       page/section title. #}
+  <main class="flex-1 relative">
+    {# Global breadcrumb — a subtle monospace trail on every page except the
+       homepage.
+
+       DEFAULT (below) renders the breadcrumb in NORMAL FLOW, above the
+       content — right for plain pages like the blog and docs. Pages with a
+       full-bleed hero background override the `breadcrumbs` block to position
+       the trail ABSOLUTELY over their hero image instead of pushing it down. #}
     {% if page %}
       {% set cur_title = page.title %}
     {% elif section %}
@@ -83,11 +87,13 @@
     {% else %}
       {% set cur_title = config.title %}
     {% endif %}
-    {% if current_path and current_path != "/" %}
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 pt-5">
-      {{<breadcrumbs current_path={current_path} current_title={cur_title}/>}}
-    </div>
-    {% endif %}
+    {% block breadcrumbs %}
+      {% if current_path and current_path != "/" %}
+      <div class="mx-auto max-w-7xl px-4 sm:px-6 pt-5">
+        {{<breadcrumbs current_path={current_path} current_title={cur_title}/>}}
+      </div>
+      {% endif %}
+    {% endblock breadcrumbs %}
     {% block content %}{% endblock content %}
   </main>
 

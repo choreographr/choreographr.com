@@ -9,7 +9,7 @@ Tools are the functions the LLM — and the RISC-V VM — can call to interact
 with the outside world: reading and writing files, running shell commands,
 making HTTP requests, managing Git repositories, querying a persistent
 database, reading images into a vision model, browsing the web, posting to X,
-publishing to the Choreographr Coordination Platform, and more. This section
+publishing to the Content network, and more. This section
 is the complete reference: how tools work, how they are grouped, and what each
 one does.
 
@@ -23,8 +23,8 @@ one does.
 - **[X (Twitter) tools](@/agent/docs/tools/x.md)** — post, search, user lookup.
 - **[Blockchain tools](@/agent/docs/tools/blockchain.md)** — EVM and
   Substrate/Polkadot read-only queries.
-- **[Coordination Platform tools](@/agent/docs/tools/coordination.md)** — the
-  on-chain publishing and coordination platform.
+- **[Content tools](@/agent/docs/tools/coordination.md)** — the
+  on-chain publication network.
 - **[Diagnostic tools](@/agent/docs/tools/diagnostics.md)** — `session_inspect`.
 - **[RISC-V VM tool](@/agent/docs/tools/riscv.md)** — `run_riscv`.
 - **[MCP servers](@/agent/docs/tools/mcp.md)** — dynamic groups from MCP servers.
@@ -69,7 +69,7 @@ model can activate additional groups with `load_tools` and deactivate them with
 | `core` | Filesystem, HTTP, images, display, PDF, web page rendering, vision (read_image), search, random, time, sessions, series | ✅ always |
 | `git` | Local Git operations (status, diff, log, add, commit, push, show) | ✅ |
 | `shell` | Shell execution (bash, nushell, fish, exec) | ✅ |
-| `coord` | Choreographr Coordination Platform (blockchain content registry + IPFS + indexer) | ✅ always |
+| `coord` | the Content network (blockchain content registry + IPFS + indexer) | ✅ always |
 | `db` | Session-scoped key-value database (redb) | — |
 | `x` | X/Twitter API (post, search, user lookup) | — |
 | `vm` | RISC-V sandboxed code execution | — |
@@ -78,7 +78,7 @@ model can activate additional groups with `load_tools` and deactivate them with
 | `mcp/<server>` | One dynamic group per configured MCP server | — |
 
 > The `coord` group is **always compiled in and active by default**, like
-> `core`, `git`, and `shell` — the Coordination Platform tools need no feature
+> `core`, `git`, and `shell` — the Content tools need no feature
 > flag. The `blockchain` group exists only when the daemon is built with the
 > `blockchain` cargo feature (the release binaries enable it). The tools live
 > in the `choreo-blockchain` crate, which also owns the tokio sidecar runtime

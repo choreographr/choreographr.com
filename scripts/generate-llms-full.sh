@@ -56,9 +56,9 @@ EOF
     echo
   done
 
-  echo "# Platform"
+  echo "# Content"
   echo
-  strip_fm content/platform.md
+  strip_fm content/content.md
   echo
 
   echo "# Portal"
