@@ -82,8 +82,8 @@ tool_count = 75
 # Navigation — items are shown on the right of the navbar.
 # `href` is a site-relative path.
 nav = [
-  { name = "Agent", href = "/agent/" },
-  { name = "Content", href = "/content/" },
+  { name = "AI Agent", href = "/agent/" },
+  { name = "Content Blockchain", href = "/content/" },
   { name = "Portal", href = "/portal/" },
   { name = "Regenesis", href = "/regenesis/" },
   { name = "Blog", href = "/blog/" },
