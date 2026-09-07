@@ -10,7 +10,7 @@ icon = "github"
 
 [[extra.social]]
 name = "X"
-url = "https://x.com/jbrown_acuity"
+url = "https://x.com/choreographr_jb"
 icon = "x"
 
 [[extra.skills]]

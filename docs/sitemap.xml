@@ -261,6 +261,9 @@
     <loc>https://choreographr.com/blog/versionedblob/</loc><lastmod>2015-08-19</lastmod>
   </url>
   <url>
+    <loc>https://choreographr.com/chor/</loc>
+  </url>
+  <url>
     <loc>https://choreographr.com/consulting/</loc>
   </url>
   <url>
@@ -328,8 +331,5 @@
   </url>
   <url>
     <loc>https://choreographr.com/portal/</loc>
-  </url>
-  <url>
-    <loc>https://choreographr.com/regenesis/</loc>
   </url>
 </urlset>

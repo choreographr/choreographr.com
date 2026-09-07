@@ -84,9 +84,10 @@ tool_count = 75
 nav = [
   { name = "AI Agent", href = "/agent/" },
   { name = "Content Blockchain", href = "/content/" },
-  { name = "Regenesis", href = "/regenesis/" },
+  { name = "CHOR", href = "/chor/" },
   { name = "Portal", href = "/portal/" },
   { name = "Blog", href = "/blog/" },
+  { name = "Consulting", href = "/consulting/" },
   { name = "GitHub", href = "https://github.com/choreographr", external = true },
   { name = "Telegram", href = "https://t.me/choreographr", external = true },
 ]
