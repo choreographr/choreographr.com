@@ -13,7 +13,7 @@ a = "Choreographr is an all-purpose, extensible AI agent system written entirely
 
 [[extra.faq]]
 q = "What can I use it for?"
-a = "Software development, a personal/business agent, or research. It runs on your desktop or in the cloud, and you can talk to it from the terminal, a desktop app, or your phone (via the Telegram bridge)."
+a = "Software development, a personal/business agent, or research. It runs on your desktop or in the cloud, and you can talk to it from the terminal or a desktop app."
 
 [[extra.faq]]
 q = "Which models does it support?"
@@ -21,23 +21,23 @@ a = "200+ providers across three wire protocols: OpenAI-compatible (OpenAI, Deep
 
 [[extra.faq]]
 q = "Is my data private?"
-a = "Choreographr is local-first. Sessions and credentials live on your machine (encrypted at rest), and you choose which model providers your prompts go to. The daemon starts locked and credentials are only decrypted into memory after unlock."
+a = "Choreographr is local-first. Your sessions and credentials stay on your machine, with credentials encrypted at rest, and you choose which model providers your prompts go to. The daemon starts locked and credentials are only decrypted into memory after unlock."
 
 [[extra.faq]]
 q = "Is LLM-generated code safe to run?"
-a = "Generated code runs in an isolated RISC-V VM by default, which is a complete replacement for the shell tool — full control and observability. OS-level sandboxing for tools that must run outside the VM is on the roadmap."
+a = "Generated code runs inside an isolated RISC-V VM (activate the `vm` tool group with `load_tools vm`) rather than on your machine — a complete replacement for the shell tool, with full control and observability. OS-level sandboxing for tools that must run outside the VM is on the roadmap."
 
 [[extra.faq]]
 q = "Does it require an async runtime?"
-a = "No — the daemon uses pure OS threads with message passing. No async code in its own logic, no `Arc<Mutex>` shared state. Two crates drive async clients behind a tokio sidecar runtime that the daemon calls through synchronous entry points: `choreo-coord` (always linked, for the Content chain) and the optional `choreo-blockchain` (the EVM/Substrate tools). Without the `blockchain` feature, only the small coord sidecar is present."
+a = "No — the daemon uses pure OS threads with message passing. There is no async code in its own logic, and shared mutable state is confined to a few deliberate, localized exceptions rather than being the design's backbone. The only async clients are the alloy/subxt EVM and Substrate tooling behind the optional `blockchain` and `content` features (`choreo-blockchain`, `choreo-content`), each driving a tokio sidecar runtime the daemon calls through synchronous entry points. With those features off there is no async runtime at all."
 
 [[extra.faq]]
 q = "Can it talk to blockchains?"
 a = "Yes — the `blockchain` tool group adds read-only EVM and Substrate/Polkadot tools (balances, blocks, transactions, contract calls, ENS, storage queries). It's compiled in when the daemon is built with the `blockchain` cargo feature (enabled in the release binaries) and activated per session with `load_tools blockchain`. See the [tools reference](@/agent/docs/tools/blockchain.md)."
 
 [[extra.faq]]
-q = "Can it publish to a blockchain?"
-a = "Yes — the `coord` tool group (always on) lets the agent read and publish to the Content network: content items, revisions, profiles, lifecycle transitions, and pins, plus queries through the network's indexer. Write tools need a Substrate (Polkadot) account credential and an unlocked daemon. Separately, the `blockchain` group adds read-only EVM and Substrate/Polkadot queries. See [tools](@/agent/docs/tools/coordination.md)."
+q = "Can it generate images?"
+a = "Yes — the `image` group's `generate_image` tool produces an image from a text prompt through the session's image-capable provider (OpenAI Images or z.ai/Zhipu GLM), and the result renders inline in the terminal like any other image. Activate it with `load_tools image`. See [Image generation](@/agent/docs/tools/image.md)."
 
 [[extra.faq]]
 q = "Is it open source?"

@@ -19,12 +19,15 @@ disable_claude_code_prompt = false
 > **Note:** Provider-level settings (`base_url`, `streaming`, `retry_*`,
 > timeouts, endpoint paths, request format, etc.) have moved to per-account
 > overrides in `accounts.toml`. They are no longer read from `config.toml`.
+>
+> `accounts.toml` is **watched live**: edits are picked up without a restart,
+> and affected sessions rebuild their provider clients on the next request.
 
 ## Environment variables
 
 | Variable | Purpose |
 |---|---|
-| `CHOREOGRAPHR_SOCKET_PATH` | Override the Unix socket path (default `/tmp/Choreographr.sock`) |
+| `CHOREOGRAPHR_SOCKET_PATH` | Override the Unix socket path (default: the platform temp directory, e.g. `$TMPDIR/Choreographr.sock`) |
 | `CHOREOGRAPHR_DB_PATH` | Override the database path (default `~/.local/share/choreographr/state.redb`) |
 | `CHOREOGRAPHR_MAX_TURNS` | Override `max_turns` (resolution chain: env → config.toml → default `0`) |
 | `RUST_LOG` | Log level (takes precedence over `-v`/`-vv`/`-q` flags) |
@@ -33,16 +36,30 @@ A `max_turns` value of `0` means **unlimited** — the agent loop runs until the
 model produces a final answer, is cancelled, or hits an error. This is a
 daemon-wide cap; individual sessions do not carry their own `max_turns`.
 
-## Identity keys
+## Transport keys
 
-Identity keys live in `~/.config/choreographr/`:
+The machine's transport keys and trust state live in
+`~/.config/choreographr/`:
 
-- `identity.pk` — the private key
-- `public.pk` — the public key
-- `identity.pk.enc` — optional passphrase-encrypted private key
+- `transport.sec` — the Noise IK static secret key (32-byte X25519)
+- `transport.pub` — the matching static public key; peers identify this machine
+  by it, and `choreographr fingerprint` renders it
+- `known_servers.toml` — pinned server fingerprints for remote connections
+- `authorized_clients.toml` — the daemon's client allow-list
 
 Credentials are encrypted per-credential with the daemon's X25519 public key and
-stored in the `redb` database. See [Security](@/agent/docs/security.md) for details.
+stored in the `redb` database. The daemon binds its keystore once; thereafter
+`/unlock` uses the stored per-daemon unlock key. See
+[Security](@/agent/docs/security.md) for details.
+
+## Daemon flags
+
+| Flag | Purpose |
+|---|---|
+| `-v` / `-vv` / `-q` | Log verbosity (debug / trace / warnings); `RUST_LOG` overrides them |
+| `--log-file <path>` | Write daemon logs to a file instead of stderr (ANSI disabled) |
+| `--auto-exit` | Shut down gracefully when the last client disconnects |
+| `--metrics-addr <addr>` | Serve an OpenMetrics endpoint (see [Monitoring](@/agent/docs/monitoring.md)) |
 
 ## Slash command reference
 

@@ -46,9 +46,9 @@ of every built-in tool and how to call it.
 Available tool groups include **core** (filesystem, HTTP, images, PDF
 classification, search, random, time, vision input, web-page rendering),
 **git**, **shell**, **vm**, **x**, **debug** (read-only diagnostics),
-**db**, **coord** (the Content network), and **blockchain**
+**db**, **image** (image generation), and **blockchain**
 (EVM and Substrate/Polkadot queries, when the daemon is built with the
-`blockchain` feature). Only `core`, `git`, `shell`, and `coord` are active by
+`blockchain` feature). Only `core`, `git`, and `shell` are active by
 default; the rest are opt-in via `load_tools`.
 
 ### Tool groups
@@ -97,19 +97,10 @@ baked in), reports a text handle, and carries the normalized bytes durably in
 the `session_attachments` table. This is the input counterpart to
 `display_image`, which renders an image *out* to you.
 
-## Content
-
-The `coord` group (always active) connects the agent to the **Choreographr
-Content** — a decentralized, content-addressed, timestamped
-system for agents and humans to publish and coordinate over. It composes a
-Substrate chain, the `acuity-index` event indexer, and a local IPFS daemon.
-The agent can read items, revisions, events, account profiles, and network
-health, and — with a Substrate account credential — publish items and
-revisions, apply lifecycle transitions, pin/unpin items, and set profiles.
-
-> Groups are a **discovery mechanism, not access control** — the RISC-V VM
-> always has access to all tools. See the
-> [tools reference](@/agent/docs/tools/coordination.md).
+The `generate_image` tool (in the `image` group) is the output-side
+counterpart: it produces a new image from a text prompt through the session's
+image-capable provider and hands it to the same display/persistence pipeline,
+so the model can then `read_image` its own generation and refine it.
 
 ## Multiple live sessions
 

@@ -7,11 +7,17 @@ weight = 11
 The daemon can expose an OpenMetrics (Prometheus) endpoint:
 
 ```bash
-cargo run --release -p choreo-daemon -- --metrics-addr 127.0.0.1:9464
+cargo run --release -p choreographr --features metrics -- --metrics-addr 127.0.0.1:9464
 ```
 
 When `--metrics-addr` is provided, a dedicated HTTP thread serves `GET /metrics`
 at the given address. Without the flag, no metrics server is started.
+
+The endpoint is compiled in via the `metrics` cargo feature, which is **off by
+default** — a plain build omits the Prometheus machinery entirely. Release
+binaries enable it explicitly, so installed binaries keep `/metrics`. Built
+without the feature, the daemon still accepts `--metrics-addr` but refuses to
+start with a clear error telling you to rebuild with `--features metrics`.
 
 ## Metrics
 
@@ -25,6 +31,7 @@ at the given address. Without the flag, no metrics server is started.
 | `choreo_api_errors_total` | Counter | `model`, `error_type` | API error breakdown |
 | `choreo_connections_total` | Counter | — | Total connections accepted |
 | `choreo_turns_total` | Counter | `model` | Agent loop turns |
+| `choreo_evictions_total` | Counter | — | Lagging clients evicted (disconnected) for falling too far behind |
 | `choreo_request_duration_seconds` | Histogram | `status` | Request latency |
 | `choreo_tool_execution_duration_seconds` | Histogram | `tool` | Per-tool execution time |
 | `choreo_api_call_duration_seconds` | Histogram | `model`, `endpoint` | API round-trip time |

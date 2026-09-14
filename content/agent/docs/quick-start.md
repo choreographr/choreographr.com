@@ -10,6 +10,12 @@ Choreographr is installed as two binaries: `choreographr` (the daemon) and
 
 ## 1. Start the daemon
 
+In Unix-socket mode you usually don't need to start the daemon yourself: when
+`choreo-tui` can't reach a daemon, it **starts one for you** — spawning a
+detached child with `--auto-exit`, so it shuts down again when the last client
+disconnects. Run the daemon manually when you want full control over its
+lifetime and logs:
+
 ```bash
 choreographr                  # default log level: info
 choreographr -v               # debug
@@ -42,7 +48,7 @@ Accounts are managed right in the TUI — no config files needed.
 5. Paste the API credential and press `Enter`.
 6. Press `Esc` (or `q`) to go back to the chat.
 7. Select the account with `/account <name>`.
-8. Press `Ctrl+M` to select the model.
+8. Press `Ctrl+M` (falls back to `Ctrl+O` on terminals without the kitty keyboard protocol) to select the model.
 9. Press `Ctrl+R` to select the reasoning effort.
 10. Send your first prompt!
 

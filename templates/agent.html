@@ -1,9 +1,9 @@
 {% extends "base.html" %}
 
 {% block title %}Agent — Choreographr{% endblock title %}
-{% block description %}Choreographr is an all-purpose, extensible AI agent written in Rust. One server, a client for every surface, a sandboxed RISC-V VM, and built-in access to the Content network.{% endblock description %}
+{% block description %}Choreographr is an all-purpose, extensible AI agent written in Rust. One server, terminal and desktop clients, a sandboxed RISC-V VM, image generation, and 200+ model providers.{% endblock description %}
 {% block og_title %}Agent — Choreographr{% endblock og_title %}
-{% block og_description %}Choreographr is an all-purpose, extensible AI agent written in Rust. One server, a client for every surface, a sandboxed RISC-V VM, and built-in access to the Content network.{% endblock og_description %}
+{% block og_description %}Choreographr is an all-purpose, extensible AI agent written in Rust. One server, terminal and desktop clients, a sandboxed RISC-V VM, image generation, and 200+ model providers.{% endblock og_description %}
 
 {% block extra_head %}
 <script type="application/ld+json">
@@ -13,7 +13,7 @@
   "name": "Choreographr",
   "applicationCategory": "DeveloperApplication",
   "operatingSystem": "Linux, macOS",
-  "description": "An all-purpose, extensible AI agent system written in Rust: a persistent server owns your sessions; terminal, desktop, Telegram and ACP editor clients come and go; LLM-generated code runs in a sandboxed RISC-V VM; 200+ model providers work out of the box; and it has built-in access to the Choreographr Content network.",
+  "description": "An all-purpose, extensible AI agent system written in Rust: a persistent server owns your sessions; terminal and desktop clients come and go; LLM-generated code runs in a sandboxed RISC-V VM; images can be generated and analyzed; and 200+ model providers work out of the box.",
   "license": "https://www.apache.org/licenses/LICENSE-2.0",
   "url": "https://choreographr.com/agent/",
   "codeRepository": "https://github.com/choreographr/choreographr",
@@ -60,9 +60,9 @@
 
         <p class="mt-6 text-lg text-night-200 leading-relaxed max-w-xl">
           Choreographr can run locally on your device, on another computer on your network,
-          or in the cloud. Connect to it from the TUI on any terminal, the GUI on MacOS,
-          iOS, Linux, Windows or Android. <strong class="text-night-50">Agents can collaborate on
-          code and research via the Content blockchain</strong>.
+          or in the cloud. Connect from the TUI on any terminal, or the desktop GUI.
+          <strong class="text-night-50">Generate images, analyze them with vision, explore the
+          web, and run sandboxed code</strong> — all through one agent.
         </p>
 
         <div class="mt-8 flex flex-wrap gap-3">
@@ -81,7 +81,7 @@
             <p class="text-xs text-night-400">model providers</p>
           </div>
           <div>
-            <p class="text-2xl font-bold text-night-50 font-mono">5</p>
+            <p class="text-2xl font-bold text-night-50 font-mono">2</p>
             <p class="text-xs text-night-400">native clients</p>
           </div>
           <div>
@@ -95,15 +95,13 @@
       <div class="relative min-w-0">
         <div class="absolute -inset-4 bg-brand-500/10 blur-2xl rounded-3xl"></div>
         <div class="relative mockup-code bg-night-900 border border-night-600 text-sm shadow-2xl">
-          <pre data-prefix="$"><code>cargo run --release -p choreo-daemon</code></pre>
-          <pre data-prefix=">"><code>you: research the Polkadot 2.0 launch</code></pre>
-          <pre data-prefix="✓"><code>choreo: pulled 6 sources, cross-checked…</code></pre>
-          <pre data-prefix=">"><code>you: publish the summary to the wiki</code></pre>
-          <pre data-prefix="✓"><code>choreo: publishing to the Content blockchain</code></pre>
-          <pre data-prefix="  "><code>  (publish_item) content-addressed · IPFS hash</code></pre>
-          <pre data-prefix="  "><code>  ✓ #a1f3… timestamped on-chain · indexable</code></pre>
-          <pre data-prefix=">"><code>you: and ping me on Telegram when it's live</code></pre>
-          <pre data-prefix="✓" class="terminal-cursor"><code>choreo: done — published &amp; sent via choreo-im</code></pre>
+          <pre data-prefix="$"><code>choreo-tui</code></pre>
+          <pre data-prefix=">"><code>you: generate a lighthouse at dusk, 35mm film grain</code></pre>
+          <pre data-prefix="✓"><code>choreo: (generate_image) 1536×1024 · rendered inline</code></pre>
+          <pre data-prefix=">"><code>you: render example.com and screenshot it</code></pre>
+          <pre data-prefix="✓"><code>choreo: (retrieve_webpage) full-page capture</code></pre>
+          <pre data-prefix=">"><code>you: what's in that screenshot?</code></pre>
+          <pre data-prefix="✓" class="terminal-cursor"><code>choreo: (read_image) analyzing the image…</code></pre>
         </div>
       </div>
     </div>
@@ -118,7 +116,7 @@
     </div>
 
     <div class="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-      <div class="card bg-night-900 border border-night-700"><div class="card-body"><div class="text-2xl text-brand-500">🖥️</div><h3 class="card-title text-night-50 text-base">Server + multi-client</h3><p class="text-sm text-night-300">Sessions live in the server. Connect from a terminal, desktop app, Telegram, or an ACP-compatible editor.</p></div></div>
+      <div class="card bg-night-900 border border-night-700"><div class="card-body"><div class="text-2xl text-brand-500">🖥️</div><h3 class="card-title text-night-50 text-base">Server + multi-client</h3><p class="text-sm text-night-300">Sessions live in the server. Connect from a terminal or the desktop GUI.</p></div></div>
       <div class="card bg-night-900 border border-night-700"><div class="card-body"><div class="text-2xl text-brand-500">🌳</div><h3 class="card-title text-night-50 text-base">Hierarchical subsessions</h3><p class="text-sm text-night-300">Break work into child sessions that run their own agent loop and report back. Pause, re-prompt, and nest them.</p></div></div>
       <div class="card bg-night-900 border border-night-700"><div class="card-body"><div class="text-2xl text-brand-500">↩️</div><h3 class="card-title text-night-50 text-base">Undo / redo, per session</h3><p class="text-sm text-night-300">If an agent mis-steps, remove the prompt instead of prompting more. Multiple sessions run simultaneously.</p></div></div>
       <div class="card bg-night-900 border border-night-700"><div class="card-body"><div class="text-2xl text-brand-500">🔑</div><h3 class="card-title text-night-50 text-base">Encrypted keystore</h3><p class="text-sm text-night-300">Credentials encrypted per-credential with X25519 ECDH + AES-256-GCM. The server starts locked.</p></div></div>
@@ -165,17 +163,9 @@
 
       <div class="card bg-night-900 border border-night-700 hover:border-brand-500/40 transition-colors">
         <div class="card-body">
-          <div class="text-2xl text-brand-500">🔌</div>
-          <h3 class="card-title text-night-50 text-lg">MCP client</h3>
-          <p class="text-sm text-night-300">Speaks the Model Context Protocol — spawn MCP subprocess servers, discover their tools, and call them from any session.</p>
-        </div>
-      </div>
-
-      <div class="card bg-night-900 border border-night-700 hover:border-brand-500/40 transition-colors">
-        <div class="card-body">
-          <div class="text-2xl text-brand-500">✏️</div>
-          <h3 class="card-title text-night-50 text-lg">ACP bridge</h3>
-          <p class="text-sm text-night-300">Drive Choreographr sessions from ACP-compatible editors like Claude Code and Cline over JSON-RPC, right from your IDE.</p>
+          <div class="text-2xl text-brand-500">⛓️</div>
+          <h3 class="card-title text-night-50 text-lg">Blockchain tools</h3>
+          <p class="text-sm text-night-300">Read-only EVM and Substrate/Polkadot queries built in — balances, blocks, storage, contract calls, and ENS resolution — with no extra setup.</p>
         </div>
       </div>
 
@@ -189,17 +179,17 @@
 
       <div class="card bg-night-900 border border-night-700 hover:border-brand-500/40 transition-colors">
         <div class="card-body">
-          <div class="text-2xl text-brand-500">⛓️</div>
-          <h3 class="card-title text-night-50 text-lg">Content blockchain</h3>
-          <p class="text-sm text-night-300">Publish content items, revisions, and profiles to the Choreographr Content blockchain as signed extrinsics, and query them back through its indexer — with native read-only Polkadot and EVM tools beside it.</p>
+          <div class="text-2xl text-brand-500">🎨</div>
+          <h3 class="card-title text-night-50 text-lg">Image generation</h3>
+          <p class="text-sm text-night-300">The <span class="font-mono text-brand-300">generate_image</span> tool turns a prompt into an image (OpenAI Images or z.ai / Zhipu GLM), renders it inline, and feeds it back to the model through vision so it can refine its own work.</p>
         </div>
       </div>
 
       <div class="card bg-night-900 border border-night-700 hover:border-brand-500/40 transition-colors">
         <div class="card-body">
           <div class="text-2xl text-brand-500">🛡️</div>
-          <h3 class="card-title text-night-50 text-lg">Noise-IK transport</h3>
-          <p class="text-sm text-night-300">Remote clients connect over an authenticated, encrypted Noise IK TCP transport with X25519 key agreement.</p>
+          <h3 class="card-title text-night-50 text-lg">Noise transport + client trust</h3>
+          <p class="text-sm text-night-300">Remote clients connect over authenticated, encrypted Noise TCP — IK against a pinned server key, XX on first contact — with fingerprint verification and a hot-reloaded client allow-list.</p>
         </div>
       </div>
 
@@ -214,29 +204,29 @@
   </div>
 </section>
 
-{# ============================== CONTENT NETWORK (bridge) ============================== #}
+{# ============================== IMAGE GENERATION ============================== #}
 <section class="border-t border-night-700 bg-night-900/50">
   <div class="mx-auto max-w-7xl px-4 sm:px-6 py-20">
     <div class="grid lg:grid-cols-2 gap-12 items-center">
       <div>
         <h2 class="text-3xl font-bold text-night-50 tracking-tight">
-          Built-in access to the <span class="text-brand-500">Content blockchain</span>
+          Generate images, <span class="text-brand-500">then reason about them</span>
         </h2>
         <p class="mt-4 text-night-300 leading-relaxed">
-          The agent reads blockchains today. It can now <strong class="text-night-50">publish</strong> directly to the
-          Choreographr Content blockchain — so agents can research and then write their findings to an immutable,
-          content-addressed, timestamped wiki that other agents and humans build on.
+          The <span class="font-mono text-brand-300">generate_image</span> tool produces new images from a text prompt
+          through your provider, renders them inline in the terminal, and persists them — so the model can
+          <strong class="text-night-50">read its own output back</strong> and refine it.
         </p>
         <ul class="mt-6 space-y-3 text-sm text-night-200">
-          <li class="flex gap-3"><span class="text-brand-500 font-mono">▸</span> Publish content items and revisions as signed extrinsics</li>
-          <li class="flex gap-3"><span class="text-brand-500 font-mono">▸</span> IPFS content-addressing with on-chain timestamps and ownership</li>
-          <li class="flex gap-3"><span class="text-brand-500 font-mono">▸</span> Queryable via Acuity Index — read it back, build on it</li>
+          <li class="flex gap-3"><span class="text-brand-500 font-mono">▸</span> Text-to-image via OpenAI Images or z.ai / Zhipu GLM</li>
+          <li class="flex gap-3"><span class="text-brand-500 font-mono">▸</span> Inline display, durable persistence, and a vision-feedback loop</li>
+          <li class="flex gap-3"><span class="text-brand-500 font-mono">▸</span> Size, quality, format, and background controls</li>
         </ul>
         <div class="mt-8 flex flex-wrap gap-3">
-          <a href="{{ get_url(path='/content/') }}" class="btn btn-outline border-night-500 text-night-100 hover:border-brand-500 hover:text-brand-400">Explore the Content blockchain</a>
+          <a href="{{ get_url(path='/agent/docs/tools/image/') }}" class="btn btn-outline border-night-500 text-night-100 hover:border-brand-500 hover:text-brand-400">How image generation works</a>
         </div>
         <p class="mt-6 text-sm text-night-400">
-          Optional, not required — the agent works perfectly well with or without a chain.
+          Rendered in the same chat history as everything else — no separate viewer.
         </p>
       </div>
       <div class="border border-night-700 rounded-2xl bg-night-900/60 p-6 font-mono text-sm">
@@ -246,13 +236,13 @@
           <span class="w-3 h-3 rounded-full bg-success/70"></span>
         </div>
         <pre class="text-night-200 leading-relaxed whitespace-pre-wrap">
-<span class="text-night-400"># publish: write a research finding on-chain</span>
-<span class="text-brand-400">choreo</span><span class="text-night-400">&gt;</span> publish_item --parents @topic \
-              --ipfs-hash Qm…
+<span class="text-night-400"># generate, then look at it</span>
+<span class="text-brand-400">you</span><span class="text-night-400">&gt;</span> a lighthouse at dusk, 35mm film grain
 
-<span class="text-night-400"># content-addressed, timestamped, owned</span>
-<span class="text-success">✓</span> item #a1f3…  ·  revision 0  ·  owner 5Gr…
-<span class="text-success">✓</span> indexed — queryable by the wiki &amp; feed</pre>
+<span class="text-success">✓</span> generate_image · 1536×1024 · png
+<span class="text-night-400">  [rendered inline above]</span>
+
+<span class="text-success">✓</span> read_image · analyzing the result…</pre>
       </div>
     </div>
   </div>
@@ -271,7 +261,7 @@
 
     <div class="mt-12 border border-night-700 rounded-2xl bg-night-900/60 p-4 sm:p-8 overflow-x-auto">
       <div class="min-w-[720px]">
-      <img src="{{ get_url(path='architecture.svg') }}" alt="Architecture diagram: server with TUI, GUI, IM, ACP and server clients, model providers, and the RISC-V VM sandbox" class="w-full h-auto">
+      <img src="{{ get_url(path='architecture.svg') }}" alt="Architecture diagram: server with TUI, GUI and server clients, model providers, and the RISC-V VM sandbox" class="w-full h-auto">
       </div>
     </div>
   </div>
@@ -293,7 +283,7 @@
           <li class="flex gap-3"><span class="text-brand-500 font-mono">▸</span> OS-level sandboxing (Landlock / Seatbelt) planned for tools run outside the VM</li>
           <li class="flex gap-3"><span class="text-brand-500 font-mono">▸</span> Credentials encrypted per-credential with X25519 ECDH + AES-256-GCM</li>
           <li class="flex gap-3"><span class="text-brand-500 font-mono">▸</span> Server starts locked — credentials decrypted only in memory after unlock</li>
-          <li class="flex gap-3"><span class="text-brand-500 font-mono">▸</span> Remote connections use the Noise IK protocol with X25519 key agreement</li>
+          <li class="flex gap-3"><span class="text-brand-500 font-mono">▸</span> Remote connections use the Noise protocol (IK with a pinned key, XX on first contact) with X25519 key agreement</li>
         </ul>
       </div>
       <div class="border border-night-700 rounded-2xl bg-night-900/60 p-6 font-mono text-sm">
@@ -375,16 +365,14 @@
           <tr class="border-t border-night-700"><td class="px-4 py-2.5">Providers</td><td class="px-4 py-2.5 text-brand-400">200+/3 proto</td><td class="px-4 py-2.5">40+</td><td class="px-4 py-2.5">34</td><td class="px-4 py-2.5">15</td><td class="px-4 py-2.5">1 (OpenAI)</td><td class="px-4 py-2.5">42/9 proto</td></tr>
           <tr class="border-t border-night-700"><td class="px-4 py-2.5">Sandbox</td><td class="px-4 py-2.5 text-brand-400">✅ RISC-V VM · Landlock/Seatbelt coming soon</td><td class="px-4 py-2.5">Docker/SSH</td><td class="px-4 py-2.5">Docker/SSH</td><td class="px-4 py-2.5">—</td><td class="px-4 py-2.5">✅ sandbox</td><td class="px-4 py-2.5">—</td></tr>
           <tr class="border-t border-night-700"><td class="px-4 py-2.5">Subagents</td><td class="px-4 py-2.5 text-brand-400">✅ subsessions</td><td class="px-4 py-2.5">swarm</td><td class="px-4 py-2.5">delegation</td><td class="px-4 py-2.5">✅</td><td class="px-4 py-2.5">✅</td><td class="px-4 py-2.5">—</td></tr>
-          <tr class="border-t border-night-700"><td class="px-4 py-2.5">Blockchain tools*</td><td class="px-4 py-2.5 text-brand-400">✅ native — EVM + Polkadot + Content network</td><td class="px-4 py-2.5">—</td><td class="px-4 py-2.5">—</td><td class="px-4 py-2.5">—</td><td class="px-4 py-2.5">—</td><td class="px-4 py-2.5">—</td></tr>
-          <tr class="border-t border-night-700"><td class="px-4 py-2.5">MCP client</td><td class="px-4 py-2.5 text-brand-400">✅</td><td class="px-4 py-2.5">✅</td><td class="px-4 py-2.5">✅</td><td class="px-4 py-2.5">✅</td><td class="px-4 py-2.5">✅</td><td class="px-4 py-2.5">—</td></tr>
-          <tr class="border-t border-night-700"><td class="px-4 py-2.5">ACP</td><td class="px-4 py-2.5 text-brand-400">✅</td><td class="px-4 py-2.5">bridge</td><td class="px-4 py-2.5">✅</td><td class="px-4 py-2.5">✅</td><td class="px-4 py-2.5">—</td><td class="px-4 py-2.5">—</td></tr>
+          <tr class="border-t border-night-700"><td class="px-4 py-2.5">Blockchain tools*</td><td class="px-4 py-2.5 text-brand-400">✅ native — EVM + Polkadot</td><td class="px-4 py-2.5">—</td><td class="px-4 py-2.5">—</td><td class="px-4 py-2.5">—</td><td class="px-4 py-2.5">—</td><td class="px-4 py-2.5">—</td></tr>
           <tr class="border-t border-night-700"><td class="px-4 py-2.5">Encrypted creds</td><td class="px-4 py-2.5 text-brand-400">✅ ECDH (X25519) + HKDF + AES-256-GCM</td><td class="px-4 py-2.5">✅</td><td class="px-4 py-2.5">—</td><td class="px-4 py-2.5">—</td><td class="px-4 py-2.5">✅ keyring</td><td class="px-4 py-2.5">—</td></tr>
           <tr class="border-t border-night-700"><td class="px-4 py-2.5">Storage</td><td class="px-4 py-2.5 text-brand-400">redb</td><td class="px-4 py-2.5">SQLite</td><td class="px-4 py-2.5">SQLite</td><td class="px-4 py-2.5">event src</td><td class="px-4 py-2.5">SQLite</td><td class="px-4 py-2.5">JSONL</td></tr>
           <tr class="border-t border-night-700"><td class="px-4 py-2.5">Undo/redo</td><td class="px-4 py-2.5 text-brand-400">✅</td><td class="px-4 py-2.5">—</td><td class="px-4 py-2.5">✅</td><td class="px-4 py-2.5">—</td><td class="px-4 py-2.5">—</td><td class="px-4 py-2.5">branch</td></tr>
           <tr class="border-t border-night-700"><td class="px-4 py-2.5">Context fingerprints</td><td class="px-4 py-2.5 text-brand-400">✅</td><td class="px-4 py-2.5">—</td><td class="px-4 py-2.5">—</td><td class="px-4 py-2.5">—</td><td class="px-4 py-2.5">—</td><td class="px-4 py-2.5">—</td></tr>
         </tbody>
       </table>
-      <p class="mt-3 text-xs text-night-400">* None of the other agents ship native blockchain functionality — Choreographr's EVM and Polkadot tools are built in, and it has built-in access to the Choreographr Content blockchain.</p>
+      <p class="mt-3 text-xs text-night-400">* None of the other agents ship native blockchain functionality — Choreographr's read-only EVM and Polkadot tools are built in.</p>
     </div>
   </div>
 </section>
@@ -397,7 +385,7 @@
       <p class="mt-4 text-night-300">Choreographr is under active development. A taste of what's planned for the agent:</p>
     </div>
     <div class="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-      <div class="card bg-night-900 border border-night-700"><div class="card-body"><h3 class="card-title text-night-50 text-base">🔁 Inter-server handoff</h3><p class="text-sm text-night-300">Pass sessions between daemons over Noise-IK so work can be deployed or continued elsewhere.</p></div></div>
+      <div class="card bg-night-900 border border-night-700"><div class="card-body"><h3 class="card-title text-night-50 text-base">🔁 Inter-server handoff</h3><p class="text-sm text-night-300">Pass sessions between daemons over Noise TCP so work can be deployed or continued elsewhere.</p></div></div>
       <div class="card bg-night-900 border border-night-700"><div class="card-body"><h3 class="card-title text-night-50 text-base">🧩 Extensions</h3><p class="text-sm text-night-300">Hook into the server over a local socket to expose new tools and plugins.</p></div></div>
       <div class="card bg-night-900 border border-night-700"><div class="card-body"><h3 class="card-title text-night-50 text-base">⏰ Cron</h3><p class="text-sm text-night-300">Run programs automatically at designated times.</p></div></div>
       <div class="card bg-night-900 border border-night-700"><div class="card-body"><h3 class="card-title text-night-50 text-base">🌿 Git worktree support</h3><p class="text-sm text-night-300">Parallel subsessions on their own branches with CoW filesystems to avoid rebuilding gigabytes of artifacts.</p></div></div>

@@ -7,11 +7,9 @@ weight = 8
 Rust is not the most common language for AI agents today — most agent
 frameworks are written in TypeScript or Python, and for good reasons those
 languages make sense in many contexts. But Choreographr is written entirely in
-Rust, and this page explains why that is a deliberate, structural choice rather
-than a stylistic one: for an *agent that must run for a long time, hold your
-credentials, execute untrusted code, and stay responsive across many
-simultaneous sessions*, Rust's properties line up almost exactly with what the
-job demands.
+Rust: for an *agent that must run for a long time, hold your credentials,
+execute untrusted code, and stay responsive across many simultaneous sessions*,
+Rust's properties line up almost exactly with what the job demands.
 
 ## A daemon you can trust with your keys
 
@@ -39,41 +37,20 @@ Choreographr does something simpler. The daemon uses **pure OS threads with
 message passing** — an actor model, in the classic sense:
 
 - each session runs on its own thread and *owns* its state;
-- threads communicate only through typed channels (`mpsc`);
-- there is no `Arc<Mutex>` shared state anywhere in the daemon's own logic.
+- threads communicate through typed `crossbeam` channels rather than shared
+  mutable state;
+- shared mutable state is the exception: the few `Arc<Mutex<…>>` instances —
+  the encrypted transport stream, the MCP client registry — are deliberate,
+  localized, and documented.
 
 This is only feasible because the Rust compiler *enforces* it: you cannot move
 a piece of state into two threads, or share it without synchronization, without
-the borrow checker stopping you. The result is a threading model you can hold
-in your head — each thread owns its data, period — with none of the
-cancellation and `Send`-bound complexity that async runtimes impose. When a
-third-party library insists on async — the `subxt`/`alloy` clients behind the
-Content and blockchain tools — a tokio runtime exists as a
-sidecar inside the `choreo-coord` and optional `choreo-blockchain` crates; the
-daemon itself never needs one.
-
-## The compiler as your agent-loop auditor
-
-The heart of an agent is the **tool-calling loop**: send the conversation to
-the model, execute whatever tools it requests, feed the results back, repeat
-until the model produces a final answer. An LLM's output is untrusted,
-semi-structured, and frequently malformed — truncated JSON, dropped tool calls,
-unexpected event types.
-
-Rust turns this hostile input into a *compile-time contract*. The streaming
-response is parsed into a typed enum (`TextDelta`, `FunctionCallArgumentsDone`,
-`ResponseCompleted`, …) and the agent loop `match`es on it exhaustively:
-
-- a new event type added upstream is a **compile error** until the loop decides
-  what to do with it — it can never be silently ignored;
-- a required field missing from a model event is a **hard, classified error**,
-  not a silently-`null`ed default that confuses the next turn;
-- the result of each turn is a typed enum (`FinalText` vs `ToolUse`), and
-  `#[non_exhaustive]` forces every consumer to keep thinking about future
-  variants.
-
-The LLM will always produce weird output. In Rust, "weird" is a type you have
-to handle — not a crash waiting to happen.
+the borrow checker stopping you. The result is a threading model that can be
+reasoned about — each thread owns its data — with none of the cancellation and
+`Send`-bound complexity that async runtimes impose. When a third-party library
+insists on async — the alloy/subxt clients behind the blockchain tools — a
+tokio runtime exists as a sidecar inside the optional `choreo-blockchain`
+crate; the daemon itself never needs one.
 
 ## Types that become the wire protocol
 
@@ -97,7 +74,7 @@ drift from the types the tool actually parses, because they are the same thing.
 The same philosophy extends to the client/daemon protocol, which is a framed
 binary format with typed message enums instead of ad-hoc JSON.
 
-## Security by construction — and a sandbox that is real
+## A sandbox for untrusted code
 
 An agent that can run arbitrary LLM-generated code needs a hard boundary.
 Choreographr's answer is the **RISC-V VM**: the model writes a small Rust
@@ -114,13 +91,19 @@ the security-critical component.
 
 ## A TUI that stays smooth under load
 
-Agents stream. Token by token, reasoning and answers flow into the terminal,
-and the UI must keep up without stuttering or stealing CPU from the model
-calls. Choreographr's TUI is **event-driven and immediate mode**: it redraws
-the instant a keystroke or network event arrives, with no maximum framerate,
-no polling, and O(1) scrolling and streaming.
+An active agent produces a constant stream of tokens — reasoning, answers, and
+tool output — and several sessions may be doing so at once. The UI has to keep
+up without stuttering or stealing CPU from the model calls. Choreographr's TUI
+is **event-driven and fullscreen**: it redraws the instant a keystroke or
+network event arrives — no polling loop, no maximum framerate — and both
+scrolling and streaming are O(1), so even very long sessions stay smooth.
 
-Rust's performance makes this trivial, and its ownership model makes
-the render/event split safe: the renderer never mutates state, so drawing and
-input handling can't race.
+Rust is what makes that affordable. The UI runs a single event loop: one
+thread handles keyboard input, daemon messages, and image-worker results —
+merged with a `crossbeam` `select!` — and then draws, so input and rendering
+are serialised by construction with no locks to contend on. When nothing has
+changed the redraw is skipped, and while idle the thread blocks in the kernel
+at zero CPU. The one genuinely expensive step — rasterising and encoding images
+for the terminal — is handed to a background worker and comes back as just
+another event.
 

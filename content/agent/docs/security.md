@@ -8,37 +8,63 @@ Choreographr takes a defense-in-depth approach to security.
 
 ## Lock / unlock flow
 
-The daemon starts in a **locked** state — no credentials in memory. The client
-resolves the private key (reading `identity.pk` directly, or decrypting
-`identity.pk.enc` with a passphrase) and sends it to the daemon via
-`ClientMessage::Unlock`. The daemon then decrypts all stored credential blobs
-into memory.
+The daemon starts in a **locked** state — no credentials in memory. Each
+daemon has its own **keystore unlock key**: the first client to **bind**
+(`BindKeystore`) a fresh, unbound daemon generates the key and stores it in
+the daemon's keystore. After that, `/unlock` uses the stored key directly, and
+`/unlock <key>` records the key when unlocking an already-bound daemon, so the
+private key never has to be entered again.
 
 - Credentials are encrypted **per-credential** with ECDH (X25519) + HKDF +
   AES-256-GCM; only the holder of the private key can decrypt them.
+- Binding goes through `BindKeystore` only — `Unlock` and `AddCredential` are
+  **verify-only** (they check a key against the bound keystore; they never
+  install a new one).
+- Frontends auto-bind a fresh, unbound daemon and confirm once it reports
+  `Bound`.
 - `/lock` destroys all in-memory credentials and returns the daemon to the
   locked state.
 - The private key is zeroized after use.
 - Lock/unlock does not interrupt session browsing — credentials are only needed
   at prompt time.
-- Remote connections (over TCP) use the **Noise IK** handshake with X25519 key
-  agreement, giving an authenticated, encrypted transport.
+- Remote connections (over TCP) use a **Noise** handshake with X25519 key
+  agreement — **IK** when the server's key is pinned, and **XX** first-contact
+  mode when it is not (see [Client trust & access control](#client-trust-access-control)).
 
 ## Credential storage
 
 | Item | Location |
 |---|---|
-| Identity private key | `~/.config/choreographr/identity.pk` (or passphrase-encrypted `identity.pk.enc`) |
-| Identity public key | `~/.config/choreographr/public.pk` |
+| Transport secret key | `~/.config/choreographr/transport.sec` |
+| Transport public key | `~/.config/choreographr/transport.pub` |
 | Encrypted credentials | `redb` database (`~/.local/share/choreographr/state.redb`) |
+| Keystore unlock key | stored in the daemon's keystore (see [Lock / unlock flow](#lock-unlock-flow)) |
+| Pinned servers | `~/.config/choreographr/known_servers.toml` |
+| Authorized clients | `~/.config/choreographr/authorized_clients.toml` |
 
 Credentials are encrypted per-credential with the daemon's X25519 public key,
 so the encrypted blobs are useless without the private key.
 
+## Client trust & access control
+
+Remote connections are mutually authenticated. On first contact — before the
+server's public key is pinned — the client uses Noise **XX**: the handshake
+carries the server's static key, which the client renders as a **fingerprint**
+for out-of-band confirmation and records in `known_servers.toml`. Later
+connections use Noise **IK** against the pinned key, and a mismatch is refused
+with a clear failure rather than a silent reconnect.
+
+The daemon also keeps a client **allow-list** in `authorized_clients.toml`,
+hot-reloaded from disk. A client with no local access can be enrolled with
+`/acl add` from an already-authorized connection, or with the
+`choreographr acl-add` subcommand; `choreographr fingerprint` prints the
+daemon's own fingerprint. The TUI refuses to start against an unauthorized
+daemon and never crashes on a connection error.
+
 ## RISC-V sandbox
 
-The `run_riscv` tool compiles Rust source (or accepts pre-compiled bytecode)
-and executes it inside an isolated `ckb-vm` machine with:
+The `run_riscv` tool compiles Rust source (or accepts a pre-compiled RISC-V
+ELF) and executes it inside an isolated `ckb-vm` machine with:
 
 - a 4 MB flat memory space (ckb-vm's maximum),
 - a configurable cycle budget (default 10M),
@@ -58,19 +84,6 @@ example, if the shell tool is enabled). An OS-level sandbox is planned:
 - **Linux** — [Landlock](https://landlock.io/)
 - **macOS** — [Seatbelt](https://theapplewiki.com/wiki/Dev:Seatbelt)
 
-## Content credentials
-
-The [`coord`](@/agent/docs/tools/coordination.md) write tools
-(publish item / revision, lifecycle, pin/unpin, set profile) sign
-**Substrate extrinsics**. They need a **Substrate (Polkadot) account
-credential** in the keystore — add one via the Polkadot import wizard in the
-TUI (`p` on the accounts page, importing a Polkadot-JS keystore `.json`
-export). The credential is encrypted at rest like any other and decrypted only
-in memory after unlock; the daemon must be unlocked to publish. When a write
-tool is given a non-empty `account`, it validates the address against the
-credential's secret (a mismatch errors rather than signing with the wrong
-key).
-
 ## Vision & web-page inputs
 
 - **`read_image`** — reads a local image file, normalizes it, and feeds it to a
@@ -79,16 +92,17 @@ key).
   are accepted (URLs / clipboard paste are future work).
 - **`retrieve_webpage`** — renders a URL in a headless Chromium/Chrome launched
   by the daemon. It accepts `http`, `https`, and `file` schemes; a `file://`
-  URL lets the browser read arbitrary local files from the daemon's host.
-  That reach is intentional — the browser process runs under the same OS-level
-  sandbox as the daemon — but `file://` input should be treated as equivalent
-  to reading a local file.
+  URL lets the browser read arbitrary local files from the daemon's host. That
+  reach is intentional — the browser runs with the daemon's own privileges
+  (OS-level sandboxing is still planned; see below) — so `file://` input should
+  be treated as equivalent to reading a local file.
 
 ## Best practices
 
 - Keep the shell tool disabled and do everything through the VM for maximum
   control and observability.
-- Use `identity.pk.enc` with a strong passphrase for the private key at rest.
+- Bind and unlock the daemon once; the per-daemon keystore key is stored, so
+  the private key is not re-entered on every start.
 - Lock the daemon (`/lock`) when you're done for the day.
 - Gate the sensitive `debug` / `blockchain` groups behind `load_tools`; only
-  `core`, `git`, `shell`, and `coord` are active by default.
+  `core`, `git`, and `shell` are active by default.

@@ -4,13 +4,14 @@ description = "What choreo-tui renders: markdown, syntax highlighting, inline im
 weight = 5
 +++
 
-`choreo-tui` is the terminal client. It attaches to a running daemon over the
-local Unix socket — or over TCP with a Noise IK handshake
-(`--tcp-addr` / `--server-pk`) — and renders your sessions in a full-screen
-UI. It is entirely event driven and runs in immediate mode: the terminal
-updates the moment a keystroke or network event arrives, with no maximum
-framerate. Scrolling and streaming are O(1), so history stays smooth even on
-very long sessions.
+`choreo-tui` is the terminal client. It attaches to a daemon over the local
+Unix socket — or over TCP with a Noise handshake (`--tcp-addr` / `--server-pk`;
+IK when the server's key is pinned, XX on first contact) — and renders your
+sessions in a full-screen UI. If no local daemon is reachable it **starts one
+automatically** (see the [quick start](@/agent/docs/quick-start.md)). It is
+entirely event driven and runs fullscreen: the terminal updates the moment a
+keystroke or network event arrives, with no maximum framerate. Scrolling and
+streaming are O(1), so history stays smooth even on very long sessions.
 
 ## What the TUI renders
 
@@ -19,9 +20,14 @@ very long sessions.
   to the terminal width.
 - **Syntax highlighting** — code in tool output is highlighted with syntect
   themes.
-- **Images** — when the agent calls `display_image` (PNG, JPEG, or SVG), the
-  image appears **inline in the chat history** at half the viewport height.
-  Click an image to open it fullscreen; press `Esc` to dismiss.
+- **Images** — when the agent calls `display_image` (PNG, JPEG, or SVG) — or
+  generates one with `generate_image` — the image appears **inline in the chat
+  history** at half the viewport height. Click an image to open it fullscreen;
+  press `Esc` to dismiss.
+- **Status bar** — the attached session's account slug, model, reasoning effort,
+  and live token estimates. A session that is not idle is marked, and the client
+  refuses to submit a new prompt until it is idle again (rejected text stays in
+  the input bar).
 - **Tool results** — streaming execution descriptions, collapsible per-result
   bodies, and live token estimates in the status bar.
 - **Selection & copy** — drag with the mouse to select text in the history pane
@@ -47,15 +53,12 @@ The terminal protocol is auto-detected at startup and falls back gracefully:
 | Sixel | terminals with sixel support (e.g. xterm-sixel, mlterm) |
 | Universal fallback | any other terminal |
 
-Image blocks always reserve their height, so scrolling past an image stays
-stable even while it is still encoding.
-
 ## Managing sessions
 
 - `Ctrl+S` — session manager: list, switch, create, and delete sessions
 - `Ctrl+A` — accounts page: add, remove, and select AI provider accounts
-- `Ctrl+M` — model selector (requires a terminal with the kitty keyboard
-  protocol; on other terminals `Ctrl+M` arrives as Enter)
+- `Ctrl+M` — model selector (falls back to `Ctrl+O` on terminals without the
+  kitty keyboard protocol)
 - `Ctrl+R` — cycle the reasoning effort
 - `Ctrl+H` — toggle the keybinding help overlay
 - `Ctrl+Q` — quit the client

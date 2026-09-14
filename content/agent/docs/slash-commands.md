@@ -25,14 +25,10 @@ All commands in `choreo-tui` use the `/` prefix.
 | `/account list` | List configured AI provider accounts |
 | `/account remove <name>` | Remove an AI provider account |
 | `/account <name>` | Set the session's AI provider account |
-| `Ctrl+M` | Open the model selector popup (kitty keyboard protocol required) |
+| `Ctrl+M` | Open the model selector popup (falls back to `Ctrl+O` on terminals without the kitty keyboard protocol) |
 
 `Ctrl+A` opens the accounts page — list accounts, remove with `r`, set an API
-key with `c`, start the new-account wizard with `n`, or run the
-**Polkadot-account import wizard** with `p` (imports a Polkadot-JS keystore
-`.json` export as a Substrate account credential). The wizard is a
-three-step flow (name, keystore path, password); the import dialog zeroizes
-the password from memory when it closes.
+key with `c`, or start the new-account wizard with `n`.
 
 ## Reasoning
 
@@ -41,6 +37,15 @@ the password from memory when it closes.
 | `/reasoning` | Show current reasoning effort slug |
 | `/reasoning <slug>` | Set reasoning effort (e.g. `off`, `low`, `medium`, `high`, `on`, `xhigh`, `max`) |
 | `Ctrl+R` | Cycle reasoning effort through available slugs for the attached model |
+
+## Access control
+
+| Command | Description |
+|---|---|
+| `/acl add` | Enroll the current locally-connected client in the daemon's allow-list |
+
+Client allow-listing is stored in `authorized_clients.toml` and hot-reloaded
+from disk. See [Security](@/agent/docs/security.md#client-trust-access-control).
 
 ## Lifecycle & editing
 
@@ -52,7 +57,7 @@ the password from memory when it closes.
 | `/continue` | Continue a stopped/idle session ("Please continue.") |
 | `/undo` | Undo the most recent user turn and its entire assistant response subtree |
 | `/redo` | Redo the most recently undone turn |
-| `/unlock [passphrase]` | Unlock the daemon (reads `identity.pk` or decrypts `identity.pk.enc`) |
+| `/unlock [key]` | Unlock the daemon — uses the stored per-daemon key, or records `key` on an already-bound daemon |
 | `/lock` | Lock the daemon, clearing credentials from memory |
 
 ## Credentials

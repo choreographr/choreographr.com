@@ -4,11 +4,11 @@ description = "Install Choreographr with Homebrew, a .deb or .rpm, a manual tarb
 weight = 1
 +++
 
-Every release ships **four prebuilt binaries** — `choreographr` (the daemon),
-`choreo-tui` (the terminal client), `choreo-im` (the IM bridge), and
-`choreo-acp` (the ACP bridge) — for **Linux x86_64** and **macOS (Apple
-Silicon)**. All install routes below use these binaries except the Cargo
-source build; none of them need a Rust toolchain at install time.
+Every release ships **two prebuilt binaries** — `choreographr` (the daemon)
+and `choreo-tui` (the terminal client) — for **Linux x86_64**, **macOS (Apple
+Silicon)**, and **Android (Termux)**. All install routes below use these
+binaries except the Cargo source build; none of them need a Rust toolchain at
+install time.
 
 ## macOS
 
@@ -29,13 +29,13 @@ the `brew trust` step is for.
 
 ### Manual tarball
 
-Download and extract the Apple Silicon tarball, then put the four binaries
+Download and extract the Apple Silicon tarball, then put the two binaries
 on your `PATH`:
 
 ```bash
-curl -fL -O https://github.com/choreographr/choreographr/releases/download/v0.1.0/choreographr-0.1.0-aarch64-apple-darwin.tar.gz
-tar xzf choreographr-0.1.0-aarch64-apple-darwin.tar.gz
-sudo cp choreographr choreo-tui choreo-im choreo-acp /usr/local/bin/
+curl -fL -O https://github.com/choreographr/choreographr/releases/download/v0.2.0/choreographr-0.2.0-aarch64-apple-darwin.tar.gz
+tar xzf choreographr-0.2.0-aarch64-apple-darwin.tar.gz
+sudo cp choreographr choreo-tui /usr/local/bin/
 ```
 
 The binaries are unsigned, so Gatekeeper quarantines them — clear the
@@ -50,18 +50,18 @@ xattr -dr com.apple.quarantine /path/to/choreographr
 ### Debian / Ubuntu — .deb
 
 ```bash
-curl -fL -O https://github.com/choreographr/choreographr/releases/download/v0.1.0/choreographr-0.1.0-x86_64.deb
-sudo apt install ./choreographr-0.1.0-x86_64.deb
+curl -fL -O https://github.com/choreographr/choreographr/releases/download/v0.2.0/choreographr-0.2.0-x86_64.deb
+sudo apt install ./choreographr-0.2.0-x86_64.deb
 ```
 
 ### Fedora / RHEL / openSUSE — .rpm
 
 ```bash
-curl -fL -O https://github.com/choreographr/choreographr/releases/download/v0.1.0/choreographr-0.1.0-x86_64.rpm
-sudo dnf install ./choreographr-0.1.0-x86_64.rpm
+curl -fL -O https://github.com/choreographr/choreographr/releases/download/v0.2.0/choreographr-0.2.0-x86_64.rpm
+sudo dnf install ./choreographr-0.2.0-x86_64.rpm
 ```
 
-Both packages install the four binaries and the systemd user unit
+Both packages install the two binaries and the systemd user unit
 (`~/.config/systemd/user/choreographr.service`).
 
 ### Any distro — manual tarball
@@ -70,18 +70,31 @@ The Linux tarball is a **fully static musl build**, so one artifact runs on
 any Linux distribution regardless of glibc version:
 
 ```bash
-curl -fL -O https://github.com/choreographr/choreographr/releases/download/v0.1.0/choreographr-0.1.0-x86_64-unknown-linux-musl.tar.gz
-tar xzf choreographr-0.1.0-x86_64-unknown-linux-musl.tar.gz
-sudo cp choreographr choreo-tui choreo-im choreo-acp /usr/local/bin/
+curl -fL -O https://github.com/choreographr/choreographr/releases/download/v0.2.0/choreographr-0.2.0-x86_64-unknown-linux-musl.tar.gz
+tar xzf choreographr-0.2.0-x86_64-unknown-linux-musl.tar.gz
+sudo cp choreographr choreo-tui /usr/local/bin/
 ```
+
+## Android (Termux)
+
+The daemon and TUI ship for **Termux on Android 10+** as a Termux-native
+`.deb`. Download it from the release page and install it inside a Termux shell
+with `pkg`:
+
+```bash
+curl -fL -O https://github.com/choreographr/choreographr/releases/download/v0.2.0/choreographr-termux_0.2.0_aarch64.deb
+pkg install ./choreographr-termux_0.2.0_aarch64.deb
+```
+
+It installs `choreographr` and `choreo-tui` under Termux's `$PREFIX`.
 
 ## From source with Cargo
 
-`cargo install choreographr --locked` builds the whole suite from crates.io:
-
 ```bash
-cargo install choreographr --locked
+cargo install choreographr choreo-tui --locked
 ```
+
+This builds the daemon and the terminal client from crates.io.
 
 Requirements: a [Rust toolchain](https://rustup.rs/) — minimum supported Rust
 version (MSRV) is **1.94.1** — and a **Zig 0.16.0** toolchain on your `PATH`.
@@ -131,22 +144,11 @@ installed wherever the daemon runs. Passing pre-compiled bytecode
 
 ## Web page rendering
 
-The [`retrieve_webpage`](@/agent/docs/tools/core.md#web-page-rendering-retrieve-webpage)
+The [`retrieve_webpage`](@/agent/docs/tools/core.md#retrieve-webpage)
 tool needs a **Chromium or Chrome binary installed on the host** — it does not
 auto-download a browser. It prefers `chromium` on your `PATH`, then the various
 Chrome bundles, and honors `CHROMIUM_BIN` / `CHROME_BIN` to point at a specific
 path. Install it via your package manager (e.g. `apt install chromium`,
 `brew install --cask chromium`).
-
-## Content tools
-
-The [`coord`](@/agent/docs/tools/coordination.md) tool group is
-always compiled in and active by default. The read tools work out of the box
-against the configured network endpoints. The **write tools** sign
-transactions and need a **Substrate (Polkadot) account credential** in the
-keystore, plus an unlocked daemon — see
-[Accounts & providers](@/agent/docs/accounts-and-providers.md#accounts) for how
-to add one (the Polkadot import wizard in the TUI, `p` on the accounts page,
-imports a Polkadot-JS keystore `.json` export).
 
 Ready to chat? Head over to the [quick start](@/agent/docs/quick-start.md).

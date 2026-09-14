@@ -6,7 +6,7 @@ weight = 2
 
 `git` is active by default. All git tools operate on the repository containing
 the given path (defaulting to the working directory). They are implemented
-with `gix` and require no shell.
+with [`gix`](https://crates.io/crates/gix) and require no shell.
 
 | Tool | What it does |
 |---|---|

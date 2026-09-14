@@ -1,6 +1,6 @@
 +++
 title = "Core tools"
-description = "Files, search, HTTP & images, vision input, web-page rendering, PDF, and orchestration."
+description = "Files, search, HTTP, images, vision input, web-page rendering, PDF, and orchestration."
 weight = 1
 +++
 
@@ -76,22 +76,58 @@ and orchestration.
   contains wildcards; set `glob` explicitly to force or disable it.
 
   Both tools run on the [`zlob`](https://crates.io/crates/zlob) globbing and
-  file-walking engine — SIMD-accelerated, with `.gitignore` support — which is
-  also why building Choreographr requires a Zig toolchain: zlob is written in
-  Zig and is compiled at build time (see [Installation](@/agent/docs/installation.md)).
+  file-walking engine — SIMD-accelerated, with `.gitignore` support.
 
-## HTTP & images
+## HTTP
 
 ```json
 { "name": "http_request", "arguments": {
     "method": "GET", "url": "https://api.example.com/items",
     "headers": { "Range": "bytes=0-1023" } } }
-{ "name": "display_image", "arguments": { "mime_type": "image/png", "path": "chart.png" } }
 ```
 
 - `http_request` supports GET, POST, PUT, DELETE, PATCH, and HEAD, custom
   headers (including `Range` for partial content), an optional body, and a
   configurable timeout (default 30 s).
+
+### retrieve_webpage
+
+`retrieve_webpage` renders a URL in a **local headless Chromium/Chrome** and
+returns page content (HTML), plain text, a screenshot (PNG), or a PDF. It runs
+locally and offline — instead of fetching raw markup, it renders a real
+browser, so JavaScript-heavy and bot-protected sites work:
+
+```json
+{ "name": "retrieve_webpage", "arguments": { "url": "https://example.com", "action": "text" } }
+{ "name": "retrieve_webpage", "arguments": {
+    "url": "https://example.com", "action": "screenshot",
+    "output_path": "shots/page.png", "full_page": true } }
+```
+
+The `action` is `content` (default), `text`, `screenshot`, or `pdf` (which
+requires `output_path`). Optional arguments include `selector`, `wait_ms`,
+`timeout_ms`, `width`/`height`, and `full_page`. Screenshots are returned
+inline (and optionally saved to `output_path`).
+
+- A chromium/Chrome binary must already be installed on the host — the tool
+  does **not** auto-download a browser. It prefers `chromium`, falling back to
+  the various Chrome bundles (see the binary resolution in the source), and
+  honors `CHROMIUM_BIN` / `CHROME_BIN` to point at a specific path.
+- It accepts `http`, `https`, and `file` schemes. `file://` URLs let the
+  browser read arbitrary local files from the daemon's host — that reach is
+  intentional (the browser runs with the daemon's own privileges; OS-level
+  sandboxing is still planned, see
+  [Security](@/agent/docs/security.md#os-level-sandboxing-planned)).
+- Each call spins up and tears down a fresh one-shot browser instance — there
+  is no persistent session between calls. Navigation timeout is clamped to
+  avoid a hostile argument pinning a worker thread.
+
+## Images
+
+```json
+{ "name": "display_image", "arguments": { "mime_type": "image/png", "path": "chart.png" } }
+```
+
 - `display_image` accepts exactly one source: `path`, `url`, `base64_data`, or
   raw `svg_text`, with an optional `alt` description. Supported types are PNG,
   JPEG, SVG (rasterized at display resolution with system fonts, so vector
@@ -126,37 +162,6 @@ conversation, and the normalized bytes are persisted durably in the
 ```json
 { "name": "read_image", "arguments": { "path": "report-figures/fig-1.jpg" } }
 ```
-
-### Web page rendering (`retrieve_webpage`)
-
-`retrieve_webpage` renders a URL in a **local headless Chromium/Chrome** and
-returns page content (HTML), plain text, a screenshot (PNG), or a PDF. It runs
-locally and offline — instead of fetching raw markup, it renders a real
-browser, so JavaScript-heavy and bot-protected sites work:
-
-```json
-{ "name": "retrieve_webpage", "arguments": { "url": "https://example.com", "action": "text" } }
-{ "name": "retrieve_webpage", "arguments": {
-    "url": "https://example.com", "action": "screenshot",
-    "output_path": "shots/page.png", "full_page": true } }
-```
-
-The `action` is `content` (default), `text`, `screenshot`, or `pdf` (which
-requires `output_path`). Optional arguments include `selector`, `wait_ms`,
-`timeout_ms`, `width`/`height`, and `full_page`. Screenshots are returned
-inline (and optionally saved to `output_path`).
-
-- A chromium/Chrome binary must already be installed on the host — the tool
-  does **not** auto-download a browser. It prefers `chromium`, falling back to
-  the various Chrome bundles (see the binary resolution in the source), and
-  honors `CHROMIUM_BIN` / `CHROME_BIN` to point at a specific path.
-- It accepts `http`, `https`, and `file` schemes. `file://` URLs let the
-  browser read arbitrary local files from the daemon's host — that reach is
-  intentional (the browser process runs under the same OS-level sandbox as the
-  daemon).
-- Each call spins up and tears down a fresh one-shot browser instance — there
-  is no persistent session between calls. Navigation timeout is clamped to
-  avoid a hostile argument pinning a worker thread.
 
 ## PDF tools
 

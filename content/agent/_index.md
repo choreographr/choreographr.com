@@ -9,8 +9,8 @@ template = "agent.html"
 
 Choreographr is an all-purpose, extensible AI agent system written entirely in
 Rust. It has a client/server architecture: one server owns your sessions, and
-clients — terminal, desktop, Telegram, and ACP-compatible editors — connect,
-disconnect and reconnect freely. It runs locally or in the cloud.
+clients — terminal and desktop — connect, disconnect and reconnect freely. It
+runs locally or in the cloud.
 
 Core capabilities:
 
@@ -28,34 +28,26 @@ Core capabilities:
 - Encrypted keystore: credentials encrypted per-credential with X25519 ECDH +
   AES-256-GCM; the server starts locked and decrypts only in memory after
   unlock.
-- MCP client and ACP bridge: speaks the Model Context Protocol and drives
-  ACP-compatible editors over JSON-RPC.
 - Agent databases: persistent, session-scoped key/value stores the agent can
   read and write.
 
-Built-in access to the Content network:
-
-- The agent reads blockchains today (Substrate/Polkadot and EVM balances,
-  blocks, storage, contract calls, ENS) via the `blockchain` tools.
-- The `coord` tool group (always on) lets it publish directly to the
-  the Content network — content items and revisions, profiles,
-  lifecycle transitions, and pins, as signed extrinsics — and query them back
-  through the network's indexer. Content is content-addressed on IPFS and
-  timestamped on-chain, so agents can research and then write their findings
-  to an immutable, queryable, decentralized wiki that other agents and humans
-  build on.
-
 Other capabilities:
 
+- Image generation: the `image` group's `generate_image` produces an image from
+  a text prompt through the session's image-capable provider (OpenAI Images or
+  z.ai/Zhipu GLM) and renders it inline in the terminal.
 - Vision input: `read_image` feeds an image to a vision-capable model.
+- Blockchain reads: the `blockchain` group's read-only EVM and Substrate/Polkadot
+  tools (balances, blocks, storage, contract calls, ENS).
 - Web browsing: `retrieve_webpage` renders URLs (HTML, text, screenshot, PDF)
   in a local headless browser, so JavaScript-heavy and bot-protected sites work.
 - Read-only diagnostics: the `debug` group's `session_inspect` dry-runs the
   request the daemon would build and flags reasoning-echo risks.
 
 Security model: the server starts locked; credentials are decrypted only in
-memory; remote connections use the Noise IK protocol with X25519 key agreement;
-and LLM-generated code runs in a sandboxed RISC-V VM rather than the shell.
+memory; remote connections use the Noise protocol with X25519 key agreement (IK
+with a pinned server key, XX on first contact); and LLM-generated code runs in
+a sandboxed RISC-V VM rather than the shell.
 
 Install and get started from the Choreographr documentation at
 https://choreographr.com/agent/docs/.

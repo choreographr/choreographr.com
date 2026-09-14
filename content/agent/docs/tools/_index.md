@@ -8,8 +8,8 @@ sort_by = "weight"
 Tools are the functions the LLM — and the RISC-V VM — can call to interact
 with the outside world: reading and writing files, running shell commands,
 making HTTP requests, managing Git repositories, querying a persistent
-database, reading images into a vision model, browsing the web, posting to X,
-publishing to the Content network, and more. This section
+database, reading images into a vision model, browsing the web, generating
+images, posting to X, and more. This section
 is the complete reference: how tools work, how they are grouped, and what each
 one does.
 
@@ -23,11 +23,9 @@ one does.
 - **[X (Twitter) tools](@/agent/docs/tools/x.md)** — post, search, user lookup.
 - **[Blockchain tools](@/agent/docs/tools/blockchain.md)** — EVM and
   Substrate/Polkadot read-only queries.
-- **[Content tools](@/agent/docs/tools/coordination.md)** — the
-  on-chain publication network.
+- **[Image tools](@/agent/docs/tools/image.md)** — `generate_image` (text-to-image).
 - **[Diagnostic tools](@/agent/docs/tools/diagnostics.md)** — `session_inspect`.
 - **[RISC-V VM tool](@/agent/docs/tools/riscv.md)** — `run_riscv`.
-- **[MCP servers](@/agent/docs/tools/mcp.md)** — dynamic groups from MCP servers.
 
 ## How tools work
 
@@ -57,7 +55,7 @@ and tools with structured return types expose an `output_schema` for
 ## Tool groups
 
 Tools are organized into **groups** to keep the model's context small. Only
-**`core`**, **`git`**, **`shell`**, and **`coord`** are active by default. The
+**`core`**, **`git`**, and **`shell`** are active by default. The
 model can activate additional groups with `load_tools` and deactivate them with
 `unload_tools`; `core` is always active and cannot be unloaded.
 
@@ -69,17 +67,17 @@ model can activate additional groups with `load_tools` and deactivate them with
 | `core` | Filesystem, HTTP, images, display, PDF, web page rendering, vision (read_image), search, random, time, sessions, series | ✅ always |
 | `git` | Local Git operations (status, diff, log, add, commit, push, show) | ✅ |
 | `shell` | Shell execution (bash, nushell, fish, exec) | ✅ |
-| `coord` | the Content network (blockchain content registry + IPFS + indexer) | ✅ always |
+| `image` | Image generation (`generate_image`) | — |
 | `db` | Session-scoped key-value database (redb) | — |
 | `x` | X/Twitter API (post, search, user lookup) | — |
 | `vm` | RISC-V sandboxed code execution | — |
 | `debug` | Read-only diagnostics and request dry-runs (`session_inspect`) | — |
 | `blockchain` | EVM and Substrate/Polkadot blockchain queries (alloy/subxt) | — |
-| `mcp/<server>` | One dynamic group per configured MCP server | — |
 
-> The `coord` group is **always compiled in and active by default**, like
-> `core`, `git`, and `shell` — the Content tools need no feature
-> flag. The `blockchain` group exists only when the daemon is built with the
+> The `image` group holds `generate_image` — it needs an account whose
+> provider supports image generation (see
+> [Accounts & providers](@/agent/docs/accounts-and-providers.md)). The
+> `blockchain` group exists only when the daemon is built with the
 > `blockchain` cargo feature (the release binaries enable it). The tools live
 > in the `choreo-blockchain` crate, which also owns the tokio sidecar runtime
 > the alloy/subxt clients run on.
