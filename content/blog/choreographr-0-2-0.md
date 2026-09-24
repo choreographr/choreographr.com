@@ -1,8 +1,7 @@
 +++
 title = "Choreographr v0.2 (Lindy) Released"
-description = "Choreographr v0.2 (Lindy) is out — the AI agent gains Android Termux and Intel Mac support, image vision and generation, a headless-browser web tool, read-only blockchain tools, and a hardened keystore and trust model."
-# TODO: set the real release date.
-date = 2026-09-06
+description = "Choreographr v0.2 (Lindy) — now at v0.2.3 — adds arm64 Linux, a command palette and readline keybindings, unified file tools, session pin/archive, on-demand image loading, and a hardened keystore and trust model."
+date = 2026-09-24
 # Draft until the post is finished — remove this line to publish.
 draft = true
 template = "blog-page.html"
@@ -23,11 +22,11 @@ Choreographr v0.2 (Lindy) is out now. Here are the major new features:
 
 By popular demand Choreographr is now available for Android Termux. The server and TUI client are available for 3 platforms:
 
-* MacOS on Apple Silicon and Intel (x86_64)
-* Linux on x86-64
+* MacOS on Apple Silicon and Intel
+* Linux on x86_64 and arm64
 * Termux on Android 10+
 
-Follow the [Install Instructions](.)
+Follow the [install instructions](@/agent/docs/installation.md).
 
 Here is `choreo-tui` running in Termux, working with an agent on a real codebase
 — fetching a profile picture from IPFS, analyzing a photo, coordinating via
@@ -120,7 +119,7 @@ The "content" tools to access the Choreographr blockchain (previously Acuity) ar
 ![choreo-tui: the modal account wizard with the searchable provider picker](/blog/2026-09-08-choreographr-0-2-0/tui-provider-picker.webp)
 * Mouse support — select-to-copy , picker click-to-select + mouse wheel, click account/session rows to select and enter
 * Per-session unsent input drafts, Ctrl+Backspace clears the draft prompt
-* Model selector rebound to Ctrl+O for legacy terminals, that don't support Ctrl+M
+* Command shortcuts moved to `Alt+`, freeing `Ctrl+` for readline editing keys
 * Request failures reported in the UI with a wrapped transcript error block
 * Tool output margins removed
 * Account slug shown in the status bar (instead of the provider slug)
@@ -169,17 +168,16 @@ fails and never races or steals a live daemon's socket.
   and the `zai`/`zhipuai` slugs pin `max_tokens` (z.ai's API does not accept
   `max_completion_tokens`); the `zai` provider is repinned to z.ai's standard
   PaaS gateway.
-
 * Coordinated providers — the context window, reasoning capability, and
   provider routing stay consistent while the keystore is locked, and switching
-  a session's account always dials the new provider
+  a session's account always dials the new provider.
 
-## Simplified keystore sematics
+## Simplified keystore semantics
 
 * Per-daemon keystore unlock keys with hardened per-daemon keystore state
 * Unlock UX rework — /unlock uses the stored key; /unlock <key> records it; identity.pk.enc removed entirely
 * BindKeystore as the sole binding path — Unlock/AddCredential are verify-only, fresh keys only for bind; frontend auto-bind: clients bind fresh unbound daemons and confirm on Bound; documented binding model + ordering invariant; shared auto-bind state machine
-* Client access-control & trust model — Noise XX first-contact mode with TCP wire v5 handshake preamble, fingerprint rendering + known_servers.toml pin store, pinned-mode trust flow with fingerprint confirmation, hot-reloaded client ACL from authorized_clients.toml, /acl add enrollment from a local connection, choreographr acl-add and fingerprint subcommands, tightened fingerprint compare + pinned-mode failure UX; trust model documented in ARCHITECTURE.md
+* Client access-control & trust model — Noise XX first-contact mode with a TCP wire handshake preamble, fingerprint rendering + known_servers.toml pin store, pinned-mode trust flow with fingerprint confirmation, hot-reloaded client ACL from authorized_clients.toml, /acl add enrollment from a local connection, choreographr acl-add and fingerprint subcommands, tightened fingerprint compare + pinned-mode failure UX; trust model documented in ARCHITECTURE.md
 * TUI refuses to start unauthorized daemons and never crashes on connection errors
 
 ## Other
@@ -195,14 +193,85 @@ fails and never races or steals a live daemon's socket.
 * Provider & model catalog data is downloaded live from [models.dev](https://models.dev) — a bundled snapshot plus a policy overlay, refreshed at runtime — so new providers and models appear without a code change
 * Live config watching — edits to `accounts.toml` hot-reload, and only sessions bound to a changed or removed account rebuild their provider clients; the file watcher also rescans the directory after a kernel event-queue overflow, so changes are never missed
 
+## Linux on arm64
+
+The Linux channel now ships **arm64 (aarch64)** alongside x86-64: a static
+`aarch64-unknown-linux-musl` tarball plus arm64 `.deb` and `.rpm` packages, so
+a Raspberry Pi, an arm64 server, or an Apple-Silicon VM installs from prebuilt
+binaries exactly like x86-64.
+
+## Command palette & keybindings
+
+`choreo-tui` gained an inline **command palette**: type `/` on an empty prompt
+and a floating list appears above the input — `Enter` runs the highlighted
+command, `Tab` completes the name, `↑`/`↓` move, and `Esc` returns to the
+prompt. Commands resolve through one shared catalog, so the palette and the
+parser can never disagree.
+
+The chat-page command shortcuts moved from `Ctrl+<letter>` to `Alt+<letter>`
+(`Alt+A` accounts, `Alt+S` sessions, `Alt+M` models, `Alt+R` reasoning, `Alt+H`
+help, `Alt+Q` quit, `Alt+Up`/`Alt+Down` undo/redo; `Alt+Enter` continue is
+unchanged). That frees the whole `Ctrl+<letter>` space for **readline editing
+keys** — `Ctrl+A`/`Ctrl+E`, `Ctrl+B`/`Ctrl+F`, `Ctrl+K`, `Ctrl+W`, `Ctrl+T`,
+`Ctrl+P`/`Ctrl+N`, `Alt+B`/`Alt+F` and friends — so every text field behaves
+like a shell prompt. A new `/new [title]` command creates a session and
+switches you straight to it.
+
+## Session management: pin & archive
+
+The session manager now has two views — live and archived — toggled with `Tab`.
+Press `p` to pin a session (pinned sessions float to the top of both lists) and
+`a` to archive or unarchive it. The daemon owns both flags and broadcasts every
+change, so the list never diverges from the server. The TUI also remembers each
+session's **scroll position**, so switching away and back reopens where you left
+off.
+
+## Unified file tools
+
+The read tools are now one: `read_file` returns a numbered view (a `path:` /
+`lines: a-b of N` header plus `N | content` lines) and takes optional
+`start_line` and `max_lines`, with an explicit continuation marker whenever the
+window or the byte budget clips the output — the separate `read_file_range`
+tool is gone. `edit_file` gained `near_line` to disambiguate a repeated
+`old_text`, reports candidate lines when a match is ambiguous or missing,
+rejects no-op edits, and handles CRLF files correctly.
+
+## Performance: images on demand
+
+Displayed images are no longer shipped inside session snapshots — only their
+metadata is. The client fetches the bytes on demand as an image scrolls into
+view, so opening a long session no longer transfers its entire image history,
+and multi-image turns stream in O(N) instead of O(N²).
+
+## Unified CLI & logging
+
+Every binary (daemon, TUI, GUI, IM, ACP) now shares one logging policy via a
+new `choreo-shared` crate: default `info`, `-v` debug, `-vv` trace, `-q` warn.
+Explicit flags now **take precedence over `RUST_LOG`** (the Unix convention),
+and the TUI's runaway trace-level file log is fixed.
+
+## Better defaults
+
+* `retrieve_webpage` gained an opt-in `webgl` argument — new-headless Chromium
+  with software GL, so canvas/3D pages render instead of coming back blank.
+* Bulky, machine-oriented tool results (`list_sessions`, the shell/exec family,
+  `grep`, `retrieve_webpage`, `spawn_subsession`) now **default to collapsed**
+  in the TUI, one click from the full body.
+* The default system prompt now tells the agent to **verify factual claims**
+  before asserting them — prioritising anything time-sensitive,
+  location-specific, contested, or specialised — and to flag uncertainty rather
+  than present an unverified claim as settled.
+
 ## Upgrading
 
-Prebuilt binaries for macOS, Linux, and Android Termux as before — see the
-[installation guide](@/agent/docs/installation.md). If you're coming from
-v0.1.0, <!-- TODO: note any breaking changes or config migration steps, or say nothing changes -->.
+Prebuilt binaries for macOS (Apple Silicon and Intel), Linux (x86-64 and
+arm64), and Android Termux — see the
+[installation guide](@/agent/docs/installation.md).
 
-Full release notes: [v0.2.0](https://github.com/choreographr/choreographr/releases/tag/v0.2.0) and
-[v0.2.1](https://github.com/choreographr/choreographr/releases/tag/v0.2.1) on GitHub.
+Full release notes: [v0.2.0](https://github.com/choreographr/choreographr/releases/tag/v0.2.0),
+[v0.2.1](https://github.com/choreographr/choreographr/releases/tag/v0.2.1),
+[v0.2.2](https://github.com/choreographr/choreographr/releases/tag/v0.2.2), and
+[v0.2.3](https://github.com/choreographr/choreographr/releases/tag/v0.2.3) on GitHub.
 
 We'd love your help — star the
 [repo](https://github.com/choreographr/choreographr), open

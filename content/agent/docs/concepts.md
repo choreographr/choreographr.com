@@ -25,6 +25,9 @@ and working directory. Sessions:
 - form a parent-child tree,
 - support multiple concurrent client attachments,
 - survive daemon restarts via the embedded `redb` database,
+- can be **pinned** (sorted to the top of the session list) or **archived**
+  (hidden from the live list) — both are daemon-owned flags broadcast to every
+  client,
 - are only "woken up" when a client connects to them.
 
 A **subsession** is a child session spawned by the `spawn_subsession` tool. It

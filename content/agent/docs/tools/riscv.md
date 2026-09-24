@@ -29,7 +29,7 @@ tools. Guests use the `choreo` convenience wrappers (which handle postcard
 encoding automatically):
 
 ```rust
-choreo::read_file(path)                          // -> String
+choreo::read_file(path)                          // -> String (numbered view)
 choreo::write_file(path, content, overwrite)
 choreo::db_get(key)                              // -> Vec<u8>
 choreo::db_set(key, value)                       // value: &[u8]
@@ -46,6 +46,8 @@ choreo::exit(code)
 > Notes: the A (atomic) extension is disabled, so guests must not use
 > `core::sync::atomic` read-modify-write operations. For `grep`, set
 > `regex: true` when using regex patterns (the default is literal matching).
+> `choreo::read_file` returns the same numbered view as the host tool — strip
+> the header line and the `N | ` gutter if the guest needs the bare file.
 
 To compile a `source` snippet, the daemon shells out to
 `rustc +stable --target riscv64imac-unknown-none-elf`, so the RISC-V

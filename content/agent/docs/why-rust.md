@@ -39,18 +39,19 @@ message passing** — an actor model, in the classic sense:
 - each session runs on its own thread and *owns* its state;
 - threads communicate through typed `crossbeam` channels rather than shared
   mutable state;
-- shared mutable state is the exception: the few `Arc<Mutex<…>>` instances —
-  the encrypted transport stream, the MCP client registry — are deliberate,
-  localized, and documented.
+- shared mutable state is the exception: a few deliberate, localized
+  `Arc<Mutex<…>>` instances — the encrypted transport stream, the MCP client
+  registry (when the `mcp` feature is enabled) — rather than the design's
+  backbone.
 
 This is only feasible because the Rust compiler *enforces* it: you cannot move
 a piece of state into two threads, or share it without synchronization, without
 the borrow checker stopping you. The result is a threading model that can be
 reasoned about — each thread owns its data — with none of the cancellation and
 `Send`-bound complexity that async runtimes impose. When a third-party library
-insists on async — the alloy/subxt clients behind the blockchain tools — a
-tokio runtime exists as a sidecar inside the optional `choreo-blockchain`
-crate; the daemon itself never needs one.
+insists on async — the alloy/subxt clients behind the optional `blockchain`
+and `content` tools — a tokio runtime exists as a sidecar inside those crates
+(`choreo-blockchain`, `choreo-content`); the daemon itself never needs one.
 
 ## Types that become the wire protocol
 
@@ -64,7 +65,8 @@ via `schemars`. You declare:
 ```rust
 struct ReadFileArgs {
     path: String,
-    offset: Option<u32>,
+    start_line: Option<u32>,
+    max_lines: Option<u32>,
 }
 ```
 

@@ -75,7 +75,7 @@ serially to preserve ordering.
 
 ## Workspace topology
 
-Eighteen crates in a single Cargo workspace (resolver = "3"). The two
+Nineteen crates in a single Cargo workspace (resolver = "3"). The two
 foundational crates — `choreo-proto` (the wire format) and `choreo-keystore`
 (credentials) — have no workspace dependencies; `choreo-transport` builds on
 `choreo-proto`, and `choreo-client-core` and the daemon sit on top, with the
@@ -90,6 +90,7 @@ clients and bridges (`choreo-tui`, `choreo-gui`, `choreo-im`, `choreo-acp`,
 | `choreo-content` | Coordination Platform client — Substrate chain writes (subxt via a tokio sidecar), indexer reads, IPFS add/cat, and content encode/decode; pulled in by the daemon's `content` feature (off by default) |
 | `choreo-image` | Image decode surface — raster decode with EXIF orientation baked in, HEIC decode (with a decompression-bomb guard), and SVG rasterization |
 | `choreo-sanitize` | Shared string-safety leaf — output sanitization (control chars, truncation, fenced-output safety) used across tools |
+| `choreo-shared` | Shared binary-facing helpers — the release name, clap styles, and the unified `-v`/`-q` logging policy every CLI crate uses |
 | `choreo-proto` | Framed binary protocol (MessagePack + length prefix) shared between clients and daemon |
 | `choreo-keystore` | X25519 keypair + ECDH/AES-256-GCM crypto library for encrypted credentials, the per-daemon keystore binding, and shared config paths |
 | `choreo-transport` | Noise encrypted transport over TCP (IK + XX first-contact) with message fragmentation and per-chunk locking |
@@ -108,12 +109,15 @@ clients and bridges (`choreo-tui`, `choreo-gui`, `choreo-im`, `choreo-acp`,
 Client/daemon communication is a framed binary protocol (MessagePack + length
 prefix), defined in `choreo-proto`. Remote connections are wrapped in the
 Noise encrypted transport from `choreo-transport` (IK against a pinned server
-key; XX first-contact mode on the wire v5 handshake). The protocol is
-versioned: streaming is **lossless** — each client has an unbounded outbound
-queue with lag-based eviction, and an `Evicted` event informs a slow client of
-dropped state instead of silently truncating a session. Session history is
-compressed with zstd (schema 1→2 migration) so long-running sessions stay
-compact on disk.
+key; XX first-contact mode on the current wire version — v8). Frames are capped
+at 64 MiB. The protocol is versioned: streaming is **lossless** — each client
+has an unbounded outbound queue with lag-based eviction, and an `Evicted` event
+informs a slow client of dropped state instead of silently truncating a
+session. Session snapshots carry only image **metadata**; displayed-image bytes
+are fetched on demand (`GetImage`/`Image`, protocol v6), and sessions carry
+daemon-owned `pinned`/`archived` flags (v8) broadcast to every client. Session
+history is compressed with zstd (schema 1→2 migration) so long-running sessions
+stay compact on disk.
 
 ## Vision & browsing
 

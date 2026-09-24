@@ -32,7 +32,7 @@ The repo builds on **nightly** Rust by default (`rust-toolchain.toml`), so every
 `cargo` command picks up fast per-profile `-Z` flags automatically; stable is a
 supported opt-out via the `just build-stable` / `test-stable` recipes.
 
-The workspace targets an MSRV of **1.94.1**, declared via `rust-version` in every
+The workspace targets an MSRV of **1.95.0**, declared via `rust-version` in every
 crate manifest (inherited from `[workspace.package]`). Keep code and dependencies
 within this floor.
 

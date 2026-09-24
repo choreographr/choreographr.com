@@ -43,6 +43,8 @@ Other capabilities:
   in a local headless browser, so JavaScript-heavy and bot-protected sites work.
 - Read-only diagnostics: the `debug` group's `session_inspect` dry-runs the
   request the daemon would build and flags reasoning-echo risks.
+- Terminal client: `choreo-tui` offers an inline command palette, shell-style
+  readline keybindings, per-session pin/archive, and inline images.
 
 Security model: the server starts locked; credentials are decrypted only in
 memory; remote connections use the Noise protocol with X25519 key agreement (IK

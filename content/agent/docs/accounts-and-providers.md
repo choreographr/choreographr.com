@@ -8,7 +8,7 @@ weight = 4
 
 Accounts can be managed either in the TUI or via `~/.config/choreographr/accounts.toml`.
 
-In the TUI, press `Ctrl+A` to open the **accounts** page, then `n` to add an
+In the TUI, press `Alt+A` to open the **accounts** page, then `n` to add an
 account (choose a provider, name it, and paste its API credential). See the
 [quick start](@/agent/docs/quick-start.md) for the full walkthrough.
 
@@ -41,7 +41,7 @@ retry_max_attempts = 3
 
 ## Adding API keys
 
-Keys can be managed in the TUI — on the accounts page (`Ctrl+A`), select an
+Keys can be managed in the TUI — on the accounts page (`Alt+A`), select an
 account and press `c` to enter its API credential.
 
 Alternatively, add a key for the service the account uses with the slash

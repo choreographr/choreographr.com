@@ -5,8 +5,9 @@ weight = 1
 +++
 
 Every release ships **two prebuilt binaries** — `choreographr` (the daemon)
-and `choreo-tui` (the terminal client) — for **Linux x86_64**, **macOS (Apple
-Silicon)**, and **Android (Termux)**. All install routes below use these
+and `choreo-tui` (the terminal client) — for **Linux (x86_64 and arm64)**,
+**macOS (Apple Silicon and Intel)**, and **Android (Termux)**. All install
+routes below use these
 binaries except the Cargo source build; none of them need a Rust toolchain at
 install time.
 
@@ -29,11 +30,19 @@ the `brew trust` step is for.
 
 ### Manual tarball
 
-[Download](https://github.com/choreographr/choreographr/releases/download/v0.2.0/choreographr-0.2.0-aarch64-apple-darwin.tar.gz) the Apple Silicon tarball, or run:
+[Download](https://github.com/choreographr/choreographr/releases/download/v0.2.3/choreographr-0.2.3-aarch64-apple-darwin.tar.gz) the Apple Silicon tarball, or run:
 
 ```bash
-curl -fL -O https://github.com/choreographr/choreographr/releases/download/v0.2.0/choreographr-0.2.0-aarch64-apple-darwin.tar.gz
-tar xzf choreographr-0.2.0-aarch64-apple-darwin.tar.gz
+curl -fL -O https://github.com/choreographr/choreographr/releases/download/v0.2.3/choreographr-0.2.3-aarch64-apple-darwin.tar.gz
+tar xzf choreographr-0.2.3-aarch64-apple-darwin.tar.gz
+sudo cp choreographr choreo-tui /usr/local/bin/
+```
+
+[Download](https://github.com/choreographr/choreographr/releases/download/v0.2.3/choreographr-0.2.3-x86_64-apple-darwin.tar.gz) the Intel (x86_64) tarball, or run:
+
+```bash
+curl -fL -O https://github.com/choreographr/choreographr/releases/download/v0.2.3/choreographr-0.2.3-x86_64-apple-darwin.tar.gz
+tar xzf choreographr-0.2.3-x86_64-apple-darwin.tar.gz
 sudo cp choreographr choreo-tui /usr/local/bin/
 ```
 
@@ -48,21 +57,25 @@ xattr -dr com.apple.quarantine /path/to/choreographr
 
 ### Debian / Ubuntu — .deb
 
-[Download](https://github.com/choreographr/choreographr/releases/download/v0.2.0/choreographr-0.2.0-x86_64.deb) the package, or run:
+[Download](https://github.com/choreographr/choreographr/releases/download/v0.2.3/choreographr-0.2.3-x86_64.deb) the x86_64 package (or the [aarch64 package](https://github.com/choreographr/choreographr/releases/download/v0.2.3/choreographr-0.2.3-aarch64.deb) on arm64), or run:
 
 ```bash
-curl -fL -O https://github.com/choreographr/choreographr/releases/download/v0.2.0/choreographr-0.2.0-x86_64.deb
-sudo apt install ./choreographr-0.2.0-x86_64.deb
+curl -fL -O https://github.com/choreographr/choreographr/releases/download/v0.2.3/choreographr-0.2.3-x86_64.deb
+sudo apt install ./choreographr-0.2.3-x86_64.deb
 ```
+
+On an arm64 host, fetch `choreographr-0.2.3-aarch64.deb` instead.
 
 ### Fedora / RHEL / openSUSE — .rpm
 
-[Download](https://github.com/choreographr/choreographr/releases/download/v0.2.0/choreographr-0.2.0-x86_64.rpm) the package, or run:
+[Download](https://github.com/choreographr/choreographr/releases/download/v0.2.3/choreographr-0.2.3-x86_64.rpm) the x86_64 package (or the [aarch64 package](https://github.com/choreographr/choreographr/releases/download/v0.2.3/choreographr-0.2.3-aarch64.rpm) on arm64), or run:
 
 ```bash
-curl -fL -O https://github.com/choreographr/choreographr/releases/download/v0.2.0/choreographr-0.2.0-x86_64.rpm
-sudo dnf install ./choreographr-0.2.0-x86_64.rpm
+curl -fL -O https://github.com/choreographr/choreographr/releases/download/v0.2.3/choreographr-0.2.3-x86_64.rpm
+sudo dnf install ./choreographr-0.2.3-x86_64.rpm
 ```
+
+On an arm64 host, fetch `choreographr-0.2.3-aarch64.rpm` instead.
 
 Both packages install the two binaries and the systemd user unit
 (`~/.config/systemd/user/choreographr.service`).
@@ -70,22 +83,24 @@ Both packages install the two binaries and the systemd user unit
 ### Any distro — manual tarball
 
 The Linux tarball is a **fully static musl build**, so one artifact runs on
-any Linux distribution regardless of glibc version. [Download](https://github.com/choreographr/choreographr/releases/download/v0.2.0/choreographr-0.2.0-x86_64-unknown-linux-musl.tar.gz) it, or run:
+any Linux distribution regardless of glibc version. [Download](https://github.com/choreographr/choreographr/releases/download/v0.2.3/choreographr-0.2.3-x86_64-unknown-linux-musl.tar.gz) it, or run:
 
 ```bash
-curl -fL -O https://github.com/choreographr/choreographr/releases/download/v0.2.0/choreographr-0.2.0-x86_64-unknown-linux-musl.tar.gz
-tar xzf choreographr-0.2.0-x86_64-unknown-linux-musl.tar.gz
+curl -fL -O https://github.com/choreographr/choreographr/releases/download/v0.2.3/choreographr-0.2.3-x86_64-unknown-linux-musl.tar.gz
+tar xzf choreographr-0.2.3-x86_64-unknown-linux-musl.tar.gz
 sudo cp choreographr choreo-tui /usr/local/bin/
 ```
+
+On arm64, fetch `choreographr-0.2.3-aarch64-unknown-linux-musl.tar.gz` instead.
 
 ## Android (Termux)
 
 The daemon and TUI ship for **Termux on Android 10+** as a Termux-native
-`.deb`. [Download](https://github.com/choreographr/choreographr/releases/download/v0.2.0/choreographr-termux_0.2.0_aarch64.deb) it, or install it inside a Termux shell with `pkg`:
+`.deb`. [Download](https://github.com/choreographr/choreographr/releases/download/v0.2.3/choreographr-termux_0.2.3_aarch64.deb) it, or install it inside a Termux shell with `pkg`:
 
 ```bash
-curl -fL -O https://github.com/choreographr/choreographr/releases/download/v0.2.0/choreographr-termux_0.2.0_aarch64.deb
-pkg install ./choreographr-termux_0.2.0_aarch64.deb
+curl -fL -O https://github.com/choreographr/choreographr/releases/download/v0.2.3/choreographr-termux_0.2.3_aarch64.deb
+pkg install ./choreographr-termux_0.2.3_aarch64.deb
 ```
 
 It installs `choreographr` and `choreo-tui` under Termux's `$PREFIX`.
@@ -116,11 +131,11 @@ cargo install choreographr choreo-tui --locked
 This builds the daemon and the terminal client from crates.io.
 
 Requirements: a [Rust toolchain](https://rustup.rs/) — minimum supported Rust
-version (MSRV) is **1.94.1** — and a **Zig 0.16.0** toolchain on your `PATH`.
+version (MSRV) is **1.95.0** — and a **Zig** toolchain on your `PATH`.
 Zig compiles the [`zlob`](https://crates.io/crates/zlob) crate, a
 SIMD-accelerated globbing and file-walking library that powers the agent's
 `find`, `grep`, and related file tools; its build script compiles Zig source
-at build time. Install Zig 0.16.0 from [ziglang.org](https://ziglang.org/download/)
+at build time. Install Zig from [ziglang.org](https://ziglang.org/download/)
 (or your package manager — e.g. `brew install zig`, `apt install zig`,
 `pacman -S zig`).
 

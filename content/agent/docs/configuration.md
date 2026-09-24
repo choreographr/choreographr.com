@@ -30,7 +30,7 @@ disable_claude_code_prompt = false
 | `CHOREOGRAPHR_SOCKET_PATH` | Override the Unix socket path (default: the platform temp directory, e.g. `$TMPDIR/Choreographr.sock`) |
 | `CHOREOGRAPHR_DB_PATH` | Override the database path (default `~/.local/share/choreographr/state.redb`) |
 | `CHOREOGRAPHR_MAX_TURNS` | Override `max_turns` (resolution chain: env → config.toml → default `0`) |
-| `RUST_LOG` | Log level (takes precedence over `-v`/`-vv`/`-q` flags) |
+| `RUST_LOG` | Log level (overridden by explicit `-v`/`-vv`/`-q` flags) |
 
 A `max_turns` value of `0` means **unlimited** — the agent loop runs until the
 model produces a final answer, is cancelled, or hits an error. This is a
@@ -56,7 +56,7 @@ stored in the `redb` database. The daemon binds its keystore once; thereafter
 
 | Flag | Purpose |
 |---|---|
-| `-v` / `-vv` / `-q` | Log verbosity (debug / trace / warnings); `RUST_LOG` overrides them |
+| `-v` / `-vv` / `-q` | Log verbosity (debug / trace / warnings); takes precedence over `RUST_LOG` |
 | `--log-file <path>` | Write daemon logs to a file instead of stderr (ANSI disabled) |
 | `--auto-exit` | Shut down gracefully when the last client disconnects |
 | `--metrics-addr <addr>` | Serve an OpenMetrics endpoint (see [Monitoring](@/agent/docs/monitoring.md)) |

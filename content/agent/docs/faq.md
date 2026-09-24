@@ -45,11 +45,11 @@ a = "Yes — Apache-2.0."
 
 [[extra.faq]]
 q = "What's the minimum supported Rust version?"
-a = "1.94.1."
+a = "1.95.0."
 
 [[extra.faq]]
 q = "What else do I need to build it?"
-a = "A **Zig 0.16.0** toolchain in addition to Rust. The [`zlob`](https://crates.io/crates/zlob) dependency — a fast globbing and file-walking library written in Zig — is compiled from Zig source at build time, so `zig` must be on your `PATH`. Choreographr uses zlob for the glob matching and gitignore-aware walking behind the `find` and `grep` tools."
+a = "A **Zig** toolchain in addition to Rust. The [`zlob`](https://crates.io/crates/zlob) dependency — a fast globbing and file-walking library written in Zig — is compiled from Zig source at build time, so `zig` must be on your `PATH`. Choreographr uses zlob for the glob matching and gitignore-aware walking behind the `find` and `grep` tools."
 
 [[extra.faq]]
 q = "How is Choreographr different from other agents?"

@@ -10,8 +10,7 @@ and orchestration.
 
 | Tool | What it does |
 |---|---|
-| `read_file` | Read a UTF-8 text file; rejects binary files; output is capped and truncation is reported |
-| `read_file_range` | Read a line range from a UTF-8 text file (max 500 lines per call) |
+| `read_file` | Read a UTF-8 text file as a numbered view (`start_line`/`max_lines`); rejects binary files; clipping is reported with a continuation marker |
 | `list_files` | List files in a directory with sizes, symlink targets, and subdirectory entry counts |
 | `write_file` | Write a UTF-8 text file to the workspace |
 | `edit_file` | Apply one or more exact text replacements to a file |
@@ -20,7 +19,7 @@ and orchestration.
 | `grep` | Search file contents for a literal or regex pattern |
 | `find` | Find files and directories by name (substring or glob) |
 | `http_request` | Make an HTTP request; returns status, headers, and body text |
-| `retrieve_webpage` | Render a URL in a local headless browser and return HTML, text, a screenshot, or a PDF |
+| `retrieve_webpage` | Render a URL in a local headless browser and return HTML, text, a screenshot, or a PDF (opt-in `webgl` for canvas/3D pages) |
 | `display_image` | Display a PNG, JPEG, SVG, or HEIC image in the client UI |
 | `read_image` | Read an image file and feed it to a vision-capable model as image input |
 | `pdf_classify` | Classify a PDF as text, scanned, image-based, or mixed (fast, no OCR) |
@@ -39,7 +38,7 @@ and orchestration.
 ## File tools
 
 ```json
-{ "name": "read_file", "arguments": { "path": "src/main.rs" } }
+{ "name": "read_file", "arguments": { "path": "src/main.rs", "start_line": 1, "max_lines": 200 } }
 { "name": "edit_file", "arguments": {
     "path": "src/main.rs",
     "edits": [
@@ -50,11 +49,20 @@ and orchestration.
 
 - `read_file` resolves relative paths against the session's working directory
   and streams output through a bounded reader, so memory use stays capped even
-  for very large files. `read_file_range` reads a specific 1-based line range
-  (`start_line`, `max_lines`) — the right tool for big files.
+  for very large files. It returns a numbered view — a `path:` / `lines: a-b of
+  N` header followed by `N | content` lines — and takes optional `start_line`
+  (1-based, default 1) and `max_lines` (default and cap 2000). When the window
+  or the byte budget clips the output, a continuation marker
+  (`...[more lines follow: showing A of B lines — continue with start_line=N]`)
+  tells the caller how to resume, so a clipped view is never mistaken for the
+  whole file.
 - `edit_file` takes a list of exact `old_text` → `new_text` replacements. Each
   edit must match at least once; edits without `replace_all` must match exactly
-  once. This keeps the model from guessing at file contents.
+  once. Pass `near_line` (the line number `read_file` shows) to resolve a
+  repeated `old_text` to the nearest occurrence; when a match is ambiguous or
+  absent the tool reports the candidate lines. No-op edits are rejected, and
+  matching runs on LF-normalized text so a CRLF file edits correctly (its
+  original line endings are restored on write).
 - `delete_files` auto-detects glob patterns (`*`, `?`, `[`). Patterns without
   `/` match against the file's basename; patterns with `/` match full paths
   from the working directory.
@@ -186,7 +194,7 @@ multi-column reading order from text-based PDFs. It wraps extracted text in an
   ```json
   { "name": "run_series", "arguments": { "steps": [
       { "tool": "line_count", "arguments": { "path": "src/main.rs" } },
-      { "tool": "read_file_range", "arguments": { "path": "src/main.rs", "start_line": 1, "max_lines": 20 } }
+      { "tool": "read_file", "arguments": { "path": "src/main.rs", "start_line": 1, "max_lines": 20 } }
   ] } }
   ```
 

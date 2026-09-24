@@ -8,10 +8,10 @@ weight = 13
 
 - `choreo-tui` writes its diagnostics to the platform temp directory
   (`$TMPDIR/choreo-tui-<pid>.log`) — check there for client-side issues.
-- The daemon logs to stderr; use `-v`/`-vv` for more detail, or set
-  `RUST_LOG` (which takes precedence over the CLI flags). A TUI-autostarted
-  daemon logs to a per-process file (`$TMPDIR/choreo-daemon-<pid>.log`); pass
-  `--log-file <path>` to write logs elsewhere when starting it yourself.
+- The daemon logs to stderr; use `-v`/`-vv` for more detail (CLI flags take
+  precedence over `RUST_LOG`). A TUI-autostarted daemon logs to a per-process
+  file (`$TMPDIR/choreo-daemon-<pid>.log`); pass `--log-file <path>` to write
+  logs elsewhere when starting it yourself.
 
 ## Common issues
 
