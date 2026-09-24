@@ -1,6 +1,6 @@
 +++
-title = "Choreographr v0.2.0 Released"
-description = "Choreographr v0.2.0 is out — STUB: summarize the headline features of this release in one sentence here."
+title = "Choreographr v0.2 (Lindy) Released"
+description = "Choreographr v0.2 (Lindy) is out — the AI agent gains Android Termux and Intel Mac support, image vision and generation, a headless-browser web tool, read-only blockchain tools, and a hardened keystore and trust model."
 # TODO: set the real release date.
 date = 2026-09-06
 # Draft until the post is finished — remove this line to publish.
@@ -16,14 +16,14 @@ authors = ["Jonathan Brown"]
 
 <!-- TODO: opening hook — what changed since v0.1.0 and why it matters. -->
 
-Choreographr v0.2.0 is out now. Here are the major new features:
+Choreographr v0.2 (Lindy) is out now. Here are the major new features:
 
 
 ## Android Termux support
 
 By popular demand Choreographr is now available for Android Termux. The server and TUI client are available for 3 platforms:
 
-* MacOS on Apple Silicon
+* MacOS on Apple Silicon and Intel (x86_64)
 * Linux on x86-64
 * Termux on Android 10+
 
@@ -170,6 +170,10 @@ fails and never races or steals a live daemon's socket.
   `max_completion_tokens`); the `zai` provider is repinned to z.ai's standard
   PaaS gateway.
 
+* Coordinated providers — the context window, reasoning capability, and
+  provider routing stay consistent while the keystore is locked, and switching
+  a session's account always dials the new provider
+
 ## Simplified keystore sematics
 
 * Per-daemon keystore unlock keys with hardened per-daemon keystore state
@@ -193,11 +197,12 @@ fails and never races or steals a live daemon's socket.
 
 ## Upgrading
 
-Prebuilt binaries for macOS and Linux as before — see the
+Prebuilt binaries for macOS, Linux, and Android Termux as before — see the
 [installation guide](@/agent/docs/installation.md). If you're coming from
 v0.1.0, <!-- TODO: note any breaking changes or config migration steps, or say nothing changes -->.
 
-Full release notes: [v0.2.0 on GitHub](https://github.com/choreographr/choreographr/releases).
+Full release notes: [v0.2.0](https://github.com/choreographr/choreographr/releases/tag/v0.2.0) and
+[v0.2.1](https://github.com/choreographr/choreographr/releases/tag/v0.2.1) on GitHub.
 
 We'd love your help — star the
 [repo](https://github.com/choreographr/choreographr), open

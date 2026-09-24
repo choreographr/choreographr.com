@@ -49,7 +49,7 @@
   <link rel="preload" href="https://choreographr.com/fonts/jetbrains-mono.woff2" as="font" type="font/woff2" crossorigin>
 
   <link rel="icon" type="image/svg+xml" href="https://choreographr.com/favicon.svg">
-  <link rel="stylesheet" href="https://choreographr.com/css/main.css?h=e12b9545e64292eb95a3">
+  <link rel="stylesheet" href="https://choreographr.com/css/main.css?h=522f5596923af2ef361c">
 
   <!-- Firefox/Zen can paint a frame before this stylesheet has been
        applied if a layout flush happens while it loads (Bugzilla
@@ -396,9 +396,9 @@
     </li>
     
     <li>
-      <a href="https://choreographr.com/agent/docs/tools/coordination/"
+      <a href="https://choreographr.com/agent/docs/tools/image/"
          class="pl-5 text-night-300 hover:text-night-50">
-        Content tools
+        Image generation
       </a>
     </li>
     
@@ -413,13 +413,6 @@
       <a href="https://choreographr.com/agent/docs/tools/riscv/"
          class="pl-5 text-night-300 hover:text-night-50">
         RISC-V VM tool
-      </a>
-    </li>
-    
-    <li>
-      <a href="https://choreographr.com/agent/docs/tools/mcp/"
-         class="pl-5 text-night-300 hover:text-night-50">
-        MCP servers
       </a>
     </li>
     
@@ -498,12 +491,8 @@
 </h2>
 <p>Accounts can be managed either in the TUI or via <code>~/.config/choreographr/accounts.toml</code>.</p>
 <p>In the TUI, press <code>Ctrl+A</code> to open the <strong>accounts</strong> page, then <code>n</code> to add an
-account (choose a provider, name it, and paste its API credential). Press <code>p</code>
-from the same page to run the <strong>Polkadot-account import wizard</strong>, which imports
-a Polkadot-JS keystore <code>.json</code> export (name, keystore path, password) and stores
-a Substrate account credential — required by the
-<a href="https://choreographr.com/agent/docs/tools/coordination/">Content write tools</a>.
-See the <a href="https://choreographr.com/agent/docs/quick-start/">quick start</a> for the full walkthrough.</p>
+account (choose a provider, name it, and paste its API credential). See the
+<a href="https://choreographr.com/agent/docs/quick-start/">quick start</a> for the full walkthrough.</p>
 <p>If you prefer to edit the file directly, accounts are configured via
 <code>~/.config/choreographr/accounts.toml</code>. Account
 names must be lowercase alphanumeric with hyphens or underscores
@@ -526,7 +515,20 @@ names must be lowercase alphanumeric with hyphens or underscores
 <span class="giallo-l"><span>provider</span><span style="color: #94E2D5;"> =</span><span style="color: #A6E3A1;"> &quot;ollama&quot;</span></span>
 <span class="giallo-l"><span>base_url</span><span style="color: #94E2D5;"> =</span><span style="color: #A6E3A1;"> &quot;http://localhost:11434/v1&quot;</span></span>
 <span class="giallo-l"><span>streaming</span><span style="color: #94E2D5;"> =</span><span style="color: #FAB387;"> false</span></span>
-<span class="giallo-l"><span>retry_max_attempts</span><span style="color: #94E2D5;"> =</span><span style="color: #FAB387;"> 3</span></span></code></pre><h2 id="providers">Providers
+<span class="giallo-l"><span>retry_max_attempts</span><span style="color: #94E2D5;"> =</span><span style="color: #FAB387;"> 3</span></span></code></pre><h2 id="adding-api-keys">Adding API keys
+<a class="zola-anchor" href="#adding-api-keys" aria-label="Anchor link for: adding-api-keys">
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+</a>
+</h2>
+<p>Keys can be managed in the TUI — on the accounts page (<code>Ctrl+A</code>), select an
+account and press <code>c</code> to enter its API credential.</p>
+<p>Alternatively, add a key for the service the account uses with the slash
+command:</p>
+<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;" ><code data-lang="plain"><span class="giallo-l"><span>/add-key openai sk-...</span></span></code></pre>
+<p>Keys are encrypted per-credential with the daemon's public key before being
+stored. The daemon starts <strong>locked</strong> — use <code>/unlock</code> to decrypt credentials
+into memory, and <code>/lock</code> to clear them again.</p>
+<h2 id="providers">Providers
 <a class="zola-anchor" href="#providers" aria-label="Anchor link for: providers">
   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
 </a>
@@ -541,13 +543,109 @@ many more.</li>
 Code, and more.</li>
 <li><strong>Google Generative AI</strong> — Google Gemini.</li>
 </ul>
-<p>The provider/model catalog is derived from <strong><a rel="noopener external" target="_blank" href="https://models.dev">models.dev</a></strong>
-at runtime: a bundled, normalized snapshot is merged with a policy overlay
-(<code>models-overlay.toml</code>), and the daemon re-fetches a fresh catalog from
-models.dev with a runtime refresh (conditional GET against a cached etag,
-with a cooldown between attempts, plus a local user overlay). Adding a new
-OpenAI-compatible provider needs no client code.</p>
-<h3 id="account-overrides">Account overrides
+<p>The provider/model catalog is built from <strong><a rel="noopener external" target="_blank" href="https://models.dev">models.dev</a></strong>
+plus policy overlays that supply everything models.dev can't express. Adding a
+new OpenAI-compatible provider needs no client code.</p>
+<h3 id="catalog-overlays">Catalog overlays
+<a class="zola-anchor" href="#catalog-overlays" aria-label="Anchor link for: catalog-overlays">
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+</a>
+</h3>
+<p>The catalog is assembled in three layers, lowest precedence to highest:</p>
+<ol>
+<li><strong>models.dev base</strong> — the provider/model information. A normalized snapshot
+(<code>catalog.bin</code>) is compiled into the binary as the built-in fallback, while
+the daemon keeps a <strong>live</strong> copy regenerated from models.dev at runtime
+(cached on disk and re-fetched when stale; the embedded snapshot is used when
+no live copy is available). It includes the following information: context
+windows, output limits, reasoning support and levels, vision/image
+modalities, temperature, and deprecation.</li>
+<li><strong>Built-in overlay</strong> — <a rel="noopener external" target="_blank" href="https://github.com/choreographr/choreographr/blob/master/choreo-ai-protocols/catalog/models-overlay.toml"><code>catalog/models-overlay.toml</code></a>,
+compiled into the binary and merged at load time. It carries everything
+models.dev can't express: wire-protocol selection, endpoint policy, per-model
+exceptions (e.g. Anthropic <code>tool_loop</code> passback pins, Responses-API flags),
+and the local/niche providers models.dev doesn't cover (defined wholesale
+with their full model lists).</li>
+<li><strong>User overlay</strong> — <code>~/.config/choreographr/models-overlay.toml</code>, optional and
+sharing the same schema, merged last so it wins. Use it to fix or extend the
+catalog without rebuilding. It is <strong>watched live</strong> (alongside <code>accounts.toml</code>):
+edits reload on change, deleting it falls back to the two built-in layers, and
+<code>/refresh-models</code> re-reads it too.</li>
+</ol>
+<p>An overlay is a TOML file: add a <code>[provider.&lt;slug&gt;]</code> table for each provider you
+want to change, and a <code>[provider.&lt;slug&gt;.models."&lt;model-id&gt;"]</code> sub-table for each
+model. Create and edit <code>models-overlay.toml</code> freely; any key not listed below is
+ignored with a warning.</p>
+<h4 id="overlay-schema">Overlay schema
+<a class="zola-anchor" href="#overlay-schema" aria-label="Anchor link for: overlay-schema">
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+</a>
+</h4>
+<p>Provider scalar keys (<code>[provider.&lt;slug&gt;]</code>), all optional:</p>
+<table><thead><tr><th>Key</th><th>Type</th><th>Meaning</th></tr></thead><tbody>
+<tr><td><code>protocol</code></td><td>string</td><td>Wire protocol: <code>"openai"</code>, <code>"anthropic"</code>, or <code>"google"</code></td></tr>
+<tr><td><code>max_tokens_field</code></td><td>string</td><td>OpenAI protocol only: <code>"max_completion_tokens"</code> (default) or <code>"max_tokens"</code></td></tr>
+<tr><td><code>base_url</code></td><td>string</td><td>API base URL</td></tr>
+<tr><td><code>default_model</code></td><td>string</td><td>Model used when no account/session model is set</td></tr>
+<tr><td><code>display_name</code></td><td>string</td><td>Human-readable name (only needed for providers not in the base)</td></tr>
+</tbody></table>
+<p>Per-model keys (<code>[provider.&lt;slug&gt;.models."&lt;model-id&gt;"]</code>), all optional:</p>
+<table><thead><tr><th>Key</th><th>Type</th><th>Meaning</th></tr></thead><tbody>
+<tr><td><code>context_window</code></td><td>integer</td><td>Context window in tokens (<code>0</code> = unknown)</td></tr>
+<tr><td><code>max_output_tokens</code></td><td>integer</td><td>Output-token ceiling (<code>0</code> = unknown)</td></tr>
+<tr><td><code>reasoning_supported</code></td><td>boolean</td><td>Whether the model does reasoning</td></tr>
+<tr><td><code>reasoning_levels</code></td><td>array of strings</td><td>Reasoning-effort slugs (e.g. <code>["off", "low", "high"]</code>)</td></tr>
+<tr><td><code>responses</code></td><td>boolean</td><td>Whether the model uses the OpenAI Responses API</td></tr>
+<tr><td><code>reasoning_passback</code></td><td>string</td><td>How reasoning is echoed between turns: <code>"none"</code>, <code>"tool_loop"</code>, <code>"all_turns"</code>, <code>"signature"</code>, or <code>"response_id"</code></td></tr>
+<tr><td><code>reasoning_content_required</code></td><td>boolean</td><td>Whether every request must carry a <code>reasoning_content</code> field (DeepSeek/GLM chat)</td></tr>
+<tr><td><code>supports_vision</code></td><td>boolean</td><td>Whether the model accepts image input</td></tr>
+<tr><td><code>supports_image_output</code></td><td>boolean</td><td>Whether the model generates images</td></tr>
+<tr><td><code>temperature</code></td><td>boolean</td><td>Whether the model accepts a <code>temperature</code> parameter</td></tr>
+<tr><td><code>deprecated</code></td><td>boolean</td><td>Lifecycle status</td></tr>
+</tbody></table>
+<h4 id="merge-semantics">Merge semantics
+<a class="zola-anchor" href="#merge-semantics" aria-label="Anchor link for: merge-semantics">
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+</a>
+</h4>
+<ul>
+<li><strong>Provider scalars</strong> are replaced field-by-field; any key you omit falls
+through to the lower layer.</li>
+<li><strong>Per-model entries</strong> are keyed by <code>(provider, model id)</code>. Naming a model
+replaces only the fields you set onto the existing entry — everything you
+don't mention stays intact — and adds the entry if the model is new.</li>
+<li><strong>New providers</strong> (a <code>[provider.&lt;slug&gt;]</code> table absent from the base) are
+created wholesale: give them <code>display_name</code>, <code>protocol</code>, <code>base_url</code>,
+<code>default_model</code>, and their <code>models</code>.</li>
+<li><strong>Unknown keys are warned and skipped</strong>, never fatal, so a typo can't break
+the daemon.</li>
+</ul>
+<h4 id="example-user-overlay">Example user overlay
+<a class="zola-anchor" href="#example-user-overlay" aria-label="Anchor link for: example-user-overlay">
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+</a>
+</h4>
+<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;" ><code data-lang="toml"><span class="giallo-l"><span style="color: #9399B2;font-style: italic;"># Patch policy and catalog information for a provider that already exists.</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">[</span><span>provider.deepseek</span><span style="color: #9399B2;">]</span></span>
+<span class="giallo-l"><span>max_tokens_field</span><span style="color: #94E2D5;"> =</span><span style="color: #A6E3A1;"> &quot;max_completion_tokens&quot;</span></span>
+<span class="giallo-l"><span>default_model</span><span style="color: #94E2D5;"> =</span><span style="color: #A6E3A1;"> &quot;deepseek-v4-pro&quot;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #9399B2;">[</span><span>provider.deepseek.models.&quot;deepseek-v4-pro&quot;</span><span style="color: #9399B2;">]</span></span>
+<span class="giallo-l"><span>context_window</span><span style="color: #94E2D5;"> =</span><span style="color: #FAB387;"> 131072</span></span>
+<span class="giallo-l"><span>reasoning_supported</span><span style="color: #94E2D5;"> =</span><span style="color: #FAB387;"> true</span></span>
+<span class="giallo-l"><span>reasoning_levels</span><span style="color: #94E2D5;"> =</span><span style="color: #9399B2;"> [</span><span style="color: #A6E3A1;">&quot;off&quot;</span><span style="color: #9399B2;">,</span><span style="color: #A6E3A1;"> &quot;low&quot;</span><span style="color: #9399B2;">,</span><span style="color: #A6E3A1;"> &quot;high&quot;</span><span style="color: #9399B2;">]</span></span>
+<span class="giallo-l"><span>reasoning_passback</span><span style="color: #94E2D5;"> =</span><span style="color: #A6E3A1;"> &quot;tool_loop&quot;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #9399B2;font-style: italic;"># Define a provider models.dev doesn&#39;t list (created wholesale).</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">[</span><span>provider.my-gateway</span><span style="color: #9399B2;">]</span></span>
+<span class="giallo-l"><span>display_name</span><span style="color: #94E2D5;"> =</span><span style="color: #A6E3A1;"> &quot;My Gateway&quot;</span></span>
+<span class="giallo-l"><span>protocol</span><span style="color: #94E2D5;"> =</span><span style="color: #A6E3A1;"> &quot;openai&quot;</span></span>
+<span class="giallo-l"><span>base_url</span><span style="color: #94E2D5;"> =</span><span style="color: #A6E3A1;"> &quot;https://gateway.example.com/v1&quot;</span></span>
+<span class="giallo-l"><span>default_model</span><span style="color: #94E2D5;"> =</span><span style="color: #A6E3A1;"> &quot;my-model&quot;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #9399B2;">[</span><span>provider.my-gateway.models.&quot;my-model&quot;</span><span style="color: #9399B2;">]</span></span>
+<span class="giallo-l"><span>context_window</span><span style="color: #94E2D5;"> =</span><span style="color: #FAB387;"> 65536</span></span>
+<span class="giallo-l"><span>supports_vision</span><span style="color: #94E2D5;"> =</span><span style="color: #FAB387;"> true</span></span></code></pre><h3 id="account-overrides">Account overrides
 <a class="zola-anchor" href="#account-overrides" aria-label="Anchor link for: account-overrides">
   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
 </a>
@@ -569,19 +667,15 @@ overridden per-account:</p>
 <p>The Responses API is fully supported — including tool use, streaming, reasoning
 effort slugs, multi-turn chaining via <code>previous_response_id</code>, and
 <strong>programmatic tool calling</strong> (gpt-5.6+ models).</p>
-<h2 id="adding-api-keys">Adding API keys
-<a class="zola-anchor" href="#adding-api-keys" aria-label="Anchor link for: adding-api-keys">
+<h2 id="image-generation">Image generation
+<a class="zola-anchor" href="#image-generation" aria-label="Anchor link for: image-generation">
   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
 </a>
 </h2>
-<p>Keys can be managed in the TUI — on the accounts page (<code>Ctrl+A</code>), select an
-account and press <code>c</code> to enter its API credential.</p>
-<p>Alternatively, add a key for the service the account uses with the slash
-command:</p>
-<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;" ><code data-lang="plain"><span class="giallo-l"><span>/add-key openai sk-...</span></span></code></pre>
-<p>Keys are encrypted per-credential with the daemon's public key before being
-stored. The daemon starts <strong>locked</strong> — use <code>/unlock</code> to decrypt credentials
-into memory, and <code>/lock</code> to clear them again.</p>
+<p>The <a href="https://choreographr.com/agent/docs/tools/image/"><code>generate_image</code></a> tool resolves its provider
+from the session's account. OpenAI-compatible accounts use the OpenAI Images
+adapter (<code>gpt-image-*</code>), and z.ai / Zhipu accounts use <code>glm-image</code>; the model is
+chosen from the provider's catalog image-output entries.</p>
 
       
     </article>

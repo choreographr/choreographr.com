@@ -49,7 +49,7 @@
   <link rel="preload" href="https://choreographr.com/fonts/jetbrains-mono.woff2" as="font" type="font/woff2" crossorigin>
 
   <link rel="icon" type="image/svg+xml" href="https://choreographr.com/favicon.svg">
-  <link rel="stylesheet" href="https://choreographr.com/css/main.css?h=e12b9545e64292eb95a3">
+  <link rel="stylesheet" href="https://choreographr.com/css/main.css?h=522f5596923af2ef361c">
 
   <!-- Firefox/Zen can paint a frame before this stylesheet has been
        applied if a layout flush happens while it loads (Bugzilla
@@ -396,9 +396,9 @@
     </li>
     
     <li>
-      <a href="https://choreographr.com/agent/docs/tools/coordination/"
+      <a href="https://choreographr.com/agent/docs/tools/image/"
          class="pl-5 text-night-300 hover:text-night-50">
-        Content tools
+        Image generation
       </a>
     </li>
     
@@ -413,13 +413,6 @@
       <a href="https://choreographr.com/agent/docs/tools/riscv/"
          class="pl-5 text-night-300 hover:text-night-50">
         RISC-V VM tool
-      </a>
-    </li>
-    
-    <li>
-      <a href="https://choreographr.com/agent/docs/tools/mcp/"
-         class="pl-5 text-night-300 hover:text-night-50">
-        MCP servers
       </a>
     </li>
     
@@ -491,13 +484,14 @@
       <div class="text-sm text-night-400 font-mono mb-6">
         /agent/docs/terminal/
       </div>
-      <p><code>choreo-tui</code> is the terminal client. It attaches to a running daemon over the
-local Unix socket — or over TCP with a Noise IK handshake
-(<code>--tcp-addr</code> / <code>--server-pk</code>) — and renders your sessions in a full-screen
-UI. It is entirely event driven and runs in immediate mode: the terminal
-updates the moment a keystroke or network event arrives, with no maximum
-framerate. Scrolling and streaming are O(1), so history stays smooth even on
-very long sessions.</p>
+      <p><code>choreo-tui</code> is the terminal client. It attaches to a daemon over the local
+Unix socket — or over TCP with a Noise handshake (<code>--tcp-addr</code> / <code>--server-pk</code>;
+IK when the server's key is pinned, XX on first contact) — and renders your
+sessions in a full-screen UI. If no local daemon is reachable it <strong>starts one
+automatically</strong> (see the <a href="https://choreographr.com/agent/docs/quick-start/">quick start</a>). It is
+entirely event driven and runs fullscreen: the terminal updates the moment a
+keystroke or network event arrives, with no maximum framerate. Scrolling and
+streaming are O(1), so history stays smooth even on very long sessions.</p>
 <h2 id="what-the-tui-renders">What the TUI renders
 <a class="zola-anchor" href="#what-the-tui-renders" aria-label="Anchor link for: what-the-tui-renders">
   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
@@ -509,9 +503,14 @@ emphasis, inline code, and LaTeX math rendered as pretty Unicode, all wrapped
 to the terminal width.</li>
 <li><strong>Syntax highlighting</strong> — code in tool output is highlighted with syntect
 themes.</li>
-<li><strong>Images</strong> — when the agent calls <code>display_image</code> (PNG, JPEG, or SVG), the
-image appears <strong>inline in the chat history</strong> at half the viewport height.
-Click an image to open it fullscreen; press <code>Esc</code> to dismiss.</li>
+<li><strong>Images</strong> — when the agent calls <code>display_image</code> (PNG, JPEG, or SVG) — or
+generates one with <code>generate_image</code> — the image appears <strong>inline in the chat
+history</strong> at half the viewport height. Click an image to open it fullscreen;
+press <code>Esc</code> to dismiss.</li>
+<li><strong>Status bar</strong> — the attached session's account slug, model, reasoning effort,
+and live token estimates. A session that is not idle is marked, and the client
+refuses to submit a new prompt until it is idle again (rejected text stays in
+the input bar).</li>
 <li><strong>Tool results</strong> — streaming execution descriptions, collapsible per-result
 bodies, and live token estimates in the status bar.</li>
 <li><strong>Selection &amp; copy</strong> — drag with the mouse to select text in the history pane
@@ -537,8 +536,6 @@ system fonts loaded, so vector diagrams stay crisp at any terminal size.</p>
 <tr><td>Sixel</td><td>terminals with sixel support (e.g. xterm-sixel, mlterm)</td></tr>
 <tr><td>Universal fallback</td><td>any other terminal</td></tr>
 </tbody></table>
-<p>Image blocks always reserve their height, so scrolling past an image stays
-stable even while it is still encoding.</p>
 <h2 id="managing-sessions">Managing sessions
 <a class="zola-anchor" href="#managing-sessions" aria-label="Anchor link for: managing-sessions">
   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
@@ -547,8 +544,8 @@ stable even while it is still encoding.</p>
 <ul>
 <li><code>Ctrl+S</code> — session manager: list, switch, create, and delete sessions</li>
 <li><code>Ctrl+A</code> — accounts page: add, remove, and select AI provider accounts</li>
-<li><code>Ctrl+M</code> — model selector (requires a terminal with the kitty keyboard
-protocol; on other terminals <code>Ctrl+M</code> arrives as Enter)</li>
+<li><code>Ctrl+M</code> — model selector (falls back to <code>Ctrl+O</code> on terminals without the
+kitty keyboard protocol)</li>
 <li><code>Ctrl+R</code> — cycle the reasoning effort</li>
 <li><code>Ctrl+H</code> — toggle the keybinding help overlay</li>
 <li><code>Ctrl+Q</code> — quit the client</li>

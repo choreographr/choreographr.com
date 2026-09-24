@@ -49,7 +49,7 @@
   <link rel="preload" href="https://choreographr.com/fonts/jetbrains-mono.woff2" as="font" type="font/woff2" crossorigin>
 
   <link rel="icon" type="image/svg+xml" href="https://choreographr.com/favicon.svg">
-  <link rel="stylesheet" href="https://choreographr.com/css/main.css?h=e12b9545e64292eb95a3">
+  <link rel="stylesheet" href="https://choreographr.com/css/main.css?h=522f5596923af2ef361c">
 
   <!-- Firefox/Zen can paint a frame before this stylesheet has been
        applied if a layout flush happens while it loads (Bugzilla
@@ -101,7 +101,7 @@
       "name": "What can I use it for?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Software development, a personal/business agent, or research. It runs on your desktop or in the cloud, and you can talk to it from the terminal, a desktop app, or your phone (via the Telegram bridge).\n"
+        "text": "Software development, a personal/business agent, or research. It runs on your desktop or in the cloud, and you can talk to it from the terminal or a desktop app.\n"
       }
     },
     
@@ -119,7 +119,7 @@
       "name": "Is my data private?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Choreographr is local-first. Sessions and credentials live on your machine (encrypted at rest), and you choose which model providers your prompts go to. The daemon starts locked and credentials are only decrypted into memory after unlock.\n"
+        "text": "Choreographr is local-first. Your sessions and credentials stay on your machine, with credentials encrypted at rest, and you choose which model providers your prompts go to. The daemon starts locked and credentials are only decrypted into memory after unlock.\n"
       }
     },
     
@@ -128,7 +128,7 @@
       "name": "Is LLM-generated code safe to run?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Generated code runs in an isolated RISC-V VM by default, which is a complete replacement for the shell tool — full control and observability. OS-level sandboxing for tools that must run outside the VM is on the roadmap.\n"
+        "text": "Generated code runs inside an isolated RISC-V VM (activate the vm tool group with load_tools vm) rather than on your machine — a complete replacement for the shell tool, with full control and observability. OS-level sandboxing for tools that must run outside the VM is on the roadmap.\n"
       }
     },
     
@@ -137,7 +137,7 @@
       "name": "Does it require an async runtime?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "No — the daemon uses pure OS threads with message passing. No async code in its own logic, no Arc&lt;Mutex&gt; shared state. Two crates drive async clients behind a tokio sidecar runtime that the daemon calls through synchronous entry points: choreo-coord (always linked, for the Content chain) and the optional choreo-blockchain (the EVM/Substrate tools). Without the blockchain feature, only the small coord sidecar is present.\n"
+        "text": "No — the daemon uses pure OS threads with message passing. There is no async code in its own logic, and shared mutable state is confined to a few deliberate, localized exceptions rather than being the design's backbone. The only async clients are the alloy/subxt EVM and Substrate tooling behind the optional blockchain and content features (choreo-blockchain, choreo-content), each driving a tokio sidecar runtime the daemon calls through synchronous entry points. With those features off there is no async runtime at all.\n"
       }
     },
     
@@ -152,10 +152,10 @@
     
     {
       "@type": "Question",
-      "name": "Can it publish to a blockchain?",
+      "name": "Can it generate images?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Yes — the coord tool group (always on) lets the agent read and publish to the Content network: content items, revisions, profiles, lifecycle transitions, and pins, plus queries through the network's indexer. Write tools need a Substrate (Polkadot) account credential and an unlocked daemon. Separately, the blockchain group adds read-only EVM and Substrate/Polkadot queries. See tools.\n"
+        "text": "Yes — the image group's generate_image tool produces an image from a text prompt through the session's image-capable provider (OpenAI Images or z.ai/Zhipu GLM), and the result renders inline in the terminal like any other image. Activate it with load_tools image. See Image generation.\n"
       }
     },
     
@@ -514,9 +514,9 @@
     </li>
     
     <li>
-      <a href="https://choreographr.com/agent/docs/tools/coordination/"
+      <a href="https://choreographr.com/agent/docs/tools/image/"
          class="pl-5 text-night-300 hover:text-night-50">
-        Content tools
+        Image generation
       </a>
     </li>
     
@@ -531,13 +531,6 @@
       <a href="https://choreographr.com/agent/docs/tools/riscv/"
          class="pl-5 text-night-300 hover:text-night-50">
         RISC-V VM tool
-      </a>
-    </li>
-    
-    <li>
-      <a href="https://choreographr.com/agent/docs/tools/mcp/"
-         class="pl-5 text-night-300 hover:text-night-50">
-        MCP servers
       </a>
     </li>
     
@@ -621,7 +614,7 @@
         
         <section>
           <h2 class="text-2xl font-semibold text-night-50 tracking-tight">What can I use it for?</h2>
-          <div class="mt-2 text-night-300"><p>Software development, a personal/business agent, or research. It runs on your desktop or in the cloud, and you can talk to it from the terminal, a desktop app, or your phone (via the Telegram bridge).</p>
+          <div class="mt-2 text-night-300"><p>Software development, a personal/business agent, or research. It runs on your desktop or in the cloud, and you can talk to it from the terminal or a desktop app.</p>
 </div>
         </section>
         
@@ -633,19 +626,19 @@
         
         <section>
           <h2 class="text-2xl font-semibold text-night-50 tracking-tight">Is my data private?</h2>
-          <div class="mt-2 text-night-300"><p>Choreographr is local-first. Sessions and credentials live on your machine (encrypted at rest), and you choose which model providers your prompts go to. The daemon starts locked and credentials are only decrypted into memory after unlock.</p>
+          <div class="mt-2 text-night-300"><p>Choreographr is local-first. Your sessions and credentials stay on your machine, with credentials encrypted at rest, and you choose which model providers your prompts go to. The daemon starts locked and credentials are only decrypted into memory after unlock.</p>
 </div>
         </section>
         
         <section>
           <h2 class="text-2xl font-semibold text-night-50 tracking-tight">Is LLM-generated code safe to run?</h2>
-          <div class="mt-2 text-night-300"><p>Generated code runs in an isolated RISC-V VM by default, which is a complete replacement for the shell tool — full control and observability. OS-level sandboxing for tools that must run outside the VM is on the roadmap.</p>
+          <div class="mt-2 text-night-300"><p>Generated code runs inside an isolated RISC-V VM (activate the <code>vm</code> tool group with <code>load_tools vm</code>) rather than on your machine — a complete replacement for the shell tool, with full control and observability. OS-level sandboxing for tools that must run outside the VM is on the roadmap.</p>
 </div>
         </section>
         
         <section>
           <h2 class="text-2xl font-semibold text-night-50 tracking-tight">Does it require an async runtime?</h2>
-          <div class="mt-2 text-night-300"><p>No — the daemon uses pure OS threads with message passing. No async code in its own logic, no <code>Arc&lt;Mutex&gt;</code> shared state. Two crates drive async clients behind a tokio sidecar runtime that the daemon calls through synchronous entry points: <code>choreo-coord</code> (always linked, for the Content chain) and the optional <code>choreo-blockchain</code> (the EVM/Substrate tools). Without the <code>blockchain</code> feature, only the small coord sidecar is present.</p>
+          <div class="mt-2 text-night-300"><p>No — the daemon uses pure OS threads with message passing. There is no async code in its own logic, and shared mutable state is confined to a few deliberate, localized exceptions rather than being the design's backbone. The only async clients are the alloy/subxt EVM and Substrate tooling behind the optional <code>blockchain</code> and <code>content</code> features (<code>choreo-blockchain</code>, <code>choreo-content</code>), each driving a tokio sidecar runtime the daemon calls through synchronous entry points. With those features off there is no async runtime at all.</p>
 </div>
         </section>
         
@@ -656,8 +649,8 @@
         </section>
         
         <section>
-          <h2 class="text-2xl font-semibold text-night-50 tracking-tight">Can it publish to a blockchain?</h2>
-          <div class="mt-2 text-night-300"><p>Yes — the <code>coord</code> tool group (always on) lets the agent read and publish to the Content network: content items, revisions, profiles, lifecycle transitions, and pins, plus queries through the network's indexer. Write tools need a Substrate (Polkadot) account credential and an unlocked daemon. Separately, the <code>blockchain</code> group adds read-only EVM and Substrate/Polkadot queries. See <a href="https://choreographr.com/agent/docs/tools/coordination/">tools</a>.</p>
+          <h2 class="text-2xl font-semibold text-night-50 tracking-tight">Can it generate images?</h2>
+          <div class="mt-2 text-night-300"><p>Yes — the <code>image</code> group's <code>generate_image</code> tool produces an image from a text prompt through the session's image-capable provider (OpenAI Images or z.ai/Zhipu GLM), and the result renders inline in the terminal like any other image. Activate it with <code>load_tools image</code>. See <a href="https://choreographr.com/agent/docs/tools/image/">Image generation</a>.</p>
 </div>
         </section>
         

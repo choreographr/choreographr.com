@@ -15,15 +15,30 @@ the daemon's keystore. After that, `/unlock` uses the stored key directly, and
 `/unlock <key>` records the key when unlocking an already-bound daemon, so the
 private key never has to be entered again.
 
+The daemon's keystore has **three states** — `Unbound` (no binding yet),
+`Locked` (bound, no cleartext in memory), and `Unlocked`. The daemon is the
+authoritative source of this status: it pushes the current state to a client
+the moment the client connects and broadcasts each transition to every
+subscribed client, so the UI never has to infer the lock state from operation
+replies. A first-run client learns the daemon is unbound from this push and
+auto-binds immediately — a fresh daemon is never a dead end.
+
 - Credentials are encrypted **per-credential** with ECDH (X25519) + HKDF +
   AES-256-GCM; only the holder of the private key can decrypt them.
 - Binding goes through `BindKeystore` only — `Unlock` and `AddCredential` are
   **verify-only** (they check a key against the bound keystore; they never
   install a new one).
 - Frontends auto-bind a fresh, unbound daemon and confirm once it reports
-  `Bound`.
+  `Bound`. A client that connects with no stored key mints one and probes with
+  a verify-only `BindKeystore` — an already-bound daemon never gets its
+  binding overwritten; a fresh one is adopted. Auto-binding is triggered by
+  the daemon's authoritative unbound status push, so it works on a genuine
+  first run (where neither the client nor the daemon has ever seen a key).
 - `/lock` destroys all in-memory credentials and returns the daemon to the
-  locked state.
+  locked state. An unlock that fails partway (e.g. a corrupt accounts file)
+  commits nothing — every fallible step runs on local state first, so
+  freshly decrypted credentials can never leak into a daemon that still
+  reports itself locked.
 - The private key is zeroized after use.
 - Lock/unlock does not interrupt session browsing — credentials are only needed
   at prompt time.

@@ -10,7 +10,7 @@
   <meta name="color-scheme" content="dark">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Core tools — Choreographr</title>
-  <meta name="description" content="Files, search, HTTP &amp; images, vision input, web-page rendering, PDF, and orchestration.">
+  <meta name="description" content="Files, search, HTTP, images, vision input, web-page rendering, PDF, and orchestration.">
   <meta name="theme-color" content="#06080b">
 
   
@@ -24,7 +24,7 @@
   <meta property="og:site_name" content="Choreographr">
   <meta property="og:type" content="website">
   <meta property="og:title" content="Core tools — Choreographr">
-  <meta property="og:description" content="Files, search, HTTP &amp; images, vision input, web-page rendering, PDF, and orchestration.">
+  <meta property="og:description" content="Files, search, HTTP, images, vision input, web-page rendering, PDF, and orchestration.">
   <meta property="og:url" content="https://choreographr.com/agent/docs/tools/core/">
   
   <meta property="og:image" content="https://choreographr.com/og-image.png">
@@ -49,7 +49,7 @@
   <link rel="preload" href="https://choreographr.com/fonts/jetbrains-mono.woff2" as="font" type="font/woff2" crossorigin>
 
   <link rel="icon" type="image/svg+xml" href="https://choreographr.com/favicon.svg">
-  <link rel="stylesheet" href="https://choreographr.com/css/main.css?h=e12b9545e64292eb95a3">
+  <link rel="stylesheet" href="https://choreographr.com/css/main.css?h=522f5596923af2ef361c">
 
   <!-- Firefox/Zen can paint a frame before this stylesheet has been
        applied if a layout flush happens while it loads (Bugzilla
@@ -405,9 +405,9 @@
     </li>
     
     <li>
-      <a href="https://choreographr.com/agent/docs/tools/coordination/"
+      <a href="https://choreographr.com/agent/docs/tools/image/"
          class="pl-5 text-night-300 hover:text-night-50">
-        Content tools
+        Image generation
       </a>
     </li>
     
@@ -422,13 +422,6 @@
       <a href="https://choreographr.com/agent/docs/tools/riscv/"
          class="pl-5 text-night-300 hover:text-night-50">
         RISC-V VM tool
-      </a>
-    </li>
-    
-    <li>
-      <a href="https://choreographr.com/agent/docs/tools/mcp/"
-         class="pl-5 text-night-300 hover:text-night-50">
-        MCP servers
       </a>
     </li>
     
@@ -574,24 +567,60 @@ files, and binary files, and cap results to protect the model's context.</p>
 <p><code>find</code> searches by file name. Glob mode is auto-detected when the pattern
 contains wildcards; set <code>glob</code> explicitly to force or disable it.</p>
 <p>Both tools run on the <a rel="noopener external" target="_blank" href="https://crates.io/crates/zlob"><code>zlob</code></a> globbing and
-file-walking engine — SIMD-accelerated, with <code>.gitignore</code> support — which is
-also why building Choreographr requires a Zig toolchain: zlob is written in
-Zig and is compiled at build time (see <a href="https://choreographr.com/agent/docs/installation/">Installation</a>).</p>
+file-walking engine — SIMD-accelerated, with <code>.gitignore</code> support.</p>
 </li>
 </ul>
-<h2 id="http-images">HTTP &amp; images
-<a class="zola-anchor" href="#http-images" aria-label="Anchor link for: http-images">
+<h2 id="http">HTTP
+<a class="zola-anchor" href="#http" aria-label="Anchor link for: http">
   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
 </a>
 </h2>
 <pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;" ><code data-lang="json"><span class="giallo-l"><span style="color: #9399B2;">{ &quot;</span><span style="color: #89B4FA;">name</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;http_request&quot;</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">arguments</span><span style="color: #9399B2;">&quot;: {</span></span>
 <span class="giallo-l"><span style="color: #9399B2;">    &quot;</span><span style="color: #89B4FA;">method</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;GET&quot;</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">url</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;https://api.example.com/items&quot;</span><span style="color: #9399B2;">,</span></span>
-<span class="giallo-l"><span style="color: #9399B2;">    &quot;</span><span style="color: #89B4FA;">headers</span><span style="color: #9399B2;">&quot;: { &quot;</span><span style="color: #89B4FA;">Range</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;bytes=0-1023&quot;</span><span style="color: #9399B2;"> } } }</span></span>
-<span class="giallo-l"><span style="color: #9399B2;">{ &quot;</span><span style="color: #89B4FA;">name</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;display_image&quot;</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">arguments</span><span style="color: #9399B2;">&quot;: { &quot;</span><span style="color: #89B4FA;">mime_type</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;image/png&quot;</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">path</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;chart.png&quot;</span><span style="color: #9399B2;"> } }</span></span></code></pre>
+<span class="giallo-l"><span style="color: #9399B2;">    &quot;</span><span style="color: #89B4FA;">headers</span><span style="color: #9399B2;">&quot;: { &quot;</span><span style="color: #89B4FA;">Range</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;bytes=0-1023&quot;</span><span style="color: #9399B2;"> } } }</span></span></code></pre>
 <ul>
 <li><code>http_request</code> supports GET, POST, PUT, DELETE, PATCH, and HEAD, custom
 headers (including <code>Range</code> for partial content), an optional body, and a
 configurable timeout (default 30 s).</li>
+</ul>
+<h3 id="retrieve-webpage">retrieve_webpage
+<a class="zola-anchor" href="#retrieve-webpage" aria-label="Anchor link for: retrieve-webpage">
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+</a>
+</h3>
+<p><code>retrieve_webpage</code> renders a URL in a <strong>local headless Chromium/Chrome</strong> and
+returns page content (HTML), plain text, a screenshot (PNG), or a PDF. It runs
+locally and offline — instead of fetching raw markup, it renders a real
+browser, so JavaScript-heavy and bot-protected sites work:</p>
+<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;" ><code data-lang="json"><span class="giallo-l"><span style="color: #9399B2;">{ &quot;</span><span style="color: #89B4FA;">name</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;retrieve_webpage&quot;</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">arguments</span><span style="color: #9399B2;">&quot;: { &quot;</span><span style="color: #89B4FA;">url</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;https://example.com&quot;</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">action</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;text&quot;</span><span style="color: #9399B2;"> } }</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">{ &quot;</span><span style="color: #89B4FA;">name</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;retrieve_webpage&quot;</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">arguments</span><span style="color: #9399B2;">&quot;: {</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">    &quot;</span><span style="color: #89B4FA;">url</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;https://example.com&quot;</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">action</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;screenshot&quot;</span><span style="color: #9399B2;">,</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">    &quot;</span><span style="color: #89B4FA;">output_path</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;shots/page.png&quot;</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">full_page</span><span style="color: #9399B2;">&quot;:</span><span style="color: #FAB387;"> true</span><span style="color: #9399B2;"> } }</span></span></code></pre>
+<p>The <code>action</code> is <code>content</code> (default), <code>text</code>, <code>screenshot</code>, or <code>pdf</code> (which
+requires <code>output_path</code>). Optional arguments include <code>selector</code>, <code>wait_ms</code>,
+<code>timeout_ms</code>, <code>width</code>/<code>height</code>, and <code>full_page</code>. Screenshots are returned
+inline (and optionally saved to <code>output_path</code>).</p>
+<ul>
+<li>A chromium/Chrome binary must already be installed on the host — the tool
+does <strong>not</strong> auto-download a browser. It prefers <code>chromium</code>, falling back to
+the various Chrome bundles (see the binary resolution in the source), and
+honors <code>CHROMIUM_BIN</code> / <code>CHROME_BIN</code> to point at a specific path.</li>
+<li>It accepts <code>http</code>, <code>https</code>, and <code>file</code> schemes. <code>file://</code> URLs let the
+browser read arbitrary local files from the daemon's host — that reach is
+intentional (the browser runs with the daemon's own privileges; OS-level
+sandboxing is still planned, see
+<a href="https://choreographr.com/agent/docs/security/#os-level-sandboxing-planned">Security</a>).</li>
+<li>Each call spins up and tears down a fresh one-shot browser instance — there
+is no persistent session between calls. Navigation timeout is clamped to
+avoid a hostile argument pinning a worker thread.</li>
+</ul>
+<h2 id="images">Images
+<a class="zola-anchor" href="#images" aria-label="Anchor link for: images">
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+</a>
+</h2>
+<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;" ><code data-lang="json"><span class="giallo-l"><span style="color: #9399B2;">{ &quot;</span><span style="color: #89B4FA;">name</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;display_image&quot;</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">arguments</span><span style="color: #9399B2;">&quot;: { &quot;</span><span style="color: #89B4FA;">mime_type</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;image/png&quot;</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">path</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;chart.png&quot;</span><span style="color: #9399B2;"> } }</span></span></code></pre>
+<ul>
 <li><code>display_image</code> accepts exactly one source: <code>path</code>, <code>url</code>, <code>base64_data</code>, or
 raw <code>svg_text</code>, with an optional <code>alt</code> description. Supported types are PNG,
 JPEG, SVG (rasterized at display resolution with system fonts, so vector
@@ -621,37 +650,7 @@ Accepted formats mirror the display surface — PNG, JPEG, WebP, SVG
 image is carried as a reference (path + metadata) rather than bytes in the
 conversation, and the normalized bytes are persisted durably in the
 <code>session_attachments</code> table so they survive restarts.</p>
-<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;" ><code data-lang="json"><span class="giallo-l"><span style="color: #9399B2;">{ &quot;</span><span style="color: #89B4FA;">name</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;read_image&quot;</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">arguments</span><span style="color: #9399B2;">&quot;: { &quot;</span><span style="color: #89B4FA;">path</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;report-figures/fig-1.jpg&quot;</span><span style="color: #9399B2;"> } }</span></span></code></pre><h3 id="web-page-rendering-retrieve-webpage">Web page rendering (<code>retrieve_webpage</code>)
-<a class="zola-anchor" href="#web-page-rendering-retrieve-webpage" aria-label="Anchor link for: web-page-rendering-retrieve-webpage">
-  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
-</a>
-</h3>
-<p><code>retrieve_webpage</code> renders a URL in a <strong>local headless Chromium/Chrome</strong> and
-returns page content (HTML), plain text, a screenshot (PNG), or a PDF. It runs
-locally and offline — instead of fetching raw markup, it renders a real
-browser, so JavaScript-heavy and bot-protected sites work:</p>
-<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;" ><code data-lang="json"><span class="giallo-l"><span style="color: #9399B2;">{ &quot;</span><span style="color: #89B4FA;">name</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;retrieve_webpage&quot;</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">arguments</span><span style="color: #9399B2;">&quot;: { &quot;</span><span style="color: #89B4FA;">url</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;https://example.com&quot;</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">action</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;text&quot;</span><span style="color: #9399B2;"> } }</span></span>
-<span class="giallo-l"><span style="color: #9399B2;">{ &quot;</span><span style="color: #89B4FA;">name</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;retrieve_webpage&quot;</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">arguments</span><span style="color: #9399B2;">&quot;: {</span></span>
-<span class="giallo-l"><span style="color: #9399B2;">    &quot;</span><span style="color: #89B4FA;">url</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;https://example.com&quot;</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">action</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;screenshot&quot;</span><span style="color: #9399B2;">,</span></span>
-<span class="giallo-l"><span style="color: #9399B2;">    &quot;</span><span style="color: #89B4FA;">output_path</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;shots/page.png&quot;</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">full_page</span><span style="color: #9399B2;">&quot;:</span><span style="color: #FAB387;"> true</span><span style="color: #9399B2;"> } }</span></span></code></pre>
-<p>The <code>action</code> is <code>content</code> (default), <code>text</code>, <code>screenshot</code>, or <code>pdf</code> (which
-requires <code>output_path</code>). Optional arguments include <code>selector</code>, <code>wait_ms</code>,
-<code>timeout_ms</code>, <code>width</code>/<code>height</code>, and <code>full_page</code>. Screenshots are returned
-inline (and optionally saved to <code>output_path</code>).</p>
-<ul>
-<li>A chromium/Chrome binary must already be installed on the host — the tool
-does <strong>not</strong> auto-download a browser. It prefers <code>chromium</code>, falling back to
-the various Chrome bundles (see the binary resolution in the source), and
-honors <code>CHROMIUM_BIN</code> / <code>CHROME_BIN</code> to point at a specific path.</li>
-<li>It accepts <code>http</code>, <code>https</code>, and <code>file</code> schemes. <code>file://</code> URLs let the
-browser read arbitrary local files from the daemon's host — that reach is
-intentional (the browser process runs under the same OS-level sandbox as the
-daemon).</li>
-<li>Each call spins up and tears down a fresh one-shot browser instance — there
-is no persistent session between calls. Navigation timeout is clamped to
-avoid a hostile argument pinning a worker thread.</li>
-</ul>
-<h2 id="pdf-tools">PDF tools
+<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;" ><code data-lang="json"><span class="giallo-l"><span style="color: #9399B2;">{ &quot;</span><span style="color: #89B4FA;">name</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;read_image&quot;</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">arguments</span><span style="color: #9399B2;">&quot;: { &quot;</span><span style="color: #89B4FA;">path</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;report-figures/fig-1.jpg&quot;</span><span style="color: #9399B2;"> } }</span></span></code></pre><h2 id="pdf-tools">PDF tools
 <a class="zola-anchor" href="#pdf-tools" aria-label="Anchor link for: pdf-tools">
   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
 </a>

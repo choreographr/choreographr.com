@@ -1,6 +1,6 @@
 +++
 title = "Installation"
-description = "Install Choreographr with Homebrew, a .deb or .rpm, a manual tarball download, or a Cargo build."
+description = "Install Choreographr with Homebrew, a .deb or .rpm, a manual tarball download, cargo-binstall, or a Cargo build."
 weight = 1
 +++
 
@@ -29,8 +29,7 @@ the `brew trust` step is for.
 
 ### Manual tarball
 
-Download and extract the Apple Silicon tarball, then put the two binaries
-on your `PATH`:
+[Download](https://github.com/choreographr/choreographr/releases/download/v0.2.0/choreographr-0.2.0-aarch64-apple-darwin.tar.gz) the Apple Silicon tarball, or run:
 
 ```bash
 curl -fL -O https://github.com/choreographr/choreographr/releases/download/v0.2.0/choreographr-0.2.0-aarch64-apple-darwin.tar.gz
@@ -49,12 +48,16 @@ xattr -dr com.apple.quarantine /path/to/choreographr
 
 ### Debian / Ubuntu — .deb
 
+[Download](https://github.com/choreographr/choreographr/releases/download/v0.2.0/choreographr-0.2.0-x86_64.deb) the package, or run:
+
 ```bash
 curl -fL -O https://github.com/choreographr/choreographr/releases/download/v0.2.0/choreographr-0.2.0-x86_64.deb
 sudo apt install ./choreographr-0.2.0-x86_64.deb
 ```
 
 ### Fedora / RHEL / openSUSE — .rpm
+
+[Download](https://github.com/choreographr/choreographr/releases/download/v0.2.0/choreographr-0.2.0-x86_64.rpm) the package, or run:
 
 ```bash
 curl -fL -O https://github.com/choreographr/choreographr/releases/download/v0.2.0/choreographr-0.2.0-x86_64.rpm
@@ -67,7 +70,7 @@ Both packages install the two binaries and the systemd user unit
 ### Any distro — manual tarball
 
 The Linux tarball is a **fully static musl build**, so one artifact runs on
-any Linux distribution regardless of glibc version:
+any Linux distribution regardless of glibc version. [Download](https://github.com/choreographr/choreographr/releases/download/v0.2.0/choreographr-0.2.0-x86_64-unknown-linux-musl.tar.gz) it, or run:
 
 ```bash
 curl -fL -O https://github.com/choreographr/choreographr/releases/download/v0.2.0/choreographr-0.2.0-x86_64-unknown-linux-musl.tar.gz
@@ -78,8 +81,7 @@ sudo cp choreographr choreo-tui /usr/local/bin/
 ## Android (Termux)
 
 The daemon and TUI ship for **Termux on Android 10+** as a Termux-native
-`.deb`. Download it from the release page and install it inside a Termux shell
-with `pkg`:
+`.deb`. [Download](https://github.com/choreographr/choreographr/releases/download/v0.2.0/choreographr-termux_0.2.0_aarch64.deb) it, or install it inside a Termux shell with `pkg`:
 
 ```bash
 curl -fL -O https://github.com/choreographr/choreographr/releases/download/v0.2.0/choreographr-termux_0.2.0_aarch64.deb
@@ -87,6 +89,23 @@ pkg install ./choreographr-termux_0.2.0_aarch64.deb
 ```
 
 It installs `choreographr` and `choreo-tui` under Termux's `$PREFIX`.
+
+## Any platform — cargo-binstall
+
+[`cargo-binstall`](https://github.com/cargo-bins/cargo-binstall) installs the
+prebuilt release binaries without a Rust toolchain — a one-line alternative to
+the manual tarball on macOS and Linux. Install `cargo-binstall` first (a
+prebuilt binary is available from its
+[releases](https://github.com/cargo-bins/cargo-binstall/releases)), then:
+
+```bash
+cargo binstall choreographr choreo-tui
+```
+
+binstall reads the `[package.metadata.binstall]` metadata declared by each
+crate, resolves the matching GitHub release asset for your platform (on glibc
+Linux it uses the static musl tarball), verifies its checksum, and installs the
+binary that crate provides.
 
 ## From source with Cargo
 

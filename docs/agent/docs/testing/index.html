@@ -49,7 +49,7 @@
   <link rel="preload" href="https://choreographr.com/fonts/jetbrains-mono.woff2" as="font" type="font/woff2" crossorigin>
 
   <link rel="icon" type="image/svg+xml" href="https://choreographr.com/favicon.svg">
-  <link rel="stylesheet" href="https://choreographr.com/css/main.css?h=e12b9545e64292eb95a3">
+  <link rel="stylesheet" href="https://choreographr.com/css/main.css?h=522f5596923af2ef361c">
 
   <!-- Firefox/Zen can paint a frame before this stylesheet has been
        applied if a layout flush happens while it loads (Bugzilla
@@ -396,9 +396,9 @@
     </li>
     
     <li>
-      <a href="https://choreographr.com/agent/docs/tools/coordination/"
+      <a href="https://choreographr.com/agent/docs/tools/image/"
          class="pl-5 text-night-300 hover:text-night-50">
-        Content tools
+        Image generation
       </a>
     </li>
     
@@ -413,13 +413,6 @@
       <a href="https://choreographr.com/agent/docs/tools/riscv/"
          class="pl-5 text-night-300 hover:text-night-50">
         RISC-V VM tool
-      </a>
-    </li>
-    
-    <li>
-      <a href="https://choreographr.com/agent/docs/tools/mcp/"
-         class="pl-5 text-night-300 hover:text-night-50">
-        MCP servers
       </a>
     </li>
     
@@ -491,12 +484,24 @@
       <div class="text-sm text-night-400 font-mono mb-6">
         /agent/docs/testing/
       </div>
-      <pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;" ><code data-lang="shellscript"><span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">cargo</span><span style="color: #A6E3A1;"> test</span><span style="color: #9399B2;font-style: italic;">                  # unit tests</span></span>
-<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">cargo</span><span style="color: #A6E3A1;"> test -- --ignored</span><span style="color: #9399B2;font-style: italic;">     # integration tests</span></span>
-<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">cargo</span><span style="color: #A6E3A1;"> clippy --workspace</span><span style="color: #9399B2;font-style: italic;">    # lints</span></span>
-<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">cargo</span><span style="color: #A6E3A1;"> fmt --all</span><span style="color: #9399B2;font-style: italic;">             # formatting</span></span></code></pre>
+      <p>The recommended test runner is <strong>cargo-nextest</strong> (<code>cargo install cargo-nextest</code>),
+wrapped by cargo aliases:</p>
+<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;" ><code data-lang="shellscript"><span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">cargo</span><span style="color: #A6E3A1;"> test-fast</span><span style="color: #9399B2;font-style: italic;">           # unit tests (nextest; one process per test)</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">cargo</span><span style="color: #A6E3A1;"> test-lean</span><span style="color: #9399B2;font-style: italic;">           # unit tests with every optional feature off</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">cargo</span><span style="color: #A6E3A1;"> test-integration</span><span style="color: #9399B2;font-style: italic;">    # integration tests — the #[ignore] suite</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">cargo</span><span style="color: #A6E3A1;"> test-all</span><span style="color: #9399B2;font-style: italic;">            # unit + integration in one pass</span></span></code></pre>
+<p>Without nextest, the same suites run through plain libtest:</p>
+<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;" ><code data-lang="shellscript"><span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">cargo</span><span style="color: #A6E3A1;"> test</span><span style="color: #9399B2;font-style: italic;">                # unit tests</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">cargo</span><span style="color: #A6E3A1;"> test -- --ignored</span><span style="color: #9399B2;font-style: italic;">   # integration tests</span></span></code></pre>
+<p>And regardless of the runner:</p>
+<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;" ><code data-lang="shellscript"><span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">cargo</span><span style="color: #A6E3A1;"> clippy --workspace --all-targets</span><span style="color: #9399B2;font-style: italic;">   # lints</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">cargo</span><span style="color: #A6E3A1;"> fmt --all</span><span style="color: #9399B2;font-style: italic;">                          # formatting</span></span></code></pre>
+<p>The repo builds on <strong>nightly</strong> Rust by default (<code>rust-toolchain.toml</code>), so every
+<code>cargo</code> command picks up fast per-profile <code>-Z</code> flags automatically; stable is a
+supported opt-out via the <code>just build-stable</code> / <code>test-stable</code> recipes.</p>
 <p>The workspace targets an MSRV of <strong>1.94.1</strong>, declared via <code>rust-version</code> in every
-crate manifest. Keep code and dependencies within this floor.</p>
+crate manifest (inherited from <code>[workspace.package]</code>). Keep code and dependencies
+within this floor.</p>
 <h2 id="test-infrastructure">Test infrastructure
 <a class="zola-anchor" href="#test-infrastructure" aria-label="Anchor link for: test-infrastructure">
   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
@@ -504,9 +509,9 @@ crate manifest. Keep code and dependencies within this floor.</p>
 </h2>
 <p>Tests use <code>UnixStream::pair()</code> for socket-less daemon↔client communication, and
 mock HTTP servers for API simulation. Test coverage spans the protocol layer,
-client core, daemon lifecycle, MCP integration, provider clients (SSE parsing,
+client core, daemon lifecycle, provider clients (SSE parsing,
 request construction, catalog lookups), and the TUI/GUI app state.</p>
-<p>See <code>ARCHITECTURE.md</code> for the full test matrix.</p>
+<p>See <code>ARCHITECTURE.md</code> for the test-runner and infrastructure details.</p>
 
       
     </article>

@@ -49,7 +49,7 @@
   <link rel="preload" href="https://choreographr.com/fonts/jetbrains-mono.woff2" as="font" type="font/woff2" crossorigin>
 
   <link rel="icon" type="image/svg+xml" href="https://choreographr.com/favicon.svg">
-  <link rel="stylesheet" href="https://choreographr.com/css/main.css?h=e12b9545e64292eb95a3">
+  <link rel="stylesheet" href="https://choreographr.com/css/main.css?h=522f5596923af2ef361c">
 
   <!-- Firefox/Zen can paint a frame before this stylesheet has been
        applied if a layout flush happens while it loads (Bugzilla
@@ -396,9 +396,9 @@
     </li>
     
     <li>
-      <a href="https://choreographr.com/agent/docs/tools/coordination/"
+      <a href="https://choreographr.com/agent/docs/tools/image/"
          class="pl-5 text-night-300 hover:text-night-50">
-        Content tools
+        Image generation
       </a>
     </li>
     
@@ -413,13 +413,6 @@
       <a href="https://choreographr.com/agent/docs/tools/riscv/"
          class="pl-5 text-night-300 hover:text-night-50">
         RISC-V VM tool
-      </a>
-    </li>
-    
-    <li>
-      <a href="https://choreographr.com/agent/docs/tools/mcp/"
-         class="pl-5 text-night-300 hover:text-night-50">
-        MCP servers
       </a>
     </li>
     
@@ -499,6 +492,11 @@
   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
 </a>
 </h2>
+<p>In Unix-socket mode you usually don't need to start the daemon yourself: when
+<code>choreo-tui</code> can't reach a daemon, it <strong>starts one for you</strong> — spawning a
+detached child with <code>--auto-exit</code>, so it shuts down again when the last client
+disconnects. Run the daemon manually when you want full control over its
+lifetime and logs:</p>
 <pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;" ><code data-lang="shellscript"><span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">choreographr</span><span style="color: #9399B2;font-style: italic;">                  # default log level: info</span></span>
 <span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">choreographr</span><span style="color: #A6E3A1;"> -v</span><span style="color: #9399B2;font-style: italic;">               # debug</span></span>
 <span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">choreographr</span><span style="color: #A6E3A1;"> -vv</span><span style="color: #9399B2;font-style: italic;">              # trace</span></span>
@@ -524,7 +522,7 @@
 <li>Paste the API credential and press <code>Enter</code>.</li>
 <li>Press <code>Esc</code> (or <code>q</code>) to go back to the chat.</li>
 <li>Select the account with <code>/account &lt;name&gt;</code>.</li>
-<li>Press <code>Ctrl+M</code> to select the model.</li>
+<li>Press <code>Ctrl+M</code> (falls back to <code>Ctrl+O</code> on terminals without the kitty keyboard protocol) to select the model.</li>
 <li>Press <code>Ctrl+R</code> to select the reasoning effort.</li>
 <li>Send your first prompt!</li>
 </ol>

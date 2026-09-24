@@ -9,23 +9,23 @@
        unlike Chromium which defers first paint until the inline CSS exists. -->
   <meta name="color-scheme" content="dark">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Content tools — Choreographr</title>
-  <meta name="description" content="Read and publish to the Content network (chain + IPFS + indexer).">
+  <title>Image generation — Choreographr</title>
+  <meta name="description" content="generate_image: text-to-image through the session&#39;s image-capable provider.">
   <meta name="theme-color" content="#06080b">
 
   
   <!-- Canonical: every page (incl. trailing-slash and /index.html variants)
        resolves to one authoritative URL, which also matches the sitemap. -->
-  <link rel="canonical" href="https://choreographr.com/agent/docs/tools/coordination/">
+  <link rel="canonical" href="https://choreographr.com/agent/docs/tools/image/">
   
 
   <!-- Open Graph / social sharing. og:title / og:description are overridden
        per template so they always match the <title> and meta description. -->
   <meta property="og:site_name" content="Choreographr">
   <meta property="og:type" content="website">
-  <meta property="og:title" content="Content tools — Choreographr">
-  <meta property="og:description" content="Read and publish to the Content network (chain + IPFS + indexer).">
-  <meta property="og:url" content="https://choreographr.com/agent/docs/tools/coordination/">
+  <meta property="og:title" content="Image generation — Choreographr">
+  <meta property="og:description" content="generate_image: text-to-image through the session&#39;s image-capable provider.">
+  <meta property="og:url" content="https://choreographr.com/agent/docs/tools/image/">
   
   <meta property="og:image" content="https://choreographr.com/og-image.png">
   <meta property="og:image:width" content="1200">
@@ -49,7 +49,7 @@
   <link rel="preload" href="https://choreographr.com/fonts/jetbrains-mono.woff2" as="font" type="font/woff2" crossorigin>
 
   <link rel="icon" type="image/svg+xml" href="https://choreographr.com/favicon.svg">
-  <link rel="stylesheet" href="https://choreographr.com/css/main.css?h=e12b9545e64292eb95a3">
+  <link rel="stylesheet" href="https://choreographr.com/css/main.css?h=522f5596923af2ef361c">
 
   <!-- Firefox/Zen can paint a frame before this stylesheet has been
        applied if a layout flush happens while it loads (Bugzilla
@@ -75,7 +75,7 @@
   "itemListElement": [
     { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://choreographr.com/" },
     { "@type": "ListItem", "position": 2, "name": "Agent docs", "item": "https://choreographr.com/agent/docs/" },
-    { "@type": "ListItem", "position": 3, "name": "Content tools" }
+    { "@type": "ListItem", "position": 3, "name": "Image generation" }
   ]
 }
 </script>
@@ -273,7 +273,7 @@
         
         <span class="text-night-600">/</span>
         
-        <span class="text-night-200 font-medium">coordination</span>
+        <span class="text-night-200 font-medium">image</span>
         
       
     
@@ -405,9 +405,9 @@
     </li>
     
     <li>
-      <a href="https://choreographr.com/agent/docs/tools/coordination/"
+      <a href="https://choreographr.com/agent/docs/tools/image/"
          class="pl-5 text-brand-400 font-semibold">
-        Content tools
+        Image generation
       </a>
     </li>
     
@@ -422,13 +422,6 @@
       <a href="https://choreographr.com/agent/docs/tools/riscv/"
          class="pl-5 text-night-300 hover:text-night-50">
         RISC-V VM tool
-      </a>
-    </li>
-    
-    <li>
-      <a href="https://choreographr.com/agent/docs/tools/mcp/"
-         class="pl-5 text-night-300 hover:text-night-50">
-        MCP servers
       </a>
     </li>
     
@@ -496,70 +489,60 @@
       </div>
     </aside>
     <article class="prose min-w-0 flex-1 max-w-3xl">
-      <h1>Content tools</h1>
+      <h1>Image generation</h1>
       <div class="text-sm text-night-400 font-mono mb-6">
-        /agent/docs/tools/coordination/
+        /agent/docs/tools/image/
       </div>
-      <p>The <code>coord</code> group gives the agent direct access to the <strong>Choreographr
-Content</strong> — a content-addressed, timestamped, on-chain system
-for agents and humans to publish and coordinate over. It is always compiled in
-and active by default (no feature flag), and it composes three backends: a
-Substrate node (the chain), <code>acuity-index</code> (the event indexer), and a local
-IPFS daemon.</p>
-<h2 id="read-tools">Read tools
-<a class="zola-anchor" href="#read-tools" aria-label="Anchor link for: read-tools">
+      <p>The <code>image</code> group contains <code>generate_image</code>, which produces a new image from a
+text prompt using the session's image-capable provider. It is not active by
+default — activate it with <code>load_tools image</code>.</p>
+<table><thead><tr><th>Tool</th><th>What it does</th></tr></thead><tbody>
+<tr><td><code>generate_image</code></td><td>Generate an image from a text prompt; the result is displayed inline in the client exactly like <code>display_image</code></td></tr>
+</tbody></table>
+<h2 id="arguments">Arguments
+<a class="zola-anchor" href="#arguments" aria-label="Anchor link for: arguments">
   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
 </a>
 </h2>
-<p>Read tools need no credentials.</p>
-<table><thead><tr><th>Tool</th><th>What it does</th></tr></thead><tbody>
-<tr><td><code>coord_item</code></td><td>Resolve a single item (latest or a specific revision): decoded content, revision id, IPFS hash, on-chain owner, and lifecycle flags</td></tr>
-<tr><td><code>coord_revisions</code></td><td>List the full revision history of an item, newest-first (revision counter, IPFS hash, block height, timestamp)</td></tr>
-<tr><td><code>coord_events</code></td><td>Query the event indexer for events matching a key — item id, account id, IPFS hash, or <code>item_id</code> + <code>revision_id</code> — newest-first, up to a limit, with optional <code>(block_number, event_index)</code> cursor</td></tr>
-<tr><td><code>coord_account_items</code></td><td>List the content items an account has pinned, resolving each item's title where possible</td></tr>
-<tr><td><code>coord_profile</code></td><td>Resolve an account's profile: its profile item id and decoded name, bio, location, and account type</td></tr>
-<tr><td><code>coord_decode_content</code></td><td>Decode arbitrary content bytes from the IPFS store (by digest hex or Base58 CIDv0) into structured title/body/language/image/profile fields — no chain interaction</td></tr>
-<tr><td><code>coord_status</code></td><td>Report aggregate network health: chain (genesis, best/finalized block, SS58 prefix, item-id namespace), indexer spans, and IPFS peer id</td></tr>
+<table><thead><tr><th>Argument</th><th>Meaning</th></tr></thead><tbody>
+<tr><td><code>prompt</code></td><td>What to depict (required). Photographic results come from photographic language (lens, lighting, film, camera detail); illustration phrasing produces illustration</td></tr>
+<tr><td><code>model</code></td><td>Explicit image model id (e.g. <code>gpt-image-1</code>, <code>glm-image</code>). Optional — when omitted, the provider's catalog image models are picked by priority</td></tr>
+<tr><td><code>size</code></td><td>Output canvas: <code>auto</code>, <code>1024x1024</code>, <code>1024x1536</code>, or <code>1536x1024</code></td></tr>
+<tr><td><code>quality</code></td><td>Render quality hint: <code>auto</code>, <code>low</code>, <code>medium</code>, or <code>high</code></td></tr>
+<tr><td><code>output_format</code></td><td>Encoded format of the returned image: <code>png</code>, <code>jpeg</code>, or <code>webp</code></td></tr>
+<tr><td><code>background</code></td><td><code>auto</code>, <code>opaque</code>, or <code>transparent</code> (transparent requires png/webp)</td></tr>
+<tr><td><code>alt</code></td><td>Alt text for the displayed image</td></tr>
 </tbody></table>
-<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;" ><code data-lang="json"><span class="giallo-l"><span style="color: #9399B2;">{ &quot;</span><span style="color: #89B4FA;">name</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;coord_item&quot;</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">arguments</span><span style="color: #9399B2;">&quot;: { &quot;</span><span style="color: #89B4FA;">item_id</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;0x…&quot;</span><span style="color: #9399B2;"> } }</span></span>
-<span class="giallo-l"><span style="color: #9399B2;">{ &quot;</span><span style="color: #89B4FA;">name</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;coord_status&quot;</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">arguments</span><span style="color: #9399B2;">&quot;: {} }</span></span>
-<span class="giallo-l"><span style="color: #9399B2;">{ &quot;</span><span style="color: #89B4FA;">name</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;coord_events&quot;</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">arguments</span><span style="color: #9399B2;">&quot;: { &quot;</span><span style="color: #89B4FA;">key</span><span style="color: #9399B2;">&quot;: { &quot;</span><span style="color: #89B4FA;">kind</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;item_id&quot;</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">item_id</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;0x…&quot;</span><span style="color: #9399B2;"> }, &quot;</span><span style="color: #89B4FA;">limit</span><span style="color: #9399B2;">&quot;:</span><span style="color: #FAB387;"> 100</span><span style="color: #9399B2;"> } }</span></span></code></pre><h2 id="write-tools">Write tools
-<a class="zola-anchor" href="#write-tools" aria-label="Anchor link for: write-tools">
+<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;" ><code data-lang="json"><span class="giallo-l"><span style="color: #9399B2;">{ &quot;</span><span style="color: #89B4FA;">name</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;generate_image&quot;</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">arguments</span><span style="color: #9399B2;">&quot;: { &quot;</span><span style="color: #89B4FA;">prompt</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;a lighthouse at dusk, 35mm film grain&quot;</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">size</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;1024x1024&quot;</span><span style="color: #9399B2;"> } }</span></span></code></pre><h2 id="providers-model-selection">Providers &amp; model selection
+<a class="zola-anchor" href="#providers-model-selection" aria-label="Anchor link for: providers-model-selection">
   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
 </a>
 </h2>
-<p>The write tools sign transactions and therefore require a <strong>Substrate
-(Polkadot) account credential</strong> in the keystore (add one with the Polkadot
-import wizard, <code>p</code> on the accounts page — see
-<a href="https://choreographr.com/agent/docs/accounts-and-providers/">Accounts &amp; providers</a>), and the daemon
-must be unlocked. The <code>account</code> argument is validated against the credential's
-secret; an empty <code>account</code> signs with the credential's own public key.</p>
-<table><thead><tr><th>Tool</th><th>What it does</th></tr></thead><tbody>
-<tr><td><code>coord_publish_item</code></td><td>Publish a brand-new item: encode content, upload to IPFS, derive the item id, and submit the chain extrinsic</td></tr>
-<tr><td><code>coord_publish_revision</code></td><td>Publish a new revision of an existing item (encode, upload to IPFS, submit the extrinsic)</td></tr>
-<tr><td><code>coord_lifecycle</code></td><td>Apply a lifecycle transition — retract, freeze as not-revisionable, or freeze as not-retractable</td></tr>
-<tr><td><code>coord_account_link</code></td><td>Pin (add) or unpin (remove) an item to/from an account</td></tr>
-<tr><td><code>coord_set_profile</code></td><td>Set an account's profile: publish the profile item and point the account's profile at it</td></tr>
-</tbody></table>
-<p>Content is a structured object (<code>title</code>, <code>body</code>, <code>language</code>, optional <code>image</code>
-and <code>profile</code>) with a <code>content_type</code> — one of <code>document</code>, <code>feed</code>, <code>comment</code>,
-<code>profile</code>, or <code>image</code>. Publishing accepts optional <code>parents</code>, <code>links</code>, and
-<code>mentions</code> (<code>0x</code> id lists), a <code>flags</code> bitmask (default: revisionable +
-retractable), and an optional <code>nonce</code>.</p>
-<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;" ><code data-lang="json"><span class="giallo-l"><span style="color: #9399B2;">{ &quot;</span><span style="color: #89B4FA;">name</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;coord_publish_item&quot;</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">arguments</span><span style="color: #9399B2;">&quot;: {</span></span>
-<span class="giallo-l"><span style="color: #9399B2;">    &quot;</span><span style="color: #89B4FA;">account</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;5Grw…&quot;</span><span style="color: #9399B2;">,</span></span>
-<span class="giallo-l"><span style="color: #9399B2;">    &quot;</span><span style="color: #89B4FA;">content</span><span style="color: #9399B2;">&quot;: { &quot;</span><span style="color: #89B4FA;">content_type</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;document&quot;</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">title</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;Research note&quot;</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">body</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;…&quot;</span><span style="color: #9399B2;"> },</span></span>
-<span class="giallo-l"><span style="color: #9399B2;">    &quot;</span><span style="color: #89B4FA;">links</span><span style="color: #9399B2;">&quot;: [</span><span style="color: #A6E3A1;">&quot;0x…&quot;</span><span style="color: #9399B2;">], &quot;</span><span style="color: #89B4FA;">mentions</span><span style="color: #9399B2;">&quot;: [</span><span style="color: #A6E3A1;">&quot;0x…&quot;</span><span style="color: #9399B2;">] } }</span></span>
-<span class="giallo-l"><span style="color: #9399B2;">{ &quot;</span><span style="color: #89B4FA;">name</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;coord_publish_revision&quot;</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">arguments</span><span style="color: #9399B2;">&quot;: {</span></span>
-<span class="giallo-l"><span style="color: #9399B2;">    &quot;</span><span style="color: #89B4FA;">account</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;5Grw…&quot;</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">item_id</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;0x…&quot;</span><span style="color: #9399B2;">,</span></span>
-<span class="giallo-l"><span style="color: #9399B2;">    &quot;</span><span style="color: #89B4FA;">content</span><span style="color: #9399B2;">&quot;: { &quot;</span><span style="color: #89B4FA;">content_type</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;document&quot;</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">title</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;Research note (v2)&quot;</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">body</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;…&quot;</span><span style="color: #9399B2;"> } } }</span></span>
-<span class="giallo-l"><span style="color: #9399B2;">{ &quot;</span><span style="color: #89B4FA;">name</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;coord_lifecycle&quot;</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">arguments</span><span style="color: #9399B2;">&quot;: { &quot;</span><span style="color: #89B4FA;">account</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;5Grw…&quot;</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">action</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;retract&quot;</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">item_id</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;0x…&quot;</span><span style="color: #9399B2;"> } }</span></span></code></pre>
+<p>Generation runs against the session's account. Two adapters are supported:</p>
+<ul>
+<li><strong>OpenAI Images</strong> — OpenAI-compatible endpoints (<code>gpt-image-*</code>).</li>
+<li><strong>z.ai / Zhipu GLM</strong> — <code>glm-image</code>.</li>
+</ul>
+<p>Model selection is catalog-driven: an explicit <code>model</code> argument always wins;
+otherwise the provider's verified image models (<code>supports_image_output</code>) are
+picked by priority — <code>gpt-image</code> &gt; <code>imagen</code> &gt; <code>gemini-image</code> &gt; <code>flux</code> &gt;
+<code>dall-e</code>. There is no guessed fallback: if the provider has no image-output
+models in the catalog, the tool fails with guidance to pass <code>model</code> explicitly,
+or to add a <code>supports_image_output</code> overlay entry and run <code>/refresh-models</code>.</p>
+<h2 id="the-result">The result
+<a class="zola-anchor" href="#the-result" aria-label="Anchor link for: the-result">
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+</a>
+</h2>
+<p>Generated bytes re-enter the same pipeline as <code>display_image</code>: the image is
+shown inline in the client, persisted durably in the <code>session_attachments</code>
+table, and can be read back with <code>read_image</code> — so the model sees its own
+generation and can refine it. The tool also reports the model that produced the
+image and, when the provider returns one, the provider's revised prompt.</p>
 <blockquote>
-<p>The Content tools are currently pointed at a single local
-deployment (the daemon's chain node, indexer, and IPFS host). See
-<a href="https://choreographr.com/agent/docs/security/#content-credentials">Security</a> for how
-the signing credential is handled, and the
-<a href="https://choreographr.com/content/docs/introduction/">content docs</a> for how the Content network works.</p>
+<p>The credential never reaches the tool: provider resolution runs through the
+daemon command loop, scoped to the requesting session, so cancelling the
+session also aborts an in-flight generation.</p>
 </blockquote>
 
       

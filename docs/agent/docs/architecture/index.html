@@ -49,7 +49,7 @@
   <link rel="preload" href="https://choreographr.com/fonts/jetbrains-mono.woff2" as="font" type="font/woff2" crossorigin>
 
   <link rel="icon" type="image/svg+xml" href="https://choreographr.com/favicon.svg">
-  <link rel="stylesheet" href="https://choreographr.com/css/main.css?h=e12b9545e64292eb95a3">
+  <link rel="stylesheet" href="https://choreographr.com/css/main.css?h=522f5596923af2ef361c">
 
   <!-- Firefox/Zen can paint a frame before this stylesheet has been
        applied if a layout flush happens while it loads (Bugzilla
@@ -396,9 +396,9 @@
     </li>
     
     <li>
-      <a href="https://choreographr.com/agent/docs/tools/coordination/"
+      <a href="https://choreographr.com/agent/docs/tools/image/"
          class="pl-5 text-night-300 hover:text-night-50">
-        Content tools
+        Image generation
       </a>
     </li>
     
@@ -413,13 +413,6 @@
       <a href="https://choreographr.com/agent/docs/tools/riscv/"
          class="pl-5 text-night-300 hover:text-night-50">
         RISC-V VM tool
-      </a>
-    </li>
-    
-    <li>
-      <a href="https://choreographr.com/agent/docs/tools/mcp/"
-         class="pl-5 text-night-300 hover:text-night-50">
-        MCP servers
       </a>
     </li>
     
@@ -500,27 +493,28 @@ This page is a short orientation.</p>
 </h2>
 <p>Choreographr separates the daemon that runs sessions from the clients that
 connect and disconnect at any time.</p>
-<p><img src="/architecture.svg" alt="Architecture diagram: daemon with TUI, GUI, IM, ACP and daemon clients, model providers, and the RISC-V VM sandbox" loading="lazy" decoding="async" /></p>
+<p><img src="/architecture.svg" alt="Architecture diagram: server with TUI, GUI and server clients, model providers, and the RISC-V VM sandbox" loading="lazy" decoding="async" /></p>
 <ul>
 <li>The client can run on the same computer as the daemon (via a local Unix
 socket), or the daemon can live anywhere on your local network or the
 Internet.</li>
-<li>When connecting remotely, clients use <strong>Noise-IK</strong> encrypted TCP.</li>
-<li>Because the daemon can live anywhere and is reachable over encrypted TCP, it
-can also be reached from mobile devices — for example, chatting with your
-agent on the go via the <code>choreo-im</code> Telegram bridge.</li>
-<li>Daemons can also connect to each other — <code>choreo-daemon</code> acts as a client of
-other daemons, handing off sessions over Noise-IK encrypted TCP to deploy
-work elsewhere.</li>
+<li><code>choreo-tui</code> starts a local daemon automatically when it cannot reach one.</li>
+<li>When connecting remotely, clients use <strong>Noise</strong> encrypted TCP — <strong>IK</strong>
+against a pinned server key, <strong>XX</strong> first-contact mode otherwise.</li>
+<li>Daemons will also be able to connect to each other — acting as a client of
+another daemon to hand off sessions over Noise encrypted TCP and deploy work
+elsewhere (planned; not yet implemented).</li>
 </ul>
-<p>Client/server communication is encoded via <a rel="noopener external" target="_blank" href="https://postcard.jamesmunns.com/">Postcard</a>.</p>
+<p>Client/server communication is encoded with <a rel="noopener external" target="_blank" href="https://msgpack.org/">MessagePack</a>
+(named mode, via <code>rmp-serde</code>).</p>
 <h2 id="threading-model">Threading model
 <a class="zola-anchor" href="#threading-model" aria-label="Anchor link for: threading-model">
   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
 </a>
 </h2>
 <p>The daemon uses <strong>pure OS threads with message passing</strong> (actor model) — no
-async code in its own logic, and no <code>Arc&lt;Mutex&gt;</code> shared state. All I/O uses
+async code in its own logic, and shared mutable state kept to a few deliberate,
+localized exceptions rather than being the design's backbone. All I/O uses
 blocking <code>std</code> APIs on dedicated threads:</p>
 <pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;" ><code data-lang="plain"><span class="giallo-l"><span>main()</span></span>
 <span class="giallo-l"><span>├── listener thread — UnixListener accept loop</span></span>
@@ -532,12 +526,14 @@ blocking <code>std</code> APIs on dedicated threads:</p>
 <span class="giallo-l"><span>│   └── owns SessionState (exclusive access)</span></span>
 <span class="giallo-l"><span>└── main thread — polls shutdown flag, orchestrates exit</span></span></code></pre>
 <p>This keeps the mental model simple — each thread owns its data — and avoids the
-complexity of async cancellation. Two crates drive async clients behind a tokio
+complexity of async cancellation. The optional <code>choreo-blockchain</code> crate drives
+async clients (alloy/subxt for the EVM + Substrate tools) behind a tokio
 sidecar runtime that the daemon calls through synchronous <code>execute_*</code> entry
-points (which <code>block_on</code> internally): <code>choreo-coord</code> (always linked, uses
-<code>subxt</code> for the Content chain) and the optional
-<code>choreo-blockchain</code> (the alloy/subxt EVM + Substrate tools, linked only with
-the <code>blockchain</code> feature).</p>
+points (which <code>block_on</code> internally); it is linked only with the <code>blockchain</code>
+feature. The daemon also runs a platform <strong>power-events</strong> monitor thread
+(suspend/resume, <code>choreo-power-events</code>) and tracks live provider sockets in
+<code>choreo-sockreg</code>, so a cancel or a system sleep can force-close a wedged
+connection.</p>
 <h2 id="request-flow">Request flow
 <a class="zola-anchor" href="#request-flow" aria-label="Anchor link for: request-flow">
   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
@@ -559,27 +555,29 @@ serially to preserve ordering.</p>
   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
 </a>
 </h2>
-<p>Sixteen crates in a single Cargo workspace (resolver = "3"). The dependency
-spine is <code>choreo-proto</code> → <code>choreo-keystore</code> / <code>choreo-transport</code>, with
-<code>choreo-client-core</code> and the daemon on top, and clients (<code>choreo-tui</code>,
-<code>choreo-gui</code>, <code>choreo-im</code>, <code>choreo-acp</code>) as leaves. The daemon itself also
-acts as a client — <code>choreo-daemon</code> can connect to other daemons to handoff
-sessions.</p>
+<p>Eighteen crates in a single Cargo workspace (resolver = "3"). The two
+foundational crates — <code>choreo-proto</code> (the wire format) and <code>choreo-keystore</code>
+(credentials) — have no workspace dependencies; <code>choreo-transport</code> builds on
+<code>choreo-proto</code>, and <code>choreo-client-core</code> and the daemon sit on top, with the
+clients and bridges (<code>choreo-tui</code>, <code>choreo-gui</code>, <code>choreo-im</code>, <code>choreo-acp</code>,
+<code>choreo-mcp</code>) as leaves.</p>
 <table><thead><tr><th>Crate</th><th>Description</th></tr></thead><tbody>
-<tr><td><code>choreo-daemon</code></td><td>The core engine — binary <code>choreographr</code>. Unix socket server that validates credentials, manages persistent sessions (with sub-sessions and working directories), runs requests with a tool-call loop, and streams responses. Also connects to other daemons over Noise-IK to handoff sessions and deploy work elsewhere</td></tr>
-<tr><td><code>choreo-ai-protocols</code></td><td>Provider protocols — OpenAI-compatible, Anthropic Messages, and Google Gemini clients, the <code>ProviderClient</code> trait, and the provider catalog (200+ providers)</td></tr>
+<tr><td><code>choreo-daemon</code></td><td>The core engine — binary <code>choreographr</code>. Unix socket server that validates credentials, manages persistent sessions (with sub-sessions and working directories), runs requests with a tool-call loop, and streams responses. Daemon-to-daemon session hand-off is planned but not yet implemented</td></tr>
+<tr><td><code>choreo-ai-protocols</code></td><td>Provider protocols — OpenAI-compatible, Anthropic Messages, and Google Gemini clients, the <code>ProviderClient</code> trait, the image-generation adapters, and the provider catalog (200+ providers)</td></tr>
 <tr><td><code>choreo-blockchain</code></td><td>Blockchain tools — EVM (alloy) and Substrate/Polkadot (subxt) read-only queries plus the tokio sidecar runtime they run on; pulled in by the daemon's <code>blockchain</code> feature (off by default)</td></tr>
-<tr><td><code>choreo-coord</code></td><td>Content orchestration — composes the chain / indexer / IPFS pipelines for the <code>coord</code> tool group (always linked)</td></tr>
+<tr><td><code>choreo-content</code></td><td>Coordination Platform client — Substrate chain writes (subxt via a tokio sidecar), indexer reads, IPFS add/cat, and content encode/decode; pulled in by the daemon's <code>content</code> feature (off by default)</td></tr>
 <tr><td><code>choreo-image</code></td><td>Image decode surface — raster decode with EXIF orientation baked in, HEIC decode (with a decompression-bomb guard), and SVG rasterization</td></tr>
 <tr><td><code>choreo-sanitize</code></td><td>Shared string-safety leaf — output sanitization (control chars, truncation, fenced-output safety) used across tools</td></tr>
-<tr><td><code>choreo-proto</code></td><td>Framed binary protocol (postcard + length prefix) shared between clients and daemon</td></tr>
-<tr><td><code>choreo-keystore</code></td><td>X25519 keypair + ECDH/AES-256-GCM crypto library for encrypted credentials; also Substrate (Polkadot) account credentials and Polkadot-JS keyring import</td></tr>
-<tr><td><code>choreo-transport</code></td><td>Noise-IK encrypted transport over TCP with message fragmentation and per-chunk locking</td></tr>
-<tr><td><code>choreo-mcp</code></td><td>MCP (Model Context Protocol) client — spawns subprocess servers, discovers tools, dispatches calls over JSON-RPC stdio</td></tr>
-<tr><td><code>choreo-acp</code></td><td>ACP (Agent Communication Protocol) bridge — translates JSON-RPC 2.0 over stdin/stdout into <code>choreo-proto</code> messages so ACP-compatible editors can drive sessions</td></tr>
+<tr><td><code>choreo-proto</code></td><td>Framed binary protocol (MessagePack + length prefix) shared between clients and daemon</td></tr>
+<tr><td><code>choreo-keystore</code></td><td>X25519 keypair + ECDH/AES-256-GCM crypto library for encrypted credentials, the per-daemon keystore binding, and shared config paths</td></tr>
+<tr><td><code>choreo-transport</code></td><td>Noise encrypted transport over TCP (IK + XX first-contact) with message fragmentation and per-chunk locking</td></tr>
+<tr><td><code>choreo-sockreg</code></td><td>Live-socket registry — tracks provider connections (by fd) so the daemon can force-close a wedged reader on cancel or sleep, plus TCP keepalive tuning</td></tr>
+<tr><td><code>choreo-power-events</code></td><td>Platform suspend/resume notifications (Linux logind / macOS IORegisterForSystemPower) delivered as channel events</td></tr>
 <tr><td><code>choreo-tui</code></td><td>Full-screen terminal UI client (ratatui + crossterm)</td></tr>
 <tr><td><code>choreo-gui</code></td><td>Desktop GUI client (Dioxus)</td></tr>
-<tr><td><code>choreo-im</code></td><td>Instant messaging bridge (Telegram)</td></tr>
+<tr><td><code>choreo-im</code></td><td>Instant-messaging bridge (Telegram, with more platforms planned) — chat with your agent on the go; its own binary, not part of the prebuilt releases (<code>cargo build -p choreo-im</code>)</td></tr>
+<tr><td><code>choreo-acp</code></td><td>ACP bridge — translates the Agent Communication Protocol (JSON-RPC over stdin/stdout) into daemon messages so ACP-compatible editors (Claude Code, Cline, …) can drive sessions; its own binary (<code>cargo build -p choreo-acp</code>)</td></tr>
+<tr><td><code>choreo-mcp</code></td><td>MCP (Model Context Protocol) client — spawns subprocess servers, discovers their tools, and dispatches calls over JSON-RPC stdio; library-only, linked via the daemon's <code>mcp</code> feature (off by default)</td></tr>
 <tr><td><code>choreo-client-core</code></td><td>Shared parsing, markdown, image assembly, and daemon-message dispatch for UI clients</td></tr>
 <tr><td><code>choreo-markdown</code></td><td>Markdown parser and HTML renderer (pulldown-cmark + ammonia)</td></tr>
 </tbody></table>
@@ -588,14 +586,15 @@ sessions.</p>
   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
 </a>
 </h2>
-<p>Client/daemon communication is a framed binary protocol (postcard + length
+<p>Client/daemon communication is a framed binary protocol (MessagePack + length
 prefix), defined in <code>choreo-proto</code>. Remote connections are wrapped in the
-Noise IK encrypted transport from <code>choreo-transport</code>. The protocol is
-versioned (v3): streaming is <strong>lossless</strong> — each client has an unbounded
-outbound queue with lag-based eviction, and an <code>Evicted</code> event informs a slow
-client of dropped state instead of silently truncating a session. Session
-history is compressed with zstd (schema 1→2 migration) so long-running
-sessions stay compact on disk.</p>
+Noise encrypted transport from <code>choreo-transport</code> (IK against a pinned server
+key; XX first-contact mode on the wire v5 handshake). The protocol is
+versioned: streaming is <strong>lossless</strong> — each client has an unbounded outbound
+queue with lag-based eviction, and an <code>Evicted</code> event informs a slow client of
+dropped state instead of silently truncating a session. Session history is
+compressed with zstd (schema 1→2 migration) so long-running sessions stay
+compact on disk.</p>
 <h2 id="vision-browsing">Vision &amp; browsing
 <a class="zola-anchor" href="#vision-browsing" aria-label="Anchor link for: vision-browsing">
   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
@@ -608,17 +607,10 @@ model; normalized bytes persist in the <code>session_attachments</code> table.</
 <li><strong>Web page rendering</strong> — <code>retrieve_webpage</code> launches a one-shot headless
 Chromium/Chrome (run locally and offline) to capture HTML, text, screenshots,
 or PDFs.</li>
+<li><strong>Image generation</strong> — <code>generate_image</code> produces a new image from a text
+prompt through the session's image-capable provider and feeds it through the
+same display/persistence pipeline as <code>display_image</code>.</li>
 </ul>
-<h2 id="content">Content
-<a class="zola-anchor" href="#content" aria-label="Anchor link for: content">
-  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
-</a>
-</h2>
-<p>The <code>coord</code> tool group (always linked) drives the Choreographr Content
-network through <code>choreo-coord</code>, which composes three pipelines: a Substrate
-chain (subxt, <code>block_on</code> into a tokio sidecar), the <code>acuity-index</code> event
-indexer, and a local IPFS daemon. Write tools sign extrinsics with the
-keystore's Substrate account credential.</p>
 <h2 id="provider-architecture">Provider architecture
 <a class="zola-anchor" href="#provider-architecture" aria-label="Anchor link for: provider-architecture">
   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
@@ -630,9 +622,13 @@ keystore's Substrate account credential.</p>
 OpenAI-compatible, Anthropic Messages, and Google Gemini clients.</li>
 <li><code>InferenceProvider</code> (<code>choreo-daemon</code>) — a protocol-erased facade wrapping an
 <code>Arc&lt;dyn ProviderClient&gt;</code> plus the catalog slug; records API metrics.</li>
-<li><strong>Provider Catalog</strong> (<code>choreo-ai-protocols/src/catalog/</code>) — one TOML file
-per provider with a curated model list, context windows, and reasoning
-levels. Adding a provider is a data-file edit, not code.</li>
+<li><strong>Provider Catalog</strong> (<code>choreo-ai-protocols/src/catalog/</code>) — a normalized
+<a rel="noopener external" target="_blank" href="https://models.dev">models.dev</a> snapshot of provider/model information
+(context windows, reasoning levels, output limits, modalities), layered with
+a bundled <code>models-overlay.toml</code> policy file and an optional user overlay at
+<code>~/.config/choreographr/models-overlay.toml</code>. Adding or overriding a provider
+is a data edit, not code — see
+<a href="https://choreographr.com/agent/docs/accounts-and-providers/">Accounts &amp; providers</a>.</li>
 </ol>
 
       

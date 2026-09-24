@@ -49,7 +49,7 @@
   <link rel="preload" href="https://choreographr.com/fonts/jetbrains-mono.woff2" as="font" type="font/woff2" crossorigin>
 
   <link rel="icon" type="image/svg+xml" href="https://choreographr.com/favicon.svg">
-  <link rel="stylesheet" href="https://choreographr.com/css/main.css?h=e12b9545e64292eb95a3">
+  <link rel="stylesheet" href="https://choreographr.com/css/main.css?h=522f5596923af2ef361c">
 
   <!-- Firefox/Zen can paint a frame before this stylesheet has been
        applied if a layout flush happens while it loads (Bugzilla
@@ -396,9 +396,9 @@
     </li>
     
     <li>
-      <a href="https://choreographr.com/agent/docs/tools/coordination/"
+      <a href="https://choreographr.com/agent/docs/tools/image/"
          class="pl-5 text-night-300 hover:text-night-50">
-        Content tools
+        Image generation
       </a>
     </li>
     
@@ -413,13 +413,6 @@
       <a href="https://choreographr.com/agent/docs/tools/riscv/"
          class="pl-5 text-night-300 hover:text-night-50">
         RISC-V VM tool
-      </a>
-    </li>
-    
-    <li>
-      <a href="https://choreographr.com/agent/docs/tools/mcp/"
-         class="pl-5 text-night-300 hover:text-night-50">
-        MCP servers
       </a>
     </li>
     
@@ -503,6 +496,8 @@ are optional.</p>
 <p><strong>Note:</strong> Provider-level settings (<code>base_url</code>, <code>streaming</code>, <code>retry_*</code>,
 timeouts, endpoint paths, request format, etc.) have moved to per-account
 overrides in <code>accounts.toml</code>. They are no longer read from <code>config.toml</code>.</p>
+<p><code>accounts.toml</code> is <strong>watched live</strong>: edits are picked up without a restart,
+and affected sessions rebuild their provider clients on the next request.</p>
 </blockquote>
 <h2 id="environment-variables">Environment variables
 <a class="zola-anchor" href="#environment-variables" aria-label="Anchor link for: environment-variables">
@@ -510,7 +505,7 @@ overrides in <code>accounts.toml</code>. They are no longer read from <code>conf
 </a>
 </h2>
 <table><thead><tr><th>Variable</th><th>Purpose</th></tr></thead><tbody>
-<tr><td><code>CHOREOGRAPHR_SOCKET_PATH</code></td><td>Override the Unix socket path (default <code>/tmp/Choreographr.sock</code>)</td></tr>
+<tr><td><code>CHOREOGRAPHR_SOCKET_PATH</code></td><td>Override the Unix socket path (default: the platform temp directory, e.g. <code>$TMPDIR/Choreographr.sock</code>)</td></tr>
 <tr><td><code>CHOREOGRAPHR_DB_PATH</code></td><td>Override the database path (default <code>~/.local/share/choreographr/state.redb</code>)</td></tr>
 <tr><td><code>CHOREOGRAPHR_MAX_TURNS</code></td><td>Override <code>max_turns</code> (resolution chain: env → config.toml → default <code>0</code>)</td></tr>
 <tr><td><code>RUST_LOG</code></td><td>Log level (takes precedence over <code>-v</code>/<code>-vv</code>/<code>-q</code> flags)</td></tr>
@@ -518,19 +513,35 @@ overrides in <code>accounts.toml</code>. They are no longer read from <code>conf
 <p>A <code>max_turns</code> value of <code>0</code> means <strong>unlimited</strong> — the agent loop runs until the
 model produces a final answer, is cancelled, or hits an error. This is a
 daemon-wide cap; individual sessions do not carry their own <code>max_turns</code>.</p>
-<h2 id="identity-keys">Identity keys
-<a class="zola-anchor" href="#identity-keys" aria-label="Anchor link for: identity-keys">
+<h2 id="transport-keys">Transport keys
+<a class="zola-anchor" href="#transport-keys" aria-label="Anchor link for: transport-keys">
   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
 </a>
 </h2>
-<p>Identity keys live in <code>~/.config/choreographr/</code>:</p>
+<p>The machine's transport keys and trust state live in
+<code>~/.config/choreographr/</code>:</p>
 <ul>
-<li><code>identity.pk</code> — the private key</li>
-<li><code>public.pk</code> — the public key</li>
-<li><code>identity.pk.enc</code> — optional passphrase-encrypted private key</li>
+<li><code>transport.sec</code> — the Noise IK static secret key (32-byte X25519)</li>
+<li><code>transport.pub</code> — the matching static public key; peers identify this machine
+by it, and <code>choreographr fingerprint</code> renders it</li>
+<li><code>known_servers.toml</code> — pinned server fingerprints for remote connections</li>
+<li><code>authorized_clients.toml</code> — the daemon's client allow-list</li>
 </ul>
 <p>Credentials are encrypted per-credential with the daemon's X25519 public key and
-stored in the <code>redb</code> database. See <a href="https://choreographr.com/agent/docs/security/">Security</a> for details.</p>
+stored in the <code>redb</code> database. The daemon binds its keystore once; thereafter
+<code>/unlock</code> uses the stored per-daemon unlock key. See
+<a href="https://choreographr.com/agent/docs/security/">Security</a> for details.</p>
+<h2 id="daemon-flags">Daemon flags
+<a class="zola-anchor" href="#daemon-flags" aria-label="Anchor link for: daemon-flags">
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+</a>
+</h2>
+<table><thead><tr><th>Flag</th><th>Purpose</th></tr></thead><tbody>
+<tr><td><code>-v</code> / <code>-vv</code> / <code>-q</code></td><td>Log verbosity (debug / trace / warnings); <code>RUST_LOG</code> overrides them</td></tr>
+<tr><td><code>--log-file &lt;path&gt;</code></td><td>Write daemon logs to a file instead of stderr (ANSI disabled)</td></tr>
+<tr><td><code>--auto-exit</code></td><td>Shut down gracefully when the last client disconnects</td></tr>
+<tr><td><code>--metrics-addr &lt;addr&gt;</code></td><td>Serve an OpenMetrics endpoint (see <a href="https://choreographr.com/agent/docs/monitoring/">Monitoring</a>)</td></tr>
+</tbody></table>
 <h2 id="slash-command-reference">Slash command reference
 <a class="zola-anchor" href="#slash-command-reference" aria-label="Anchor link for: slash-command-reference">
   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>

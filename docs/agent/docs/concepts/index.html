@@ -49,7 +49,7 @@
   <link rel="preload" href="https://choreographr.com/fonts/jetbrains-mono.woff2" as="font" type="font/woff2" crossorigin>
 
   <link rel="icon" type="image/svg+xml" href="https://choreographr.com/favicon.svg">
-  <link rel="stylesheet" href="https://choreographr.com/css/main.css?h=e12b9545e64292eb95a3">
+  <link rel="stylesheet" href="https://choreographr.com/css/main.css?h=522f5596923af2ef361c">
 
   <!-- Firefox/Zen can paint a frame before this stylesheet has been
        applied if a layout flush happens while it loads (Bugzilla
@@ -396,9 +396,9 @@
     </li>
     
     <li>
-      <a href="https://choreographr.com/agent/docs/tools/coordination/"
+      <a href="https://choreographr.com/agent/docs/tools/image/"
          class="pl-5 text-night-300 hover:text-night-50">
-        Content tools
+        Image generation
       </a>
     </li>
     
@@ -413,13 +413,6 @@
       <a href="https://choreographr.com/agent/docs/tools/riscv/"
          class="pl-5 text-night-300 hover:text-night-50">
         RISC-V VM tool
-      </a>
-    </li>
-    
-    <li>
-      <a href="https://choreographr.com/agent/docs/tools/mcp/"
-         class="pl-5 text-night-300 hover:text-night-50">
-        MCP servers
       </a>
     </li>
     
@@ -537,9 +530,9 @@ of every built-in tool and how to call it.</p>
 <p>Available tool groups include <strong>core</strong> (filesystem, HTTP, images, PDF
 classification, search, random, time, vision input, web-page rendering),
 <strong>git</strong>, <strong>shell</strong>, <strong>vm</strong>, <strong>x</strong>, <strong>debug</strong> (read-only diagnostics),
-<strong>db</strong>, <strong>coord</strong> (the Content network), and <strong>blockchain</strong>
+<strong>db</strong>, <strong>image</strong> (image generation), and <strong>blockchain</strong>
 (EVM and Substrate/Polkadot queries, when the daemon is built with the
-<code>blockchain</code> feature). Only <code>core</code>, <code>git</code>, <code>shell</code>, and <code>coord</code> are active by
+<code>blockchain</code> feature). Only <code>core</code>, <code>git</code>, and <code>shell</code> are active by
 default; the rest are opt-in via <code>load_tools</code>.</p>
 <h3 id="tool-groups">Tool groups
 <a class="zola-anchor" href="#tool-groups" aria-label="Anchor link for: tool-groups">
@@ -597,23 +590,10 @@ It normalizes the image (resize / MIME / re-encode, with EXIF orientation
 baked in), reports a text handle, and carries the normalized bytes durably in
 the <code>session_attachments</code> table. This is the input counterpart to
 <code>display_image</code>, which renders an image <em>out</em> to you.</p>
-<h2 id="content">Content
-<a class="zola-anchor" href="#content" aria-label="Anchor link for: content">
-  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
-</a>
-</h2>
-<p>The <code>coord</code> group (always active) connects the agent to the <strong>Choreographr
-Content</strong> — a decentralized, content-addressed, timestamped
-system for agents and humans to publish and coordinate over. It composes a
-Substrate chain, the <code>acuity-index</code> event indexer, and a local IPFS daemon.
-The agent can read items, revisions, events, account profiles, and network
-health, and — with a Substrate account credential — publish items and
-revisions, apply lifecycle transitions, pin/unpin items, and set profiles.</p>
-<blockquote>
-<p>Groups are a <strong>discovery mechanism, not access control</strong> — the RISC-V VM
-always has access to all tools. See the
-<a href="https://choreographr.com/agent/docs/tools/coordination/">tools reference</a>.</p>
-</blockquote>
+<p>The <code>generate_image</code> tool (in the <code>image</code> group) is the output-side
+counterpart: it produces a new image from a text prompt through the session's
+image-capable provider and hands it to the same display/persistence pipeline,
+so the model can then <code>read_image</code> its own generation and refine it.</p>
 <h2 id="multiple-live-sessions">Multiple live sessions
 <a class="zola-anchor" href="#multiple-live-sessions" aria-label="Anchor link for: multiple-live-sessions">
   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>

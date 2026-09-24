@@ -49,7 +49,7 @@
   <link rel="preload" href="https://choreographr.com/fonts/jetbrains-mono.woff2" as="font" type="font/woff2" crossorigin>
 
   <link rel="icon" type="image/svg+xml" href="https://choreographr.com/favicon.svg">
-  <link rel="stylesheet" href="https://choreographr.com/css/main.css?h=e12b9545e64292eb95a3">
+  <link rel="stylesheet" href="https://choreographr.com/css/main.css?h=522f5596923af2ef361c">
 
   <!-- Firefox/Zen can paint a frame before this stylesheet has been
        applied if a layout flush happens while it loads (Bugzilla
@@ -380,9 +380,9 @@
     </li>
     
     <li>
-      <a href="https://choreographr.com/agent/docs/tools/coordination/"
+      <a href="https://choreographr.com/agent/docs/tools/image/"
          class="pl-5 text-night-300 hover:text-night-50">
-        Content tools
+        Image generation
       </a>
     </li>
     
@@ -397,13 +397,6 @@
       <a href="https://choreographr.com/agent/docs/tools/riscv/"
          class="pl-5 text-night-300 hover:text-night-50">
         RISC-V VM tool
-      </a>
-    </li>
-    
-    <li>
-      <a href="https://choreographr.com/agent/docs/tools/mcp/"
-         class="pl-5 text-night-300 hover:text-night-50">
-        MCP servers
       </a>
     </li>
     
@@ -474,8 +467,8 @@
       <p>Tools are the functions the LLM — and the RISC-V VM — can call to interact
 with the outside world: reading and writing files, running shell commands,
 making HTTP requests, managing Git repositories, querying a persistent
-database, reading images into a vision model, browsing the web, posting to X,
-publishing to the Content network, and more. This section
+database, reading images into a vision model, browsing the web, generating
+images, posting to X, and more. This section
 is the complete reference: how tools work, how they are grouped, and what each
 one does.</p>
 <ul>
@@ -489,11 +482,9 @@ push, show.</li>
 <li><strong><a href="https://choreographr.com/agent/docs/tools/x/">X (Twitter) tools</a></strong> — post, search, user lookup.</li>
 <li><strong><a href="https://choreographr.com/agent/docs/tools/blockchain/">Blockchain tools</a></strong> — EVM and
 Substrate/Polkadot read-only queries.</li>
-<li><strong><a href="https://choreographr.com/agent/docs/tools/coordination/">Content tools</a></strong> — the
-on-chain publication network.</li>
+<li><strong><a href="https://choreographr.com/agent/docs/tools/image/">Image tools</a></strong> — <code>generate_image</code> (text-to-image).</li>
 <li><strong><a href="https://choreographr.com/agent/docs/tools/diagnostics/">Diagnostic tools</a></strong> — <code>session_inspect</code>.</li>
 <li><strong><a href="https://choreographr.com/agent/docs/tools/riscv/">RISC-V VM tool</a></strong> — <code>run_riscv</code>.</li>
-<li><strong><a href="https://choreographr.com/agent/docs/tools/mcp/">MCP servers</a></strong> — dynamic groups from MCP servers.</li>
 </ul>
 <h2 id="how-tools-work">How tools work
 <a class="zola-anchor" href="#how-tools-work" aria-label="Anchor link for: how-tools-work">
@@ -531,7 +522,7 @@ and tools with structured return types expose an <code>output_schema</code> for
 </a>
 </h2>
 <p>Tools are organized into <strong>groups</strong> to keep the model's context small. Only
-<strong><code>core</code></strong>, <strong><code>git</code></strong>, <strong><code>shell</code></strong>, and <strong><code>coord</code></strong> are active by default. The
+<strong><code>core</code></strong>, <strong><code>git</code></strong>, and <strong><code>shell</code></strong> are active by default. The
 model can activate additional groups with <code>load_tools</code> and deactivate them with
 <code>unload_tools</code>; <code>core</code> is always active and cannot be unloaded.</p>
 <blockquote>
@@ -542,18 +533,18 @@ always has access to all tools.</p>
 <tr><td><code>core</code></td><td>Filesystem, HTTP, images, display, PDF, web page rendering, vision (read_image), search, random, time, sessions, series</td><td>✅ always</td></tr>
 <tr><td><code>git</code></td><td>Local Git operations (status, diff, log, add, commit, push, show)</td><td>✅</td></tr>
 <tr><td><code>shell</code></td><td>Shell execution (bash, nushell, fish, exec)</td><td>✅</td></tr>
-<tr><td><code>coord</code></td><td>the Content network (blockchain content registry + IPFS + indexer)</td><td>✅ always</td></tr>
+<tr><td><code>image</code></td><td>Image generation (<code>generate_image</code>)</td><td>—</td></tr>
 <tr><td><code>db</code></td><td>Session-scoped key-value database (redb)</td><td>—</td></tr>
 <tr><td><code>x</code></td><td>X/Twitter API (post, search, user lookup)</td><td>—</td></tr>
 <tr><td><code>vm</code></td><td>RISC-V sandboxed code execution</td><td>—</td></tr>
 <tr><td><code>debug</code></td><td>Read-only diagnostics and request dry-runs (<code>session_inspect</code>)</td><td>—</td></tr>
 <tr><td><code>blockchain</code></td><td>EVM and Substrate/Polkadot blockchain queries (alloy/subxt)</td><td>—</td></tr>
-<tr><td><code>mcp/&lt;server&gt;</code></td><td>One dynamic group per configured MCP server</td><td>—</td></tr>
 </tbody></table>
 <blockquote>
-<p>The <code>coord</code> group is <strong>always compiled in and active by default</strong>, like
-<code>core</code>, <code>git</code>, and <code>shell</code> — the Content tools need no feature
-flag. The <code>blockchain</code> group exists only when the daemon is built with the
+<p>The <code>image</code> group holds <code>generate_image</code> — it needs an account whose
+provider supports image generation (see
+<a href="https://choreographr.com/agent/docs/accounts-and-providers/">Accounts &amp; providers</a>). The
+<code>blockchain</code> group exists only when the daemon is built with the
 <code>blockchain</code> cargo feature (the release binaries enable it). The tools live
 in the <code>choreo-blockchain</code> crate, which also owns the tokio sidecar runtime
 the alloy/subxt clients run on.</p>
@@ -597,13 +588,11 @@ the encrypted keystore — never from prompt context.</li>
         
         <li><a href="https://choreographr.com/agent/docs/tools/blockchain/">Blockchain tools</a></li>
         
-        <li><a href="https://choreographr.com/agent/docs/tools/coordination/">Content tools</a></li>
+        <li><a href="https://choreographr.com/agent/docs/tools/image/">Image generation</a></li>
         
         <li><a href="https://choreographr.com/agent/docs/tools/diagnostics/">Diagnostic tools</a></li>
         
         <li><a href="https://choreographr.com/agent/docs/tools/riscv/">RISC-V VM tool</a></li>
-        
-        <li><a href="https://choreographr.com/agent/docs/tools/mcp/">MCP servers</a></li>
         
       </ul>
       

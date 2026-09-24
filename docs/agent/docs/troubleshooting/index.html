@@ -49,7 +49,7 @@
   <link rel="preload" href="https://choreographr.com/fonts/jetbrains-mono.woff2" as="font" type="font/woff2" crossorigin>
 
   <link rel="icon" type="image/svg+xml" href="https://choreographr.com/favicon.svg">
-  <link rel="stylesheet" href="https://choreographr.com/css/main.css?h=e12b9545e64292eb95a3">
+  <link rel="stylesheet" href="https://choreographr.com/css/main.css?h=522f5596923af2ef361c">
 
   <!-- Firefox/Zen can paint a frame before this stylesheet has been
        applied if a layout flush happens while it loads (Bugzilla
@@ -396,9 +396,9 @@
     </li>
     
     <li>
-      <a href="https://choreographr.com/agent/docs/tools/coordination/"
+      <a href="https://choreographr.com/agent/docs/tools/image/"
          class="pl-5 text-night-300 hover:text-night-50">
-        Content tools
+        Image generation
       </a>
     </li>
     
@@ -413,13 +413,6 @@
       <a href="https://choreographr.com/agent/docs/tools/riscv/"
          class="pl-5 text-night-300 hover:text-night-50">
         RISC-V VM tool
-      </a>
-    </li>
-    
-    <li>
-      <a href="https://choreographr.com/agent/docs/tools/mcp/"
-         class="pl-5 text-night-300 hover:text-night-50">
-        MCP servers
       </a>
     </li>
     
@@ -497,10 +490,12 @@
 </a>
 </h2>
 <ul>
-<li><code>choreo-tui</code> writes its diagnostics to <code>/tmp/choreo-tui.log</code> — check there for
-client-side issues.</li>
+<li><code>choreo-tui</code> writes its diagnostics to the platform temp directory
+(<code>$TMPDIR/choreo-tui-&lt;pid&gt;.log</code>) — check there for client-side issues.</li>
 <li>The daemon logs to stderr; use <code>-v</code>/<code>-vv</code> for more detail, or set
-<code>RUST_LOG</code> (which takes precedence over the CLI flags).</li>
+<code>RUST_LOG</code> (which takes precedence over the CLI flags). A TUI-autostarted
+daemon logs to a per-process file (<code>$TMPDIR/choreo-daemon-&lt;pid&gt;.log</code>); pass
+<code>--log-file &lt;path&gt;</code> to write logs elsewhere when starting it yourself.</li>
 </ul>
 <h2 id="common-issues">Common issues
 <a class="zola-anchor" href="#common-issues" aria-label="Anchor link for: common-issues">
@@ -509,8 +504,9 @@ client-side issues.</li>
 </h2>
 <p><strong>The daemon won't accept prompts</strong>
 The daemon starts locked and credentials are only decrypted after <code>/unlock</code>.
-If a request fails with a locked error, run <code>/unlock [passphrase]</code> and make
-sure a credential exists for the session's account (<code>/add-key &lt;service&gt; &lt;api_key&gt;</code>).</p>
+If a request fails with a locked error, run <code>/unlock</code> (it uses the daemon's
+stored key) and make sure a credential exists for the session's account
+(<code>/add-key &lt;service&gt; &lt;api_key&gt;</code>).</p>
 <p><strong>No model responds</strong>
 Check that the session has an account set (<code>/account &lt;name&gt;</code>) and that the
 account name matches an entry in <code>~/.config/choreographr/accounts.toml</code>.
@@ -522,9 +518,17 @@ Override the base URL per-account in <code>accounts.toml</code>:</p>
 <span class="giallo-l"><span>provider</span><span style="color: #94E2D5;"> =</span><span style="color: #A6E3A1;"> &quot;ollama&quot;</span></span>
 <span class="giallo-l"><span>base_url</span><span style="color: #94E2D5;"> =</span><span style="color: #A6E3A1;"> &quot;http://localhost:11434/v1&quot;</span></span></code></pre>
 <p><strong>Remote clients can't connect</strong>
-Remote connections use the Noise IK handshake; make sure the daemon is
-listening on TCP (see <code>choreo-gui</code>'s <code>--tcp-addr</code> / <code>--server-pk</code> flags) and
-that the client has the server's public key.</p>
+Remote connections use a Noise handshake — XX on first contact, then IK against
+the pinned key. Make sure the daemon is listening on TCP (see <code>choreo-tui</code>'s
+<code>--tcp-addr</code> / <code>--server-pk</code> flags), confirm the server fingerprint on first
+connect, and check that the client is in the daemon's <code>authorized_clients.toml</code>
+allow-list (enroll a local client with <code>/acl add</code>).</p>
+<p><strong>No daemon is running</strong>
+In Unix-socket mode <code>choreo-tui</code> starts a daemon automatically when it cannot
+reach one, and shows a status message while the daemon starts. If that fails,
+run <code>choreographr</code> in another terminal and inspect
+<code>$TMPDIR/choreo-daemon-&lt;pid&gt;.log</code>. A daemon that is already listening at the
+socket path is reported explicitly rather than being replaced.</p>
 <h2 id="getting-help">Getting help
 <a class="zola-anchor" href="#getting-help" aria-label="Anchor link for: getting-help">
   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>

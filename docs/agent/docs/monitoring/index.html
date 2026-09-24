@@ -49,7 +49,7 @@
   <link rel="preload" href="https://choreographr.com/fonts/jetbrains-mono.woff2" as="font" type="font/woff2" crossorigin>
 
   <link rel="icon" type="image/svg+xml" href="https://choreographr.com/favicon.svg">
-  <link rel="stylesheet" href="https://choreographr.com/css/main.css?h=e12b9545e64292eb95a3">
+  <link rel="stylesheet" href="https://choreographr.com/css/main.css?h=522f5596923af2ef361c">
 
   <!-- Firefox/Zen can paint a frame before this stylesheet has been
        applied if a layout flush happens while it loads (Bugzilla
@@ -396,9 +396,9 @@
     </li>
     
     <li>
-      <a href="https://choreographr.com/agent/docs/tools/coordination/"
+      <a href="https://choreographr.com/agent/docs/tools/image/"
          class="pl-5 text-night-300 hover:text-night-50">
-        Content tools
+        Image generation
       </a>
     </li>
     
@@ -413,13 +413,6 @@
       <a href="https://choreographr.com/agent/docs/tools/riscv/"
          class="pl-5 text-night-300 hover:text-night-50">
         RISC-V VM tool
-      </a>
-    </li>
-    
-    <li>
-      <a href="https://choreographr.com/agent/docs/tools/mcp/"
-         class="pl-5 text-night-300 hover:text-night-50">
-        MCP servers
       </a>
     </li>
     
@@ -492,9 +485,14 @@
         /agent/docs/monitoring/
       </div>
       <p>The daemon can expose an OpenMetrics (Prometheus) endpoint:</p>
-<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;" ><code data-lang="shellscript"><span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">cargo</span><span style="color: #A6E3A1;"> run --release -p choreo-daemon -- --metrics-addr 127.0.0.1:9464</span></span></code></pre>
+<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;" ><code data-lang="shellscript"><span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">cargo</span><span style="color: #A6E3A1;"> run --release -p choreographr --features metrics -- --metrics-addr 127.0.0.1:9464</span></span></code></pre>
 <p>When <code>--metrics-addr</code> is provided, a dedicated HTTP thread serves <code>GET /metrics</code>
 at the given address. Without the flag, no metrics server is started.</p>
+<p>The endpoint is compiled in via the <code>metrics</code> cargo feature, which is <strong>off by
+default</strong> — a plain build omits the Prometheus machinery entirely. Release
+binaries enable it explicitly, so installed binaries keep <code>/metrics</code>. Built
+without the feature, the daemon still accepts <code>--metrics-addr</code> but refuses to
+start with a clear error telling you to rebuild with <code>--features metrics</code>.</p>
 <h2 id="metrics">Metrics
 <a class="zola-anchor" href="#metrics" aria-label="Anchor link for: metrics">
   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
@@ -509,6 +507,7 @@ at the given address. Without the flag, no metrics server is started.</p>
 <tr><td><code>choreo_api_errors_total</code></td><td>Counter</td><td><code>model</code>, <code>error_type</code></td><td>API error breakdown</td></tr>
 <tr><td><code>choreo_connections_total</code></td><td>Counter</td><td>—</td><td>Total connections accepted</td></tr>
 <tr><td><code>choreo_turns_total</code></td><td>Counter</td><td><code>model</code></td><td>Agent loop turns</td></tr>
+<tr><td><code>choreo_evictions_total</code></td><td>Counter</td><td>—</td><td>Lagging clients evicted (disconnected) for falling too far behind</td></tr>
 <tr><td><code>choreo_request_duration_seconds</code></td><td>Histogram</td><td><code>status</code></td><td>Request latency</td></tr>
 <tr><td><code>choreo_tool_execution_duration_seconds</code></td><td>Histogram</td><td><code>tool</code></td><td>Per-tool execution time</td></tr>
 <tr><td><code>choreo_api_call_duration_seconds</code></td><td>Histogram</td><td><code>model</code>, <code>endpoint</code></td><td>API round-trip time</td></tr>

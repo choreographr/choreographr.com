@@ -49,7 +49,7 @@
   <link rel="preload" href="https://choreographr.com/fonts/jetbrains-mono.woff2" as="font" type="font/woff2" crossorigin>
 
   <link rel="icon" type="image/svg+xml" href="https://choreographr.com/favicon.svg">
-  <link rel="stylesheet" href="https://choreographr.com/css/main.css?h=e12b9545e64292eb95a3">
+  <link rel="stylesheet" href="https://choreographr.com/css/main.css?h=522f5596923af2ef361c">
 
   <!-- Firefox/Zen can paint a frame before this stylesheet has been
        applied if a layout flush happens while it loads (Bugzilla
@@ -396,9 +396,9 @@
     </li>
     
     <li>
-      <a href="https://choreographr.com/agent/docs/tools/coordination/"
+      <a href="https://choreographr.com/agent/docs/tools/image/"
          class="pl-5 text-night-300 hover:text-night-50">
-        Content tools
+        Image generation
       </a>
     </li>
     
@@ -413,13 +413,6 @@
       <a href="https://choreographr.com/agent/docs/tools/riscv/"
          class="pl-5 text-night-300 hover:text-night-50">
         RISC-V VM tool
-      </a>
-    </li>
-    
-    <li>
-      <a href="https://choreographr.com/agent/docs/tools/mcp/"
-         class="pl-5 text-night-300 hover:text-night-50">
-        MCP servers
       </a>
     </li>
     
@@ -494,11 +487,9 @@
       <p>Rust is not the most common language for AI agents today — most agent
 frameworks are written in TypeScript or Python, and for good reasons those
 languages make sense in many contexts. But Choreographr is written entirely in
-Rust, and this page explains why that is a deliberate, structural choice rather
-than a stylistic one: for an <em>agent that must run for a long time, hold your
-credentials, execute untrusted code, and stay responsive across many
-simultaneous sessions</em>, Rust's properties line up almost exactly with what the
-job demands.</p>
+Rust: for an <em>agent that must run for a long time, hold your credentials,
+execute untrusted code, and stay responsive across many simultaneous sessions</em>,
+Rust's properties line up almost exactly with what the job demands.</p>
 <h2 id="a-daemon-you-can-trust-with-your-keys">A daemon you can trust with your keys
 <a class="zola-anchor" href="#a-daemon-you-can-trust-with-your-keys" aria-label="Anchor link for: a-daemon-you-can-trust-with-your-keys">
   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
@@ -528,42 +519,20 @@ then spend enormous effort debugging the state that async code shares.</p>
 message passing</strong> — an actor model, in the classic sense:</p>
 <ul>
 <li>each session runs on its own thread and <em>owns</em> its state;</li>
-<li>threads communicate only through typed channels (<code>mpsc</code>);</li>
-<li>there is no <code>Arc&lt;Mutex&gt;</code> shared state anywhere in the daemon's own logic.</li>
+<li>threads communicate through typed <code>crossbeam</code> channels rather than shared
+mutable state;</li>
+<li>shared mutable state is the exception: the few <code>Arc&lt;Mutex&lt;…&gt;&gt;</code> instances —
+the encrypted transport stream, the MCP client registry — are deliberate,
+localized, and documented.</li>
 </ul>
 <p>This is only feasible because the Rust compiler <em>enforces</em> it: you cannot move
 a piece of state into two threads, or share it without synchronization, without
-the borrow checker stopping you. The result is a threading model you can hold
-in your head — each thread owns its data, period — with none of the
-cancellation and <code>Send</code>-bound complexity that async runtimes impose. When a
-third-party library insists on async — the <code>subxt</code>/<code>alloy</code> clients behind the
-Content and blockchain tools — a tokio runtime exists as a
-sidecar inside the <code>choreo-coord</code> and optional <code>choreo-blockchain</code> crates; the
-daemon itself never needs one.</p>
-<h2 id="the-compiler-as-your-agent-loop-auditor">The compiler as your agent-loop auditor
-<a class="zola-anchor" href="#the-compiler-as-your-agent-loop-auditor" aria-label="Anchor link for: the-compiler-as-your-agent-loop-auditor">
-  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
-</a>
-</h2>
-<p>The heart of an agent is the <strong>tool-calling loop</strong>: send the conversation to
-the model, execute whatever tools it requests, feed the results back, repeat
-until the model produces a final answer. An LLM's output is untrusted,
-semi-structured, and frequently malformed — truncated JSON, dropped tool calls,
-unexpected event types.</p>
-<p>Rust turns this hostile input into a <em>compile-time contract</em>. The streaming
-response is parsed into a typed enum (<code>TextDelta</code>, <code>FunctionCallArgumentsDone</code>,
-<code>ResponseCompleted</code>, …) and the agent loop <code>match</code>es on it exhaustively:</p>
-<ul>
-<li>a new event type added upstream is a <strong>compile error</strong> until the loop decides
-what to do with it — it can never be silently ignored;</li>
-<li>a required field missing from a model event is a <strong>hard, classified error</strong>,
-not a silently-<code>null</code>ed default that confuses the next turn;</li>
-<li>the result of each turn is a typed enum (<code>FinalText</code> vs <code>ToolUse</code>), and
-<code>#[non_exhaustive]</code> forces every consumer to keep thinking about future
-variants.</li>
-</ul>
-<p>The LLM will always produce weird output. In Rust, "weird" is a type you have
-to handle — not a crash waiting to happen.</p>
+the borrow checker stopping you. The result is a threading model that can be
+reasoned about — each thread owns its data — with none of the cancellation and
+<code>Send</code>-bound complexity that async runtimes impose. When a third-party library
+insists on async — the alloy/subxt clients behind the blockchain tools — a
+tokio runtime exists as a sidecar inside the optional <code>choreo-blockchain</code>
+crate; the daemon itself never needs one.</p>
 <h2 id="types-that-become-the-wire-protocol">Types that become the wire protocol
 <a class="zola-anchor" href="#types-that-become-the-wire-protocol" aria-label="Anchor link for: types-that-become-the-wire-protocol">
   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
@@ -583,8 +552,8 @@ compile-time field access for free. The schema sent to the model can <em>never</
 drift from the types the tool actually parses, because they are the same thing.
 The same philosophy extends to the client/daemon protocol, which is a framed
 binary format with typed message enums instead of ad-hoc JSON.</p>
-<h2 id="security-by-construction-and-a-sandbox-that-is-real">Security by construction — and a sandbox that is real
-<a class="zola-anchor" href="#security-by-construction-and-a-sandbox-that-is-real" aria-label="Anchor link for: security-by-construction-and-a-sandbox-that-is-real">
+<h2 id="a-sandbox-for-untrusted-code">A sandbox for untrusted code
+<a class="zola-anchor" href="#a-sandbox-for-untrusted-code" aria-label="Anchor link for: a-sandbox-for-untrusted-code">
   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
 </a>
 </h2>
@@ -604,14 +573,20 @@ the security-critical component.</p>
   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
 </a>
 </h2>
-<p>Agents stream. Token by token, reasoning and answers flow into the terminal,
-and the UI must keep up without stuttering or stealing CPU from the model
-calls. Choreographr's TUI is <strong>event-driven and immediate mode</strong>: it redraws
-the instant a keystroke or network event arrives, with no maximum framerate,
-no polling, and O(1) scrolling and streaming.</p>
-<p>Rust's performance makes this trivial, and its ownership model makes
-the render/event split safe: the renderer never mutates state, so drawing and
-input handling can't race.</p>
+<p>An active agent produces a constant stream of tokens — reasoning, answers, and
+tool output — and several sessions may be doing so at once. The UI has to keep
+up without stuttering or stealing CPU from the model calls. Choreographr's TUI
+is <strong>event-driven and fullscreen</strong>: it redraws the instant a keystroke or
+network event arrives — no polling loop, no maximum framerate — and both
+scrolling and streaming are O(1), so even very long sessions stay smooth.</p>
+<p>Rust is what makes that affordable. The UI runs a single event loop: one
+thread handles keyboard input, daemon messages, and image-worker results —
+merged with a <code>crossbeam</code> <code>select!</code> — and then draws, so input and rendering
+are serialised by construction with no locks to contend on. When nothing has
+changed the redraw is skipped, and while idle the thread blocks in the kernel
+at zero CPU. The one genuinely expensive step — rasterising and encoding images
+for the terminal — is handed to a background worker and comes back as just
+another event.</p>
 
       
     </article>

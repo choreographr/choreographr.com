@@ -49,7 +49,7 @@
   <link rel="preload" href="https://choreographr.com/fonts/jetbrains-mono.woff2" as="font" type="font/woff2" crossorigin>
 
   <link rel="icon" type="image/svg+xml" href="https://choreographr.com/favicon.svg">
-  <link rel="stylesheet" href="https://choreographr.com/css/main.css?h=e12b9545e64292eb95a3">
+  <link rel="stylesheet" href="https://choreographr.com/css/main.css?h=522f5596923af2ef361c">
 
   <!-- Firefox/Zen can paint a frame before this stylesheet has been
        applied if a layout flush happens while it loads (Bugzilla
@@ -396,9 +396,9 @@
     </li>
     
     <li>
-      <a href="https://choreographr.com/agent/docs/tools/coordination/"
+      <a href="https://choreographr.com/agent/docs/tools/image/"
          class="pl-5 text-night-300 hover:text-night-50">
-        Content tools
+        Image generation
       </a>
     </li>
     
@@ -413,13 +413,6 @@
       <a href="https://choreographr.com/agent/docs/tools/riscv/"
          class="pl-5 text-night-300 hover:text-night-50">
         RISC-V VM tool
-      </a>
-    </li>
-    
-    <li>
-      <a href="https://choreographr.com/agent/docs/tools/mcp/"
-         class="pl-5 text-night-300 hover:text-night-50">
-        MCP servers
       </a>
     </li>
     
@@ -515,14 +508,10 @@
 <tr><td><code>/account list</code></td><td>List configured AI provider accounts</td></tr>
 <tr><td><code>/account remove &lt;name&gt;</code></td><td>Remove an AI provider account</td></tr>
 <tr><td><code>/account &lt;name&gt;</code></td><td>Set the session's AI provider account</td></tr>
-<tr><td><code>Ctrl+M</code></td><td>Open the model selector popup (kitty keyboard protocol required)</td></tr>
+<tr><td><code>Ctrl+M</code></td><td>Open the model selector popup (falls back to <code>Ctrl+O</code> on terminals without the kitty keyboard protocol)</td></tr>
 </tbody></table>
 <p><code>Ctrl+A</code> opens the accounts page — list accounts, remove with <code>r</code>, set an API
-key with <code>c</code>, start the new-account wizard with <code>n</code>, or run the
-<strong>Polkadot-account import wizard</strong> with <code>p</code> (imports a Polkadot-JS keystore
-<code>.json</code> export as a Substrate account credential). The wizard is a
-three-step flow (name, keystore path, password); the import dialog zeroizes
-the password from memory when it closes.</p>
+key with <code>c</code>, or start the new-account wizard with <code>n</code>.</p>
 <h2 id="reasoning">Reasoning
 <a class="zola-anchor" href="#reasoning" aria-label="Anchor link for: reasoning">
   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
@@ -533,6 +522,16 @@ the password from memory when it closes.</p>
 <tr><td><code>/reasoning &lt;slug&gt;</code></td><td>Set reasoning effort (e.g. <code>off</code>, <code>low</code>, <code>medium</code>, <code>high</code>, <code>on</code>, <code>xhigh</code>, <code>max</code>)</td></tr>
 <tr><td><code>Ctrl+R</code></td><td>Cycle reasoning effort through available slugs for the attached model</td></tr>
 </tbody></table>
+<h2 id="access-control">Access control
+<a class="zola-anchor" href="#access-control" aria-label="Anchor link for: access-control">
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+</a>
+</h2>
+<table><thead><tr><th>Command</th><th>Description</th></tr></thead><tbody>
+<tr><td><code>/acl add</code></td><td>Enroll the current locally-connected client in the daemon's allow-list</td></tr>
+</tbody></table>
+<p>Client allow-listing is stored in <code>authorized_clients.toml</code> and hot-reloaded
+from disk. See <a href="https://choreographr.com/agent/docs/security/#client-trust-access-control">Security</a>.</p>
 <h2 id="lifecycle-editing">Lifecycle &amp; editing
 <a class="zola-anchor" href="#lifecycle-editing" aria-label="Anchor link for: lifecycle-editing">
   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
@@ -545,7 +544,7 @@ the password from memory when it closes.</p>
 <tr><td><code>/continue</code></td><td>Continue a stopped/idle session ("Please continue.")</td></tr>
 <tr><td><code>/undo</code></td><td>Undo the most recent user turn and its entire assistant response subtree</td></tr>
 <tr><td><code>/redo</code></td><td>Redo the most recently undone turn</td></tr>
-<tr><td><code>/unlock [passphrase]</code></td><td>Unlock the daemon (reads <code>identity.pk</code> or decrypts <code>identity.pk.enc</code>)</td></tr>
+<tr><td><code>/unlock [key]</code></td><td>Unlock the daemon — uses the stored per-daemon key, or records <code>key</code> on an already-bound daemon</td></tr>
 <tr><td><code>/lock</code></td><td>Lock the daemon, clearing credentials from memory</td></tr>
 </tbody></table>
 <h2 id="credentials">Credentials
