@@ -41,7 +41,7 @@ message passing** — an actor model, in the classic sense:
   mutable state;
 - shared mutable state is the exception: a few deliberate, localized
   `Arc<Mutex<…>>` instances — the encrypted transport stream, the MCP client
-  registry (when the `mcp` feature is enabled) — rather than the design's
+  registry (on by default) — rather than the design's
   backbone.
 
 This is only feasible because the Rust compiler *enforces* it: you cannot move

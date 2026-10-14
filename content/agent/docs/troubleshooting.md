@@ -6,12 +6,13 @@ weight = 13
 
 ## Logs
 
-- `choreo-tui` writes its diagnostics to the platform temp directory
-  (`$TMPDIR/choreo-tui-<pid>.log`) — check there for client-side issues.
+- `choreo-tui` writes its diagnostics to
+  `$XDG_STATE_HOME/choreographr/tui-<pid>.log` (falling back to the platform temp
+  directory) — check there for client-side issues.
 - The daemon logs to stderr; use `-v`/`-vv` for more detail (CLI flags take
   precedence over `RUST_LOG`). A TUI-autostarted daemon logs to a per-process
-  file (`$TMPDIR/choreo-daemon-<pid>.log`); pass `--log-file <path>` to write
-  logs elsewhere when starting it yourself.
+  file (`$XDG_STATE_HOME/choreographr/daemon-<pid>.log`, else the temp dir); pass
+  `--log-file <path>` to write logs elsewhere when starting it yourself.
 
 ## Common issues
 
@@ -47,7 +48,8 @@ allow-list (enroll a local client with `/acl add`).
 In Unix-socket mode `choreo-tui` starts a daemon automatically when it cannot
 reach one, and shows a status message while the daemon starts. If that fails,
 run `choreographr` in another terminal and inspect
-`$TMPDIR/choreo-daemon-<pid>.log`. A daemon that is already listening at the
+`$XDG_STATE_HOME/choreographr/daemon-<pid>.log`. A daemon that is already
+listening at the
 socket path is reported explicitly rather than being replaced.
 
 ## Getting help

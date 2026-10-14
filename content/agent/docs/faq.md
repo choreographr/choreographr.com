@@ -32,12 +32,16 @@ q = "Does it require an async runtime?"
 a = "No — the daemon uses pure OS threads with message passing. There is no async code in its own logic, and shared mutable state is confined to a few deliberate, localized exceptions rather than being the design's backbone. The only async clients are the alloy/subxt EVM and Substrate tooling behind the optional `blockchain` and `content` features (`choreo-blockchain`, `choreo-content`), each driving a tokio sidecar runtime the daemon calls through synchronous entry points. With those features off there is no async runtime at all."
 
 [[extra.faq]]
+q = "Can it use MCP servers?"
+a = "Yes — Choreographr is an MCP (Model Context Protocol) client. Daemon-wide servers live in `mcp.json` and project servers in a trusted `.mcp.json`, over a stdio subprocess or a remote Streamable HTTP endpoint. Their tools appear under an `mcp/<slug>` group. Manage them with `/mcp` in the TUI or the `choreographr mcp` CLI. See [Tools](@/agent/docs/tools/_index.md)."
+
+[[extra.faq]]
 q = "Can it talk to blockchains?"
 a = "Yes — the `blockchain` tool group adds read-only EVM and Substrate/Polkadot tools (balances, blocks, transactions, contract calls, ENS, storage queries). It's compiled in when the daemon is built with the `blockchain` cargo feature (enabled in the release binaries) and activated per session with `load_tools blockchain`. See the [tools reference](@/agent/docs/tools/blockchain.md)."
 
 [[extra.faq]]
 q = "Can it generate images?"
-a = "Yes — the `image` group's `generate_image` tool produces an image from a text prompt through the session's image-capable provider (OpenAI Images or z.ai/Zhipu GLM), and the result renders inline in the terminal like any other image. Activate it with `load_tools image`. See [Image generation](@/agent/docs/tools/image.md)."
+a = "Yes — the `image` group's `generate_image` tool produces an image from a text prompt through the session's image-capable provider (OpenAI Images, z.ai/Zhipu GLM, or fal.ai), and the result renders inline in the terminal like any other image. Activate it with `load_tools image`. See [Image generation](@/agent/docs/tools/image.md)."
 
 [[extra.faq]]
 q = "Is it open source?"
@@ -45,7 +49,7 @@ a = "Yes — Apache-2.0."
 
 [[extra.faq]]
 q = "What's the minimum supported Rust version?"
-a = "1.95.0."
+a = "1.99.0."
 
 [[extra.faq]]
 q = "What else do I need to build it?"

@@ -33,7 +33,8 @@ and orchestration.
 | `set_session_title` | Set the session's display title |
 | `spawn_subsession` | Spawn a child session to work autonomously on a task |
 | `list_sessions` | List all sessions known to the daemon |
-| `get_session` | Read the full message history of a session by ID |
+| `get_session` | Return a session's metadata summary by ID (title, model, turn count, parent, working directory, token usage — no message text) |
+| `read_session` | Read another session's conversation text (user messages, assistant responses, displayed reasoning) by ID |
 
 ## File tools
 
@@ -169,7 +170,20 @@ conversation, and the normalized bytes are persisted durably in the
 
 ```json
 { "name": "read_image", "arguments": { "path": "report-figures/fig-1.jpg" } }
+{ "name": "read_image", "arguments": {
+    "path": "report-figures/fig-1.jpg",
+    "region": { "x": 0.0, "y": 0.0, "width": 0.5, "height": 0.5 } } }
 ```
+
+An optional `region` (fractions of the image) crops the image server-side
+before the bytes reach the model — a cheap way to zoom a vision model into part
+of a large figure. A bad region (`x`/`y` outside `[0, 1)`, non-positive or
+oversized `width`/`height`) fails fast before disk is touched.
+
+> `list_sessions` lists sessions; `get_session` returns a session's *metadata*;
+> `read_session` returns the readable *text* of another session's turns (user
+> messages, assistant responses, and displayed reasoning) — never tool inputs
+> or results, and never the opaque reasoning artifacts.
 
 ## PDF tools
 

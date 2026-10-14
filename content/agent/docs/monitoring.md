@@ -32,6 +32,8 @@ start with a clear error telling you to rebuild with `--features metrics`.
 | `choreo_connections_total` | Counter | — | Total connections accepted |
 | `choreo_turns_total` | Counter | `model` | Agent loop turns |
 | `choreo_evictions_total` | Counter | — | Lagging clients evicted (disconnected) for falling too far behind |
+| `choreo_cache_warm_attempts_total` | Counter | — | Prompt-cache warm pings actually sent |
+| `choreo_cache_warm_skips_total` | Counter | `reason` | Warm attempts skipped, by reason |
 | `choreo_request_duration_seconds` | Histogram | `status` | Request latency |
 | `choreo_tool_execution_duration_seconds` | Histogram | `tool` | Per-tool execution time |
 | `choreo_api_call_duration_seconds` | Histogram | `model`, `endpoint` | API round-trip time |

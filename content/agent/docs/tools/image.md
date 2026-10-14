@@ -23,6 +23,7 @@ default — activate it with `load_tools image`.
 | `output_format` | Encoded format of the returned image: `png`, `jpeg`, or `webp` |
 | `background` | `auto`, `opaque`, or `transparent` (transparent requires png/webp) |
 | `alt` | Alt text for the displayed image |
+| `seed` | Optional seed for reproducible generation (fal.ai only) |
 
 ```json
 { "name": "generate_image", "arguments": { "prompt": "a lighthouse at dusk, 35mm film grain", "size": "1024x1024" } }
@@ -30,10 +31,11 @@ default — activate it with `load_tools image`.
 
 ## Providers & model selection
 
-Generation runs against the session's account. Two adapters are supported:
+Generation runs against the session's account. Three adapters are supported:
 
 - **OpenAI Images** — OpenAI-compatible endpoints (`gpt-image-*`).
 - **z.ai / Zhipu GLM** — `glm-image`.
+- **fal.ai** — flux and other hosted image models; accepts the `seed` knob.
 
 Model selection is catalog-driven: an explicit `model` argument always wins;
 otherwise the provider's verified image models (`supports_image_output`) are

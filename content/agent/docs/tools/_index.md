@@ -72,15 +72,51 @@ model can activate additional groups with `load_tools` and deactivate them with
 | `x` | X/Twitter API (post, search, user lookup) | — |
 | `vm` | RISC-V sandboxed code execution | — |
 | `debug` | Read-only diagnostics and request dry-runs (`session_inspect`) | — |
+| `mcp/<slug>` | Tools exposed by a configured MCP server (one group per server) | — |
 | `blockchain` | EVM and Substrate/Polkadot blockchain queries (alloy/subxt) | — |
 
 > The `image` group holds `generate_image` — it needs an account whose
 > provider supports image generation (see
 > [Accounts & providers](@/agent/docs/accounts-and-providers.md)). The
+> `mcp` groups are named per server (`mcp/<slug>`) and are loaded like any
+> other group. The
 > `blockchain` group exists only when the daemon is built with the
 > `blockchain` cargo feature (the release binaries enable it). The tools live
 > in the `choreo-blockchain` crate, which also owns the tokio sidecar runtime
 > the alloy/subxt clients run on.
+
+## MCP servers
+
+Choreographr is an **MCP (Model Context Protocol) client**, built on the
+official [`rmcp`](https://crates.io/crates/rmcp) SDK. Each server's tools are
+exposed under an `mcp/<slug>` group — activate one with `load_tools` (MCP
+support is compiled into the default release binaries).
+
+Servers are configured in two tiers:
+
+- **Daemon tier** — `mcp.json` in the config directory, visible to every session.
+- **Project tier** — a `.mcp.json` at the project root (found by walking up from
+a session's working directory). Its servers are **gated behind trust**: they are
+read but never spawned until you run `/mcp trust`.
+
+Each entry is a named server under `mcpServers`. A stdio server sets `command`
+(plus optional `args`/`env`/`cwd`); a remote server sets `url` (plus optional
+`headers`), using the **Streamable HTTP** transport:
+
+```json
+{
+  "mcpServers": {
+    "docs": { "command": "npx", "args": ["-y", "@modelcontextprotocol/server-docs"] },
+    "remote": { "url": "https://example.com/mcp", "headers": { "Authorization": "Bearer ${TOKEN}" } }
+  }
+}
+```
+
+Manage them with the `choreographr mcp` CLI (`list`, `add`, `remove`,
+`reconnect`, `reload`) or the in-TUI `/mcp` commands (see
+[Slash commands](@/agent/docs/slash-commands.md#mcp-servers)). A server that
+changes its tool list refreshes the daemon's catalogue live, with no restart.
+Activate a server's tools with `load_tools ["mcp/<slug>"]`.
 
 Activate a group from the model side:
 

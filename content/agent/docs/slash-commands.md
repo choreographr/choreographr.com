@@ -55,6 +55,22 @@ key with `c`, or start the new-account wizard with `n`.
 Client allow-listing is stored in `authorized_clients.toml` and hot-reloaded
 from disk. See [Security](@/agent/docs/security.md#client-trust-access-control).
 
+## MCP servers
+
+| Command | Description |
+|---|---|
+| `/mcp` | Show every MCP server visible to the session (daemon + project tiers), with transport, connected state, tool count, or last error — plus the project root's trust state |
+| `/mcp reconnect <slug>` | Rebuild every connection with that slug on the running daemon and refresh its tools |
+| `/mcp reload` | Re-read the config on the running daemon — connect added servers, drop removed ones, rebuild changed ones — without a restart |
+| `/mcp trust` | Trust the session's project MCP root so its servers connect |
+| `/mcp untrust` | Revoke trust for that root; its project servers stop |
+| `/mcp trust list` | List the trusted project roots |
+
+Offline management lives in the `choreographr mcp` CLI (`list`, `add`,
+`remove`, `reconnect`, `reload`). See the
+[tools reference](@/agent/docs/tools/_index.md) for how MCP servers are
+configured.
+
 ## Credentials
 
 | Command | Description |

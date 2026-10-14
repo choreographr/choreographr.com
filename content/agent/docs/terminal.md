@@ -17,9 +17,11 @@ streaming are O(1), so history stays smooth even on very long sessions.
 
 - **Markdown** — headings, lists, code blocks, tables, links, blockquotes,
   emphasis, inline code, and LaTeX math rendered as pretty Unicode, all wrapped
-  to the terminal width.
-- **Syntax highlighting** — code in tool output is highlighted with syntect
-  themes.
+  to the terminal width. Fenced code blocks render as **bordered code panels**
+  with the language tag, block quotes get a bar gutter and italic text, and
+  tables use rounded nushell-style frames.
+- **Syntax highlighting** — code is highlighted with the
+  `base16-eighties.dark` syntect theme.
 - **Images** — when the agent calls `display_image` (PNG, JPEG, or SVG) — or
   generates one with `generate_image` — the image appears **inline in the chat
   history** at half the viewport height. Click an image to open it fullscreen;
@@ -85,8 +87,8 @@ Every text field honours shell-style **readline editing keys**:
 - `Alt+Q` — quit the client
 
 Inside the session manager, `Tab` toggles between the live and archived lists,
-`p` pins or unpins a session (pinned sessions sort to the top), and `a`
-archives or unarchives one.
+`p` pins or unpins a session (pinned sessions sort to the top and show a
+pushpin), and `a` archives or unarchives one.
 
 The full command reference lives on the
 [slash commands](@/agent/docs/slash-commands.md) page.

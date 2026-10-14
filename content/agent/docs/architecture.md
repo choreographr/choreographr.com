@@ -100,7 +100,7 @@ clients and bridges (`choreo-tui`, `choreo-gui`, `choreo-im`, `choreo-acp`,
 | `choreo-gui` | Desktop GUI client (Dioxus) |
 | `choreo-im` | Instant-messaging bridge (Telegram, with more platforms planned) — chat with your agent on the go; its own binary, not part of the prebuilt releases (`cargo build -p choreo-im`) |
 | `choreo-acp` | ACP bridge — translates the Agent Communication Protocol (JSON-RPC over stdin/stdout) into daemon messages so ACP-compatible editors (Claude Code, Cline, …) can drive sessions; its own binary (`cargo build -p choreo-acp`) |
-| `choreo-mcp` | MCP (Model Context Protocol) client — spawns subprocess servers, discovers their tools, and dispatches calls over JSON-RPC stdio; library-only, linked via the daemon's `mcp` feature (off by default) |
+| `choreo-mcp` | MCP (Model Context Protocol) client, built on the official `rmcp` SDK — connects over a stdio subprocess or a remote Streamable HTTP endpoint, discovers their tools (with a live `subscriptions/listen` refresh), and dispatches deadline-bounded calls; library-only, linked via the daemon's `mcp` feature (on by default) |
 | `choreo-client-core` | Shared parsing, markdown, image assembly, and daemon-message dispatch for UI clients |
 | `choreo-markdown` | Markdown parser and HTML renderer (pulldown-cmark + ammonia) |
 
@@ -109,15 +109,17 @@ clients and bridges (`choreo-tui`, `choreo-gui`, `choreo-im`, `choreo-acp`,
 Client/daemon communication is a framed binary protocol (MessagePack + length
 prefix), defined in `choreo-proto`. Remote connections are wrapped in the
 Noise encrypted transport from `choreo-transport` (IK against a pinned server
-key; XX first-contact mode on the current wire version — v8). Frames are capped
+key; XX first-contact mode on the current wire version — v9). Frames are capped
 at 64 MiB. The protocol is versioned: streaming is **lossless** — each client
 has an unbounded outbound queue with lag-based eviction, and an `Evicted` event
 informs a slow client of dropped state instead of silently truncating a
 session. Session snapshots carry only image **metadata**; displayed-image bytes
-are fetched on demand (`GetImage`/`Image`, protocol v6), and sessions carry
-daemon-owned `pinned`/`archived` flags (v8) broadcast to every client. Session
-history is compressed with zstd (schema 1→2 migration) so long-running sessions
-stay compact on disk.
+are fetched on demand (`GetImage`/`Image`, protocol v6), sessions carry
+daemon-owned `pinned`/`archived` flags (v8) broadcast to every client, and live
+MCP config reload and trust queries (`McpReload`/`McpTrust*`, v9) let a running
+daemon pick up `mcp.json` edits without a restart. Session history is
+compressed with zstd (schema 1→2 migration) so long-running sessions stay
+compact on disk.
 
 ## Vision & browsing
 

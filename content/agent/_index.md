@@ -33,9 +33,15 @@ Core capabilities:
 
 Other capabilities:
 
+- MCP servers: Choreographr is a Model Context Protocol client — daemon-wide
+  `mcp.json` plus trust-gated project `.mcp.json`, over a stdio subprocess or a
+  remote Streamable HTTP endpoint. Server tools appear under an `mcp/<slug>`
+  group.
+- Cross-session reading: `read_session` reads another session's conversation
+  text, so a result researched in one session can be reused in another.
 - Image generation: the `image` group's `generate_image` produces an image from
-  a text prompt through the session's image-capable provider (OpenAI Images or
-  z.ai/Zhipu GLM) and renders it inline in the terminal.
+  a text prompt through the session's image-capable provider (OpenAI Images,
+  z.ai/Zhipu GLM, or fal.ai) and renders it inline in the terminal.
 - Vision input: `read_image` feeds an image to a vision-capable model.
 - Blockchain reads: the `blockchain` group's read-only EVM and Substrate/Polkadot
   tools (balances, blocks, storage, contract calls, ENS).

@@ -26,6 +26,8 @@ provider = "openai"
 [[account]]
 name = "claude"
 provider = "anthropic"
+meter = "payg"                 # billing meter for the warm gate: payg|tokens|requests|flat|unknown
+cache_warming = "streaming"    # override the global [cache_warming] mode
 
 [[account]]
 name = "gemini"
@@ -183,6 +185,8 @@ overridden per-account:
 | `default_request_format` | Request format: `"chat_completions"` or `"responses"` |
 | `programmatic_tool_calling` | Enable programmatic tool calling (Responses API, gpt-5.6+) |
 | `context_window` | Default context window for all models |
+| `meter` | Billing meter for prompt-cache warming: `payg`, `tokens`, `requests`, `flat`, or `unknown` |
+| `cache_warming` | Per-account override of the global `[cache_warming]` mode |
 
 The Responses API is fully supported — including tool use, streaming, reasoning
 effort slugs, multi-turn chaining via `previous_response_id`, and
@@ -192,5 +196,6 @@ effort slugs, multi-turn chaining via `previous_response_id`, and
 
 The [`generate_image`](@/agent/docs/tools/image.md) tool resolves its provider
 from the session's account. OpenAI-compatible accounts use the OpenAI Images
-adapter (`gpt-image-*`), and z.ai / Zhipu accounts use `glm-image`; the model is
+adapter (`gpt-image-*`), z.ai / Zhipu accounts use `glm-image`, and fal.ai
+accounts use their hosted image models (with an optional `seed`); the model is
 chosen from the provider's catalog image-output entries.

@@ -76,6 +76,19 @@ hot-reloaded from disk. A client with no local access can be enrolled with
 daemon's own fingerprint. The TUI refuses to start against an unauthorized
 daemon and never crashes on a connection error.
 
+## MCP servers
+
+MCP (Model Context Protocol) servers are configured in two tiers: a
+daemon-wide `mcp.json` you wrote and trust unconditionally, and a project
+`.mcp.json` that travels with a checkout you may not have written. A project's
+servers are **gated behind trust** — read (so `/mcp status` can report what is
+ignored) but never spawned, and their `${VAR}` references never expanded, until
+you run `/mcp trust` for that project root (recorded in `trust.toml`, keyed on
+the exact root). A stdio server inherits the daemon's environment with the
+code-injection variables (`LD_*`, `DYLD_*`, `PYTHONPATH`, `PERL5LIB`,
+`RUBYLIB`) stripped, its `stderr` is captured to an owner-only per-server log,
+and its calls are deadline-bounded and concurrency-capped.
+
 ## RISC-V sandbox
 
 The `run_riscv` tool compiles Rust source (or accepts a pre-compiled RISC-V

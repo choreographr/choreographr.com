@@ -1,6 +1,6 @@
 +++
 title = "Choreographr v0.2 (Lindy) Released"
-description = "Choreographr v0.2 (Lindy) — now at v0.2.3 — adds arm64 Linux, a command palette and readline keybindings, unified file tools, session pin/archive, on-demand image loading, and a hardened keystore and trust model."
+description = "Choreographr v0.2 (Lindy) — now at v0.2.4 — adds MCP server support, prompt-cache warming, cross-session reading and image crops, XDG paths, and a richer terminal client, on top of arm64 Linux, a command palette and readline keybindings, unified file tools, session pin/archive, on-demand image loading, and a hardened keystore and trust model."
 date = 2026-09-24
 # Draft until the post is finished — remove this line to publish.
 draft = true
@@ -261,6 +261,90 @@ and the TUI's runaway trace-level file log is fixed.
   before asserting them — prioritising anything time-sensitive,
   location-specific, contested, or specialised — and to flag uncertainty rather
   than present an unverified claim as settled.
+* The minimum supported Rust version is now **1.99** (building from source).
+
+## MCP servers
+
+Choreographr is now an **MCP (Model Context Protocol) client**, built on the
+official [`rmcp`](https://crates.io/crates/rmcp) SDK. Plug in any MCP server —
+local subprocess or remote — and its tools appear to the model like native ones.
+
+* **Two transports** — a stdio subprocess (`command`, plus `args`/`env`/`cwd`)
+  or a remote **Streamable HTTP** endpoint (`url`, plus `headers`).
+* **Two config tiers** — a daemon-wide `mcp.json` under the config directory,
+  visible to every session, plus a project `.mcp.json` found by walking up from
+  the session's working directory. A project's servers are **gated behind
+  trust**: they are read (so `/mcp status` can report what is ignored) but
+  never spawned until you run `/mcp trust`.
+* **Live catalogue** — a server that changes its tool or resource list
+  (via `subscriptions/listen`) refreshes the daemon's catalogue in place, with
+  no restart. Discovered tools are exposed under an `mcp/<slug>` group.
+* **Manageable** — `/mcp` shows the live state of every server (tier, transport,
+  tool count, last error), and the `choreographr mcp` CLI does
+  `list`/`add`/`remove`/`reconnect`/`reload`. Each stdio server's stderr is
+  captured to its own owner-only log file.
+* **Hardened** — stdio children inherit a stripped environment (no `LD_*`,
+  `DYLD_*`, `PYTHONPATH`, `PERL5LIB`, `RUBYLIB`), tool names are sanitized to
+  the provider-safe alphabet, and calls are deadline-bounded and
+  concurrency-capped per server. MCP support is built into the default release
+  binaries; a server's tools live under an `mcp/<slug>` group you activate with
+  `load_tools`.
+
+## Prompt-cache warming
+
+A warm ping re-sends the last request with a one-token output cap to refresh the
+provider's prompt cache before its TTL expires, so the next real turn reads the
+prefix from cache instead of re-writing it. It is **off by default** and gated
+per account by a billing `meter`: `payg` and `tokens` accounts warm when the
+saving clears the threshold, while `requests`, `flat`, and `unknown` never do —
+a ping burns quota, so it is not free everywhere. Enable it with
+`[cache_warming] mode = "streaming"`, which fires a warmer thread while a tool
+call is blocking. Anthropic prompt caching is also enabled, and cache-read and
+cache-write tokens are reported in the session detail.
+
+## Image generation: more providers, and a seed
+
+`generate_image` gained a **fal.ai** adapter alongside OpenAI Images and
+z.ai / Zhipu GLM, plus a `seed` argument for reproducible fal generations.
+
+`read_image` gained a **`region`** argument (fractions of the image) that crops
+server-side before the bytes reach the model — a cheap way to zoom a vision
+model into part of a large figure.
+
+## Reading across sessions
+
+The new `read_session` tool reads another session's conversation text — the
+user messages, assistant responses, and the assistant's displayed reasoning —
+given its ID from `list_sessions`. A result researched in one session can be
+reused in another. Tool inputs and results, and the opaque reasoning artifacts
+(encrypted provider blobs, thinking blocks), stay daemon-only.
+
+## Terminal rendering
+
+* Fenced code blocks now render as **bordered code panels**, with the language
+  tag and syntax highlighting (`base16-eighties.dark`).
+* Block quotes get a bar gutter and italic text.
+* Pinned sessions show a pushpin.
+* Markdown table frames follow nushell's rounded style.
+
+## Paths: XDG and `--base-dir`
+
+The socket, config, data, and logs now resolve through the **XDG** directories
+by default (`$XDG_RUNTIME_DIR`, `$XDG_CONFIG_HOME`, `$XDG_DATA_HOME`,
+`$XDG_STATE_HOME`). Every binary also accepts `--base-dir <PATH>` (or
+`CHOREOGRAPHR_BASE_DIR`) to relocate the whole instance under one root, and
+`choreographr migrate --base-dir <PATH>` moves an existing install — copying the
+keystore files verbatim so clients keep their pinned server key and do not need
+to re-pair.
+
+## Security & robustness
+
+* Provider-CDN downloads no longer follow redirects past the SSRF guard.
+* The image decode path is bounded by **total pixels**, not just per-side
+  dimensions, against decompression bombs.
+* An output-token-limited response that cuts a tool call short is now recovered
+  (the truncated call is recovered rather than failing the turn), and an idle
+  SSE socket read no longer aborts a stream.
 
 ## Upgrading
 
@@ -270,8 +354,9 @@ arm64), and Android Termux — see the
 
 Full release notes: [v0.2.0](https://github.com/choreographr/choreographr/releases/tag/v0.2.0),
 [v0.2.1](https://github.com/choreographr/choreographr/releases/tag/v0.2.1),
-[v0.2.2](https://github.com/choreographr/choreographr/releases/tag/v0.2.2), and
-[v0.2.3](https://github.com/choreographr/choreographr/releases/tag/v0.2.3) on GitHub.
+[v0.2.2](https://github.com/choreographr/choreographr/releases/tag/v0.2.2),
+[v0.2.3](https://github.com/choreographr/choreographr/releases/tag/v0.2.3), and
+[v0.2.4](https://github.com/choreographr/choreographr/releases/tag/v0.2.4) on GitHub.
 
 We'd love your help — star the
 [repo](https://github.com/choreographr/choreographr), open

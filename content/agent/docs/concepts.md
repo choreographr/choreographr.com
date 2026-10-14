@@ -47,9 +47,11 @@ See the [tools reference](@/agent/docs/tools/_index.md) for the complete, up-to-
 of every built-in tool and how to call it.
 
 Available tool groups include **core** (filesystem, HTTP, images, PDF
-classification, search, random, time, vision input, web-page rendering),
-**git**, **shell**, **vm**, **x**, **debug** (read-only diagnostics),
-**db**, **image** (image generation), and **blockchain**
+classification, search, random, time, vision input, web-page rendering,
+session reading), **git**, **shell**, **vm**, **x**, **debug** (read-only
+diagnostics), **db**, **image** (image generation), **mcp/<slug>** (the tools
+exposed by a configured MCP server, loaded with `load_tools`), and
+**blockchain**
 (EVM and Substrate/Polkadot queries, when the daemon is built with the
 `blockchain` feature). Only `core`, `git`, and `shell` are active by
 default; the rest are opt-in via `load_tools`.
