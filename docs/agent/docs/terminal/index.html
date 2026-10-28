@@ -49,7 +49,7 @@
   <link rel="preload" href="https://choreographr.com/fonts/jetbrains-mono.woff2" as="font" type="font/woff2" crossorigin>
 
   <link rel="icon" type="image/svg+xml" href="https://choreographr.com/favicon.svg">
-  <link rel="stylesheet" href="https://choreographr.com/css/main.css?h=522f5596923af2ef361c">
+  <link rel="stylesheet" href="https://choreographr.com/css/main.css?h=c8e54f75ecee9764056c">
 
   <!-- Firefox/Zen can paint a frame before this stylesheet has been
        applied if a layout flush happens while it loads (Bugzilla
@@ -398,7 +398,7 @@
     <li>
       <a href="https://choreographr.com/agent/docs/tools/image/"
          class="pl-5 text-night-300 hover:text-night-50">
-        Image generation
+        Image generation &amp; editing
       </a>
     </li>
     
@@ -500,26 +500,36 @@ streaming are O(1), so history stays smooth even on very long sessions.</p>
 <ul>
 <li><strong>Markdown</strong> — headings, lists, code blocks, tables, links, blockquotes,
 emphasis, inline code, and LaTeX math rendered as pretty Unicode, all wrapped
-to the terminal width.</li>
-<li><strong>Syntax highlighting</strong> — code in tool output is highlighted with syntect
-themes.</li>
+to the terminal width. Fenced code blocks render as <strong>bordered code panels</strong>
+with the language tag, block quotes get a bar gutter and italic text, tables
+use rounded nushell-style frames, and ordered lists keep the <strong>source
+numbers</strong> from the document (right-aligned) instead of renumbering from one.</li>
+<li><strong>Syntax highlighting</strong> — code is highlighted with the
+<code>base16-eighties.dark</code> syntect theme.</li>
 <li><strong>Images</strong> — when the agent calls <code>display_image</code> (PNG, JPEG, or SVG) — or
-generates one with <code>generate_image</code> — the image appears <strong>inline in the chat
-history</strong> at half the viewport height. Click an image to open it fullscreen;
-press <code>Esc</code> to dismiss.</li>
+generates or edits one with <code>generate_image</code> / <code>edit_image</code> — the image
+appears <strong>inline in the chat history</strong> at half the viewport height. Click an
+image to open it fullscreen; press <code>Esc</code> to dismiss.</li>
 <li><strong>Status bar</strong> — the attached session's account slug, model, reasoning effort,
-and live token estimates. A session that is not idle is marked, and the client
-refuses to submit a new prompt until it is idle again (rejected text stays in
-the input bar).</li>
-<li><strong>Tool results</strong> — streaming execution descriptions, collapsible per-result
-bodies, and live token estimates in the status bar.</li>
+live token estimates, and the <strong>phase</strong> the request is in: <code>sending</code> (request
+dispatched) → <code>waiting</code> (the provider accepted it, awaiting the first token)
+→ <code>reasoning</code> → <code>responding</code>. A session that is not idle is marked, and the
+client refuses to submit a new prompt until it is idle again (rejected text
+stays in the input bar).</li>
+<li><strong>Tool results</strong> — streaming execution descriptions and collapsible
+per-result bodies; bulky, machine-oriented results (<code>list_sessions</code>, the
+shell/exec family, <code>grep</code>, <code>retrieve_webpage</code>, <code>spawn_subsession</code>) start
+<strong>collapsed</strong> (one click from the full body), while errors stay expanded.</li>
 <li><strong>Selection &amp; copy</strong> — drag with the mouse to select text in the history pane
 and copy it via OSC 52 (a cross-terminal clipboard escape). Selection follows
 the cursor while scrolling, stays anchored to the text mid-gesture, and is
 copied as unwrapped text.</li>
-<li><strong>Per-session drafts</strong> — an unsent prompt is kept per session, so switching
-sessions and returning preserves what you were typing; <code>Ctrl+Backspace</code> clears
-the draft.</li>
+<li><strong>Per-session drafts &amp; scroll</strong> — an unsent prompt is kept per session, so
+switching sessions and returning preserves what you were typing
+(<code>Ctrl+Backspace</code> clears the draft); the history pane also reopens at the
+scroll position you left.</li>
+<li><strong>Live streaming</strong> — a streaming response stays <strong>pinned to the top of the
+viewport</strong> while it grows, so its first line never scrolls out of view.</li>
 </ul>
 <h2 id="image-rendering">Image rendering
 <a class="zola-anchor" href="#image-rendering" aria-label="Anchor link for: image-rendering">
@@ -536,20 +546,63 @@ system fonts loaded, so vector diagrams stay crisp at any terminal size.</p>
 <tr><td>Sixel</td><td>terminals with sixel support (e.g. xterm-sixel, mlterm)</td></tr>
 <tr><td>Universal fallback</td><td>any other terminal</td></tr>
 </tbody></table>
+<h2 id="terminal-integration">Terminal integration
+<a class="zola-anchor" href="#terminal-integration" aria-label="Anchor link for: terminal-integration">
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+</a>
+</h2>
+<p><code>choreo-tui</code> tells the terminal what it is doing, over escape sequences the
+emulator already understands:</p>
+<ul>
+<li><strong>Window title</strong> (OSC 2) — <code>choreo-tui</code> at startup, then
+<code>choreo-tui — &lt;session title&gt;</code> once a session is attached. Emitted only on
+change, cleared on job-control suspend and at exit.</li>
+<li><strong>Program status</strong> (OSC 7501) — each session reports idle/working from its
+live status, plus a <code>done</code> / <code>error</code> outcome that survives the prompt which
+follows it, so a background agent that just finished keeps its record after
+dropping back to idle. Every report is a per-session <strong>child</strong> record, so a
+terminal that maps a progress bar onto the status <em>root</em> record cannot wipe a
+real report.</li>
+</ul>
+<p>Both fields are stripped of control characters and bidirectional-formatting
+overrides and capped to the protocol's limits, so an LLM-derived session title
+cannot spoof or reorder them. Selection copy uses <strong>OSC 52</strong>, which is why it
+works over SSH and tmux and is a silent no-op in terminals that lack it.</p>
+<h2 id="input-keybindings">Input &amp; keybindings
+<a class="zola-anchor" href="#input-keybindings" aria-label="Anchor link for: input-keybindings">
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+</a>
+</h2>
+<p>Typing <code>/</code> on an empty prompt opens the <strong>command palette</strong> — a floating list
+of commands above the input. <code>Enter</code> runs the highlighted command, <code>Tab</code>
+completes the name, <code>↑</code>/<code>↓</code> move the selection, and <code>Esc</code> returns to the
+prompt. Commands resolve through one shared catalog, so the palette and the
+parser never disagree.</p>
+<p>Command shortcuts use <code>Alt+</code> (the <code>Ctrl+&lt;letter&gt;</code> space is reserved for
+editing): <code>Alt+A</code> accounts, <code>Alt+S</code> sessions, <code>Alt+M</code> models, <code>Alt+R</code>
+reasoning, <code>Alt+H</code> help, <code>Alt+Q</code> quit, <code>Alt+Up</code>/<code>Alt+Down</code> undo/redo, and
+<code>Alt+Enter</code> continue.</p>
+<p>Every text field honours shell-style <strong>readline editing keys</strong>:
+<code>Ctrl+A</code>/<code>Ctrl+E</code> (start/end of line), <code>Ctrl+B</code>/<code>Ctrl+F</code> (one char),
+<code>Alt+B</code>/<code>Alt+F</code> (one word), <code>Ctrl+D</code>/<code>Ctrl+H</code> (delete), <code>Ctrl+K</code> (kill to end),
+<code>Ctrl+T</code> (transpose), <code>Ctrl+W</code>/<code>Alt+D</code>/<code>Alt+Backspace</code> (word kills), and
+<code>Ctrl+P</code>/<code>Ctrl+N</code> (previous/next history).</p>
 <h2 id="managing-sessions">Managing sessions
 <a class="zola-anchor" href="#managing-sessions" aria-label="Anchor link for: managing-sessions">
   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
 </a>
 </h2>
 <ul>
-<li><code>Ctrl+S</code> — session manager: list, switch, create, and delete sessions</li>
-<li><code>Ctrl+A</code> — accounts page: add, remove, and select AI provider accounts</li>
-<li><code>Ctrl+M</code> — model selector (falls back to <code>Ctrl+O</code> on terminals without the
-kitty keyboard protocol)</li>
-<li><code>Ctrl+R</code> — cycle the reasoning effort</li>
-<li><code>Ctrl+H</code> — toggle the keybinding help overlay</li>
-<li><code>Ctrl+Q</code> — quit the client</li>
+<li><code>Alt+S</code> — session manager: list, switch, create, and delete sessions</li>
+<li><code>Alt+A</code> — accounts page: add, remove, and select AI provider accounts</li>
+<li><code>Alt+M</code> — model selector</li>
+<li><code>Alt+R</code> — cycle the reasoning effort</li>
+<li><code>Alt+H</code> — toggle the keybinding help overlay</li>
+<li><code>Alt+Q</code> — quit the client</li>
 </ul>
+<p>Inside the session manager, <code>Tab</code> toggles between the live and archived lists,
+<code>p</code> pins or unpins a session (pinned sessions sort to the top and show a
+pushpin), and <code>a</code> archives or unarchives one.</p>
 <p>The full command reference lives on the
 <a href="https://choreographr.com/agent/docs/slash-commands/">slash commands</a> page.</p>
 

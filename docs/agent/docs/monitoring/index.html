@@ -49,7 +49,7 @@
   <link rel="preload" href="https://choreographr.com/fonts/jetbrains-mono.woff2" as="font" type="font/woff2" crossorigin>
 
   <link rel="icon" type="image/svg+xml" href="https://choreographr.com/favicon.svg">
-  <link rel="stylesheet" href="https://choreographr.com/css/main.css?h=522f5596923af2ef361c">
+  <link rel="stylesheet" href="https://choreographr.com/css/main.css?h=c8e54f75ecee9764056c">
 
   <!-- Firefox/Zen can paint a frame before this stylesheet has been
        applied if a layout flush happens while it loads (Bugzilla
@@ -398,7 +398,7 @@
     <li>
       <a href="https://choreographr.com/agent/docs/tools/image/"
          class="pl-5 text-night-300 hover:text-night-50">
-        Image generation
+        Image generation &amp; editing
       </a>
     </li>
     
@@ -508,6 +508,8 @@ start with a clear error telling you to rebuild with <code>--features metrics</c
 <tr><td><code>choreo_connections_total</code></td><td>Counter</td><td>—</td><td>Total connections accepted</td></tr>
 <tr><td><code>choreo_turns_total</code></td><td>Counter</td><td><code>model</code></td><td>Agent loop turns</td></tr>
 <tr><td><code>choreo_evictions_total</code></td><td>Counter</td><td>—</td><td>Lagging clients evicted (disconnected) for falling too far behind</td></tr>
+<tr><td><code>choreo_cache_warm_attempts_total</code></td><td>Counter</td><td>—</td><td>Prompt-cache warm pings actually sent</td></tr>
+<tr><td><code>choreo_cache_warm_skips_total</code></td><td>Counter</td><td><code>reason</code></td><td>Warm attempts skipped, by reason</td></tr>
 <tr><td><code>choreo_request_duration_seconds</code></td><td>Histogram</td><td><code>status</code></td><td>Request latency</td></tr>
 <tr><td><code>choreo_tool_execution_duration_seconds</code></td><td>Histogram</td><td><code>tool</code></td><td>Per-tool execution time</td></tr>
 <tr><td><code>choreo_api_call_duration_seconds</code></td><td>Histogram</td><td><code>model</code>, <code>endpoint</code></td><td>API round-trip time</td></tr>

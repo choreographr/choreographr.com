@@ -49,7 +49,7 @@
   <link rel="preload" href="https://choreographr.com/fonts/jetbrains-mono.woff2" as="font" type="font/woff2" crossorigin>
 
   <link rel="icon" type="image/svg+xml" href="https://choreographr.com/favicon.svg">
-  <link rel="stylesheet" href="https://choreographr.com/css/main.css?h=522f5596923af2ef361c">
+  <link rel="stylesheet" href="https://choreographr.com/css/main.css?h=c8e54f75ecee9764056c">
 
   <!-- Firefox/Zen can paint a frame before this stylesheet has been
        applied if a layout flush happens while it loads (Bugzilla
@@ -398,7 +398,7 @@
     <li>
       <a href="https://choreographr.com/agent/docs/tools/image/"
          class="pl-5 text-night-300 hover:text-night-50">
-        Image generation
+        Image generation &amp; editing
       </a>
     </li>
     
@@ -542,6 +542,41 @@ mode when it is not (see <a href="https://choreographr.com/agent/docs/security/#
 </tbody></table>
 <p>Credentials are encrypted per-credential with the daemon's X25519 public key,
 so the encrypted blobs are useless without the private key.</p>
+<p>A credential enters through the daemon, never around it: the client sends a
+<strong>typed</strong> credential value (API key, X tokens, or OAuth grant) and the daemon
+encrypts it to its own binding public key before it touches disk, so no key
+material rides the add path. An add requires an already-unlocked keystore — a
+locked daemon refuses it rather than unlocking itself.</p>
+<h2 id="owner-only-local-trust">Owner-only local trust
+<a class="zola-anchor" href="#owner-only-local-trust" aria-label="Anchor link for: owner-only-local-trust">
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+</a>
+</h2>
+<p>The Unix socket is the daemon's fully-trusted local domain: it carries no Noise
+handshake, so a peer that reaches it can read transcripts, retrieve credentials
+while the keystore is unlocked, run tools, and enroll other clients. It is
+created <strong><code>0600</code> inside a directory only its owner can traverse</strong> — a
+<code>--base-dir</code>'s <code>run/</code>, or a per-uid <code>temp_dir()/choreographr-&lt;uid&gt;</code> when neither
+<code>$XDG_RUNTIME_DIR</code> nor a base dir is set, so parallel users on a shared <code>/tmp</code>
+neither collide nor share a parent.</p>
+<p>The <code>redb</code> store (plaintext transcripts and tool output), <code>known_servers.toml</code>
+(the per-daemon private unlock keys), and the log files are owner-only too, and
+the policy lives in one place (<code>choreo_shared::perm</code>) instead of three drifting
+copies. Two hardening details matter:</p>
+<ul>
+<li><code>known_servers.toml</code> is opened <code>O_NOFOLLOW</code> and owner-checked <strong>before</strong> it is
+parsed. A <code>pubkey</code> pin steers the next Noise IK handshake, so a planted file
+could otherwise pin an attacker's server and capture credentials. A refused
+file degrades to the empty store (re-confirmed first contact).</li>
+<li>A directory owned by another user is <strong>refused outright</strong> rather than warned
+about and used anyway — a foreign-owned directory lets that user enumerate or
+swap the socket and store files. Private modes are applied through an
+<code>O_NOFOLLOW</code> directory descriptor (<code>fchmod</code>), not a path chmod.</li>
+</ul>
+<p>Logs are written as a pid-keyed file per binary, pruned <strong>by age</strong> (one week)
+rather than by count, and they never contain payloads: prompts, model output,
+tool arguments and results, and credentials are logged as ids, kinds, lengths,
+and counts instead.</p>
 <h2 id="client-trust-access-control">Client trust &amp; access control
 <a class="zola-anchor" href="#client-trust-access-control" aria-label="Anchor link for: client-trust-access-control">
   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
@@ -559,6 +594,32 @@ hot-reloaded from disk. A client with no local access can be enrolled with
 <code>choreographr acl-add</code> subcommand; <code>choreographr fingerprint</code> prints the
 daemon's own fingerprint. The TUI refuses to start against an unauthorized
 daemon and never crashes on a connection error.</p>
+<h2 id="mcp-servers">MCP servers
+<a class="zola-anchor" href="#mcp-servers" aria-label="Anchor link for: mcp-servers">
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+</a>
+</h2>
+<p>MCP (Model Context Protocol) servers are configured in two tiers: a
+daemon-wide <code>mcp.json</code> you wrote and trust unconditionally, and a project
+<code>.mcp.json</code> that travels with a checkout you may not have written. A project's
+servers are <strong>gated behind trust</strong> — read (so <code>/mcp status</code> can report what is
+ignored) but never spawned, and their <code>${VAR}</code> references never expanded, until
+you run <code>/mcp trust</code> for that project root (recorded in <code>trust.toml</code>, keyed on
+the exact root). Revoking trust drops that project's live connections
+immediately.</p>
+<p>A stdio server inherits the daemon's environment with the
+code-injection variables (<code>LD_*</code>, <code>DYLD_*</code>, <code>PYTHONPATH</code>, <code>PERL5LIB</code>,
+<code>RUBYLIB</code>) stripped, its <code>stderr</code> is captured to an owner-only per-server log,
+and its calls are deadline-bounded and concurrency-capped.</p>
+<p>A server that needs an interactive sign-in stores an OAuth grant in the same
+encrypted keystore as provider credentials, <strong>keyed by the server's target</strong>
+(<code>mcp:&lt;slug&gt;|&lt;target-hash&gt;</code>) so a same-slug server on a different endpoint keeps
+its own credential. Two things fail closed: a project server's sign-in is
+refused while that project root is untrusted (its <code>oauth</code> block is
+repo-controlled), and a stored grant whose issuer or resource no longer matches
+the configured server is treated as absent and surfaces a re-login. A
+confidential client's secret comes from an environment variable named by
+<code>clientSecretEnv</code>, never from the config file.</p>
 <h2 id="risc-v-sandbox">RISC-V sandbox
 <a class="zola-anchor" href="#risc-v-sandbox" aria-label="Anchor link for: risc-v-sandbox">
   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
@@ -576,6 +637,20 @@ ELF) and executes it inside an isolated <code>ckb-vm</code> machine with:</p>
 <p>The guest cannot access host memory, syscalls, or files outside the VM without
 going through registered tools. The VM respects the same credentials and
 working directory as the host agent.</p>
+<h2 id="untrusted-text-on-a-terminal">Untrusted text on a terminal
+<a class="zola-anchor" href="#untrusted-text-on-a-terminal" aria-label="Anchor link for: untrusted-text-on-a-terminal">
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+</a>
+</h2>
+<p>Model output, tool output, tool names, session titles, and pasted text are all
+potentially hostile strings, and a terminal is an escape-sequence interpreter.
+<code>choreo-tui</code> normalizes every displayed string at its widget sink — control
+characters and escape sequences are removed, so model output cannot emit
+terminal commands — and strips <strong>bidirectional-formatting</strong> controls
+(RLO/LRO, isolates, LRM/RLM/ALM) from the free-text fields it writes back out:
+the OSC 2 window title and the OSC 7501 program-status record, both of which
+would otherwise let a hostile session title reorder or spoof what you see.
+Zero-width joiners are kept, so emoji sequences still render.</p>
 <h2 id="os-level-sandboxing-planned">OS-level sandboxing (planned)
 <a class="zola-anchor" href="#os-level-sandboxing-planned" aria-label="Anchor link for: os-level-sandboxing-planned">
   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>

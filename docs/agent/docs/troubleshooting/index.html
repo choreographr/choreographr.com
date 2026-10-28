@@ -49,7 +49,7 @@
   <link rel="preload" href="https://choreographr.com/fonts/jetbrains-mono.woff2" as="font" type="font/woff2" crossorigin>
 
   <link rel="icon" type="image/svg+xml" href="https://choreographr.com/favicon.svg">
-  <link rel="stylesheet" href="https://choreographr.com/css/main.css?h=522f5596923af2ef361c">
+  <link rel="stylesheet" href="https://choreographr.com/css/main.css?h=c8e54f75ecee9764056c">
 
   <!-- Firefox/Zen can paint a frame before this stylesheet has been
        applied if a layout flush happens while it loads (Bugzilla
@@ -398,7 +398,7 @@
     <li>
       <a href="https://choreographr.com/agent/docs/tools/image/"
          class="pl-5 text-night-300 hover:text-night-50">
-        Image generation
+        Image generation &amp; editing
       </a>
     </li>
     
@@ -490,11 +490,12 @@
 </a>
 </h2>
 <ul>
-<li><code>choreo-tui</code> writes its diagnostics to the platform temp directory
-(<code>$TMPDIR/choreo-tui-&lt;pid&gt;.log</code>) — check there for client-side issues.</li>
-<li>The daemon logs to stderr; use <code>-v</code>/<code>-vv</code> for more detail, or set
-<code>RUST_LOG</code> (which takes precedence over the CLI flags). A TUI-autostarted
-daemon logs to a per-process file (<code>$TMPDIR/choreo-daemon-&lt;pid&gt;.log</code>); pass
+<li><code>choreo-tui</code> writes its diagnostics to
+<code>$XDG_STATE_HOME/choreographr/tui-&lt;pid&gt;.log</code> (falling back to the platform temp
+directory) — check there for client-side issues.</li>
+<li>The daemon logs to stderr; use <code>-v</code>/<code>-vv</code> for more detail (CLI flags take
+precedence over <code>RUST_LOG</code>). A TUI-autostarted daemon logs to a per-process
+file (<code>$XDG_STATE_HOME/choreographr/daemon-&lt;pid&gt;.log</code>, else the temp dir); pass
 <code>--log-file &lt;path&gt;</code> to write logs elsewhere when starting it yourself.</li>
 </ul>
 <h2 id="common-issues">Common issues
@@ -527,7 +528,8 @@ allow-list (enroll a local client with <code>/acl add</code>).</p>
 In Unix-socket mode <code>choreo-tui</code> starts a daemon automatically when it cannot
 reach one, and shows a status message while the daemon starts. If that fails,
 run <code>choreographr</code> in another terminal and inspect
-<code>$TMPDIR/choreo-daemon-&lt;pid&gt;.log</code>. A daemon that is already listening at the
+<code>$XDG_STATE_HOME/choreographr/daemon-&lt;pid&gt;.log</code>. A daemon that is already
+listening at the
 socket path is reported explicitly rather than being replaced.</p>
 <h2 id="getting-help">Getting help
 <a class="zola-anchor" href="#getting-help" aria-label="Anchor link for: getting-help">

@@ -49,7 +49,7 @@
   <link rel="preload" href="https://choreographr.com/fonts/jetbrains-mono.woff2" as="font" type="font/woff2" crossorigin>
 
   <link rel="icon" type="image/svg+xml" href="https://choreographr.com/favicon.svg">
-  <link rel="stylesheet" href="https://choreographr.com/css/main.css?h=522f5596923af2ef361c">
+  <link rel="stylesheet" href="https://choreographr.com/css/main.css?h=c8e54f75ecee9764056c">
 
   <!-- Firefox/Zen can paint a frame before this stylesheet has been
        applied if a layout flush happens while it loads (Bugzilla
@@ -398,7 +398,7 @@
     <li>
       <a href="https://choreographr.com/agent/docs/tools/image/"
          class="pl-5 text-night-300 hover:text-night-50">
-        Image generation
+        Image generation &amp; editing
       </a>
     </li>
     
@@ -555,7 +555,7 @@ serially to preserve ordering.</p>
   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
 </a>
 </h2>
-<p>Eighteen crates in a single Cargo workspace (resolver = "3"). The two
+<p>Nineteen crates in a single Cargo workspace (resolver = "3"). The two
 foundational crates — <code>choreo-proto</code> (the wire format) and <code>choreo-keystore</code>
 (credentials) — have no workspace dependencies; <code>choreo-transport</code> builds on
 <code>choreo-proto</code>, and <code>choreo-client-core</code> and the daemon sit on top, with the
@@ -568,6 +568,7 @@ clients and bridges (<code>choreo-tui</code>, <code>choreo-gui</code>, <code>cho
 <tr><td><code>choreo-content</code></td><td>Coordination Platform client — Substrate chain writes (subxt via a tokio sidecar), indexer reads, IPFS add/cat, and content encode/decode; pulled in by the daemon's <code>content</code> feature (off by default)</td></tr>
 <tr><td><code>choreo-image</code></td><td>Image decode surface — raster decode with EXIF orientation baked in, HEIC decode (with a decompression-bomb guard), and SVG rasterization</td></tr>
 <tr><td><code>choreo-sanitize</code></td><td>Shared string-safety leaf — output sanitization (control chars, truncation, fenced-output safety) used across tools</td></tr>
+<tr><td><code>choreo-shared</code></td><td>Shared binary-facing helpers — the release name, clap styles, and the unified <code>-v</code>/<code>-q</code> logging policy every CLI crate uses</td></tr>
 <tr><td><code>choreo-proto</code></td><td>Framed binary protocol (MessagePack + length prefix) shared between clients and daemon</td></tr>
 <tr><td><code>choreo-keystore</code></td><td>X25519 keypair + ECDH/AES-256-GCM crypto library for encrypted credentials, the per-daemon keystore binding, and shared config paths</td></tr>
 <tr><td><code>choreo-transport</code></td><td>Noise encrypted transport over TCP (IK + XX first-contact) with message fragmentation and per-chunk locking</td></tr>
@@ -577,7 +578,7 @@ clients and bridges (<code>choreo-tui</code>, <code>choreo-gui</code>, <code>cho
 <tr><td><code>choreo-gui</code></td><td>Desktop GUI client (Dioxus)</td></tr>
 <tr><td><code>choreo-im</code></td><td>Instant-messaging bridge (Telegram, with more platforms planned) — chat with your agent on the go; its own binary, not part of the prebuilt releases (<code>cargo build -p choreo-im</code>)</td></tr>
 <tr><td><code>choreo-acp</code></td><td>ACP bridge — translates the Agent Communication Protocol (JSON-RPC over stdin/stdout) into daemon messages so ACP-compatible editors (Claude Code, Cline, …) can drive sessions; its own binary (<code>cargo build -p choreo-acp</code>)</td></tr>
-<tr><td><code>choreo-mcp</code></td><td>MCP (Model Context Protocol) client — spawns subprocess servers, discovers their tools, and dispatches calls over JSON-RPC stdio; library-only, linked via the daemon's <code>mcp</code> feature (off by default)</td></tr>
+<tr><td><code>choreo-mcp</code></td><td>MCP (Model Context Protocol) client, built on the official <code>rmcp</code> SDK — connects over a stdio subprocess or a remote Streamable HTTP endpoint, discovers their tools (with a live <code>subscriptions/listen</code> refresh), and dispatches deadline-bounded calls; library-only, linked via the daemon's <code>mcp</code> feature (on by default)</td></tr>
 <tr><td><code>choreo-client-core</code></td><td>Shared parsing, markdown, image assembly, and daemon-message dispatch for UI clients</td></tr>
 <tr><td><code>choreo-markdown</code></td><td>Markdown parser and HTML renderer (pulldown-cmark + ammonia)</td></tr>
 </tbody></table>
@@ -589,10 +590,15 @@ clients and bridges (<code>choreo-tui</code>, <code>choreo-gui</code>, <code>cho
 <p>Client/daemon communication is a framed binary protocol (MessagePack + length
 prefix), defined in <code>choreo-proto</code>. Remote connections are wrapped in the
 Noise encrypted transport from <code>choreo-transport</code> (IK against a pinned server
-key; XX first-contact mode on the wire v5 handshake). The protocol is
-versioned: streaming is <strong>lossless</strong> — each client has an unbounded outbound
-queue with lag-based eviction, and an <code>Evicted</code> event informs a slow client of
-dropped state instead of silently truncating a session. Session history is
+key; XX first-contact mode on the current wire version — v9). Frames are capped
+at 64 MiB. The protocol is versioned: streaming is <strong>lossless</strong> — each client
+has an unbounded outbound queue with lag-based eviction, and an <code>Evicted</code> event
+informs a slow client of dropped state instead of silently truncating a
+session. Session snapshots carry only image <strong>metadata</strong>; displayed-image bytes
+are fetched on demand (<code>GetImage</code>/<code>Image</code>, protocol v6), sessions carry
+daemon-owned <code>pinned</code>/<code>archived</code> flags (v8) broadcast to every client, and live
+MCP config reload and trust queries (<code>McpReload</code>/<code>McpTrust*</code>, v9) let a running
+daemon pick up <code>mcp.json</code> edits without a restart. Session history is
 compressed with zstd (schema 1→2 migration) so long-running sessions stay
 compact on disk.</p>
 <h2 id="vision-browsing">Vision &amp; browsing

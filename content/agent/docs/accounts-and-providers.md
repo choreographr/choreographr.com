@@ -22,6 +22,11 @@ names must be lowercase alphanumeric with hyphens or underscores
 [[account]]
 name = "main"
 provider = "openai"
+prompt_cache_affinity = true   # force the per-session cache-affinity body field on/off
+
+[[account]]
+name = "chatgpt"
+provider = "chatgpt"          # OAuth provider: create it, then `/login chatgpt`
 
 [[account]]
 name = "claude"
@@ -41,7 +46,7 @@ streaming = false
 retry_max_attempts = 3
 ```
 
-## Adding API keys
+## Credentials: API keys and OAuth
 
 Keys can be managed in the TUI — on the accounts page (`Alt+A`), select an
 account and press `c` to enter its API credential.
@@ -53,9 +58,40 @@ command:
 /add-key openai sk-...
 ```
 
-Keys are encrypted per-credential with the daemon's public key before being
-stored. The daemon starts **locked** — use `/unlock` to decrypt credentials
-into memory, and `/lock` to clear them again.
+The credential travels to the daemon as a **typed value** (API key, X tokens, or
+OAuth grant) over the local socket or the Noise-encrypted TCP connection — no
+key material rides the add path — and the daemon encrypts it to its own binding
+public key before it reaches disk. The daemon starts **locked**, so an add is
+refused until you `/unlock`; `/lock` clears credentials from memory again.
+
+### OAuth sign-in
+
+Some providers authenticate with an account sign-in instead of an API key. When
+a provider's catalog entry carries an OAuth profile, the account takes no key:
+create it, then sign in.
+
+```
+/login chatgpt
+```
+
+`/login <account>` (alias `/add-oauth`) opens the provider's consent screen
+through a loopback callback. On a remote or SSH host, pass `--device` for the
+headless device-code flow. What gets stored is the durable **grant** — refresh
+token, client registration, and identity claim — encrypted in the keystore like
+any other credential; the short-lived access token lives in daemon memory only
+and is refreshed and rotated for you, proactively before it expires and once on
+a `401`. If the provider rejects the grant outright, the session says so and
+asks you to sign in again instead of failing silently.
+
+An account holds **one** credential, so signing in replaces an existing key for
+that account — and adding a key replaces an OAuth grant.
+
+A provider the bundled catalog does not know can be given an OAuth profile in
+the [user overlay](#catalog-overlays) with a `[provider.<slug>.oauth]` table
+(`issuer`, `authorize_path`, `token_path`, `scopes`, `redirect_ports`,
+`code_exchange_encoding`, `refresh_encoding`, `device_code`, and an optional
+public `client_id`). A partial block is warned about and skipped, leaving the
+provider's API-key behaviour in place.
 
 ## Providers
 
@@ -112,6 +148,10 @@ Provider scalar keys (`[provider.<slug>]`), all optional:
 | `base_url` | string | API base URL |
 | `default_model` | string | Model used when no account/session model is set |
 | `display_name` | string | Human-readable name (only needed for providers not in the base) |
+| `prompt_cache_short` | integer | Prompt-cache TTL of the default ephemeral tier, in seconds |
+| `prompt_cache_long` | integer | Prompt-cache TTL of the extended tier, in seconds |
+| `request_compression` | string | `"gzip"`, `"zstd"`, or `"identity"` (default) — compress request bodies for endpoints that decode them. Opt-in: the server must decompress, so leave it off unless support is known. A provider that rejects the encoding with `415` is downgraded to identity for the process |
+| `cache_affinity` | string | `"off"` (default), `"prompt-cache-key"`, or `"openrouter-session"` — which per-session cache-affinity field this provider accepts. The daemon fills it with the turn's **real session id**, never a constant |
 
 Per-model keys (`[provider.<slug>.models."<model-id>"]`), all optional:
 
@@ -123,11 +163,16 @@ Per-model keys (`[provider.<slug>.models."<model-id>"]`), all optional:
 | `reasoning_levels` | array of strings | Reasoning-effort slugs (e.g. `["off", "low", "high"]`) |
 | `responses` | boolean | Whether the model uses the OpenAI Responses API |
 | `reasoning_passback` | string | How reasoning is echoed between turns: `"none"`, `"tool_loop"`, `"all_turns"`, `"signature"`, or `"response_id"` |
-| `reasoning_content_required` | boolean | Whether every request must carry a `reasoning_content` field (DeepSeek/GLM chat) |
+| `reasoning_echo_field` | string | The wire key replayed reasoning is shaped as (e.g. `"reasoning_content"`) |
+| `reasoning_echo_required` | boolean | Whether that key must be **present** on every assistant message, empty when there is nothing to echo |
+| `reasoning_content_required` | boolean | Legacy alias that sets both halves above (DeepSeek/GLM chat) |
 | `supports_vision` | boolean | Whether the model accepts image input |
 | `supports_image_output` | boolean | Whether the model generates images |
 | `temperature` | boolean | Whether the model accepts a `temperature` parameter |
 | `deprecated` | boolean | Lifecycle status |
+| `prompt_cache_short` | integer | Per-model override of the default cache TTL, in seconds |
+| `prompt_cache_long` | integer | Per-model override of the extended cache TTL, in seconds |
+| `cache_retention` | string | `"prompt-cache-retention"` (pre-GPT-5.6 top-level `prompt_cache_retention = "24h"`) or `"prompt-cache-options"` (GPT-5.6+ nested `prompt_cache_options.ttl = "12h"`, Responses API only). **Model-level only** — the spelling depends on the model generation. Emitted only when the model also declares a long TTL tier |
 
 #### Merge semantics
 
@@ -187,15 +232,24 @@ overridden per-account:
 | `context_window` | Default context window for all models |
 | `meter` | Billing meter for prompt-cache warming: `payg`, `tokens`, `requests`, `flat`, or `unknown` |
 | `cache_warming` | Per-account override of the global `[cache_warming]` mode |
+| `prompt_cache_affinity` | Force the per-session cache-affinity body field on or off for this account (omitted = follow the provider catalog's capability) |
 
 The Responses API is fully supported — including tool use, streaming, reasoning
 effort slugs, multi-turn chaining via `previous_response_id`, and
 **programmatic tool calling** (gpt-5.6+ models).
 
-## Image generation
+## Image generation and editing
 
-The [`generate_image`](@/agent/docs/tools/image.md) tool resolves its provider
-from the session's account. OpenAI-compatible accounts use the OpenAI Images
-adapter (`gpt-image-*`), z.ai / Zhipu accounts use `glm-image`, and fal.ai
-accounts use their hosted image models (with an optional `seed`); the model is
-chosen from the provider's catalog image-output entries.
+Both [image tools](@/agent/docs/tools/image.md) resolve their provider from the
+session's account:
+
+- `generate_image` — OpenAI-compatible accounts use the OpenAI Images adapter
+  (`gpt-image-*`), z.ai / Zhipu accounts use `glm-image`, and fal.ai accounts use
+  their hosted image models (with an optional `seed`).
+- `edit_image` — OpenAI Images, xAI (`grok-imagine`), and Google Gemini (which
+  generates and edits through `generateContent`), plus fal.ai. z.ai / Zhipu is
+  generation-only, and Anthropic has no image backend.
+
+The model is chosen from the provider's catalog entries — image-output models
+for generation, edit-capable models for editing — and can always be overridden
+by passing `model` explicitly.

@@ -49,7 +49,7 @@
   <link rel="preload" href="https://choreographr.com/fonts/jetbrains-mono.woff2" as="font" type="font/woff2" crossorigin>
 
   <link rel="icon" type="image/svg+xml" href="https://choreographr.com/favicon.svg">
-  <link rel="stylesheet" href="https://choreographr.com/css/main.css?h=522f5596923af2ef361c">
+  <link rel="stylesheet" href="https://choreographr.com/css/main.css?h=c8e54f75ecee9764056c">
 
   <!-- Firefox/Zen can paint a frame before this stylesheet has been
        applied if a layout flush happens while it loads (Bugzilla
@@ -398,7 +398,7 @@
     <li>
       <a href="https://choreographr.com/agent/docs/tools/image/"
          class="pl-5 text-night-300 hover:text-night-50">
-        Image generation
+        Image generation &amp; editing
       </a>
     </li>
     
@@ -484,31 +484,51 @@
       <div class="text-sm text-night-400 font-mono mb-6">
         /agent/docs/configuration/
       </div>
-      <p>The daemon reads config from <code>~/.config/choreographr/config.toml</code>. All fields
-are optional.</p>
+      <p>The daemon reads config from <code>$XDG_CONFIG_HOME/choreographr/config.toml</code> (i.e.
+<code>~/.config/choreographr/config.toml</code> on most systems). All fields are optional.</p>
 <pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;" ><code data-lang="toml"><span class="giallo-l"><span>max_turns</span><span style="color: #94E2D5;"> =</span><span style="color: #FAB387;"> 0</span><span style="color: #9399B2;font-style: italic;">      # daemon-wide tool-loop budget; 0 = unlimited (default)</span></span>
 <span class="giallo-l"></span>
 <span class="giallo-l"><span style="color: #9399B2;">[</span><span>context</span><span style="color: #9399B2;">]</span></span>
 <span class="giallo-l"><span>context_file_names</span><span style="color: #94E2D5;"> =</span><span style="color: #9399B2;"> [</span><span style="color: #A6E3A1;">&quot;AGENTS.md&quot;</span><span style="color: #9399B2;">,</span><span style="color: #A6E3A1;"> &quot;CLAUDE.md&quot;</span><span style="color: #9399B2;">]</span></span>
 <span class="giallo-l"><span>context_file_max_bytes</span><span style="color: #94E2D5;"> =</span><span style="color: #FAB387;"> 32768</span></span>
-<span class="giallo-l"><span>disable_claude_code_prompt</span><span style="color: #94E2D5;"> =</span><span style="color: #FAB387;"> false</span></span></code></pre>
+<span class="giallo-l"><span>disable_claude_code_prompt</span><span style="color: #94E2D5;"> =</span><span style="color: #FAB387;"> false</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #9399B2;">[</span><span>cache_warming</span><span style="color: #9399B2;">]</span><span style="color: #9399B2;font-style: italic;">              # prompt-cache warming — off by default (see below)</span></span>
+<span class="giallo-l"><span>mode</span><span style="color: #94E2D5;"> =</span><span style="color: #A6E3A1;"> &quot;off&quot;</span><span style="color: #9399B2;font-style: italic;">                 # off | streaming (warm the cache while a tool call blocks)</span></span>
+<span class="giallo-l"><span>min_prefix_tokens</span><span style="color: #94E2D5;"> =</span><span style="color: #FAB387;"> 32000</span><span style="color: #9399B2;font-style: italic;">    # `tokens`-metered gate: minimum cacheable prefix, in tokens</span></span>
+<span class="giallo-l"><span>min_expected_savings</span><span style="color: #94E2D5;"> =</span><span style="color: #FAB387;"> 0.05</span><span style="color: #9399B2;font-style: italic;">  # `payg`-metered gate: minimum USD saved per ping</span></span></code></pre>
 <blockquote>
 <p><strong>Note:</strong> Provider-level settings (<code>base_url</code>, <code>streaming</code>, <code>retry_*</code>,
 timeouts, endpoint paths, request format, etc.) have moved to per-account
 overrides in <code>accounts.toml</code>. They are no longer read from <code>config.toml</code>.</p>
 <p><code>accounts.toml</code> is <strong>watched live</strong>: edits are picked up without a restart,
-and affected sessions rebuild their provider clients on the next request.</p>
+and affected sessions rebuild their provider clients on the next request.
+MCP servers live in a separate <code>mcp.json</code> (see the
+<a href="https://choreographr.com/agent/docs/tools/#mcp-servers">tools reference</a>).</p>
 </blockquote>
+<h2 id="prompt-cache-warming">Prompt-cache warming
+<a class="zola-anchor" href="#prompt-cache-warming" aria-label="Anchor link for: prompt-cache-warming">
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+</a>
+</h2>
+<p>A warm ping re-sends the last request with a one-token output cap to refresh the
+provider's prompt cache before its TTL expires. It is <strong>off by default</strong> and
+only pays off under some billing plans, so it is gated per account by a <code>meter</code>:
+<code>payg</code> and <code>tokens</code> accounts warm when the saving clears a threshold, while
+<code>requests</code>, <code>flat</code>, and <code>unknown</code> never do (a ping burns quota). Set
+<code>mode = "streaming"</code> — globally in <code>[cache_warming]</code>, or per account in
+<code>accounts.toml</code> — and a <code>meter</code> to opt in.</p>
 <h2 id="environment-variables">Environment variables
 <a class="zola-anchor" href="#environment-variables" aria-label="Anchor link for: environment-variables">
   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
 </a>
 </h2>
 <table><thead><tr><th>Variable</th><th>Purpose</th></tr></thead><tbody>
-<tr><td><code>CHOREOGRAPHR_SOCKET_PATH</code></td><td>Override the Unix socket path (default: the platform temp directory, e.g. <code>$TMPDIR/Choreographr.sock</code>)</td></tr>
-<tr><td><code>CHOREOGRAPHR_DB_PATH</code></td><td>Override the database path (default <code>~/.local/share/choreographr/state.redb</code>)</td></tr>
+<tr><td><code>CHOREOGRAPHR_SOCKET_PATH</code></td><td>Override the Unix socket path (default <code>$XDG_RUNTIME_DIR/choreographr.sock</code>, or <code>/tmp/choreographr.sock</code> when no runtime dir is available)</td></tr>
+<tr><td><code>CHOREOGRAPHR_DB_PATH</code></td><td>Override the database path (default <code>$XDG_DATA_HOME/choreographr/state.redb</code>, i.e. <code>~/.local/share/choreographr/state.redb</code>)</td></tr>
 <tr><td><code>CHOREOGRAPHR_MAX_TURNS</code></td><td>Override <code>max_turns</code> (resolution chain: env → config.toml → default <code>0</code>)</td></tr>
-<tr><td><code>RUST_LOG</code></td><td>Log level (takes precedence over <code>-v</code>/<code>-vv</code>/<code>-q</code> flags)</td></tr>
+<tr><td><code>CHOREOGRAPHR_BASE_DIR</code></td><td>Relocate the whole instance under one root (same as <code>--base-dir</code>)</td></tr>
+<tr><td><code>RUST_LOG</code></td><td>Log level (overridden by explicit <code>-v</code>/<code>-vv</code>/<code>-q</code> flags)</td></tr>
 </tbody></table>
 <p>A <code>max_turns</code> value of <code>0</code> means <strong>unlimited</strong> — the agent loop runs until the
 model produces a final answer, is cancelled, or hits an error. This is a
@@ -518,28 +538,50 @@ daemon-wide cap; individual sessions do not carry their own <code>max_turns</cod
   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
 </a>
 </h2>
-<p>The machine's transport keys and trust state live in
-<code>~/.config/choreographr/</code>:</p>
+<p>Paths resolve through the <strong>XDG</strong> directories by default — config in
+<code>$XDG_CONFIG_HOME/choreographr/</code>, data in <code>$XDG_DATA_HOME/choreographr/</code>, the
+socket in <code>$XDG_RUNTIME_DIR</code>, and logs in <code>$XDG_STATE_HOME/choreographr/</code>. Pass
+<code>--base-dir &lt;PATH&gt;</code> (or set <code>CHOREOGRAPHR_BASE_DIR</code>) to relocate the whole
+instance under one root instead; <code>choreographr migrate --base-dir &lt;PATH&gt;</code> copies
+an existing install across (preserving the keystore, so clients keep their
+pinned server key).</p>
+<p>The machine's transport keys and trust state live in the config directory:</p>
 <ul>
 <li><code>transport.sec</code> — the Noise IK static secret key (32-byte X25519)</li>
 <li><code>transport.pub</code> — the matching static public key; peers identify this machine
 by it, and <code>choreographr fingerprint</code> renders it</li>
 <li><code>known_servers.toml</code> — pinned server fingerprints for remote connections</li>
 <li><code>authorized_clients.toml</code> — the daemon's client allow-list</li>
+<li><code>mcp.json</code> — daemon-wide MCP servers (see the <a href="https://choreographr.com/agent/docs/tools/">tools reference</a>); a project's <code>.mcp.json</code> is gated behind trust stored in <code>trust.toml</code></li>
 </ul>
 <p>Credentials are encrypted per-credential with the daemon's X25519 public key and
 stored in the <code>redb</code> database. The daemon binds its keystore once; thereafter
 <code>/unlock</code> uses the stored per-daemon unlock key. See
 <a href="https://choreographr.com/agent/docs/security/">Security</a> for details.</p>
+<h2 id="logs">Logs
+<a class="zola-anchor" href="#logs" aria-label="Anchor link for: logs">
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+</a>
+</h2>
+<p>Every binary writes its own <strong>pid-keyed log file</strong> —
+<code>$XDG_STATE_HOME/choreographr/&lt;binary&gt;-&lt;pid&gt;.log</code> (e.g. <code>tui-4242.log</code>), or
+<code>{base}/log/...</code> under <code>--base-dir</code>, else the platform temp dir. The daemon and
+the IM bridge also mirror to stderr; the GUI and ACP adapter mirror only when
+attached to a terminal. <code>--log-file &lt;path&gt;</code> overrides the destination.</p>
+<p>Log files are owner-only, pruned by <strong>age</strong> (one week), and never contain
+payloads: prompts, model output, tool arguments and results, and credentials are
+recorded as ids, kinds, lengths, and counts. Use <code>-v</code>/<code>-vv</code>/<code>-q</code> (which take
+precedence over <code>RUST_LOG</code>) to change what is recorded.</p>
 <h2 id="daemon-flags">Daemon flags
 <a class="zola-anchor" href="#daemon-flags" aria-label="Anchor link for: daemon-flags">
   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
 </a>
 </h2>
 <table><thead><tr><th>Flag</th><th>Purpose</th></tr></thead><tbody>
-<tr><td><code>-v</code> / <code>-vv</code> / <code>-q</code></td><td>Log verbosity (debug / trace / warnings); <code>RUST_LOG</code> overrides them</td></tr>
+<tr><td><code>-v</code> / <code>-vv</code> / <code>-q</code></td><td>Log verbosity (debug / trace / warnings); takes precedence over <code>RUST_LOG</code></td></tr>
 <tr><td><code>--log-file &lt;path&gt;</code></td><td>Write daemon logs to a file instead of stderr (ANSI disabled)</td></tr>
 <tr><td><code>--auto-exit</code></td><td>Shut down gracefully when the last client disconnects</td></tr>
+<tr><td><code>--base-dir &lt;PATH&gt;</code></td><td>Relocate the whole instance (config, data, socket, logs) under one root</td></tr>
 <tr><td><code>--metrics-addr &lt;addr&gt;</code></td><td>Serve an OpenMetrics endpoint (see <a href="https://choreographr.com/agent/docs/monitoring/">Monitoring</a>)</td></tr>
 </tbody></table>
 <h2 id="slash-command-reference">Slash command reference

@@ -31,8 +31,9 @@ The full architecture deep-dive lives in the repository at `ARCHITECTURE.md`.
 
 
 Every release ships **two prebuilt binaries** — `choreographr` (the daemon)
-and `choreo-tui` (the terminal client) — for **Linux x86_64**, **macOS (Apple
-Silicon)**, and **Android (Termux)**. All install routes below use these
+and `choreo-tui` (the terminal client) — for **Linux (x86_64 and arm64)**,
+**macOS (Apple Silicon and Intel)**, and **Android (Termux)**. All install
+routes below use these
 binaries except the Cargo source build; none of them need a Rust toolchain at
 install time.
 
@@ -55,11 +56,19 @@ the `brew trust` step is for.
 
 ### Manual tarball
 
-[Download](https://github.com/choreographr/choreographr/releases/download/v0.2.0/choreographr-0.2.0-aarch64-apple-darwin.tar.gz) the Apple Silicon tarball, or run:
+[Download](https://github.com/choreographr/choreographr/releases/download/v0.2.4/choreographr-0.2.4-aarch64-apple-darwin.tar.gz) the Apple Silicon tarball, or run:
 
 ```bash
-curl -fL -O https://github.com/choreographr/choreographr/releases/download/v0.2.0/choreographr-0.2.0-aarch64-apple-darwin.tar.gz
-tar xzf choreographr-0.2.0-aarch64-apple-darwin.tar.gz
+curl -fL -O https://github.com/choreographr/choreographr/releases/download/v0.2.4/choreographr-0.2.4-aarch64-apple-darwin.tar.gz
+tar xzf choreographr-0.2.4-aarch64-apple-darwin.tar.gz
+sudo cp choreographr choreo-tui /usr/local/bin/
+```
+
+[Download](https://github.com/choreographr/choreographr/releases/download/v0.2.4/choreographr-0.2.4-x86_64-apple-darwin.tar.gz) the Intel (x86_64) tarball, or run:
+
+```bash
+curl -fL -O https://github.com/choreographr/choreographr/releases/download/v0.2.4/choreographr-0.2.4-x86_64-apple-darwin.tar.gz
+tar xzf choreographr-0.2.4-x86_64-apple-darwin.tar.gz
 sudo cp choreographr choreo-tui /usr/local/bin/
 ```
 
@@ -74,21 +83,25 @@ xattr -dr com.apple.quarantine /path/to/choreographr
 
 ### Debian / Ubuntu — .deb
 
-[Download](https://github.com/choreographr/choreographr/releases/download/v0.2.0/choreographr-0.2.0-x86_64.deb) the package, or run:
+[Download](https://github.com/choreographr/choreographr/releases/download/v0.2.4/choreographr-0.2.4-x86_64.deb) the x86_64 package (or the [aarch64 package](https://github.com/choreographr/choreographr/releases/download/v0.2.4/choreographr-0.2.4-aarch64.deb) on arm64), or run:
 
 ```bash
-curl -fL -O https://github.com/choreographr/choreographr/releases/download/v0.2.0/choreographr-0.2.0-x86_64.deb
-sudo apt install ./choreographr-0.2.0-x86_64.deb
+curl -fL -O https://github.com/choreographr/choreographr/releases/download/v0.2.4/choreographr-0.2.4-x86_64.deb
+sudo apt install ./choreographr-0.2.4-x86_64.deb
 ```
+
+On an arm64 host, fetch `choreographr-0.2.4-aarch64.deb` instead.
 
 ### Fedora / RHEL / openSUSE — .rpm
 
-[Download](https://github.com/choreographr/choreographr/releases/download/v0.2.0/choreographr-0.2.0-x86_64.rpm) the package, or run:
+[Download](https://github.com/choreographr/choreographr/releases/download/v0.2.4/choreographr-0.2.4-x86_64.rpm) the x86_64 package (or the [aarch64 package](https://github.com/choreographr/choreographr/releases/download/v0.2.4/choreographr-0.2.4-aarch64.rpm) on arm64), or run:
 
 ```bash
-curl -fL -O https://github.com/choreographr/choreographr/releases/download/v0.2.0/choreographr-0.2.0-x86_64.rpm
-sudo dnf install ./choreographr-0.2.0-x86_64.rpm
+curl -fL -O https://github.com/choreographr/choreographr/releases/download/v0.2.4/choreographr-0.2.4-x86_64.rpm
+sudo dnf install ./choreographr-0.2.4-x86_64.rpm
 ```
+
+On an arm64 host, fetch `choreographr-0.2.4-aarch64.rpm` instead.
 
 Both packages install the two binaries and the systemd user unit
 (`~/.config/systemd/user/choreographr.service`).
@@ -96,22 +109,24 @@ Both packages install the two binaries and the systemd user unit
 ### Any distro — manual tarball
 
 The Linux tarball is a **fully static musl build**, so one artifact runs on
-any Linux distribution regardless of glibc version. [Download](https://github.com/choreographr/choreographr/releases/download/v0.2.0/choreographr-0.2.0-x86_64-unknown-linux-musl.tar.gz) it, or run:
+any Linux distribution regardless of glibc version. [Download](https://github.com/choreographr/choreographr/releases/download/v0.2.4/choreographr-0.2.4-x86_64-unknown-linux-musl.tar.gz) it, or run:
 
 ```bash
-curl -fL -O https://github.com/choreographr/choreographr/releases/download/v0.2.0/choreographr-0.2.0-x86_64-unknown-linux-musl.tar.gz
-tar xzf choreographr-0.2.0-x86_64-unknown-linux-musl.tar.gz
+curl -fL -O https://github.com/choreographr/choreographr/releases/download/v0.2.4/choreographr-0.2.4-x86_64-unknown-linux-musl.tar.gz
+tar xzf choreographr-0.2.4-x86_64-unknown-linux-musl.tar.gz
 sudo cp choreographr choreo-tui /usr/local/bin/
 ```
+
+On arm64, fetch `choreographr-0.2.4-aarch64-unknown-linux-musl.tar.gz` instead.
 
 ## Android (Termux)
 
 The daemon and TUI ship for **Termux on Android 10+** as a Termux-native
-`.deb`. [Download](https://github.com/choreographr/choreographr/releases/download/v0.2.0/choreographr-termux_0.2.0_aarch64.deb) it, or install it inside a Termux shell with `pkg`:
+`.deb`. [Download](https://github.com/choreographr/choreographr/releases/download/v0.2.4/choreographr-termux_0.2.4_aarch64.deb) it, or install it inside a Termux shell with `pkg`:
 
 ```bash
-curl -fL -O https://github.com/choreographr/choreographr/releases/download/v0.2.0/choreographr-termux_0.2.0_aarch64.deb
-pkg install ./choreographr-termux_0.2.0_aarch64.deb
+curl -fL -O https://github.com/choreographr/choreographr/releases/download/v0.2.4/choreographr-termux_0.2.4_aarch64.deb
+pkg install ./choreographr-termux_0.2.4_aarch64.deb
 ```
 
 It installs `choreographr` and `choreo-tui` under Termux's `$PREFIX`.
@@ -142,11 +157,11 @@ cargo install choreographr choreo-tui --locked
 This builds the daemon and the terminal client from crates.io.
 
 Requirements: a [Rust toolchain](https://rustup.rs/) — minimum supported Rust
-version (MSRV) is **1.94.1** — and a **Zig 0.16.0** toolchain on your `PATH`.
+version (MSRV) is **1.99.0** — and a **Zig** toolchain on your `PATH`.
 Zig compiles the [`zlob`](https://crates.io/crates/zlob) crate, a
 SIMD-accelerated globbing and file-walking library that powers the agent's
 `find`, `grep`, and related file tools; its build script compiles Zig source
-at build time. Install Zig 0.16.0 from [ziglang.org](https://ziglang.org/download/)
+at build time. Install Zig from [ziglang.org](https://ziglang.org/download/)
 (or your package manager — e.g. `brew install zig`, `apt install zig`,
 `pacman -S zig`).
 
@@ -221,7 +236,8 @@ choreographr -vv              # trace
 choreographr -q               # warnings only
 ```
 
-`RUST_LOG` takes precedence over the CLI flags:
+CLI flags take precedence over `RUST_LOG` (use `RUST_LOG` for a finer
+per-target filter):
 
 ```bash
 RUST_LOG=debug choreographr
@@ -237,18 +253,28 @@ choreo-tui
 
 ## Your first conversation
 
-Accounts are managed right in the TUI — no config files needed.
+Accounts are managed right in the TUI — no config files needed. An empty session
+shows a **welcome checklist** that ticks itself off as you go:
 
-1. Press `Ctrl+A` to open the **accounts** page.
-2. Press `n` to start a new account.
-3. Select a provider and press `Enter`.
-4. Enter a custom name for the account and press `Enter`.
-5. Paste the API credential and press `Enter`.
-6. Press `Esc` (or `q`) to go back to the chat.
-7. Select the account with `/account <name>`.
-8. Press `Ctrl+M` (falls back to `Ctrl+O` on terminals without the kitty keyboard protocol) to select the model.
-9. Press `Ctrl+R` to select the reasoning effort.
-10. Send your first prompt!
+1. **Add an account** — press `Alt+A` to open the accounts page, then `n` to
+   start the new-account wizard. Pick a provider (type to filter; the common ones
+   are listed first), keep the suggested account name or type your own, and paste
+   the API credential.
+
+   A provider that signs in with OAuth instead of an API key (for example
+   `chatgpt`) takes no key: create the account, then run `/login <account>` —
+   add `--device` on a remote or SSH host.
+
+2. **Use it in this session** — automatic when the session has no account yet:
+   as soon as the daemon confirms the credential, the TUI selects the account for
+   you. Otherwise select the account on the `Alt+A` page and press `Enter`, or run
+   `/account <name>`.
+
+3. **Choose a model** — the picker opens for you after step 2 (`Alt+M` opens it
+   any time). The list fills in as soon as the daemon has the account's models.
+
+Press `Alt+R` to pick a reasoning effort if the model supports it, then send your
+first prompt.
 
 That's it — you're chatting with your agent.
 
@@ -272,8 +298,8 @@ supported, with a universal fallback that works in any terminal. See the
 ## Configuration
 
 
-The daemon reads config from `~/.config/choreographr/config.toml`. All fields
-are optional.
+The daemon reads config from `$XDG_CONFIG_HOME/choreographr/config.toml` (i.e.
+`~/.config/choreographr/config.toml` on most systems). All fields are optional.
 
 ```toml
 max_turns = 0      # daemon-wide tool-loop budget; 0 = unlimited (default)
@@ -282,6 +308,11 @@ max_turns = 0      # daemon-wide tool-loop budget; 0 = unlimited (default)
 context_file_names = ["AGENTS.md", "CLAUDE.md"]
 context_file_max_bytes = 32768
 disable_claude_code_prompt = false
+
+[cache_warming]              # prompt-cache warming — off by default (see below)
+mode = "off"                 # off | streaming (warm the cache while a tool call blocks)
+min_prefix_tokens = 32000    # `tokens`-metered gate: minimum cacheable prefix, in tokens
+min_expected_savings = 0.05  # `payg`-metered gate: minimum USD saved per ping
 ```
 
 > **Note:** Provider-level settings (`base_url`, `streaming`, `retry_*`,
@@ -290,15 +321,28 @@ disable_claude_code_prompt = false
 >
 > `accounts.toml` is **watched live**: edits are picked up without a restart,
 > and affected sessions rebuild their provider clients on the next request.
+> MCP servers live in a separate `mcp.json` (see the
+> [tools reference](@/agent/docs/tools/_index.md#mcp-servers)).
+
+## Prompt-cache warming
+
+A warm ping re-sends the last request with a one-token output cap to refresh the
+provider's prompt cache before its TTL expires. It is **off by default** and
+only pays off under some billing plans, so it is gated per account by a `meter`:
+`payg` and `tokens` accounts warm when the saving clears a threshold, while
+`requests`, `flat`, and `unknown` never do (a ping burns quota). Set
+`mode = "streaming"` — globally in `[cache_warming]`, or per account in
+`accounts.toml` — and a `meter` to opt in.
 
 ## Environment variables
 
 | Variable | Purpose |
 |---|---|
-| `CHOREOGRAPHR_SOCKET_PATH` | Override the Unix socket path (default: the platform temp directory, e.g. `$TMPDIR/Choreographr.sock`) |
-| `CHOREOGRAPHR_DB_PATH` | Override the database path (default `~/.local/share/choreographr/state.redb`) |
+| `CHOREOGRAPHR_SOCKET_PATH` | Override the Unix socket path (default `$XDG_RUNTIME_DIR/choreographr.sock`, or `/tmp/choreographr.sock` when no runtime dir is available) |
+| `CHOREOGRAPHR_DB_PATH` | Override the database path (default `$XDG_DATA_HOME/choreographr/state.redb`, i.e. `~/.local/share/choreographr/state.redb`) |
 | `CHOREOGRAPHR_MAX_TURNS` | Override `max_turns` (resolution chain: env → config.toml → default `0`) |
-| `RUST_LOG` | Log level (takes precedence over `-v`/`-vv`/`-q` flags) |
+| `CHOREOGRAPHR_BASE_DIR` | Relocate the whole instance under one root (same as `--base-dir`) |
+| `RUST_LOG` | Log level (overridden by explicit `-v`/`-vv`/`-q` flags) |
 
 A `max_turns` value of `0` means **unlimited** — the agent loop runs until the
 model produces a final answer, is cancelled, or hits an error. This is a
@@ -306,27 +350,49 @@ daemon-wide cap; individual sessions do not carry their own `max_turns`.
 
 ## Transport keys
 
-The machine's transport keys and trust state live in
-`~/.config/choreographr/`:
+Paths resolve through the **XDG** directories by default — config in
+`$XDG_CONFIG_HOME/choreographr/`, data in `$XDG_DATA_HOME/choreographr/`, the
+socket in `$XDG_RUNTIME_DIR`, and logs in `$XDG_STATE_HOME/choreographr/`. Pass
+`--base-dir <PATH>` (or set `CHOREOGRAPHR_BASE_DIR`) to relocate the whole
+instance under one root instead; `choreographr migrate --base-dir <PATH>` copies
+an existing install across (preserving the keystore, so clients keep their
+pinned server key).
+
+The machine's transport keys and trust state live in the config directory:
 
 - `transport.sec` — the Noise IK static secret key (32-byte X25519)
 - `transport.pub` — the matching static public key; peers identify this machine
   by it, and `choreographr fingerprint` renders it
 - `known_servers.toml` — pinned server fingerprints for remote connections
 - `authorized_clients.toml` — the daemon's client allow-list
+- `mcp.json` — daemon-wide MCP servers (see the [tools reference](@/agent/docs/tools/_index.md)); a project's `.mcp.json` is gated behind trust stored in `trust.toml`
 
 Credentials are encrypted per-credential with the daemon's X25519 public key and
 stored in the `redb` database. The daemon binds its keystore once; thereafter
 `/unlock` uses the stored per-daemon unlock key. See
 [Security](@/agent/docs/security.md) for details.
 
+## Logs
+
+Every binary writes its own **pid-keyed log file** —
+`$XDG_STATE_HOME/choreographr/<binary>-<pid>.log` (e.g. `tui-4242.log`), or
+`{base}/log/...` under `--base-dir`, else the platform temp dir. The daemon and
+the IM bridge also mirror to stderr; the GUI and ACP adapter mirror only when
+attached to a terminal. `--log-file <path>` overrides the destination.
+
+Log files are owner-only, pruned by **age** (one week), and never contain
+payloads: prompts, model output, tool arguments and results, and credentials are
+recorded as ids, kinds, lengths, and counts. Use `-v`/`-vv`/`-q` (which take
+precedence over `RUST_LOG`) to change what is recorded.
+
 ## Daemon flags
 
 | Flag | Purpose |
 |---|---|
-| `-v` / `-vv` / `-q` | Log verbosity (debug / trace / warnings); `RUST_LOG` overrides them |
+| `-v` / `-vv` / `-q` | Log verbosity (debug / trace / warnings); takes precedence over `RUST_LOG` |
 | `--log-file <path>` | Write daemon logs to a file instead of stderr (ANSI disabled) |
 | `--auto-exit` | Shut down gracefully when the last client disconnects |
+| `--base-dir <PATH>` | Relocate the whole instance (config, data, socket, logs) under one root |
 | `--metrics-addr <addr>` | Serve an OpenMetrics endpoint (see [Monitoring](@/agent/docs/monitoring.md)) |
 
 ## Slash command reference
@@ -342,7 +408,7 @@ commands available in `choreo-tui`.
 
 Accounts can be managed either in the TUI or via `~/.config/choreographr/accounts.toml`.
 
-In the TUI, press `Ctrl+A` to open the **accounts** page, then `n` to add an
+In the TUI, press `Alt+A` to open the **accounts** page, then `n` to add an
 account (choose a provider, name it, and paste its API credential). See the
 [quick start](@/agent/docs/quick-start.md) for the full walkthrough.
 
@@ -356,10 +422,17 @@ names must be lowercase alphanumeric with hyphens or underscores
 [[account]]
 name = "main"
 provider = "openai"
+prompt_cache_affinity = true   # force the per-session cache-affinity body field on/off
+
+[[account]]
+name = "chatgpt"
+provider = "chatgpt"          # OAuth provider: create it, then `/login chatgpt`
 
 [[account]]
 name = "claude"
 provider = "anthropic"
+meter = "payg"                 # billing meter for the warm gate: payg|tokens|requests|flat|unknown
+cache_warming = "streaming"    # override the global [cache_warming] mode
 
 [[account]]
 name = "gemini"
@@ -373,9 +446,9 @@ streaming = false
 retry_max_attempts = 3
 ```
 
-## Adding API keys
+## Credentials: API keys and OAuth
 
-Keys can be managed in the TUI — on the accounts page (`Ctrl+A`), select an
+Keys can be managed in the TUI — on the accounts page (`Alt+A`), select an
 account and press `c` to enter its API credential.
 
 Alternatively, add a key for the service the account uses with the slash
@@ -385,9 +458,40 @@ command:
 /add-key openai sk-...
 ```
 
-Keys are encrypted per-credential with the daemon's public key before being
-stored. The daemon starts **locked** — use `/unlock` to decrypt credentials
-into memory, and `/lock` to clear them again.
+The credential travels to the daemon as a **typed value** (API key, X tokens, or
+OAuth grant) over the local socket or the Noise-encrypted TCP connection — no
+key material rides the add path — and the daemon encrypts it to its own binding
+public key before it reaches disk. The daemon starts **locked**, so an add is
+refused until you `/unlock`; `/lock` clears credentials from memory again.
+
+### OAuth sign-in
+
+Some providers authenticate with an account sign-in instead of an API key. When
+a provider's catalog entry carries an OAuth profile, the account takes no key:
+create it, then sign in.
+
+```
+/login chatgpt
+```
+
+`/login <account>` (alias `/add-oauth`) opens the provider's consent screen
+through a loopback callback. On a remote or SSH host, pass `--device` for the
+headless device-code flow. What gets stored is the durable **grant** — refresh
+token, client registration, and identity claim — encrypted in the keystore like
+any other credential; the short-lived access token lives in daemon memory only
+and is refreshed and rotated for you, proactively before it expires and once on
+a `401`. If the provider rejects the grant outright, the session says so and
+asks you to sign in again instead of failing silently.
+
+An account holds **one** credential, so signing in replaces an existing key for
+that account — and adding a key replaces an OAuth grant.
+
+A provider the bundled catalog does not know can be given an OAuth profile in
+the [user overlay](#catalog-overlays) with a `[provider.<slug>.oauth]` table
+(`issuer`, `authorize_path`, `token_path`, `scopes`, `redirect_ports`,
+`code_exchange_encoding`, `refresh_encoding`, `device_code`, and an optional
+public `client_id`). A partial block is warned about and skipped, leaving the
+provider's API-key behaviour in place.
 
 ## Providers
 
@@ -444,6 +548,10 @@ Provider scalar keys (`[provider.<slug>]`), all optional:
 | `base_url` | string | API base URL |
 | `default_model` | string | Model used when no account/session model is set |
 | `display_name` | string | Human-readable name (only needed for providers not in the base) |
+| `prompt_cache_short` | integer | Prompt-cache TTL of the default ephemeral tier, in seconds |
+| `prompt_cache_long` | integer | Prompt-cache TTL of the extended tier, in seconds |
+| `request_compression` | string | `"gzip"`, `"zstd"`, or `"identity"` (default) — compress request bodies for endpoints that decode them. Opt-in: the server must decompress, so leave it off unless support is known. A provider that rejects the encoding with `415` is downgraded to identity for the process |
+| `cache_affinity` | string | `"off"` (default), `"prompt-cache-key"`, or `"openrouter-session"` — which per-session cache-affinity field this provider accepts. The daemon fills it with the turn's **real session id**, never a constant |
 
 Per-model keys (`[provider.<slug>.models."<model-id>"]`), all optional:
 
@@ -455,11 +563,16 @@ Per-model keys (`[provider.<slug>.models."<model-id>"]`), all optional:
 | `reasoning_levels` | array of strings | Reasoning-effort slugs (e.g. `["off", "low", "high"]`) |
 | `responses` | boolean | Whether the model uses the OpenAI Responses API |
 | `reasoning_passback` | string | How reasoning is echoed between turns: `"none"`, `"tool_loop"`, `"all_turns"`, `"signature"`, or `"response_id"` |
-| `reasoning_content_required` | boolean | Whether every request must carry a `reasoning_content` field (DeepSeek/GLM chat) |
+| `reasoning_echo_field` | string | The wire key replayed reasoning is shaped as (e.g. `"reasoning_content"`) |
+| `reasoning_echo_required` | boolean | Whether that key must be **present** on every assistant message, empty when there is nothing to echo |
+| `reasoning_content_required` | boolean | Legacy alias that sets both halves above (DeepSeek/GLM chat) |
 | `supports_vision` | boolean | Whether the model accepts image input |
 | `supports_image_output` | boolean | Whether the model generates images |
 | `temperature` | boolean | Whether the model accepts a `temperature` parameter |
 | `deprecated` | boolean | Lifecycle status |
+| `prompt_cache_short` | integer | Per-model override of the default cache TTL, in seconds |
+| `prompt_cache_long` | integer | Per-model override of the extended cache TTL, in seconds |
+| `cache_retention` | string | `"prompt-cache-retention"` (pre-GPT-5.6 top-level `prompt_cache_retention = "24h"`) or `"prompt-cache-options"` (GPT-5.6+ nested `prompt_cache_options.ttl = "12h"`, Responses API only). **Model-level only** — the spelling depends on the model generation. Emitted only when the model also declares a long TTL tier |
 
 #### Merge semantics
 
@@ -517,89 +630,145 @@ overridden per-account:
 | `default_request_format` | Request format: `"chat_completions"` or `"responses"` |
 | `programmatic_tool_calling` | Enable programmatic tool calling (Responses API, gpt-5.6+) |
 | `context_window` | Default context window for all models |
+| `meter` | Billing meter for prompt-cache warming: `payg`, `tokens`, `requests`, `flat`, or `unknown` |
+| `cache_warming` | Per-account override of the global `[cache_warming]` mode |
+| `prompt_cache_affinity` | Force the per-session cache-affinity body field on or off for this account (omitted = follow the provider catalog's capability) |
 
 The Responses API is fully supported — including tool use, streaming, reasoning
 effort slugs, multi-turn chaining via `previous_response_id`, and
 **programmatic tool calling** (gpt-5.6+ models).
 
-## Image generation
+## Image generation and editing
 
-The [`generate_image`](@/agent/docs/tools/image.md) tool resolves its provider
-from the session's account. OpenAI-compatible accounts use the OpenAI Images
-adapter (`gpt-image-*`), and z.ai / Zhipu accounts use `glm-image`; the model is
-chosen from the provider's catalog image-output entries.
+Both [image tools](@/agent/docs/tools/image.md) resolve their provider from the
+session's account:
+
+- `generate_image` — OpenAI-compatible accounts use the OpenAI Images adapter
+  (`gpt-image-*`), z.ai / Zhipu accounts use `glm-image`, and fal.ai accounts use
+  their hosted image models (with an optional `seed`).
+- `edit_image` — OpenAI Images, xAI (`grok-imagine`), and Google Gemini (which
+  generates and edits through `generateContent`), plus fal.ai. z.ai / Zhipu is
+  generation-only, and Anthropic has no image backend.
+
+The model is chosen from the provider's catalog entries — image-output models
+for generation, edit-capable models for editing — and can always be overridden
+by passing `model` explicitly.
 
 
 ## Slash commands
 
 
-All commands in `choreo-tui` use the `/` prefix.
+All commands in `choreo-tui` use the `/` prefix. Typing `/` on an empty prompt
+opens the **command palette** — `Enter` runs the highlighted command, `Tab`
+completes the name, `↑`/`↓` move the selection, and `Esc` returns to the
+prompt. The palette and the parser share one catalog, so what you see is what
+runs.
 
 ## Sessions
 
 | Command | Description |
 |---|---|
-| `/session` | Show current session info |
-| `/session list` | List all sessions |
-| `/session new [title]` | Create a new session |
-| `/session switch <id>` | Switch to a different session |
-| `/session info <id>` | Show info for a specific session |
+| `/new [title]` | Create a session and switch to it |
+| `/session` | Open the session manager (or `list`, `new [title]`, `switch <id>`, `info <id>`) |
+| `/undo` | Undo the most recent user turn and its entire assistant response subtree |
+| `/redo` | Redo the most recently undone turn |
+| `/continue` | Continue a stopped/idle session ("Please continue.") |
+| `/cancel <request-id>` | Cancel a request by id |
+| `/stop` | Cancel whatever request is active on the attached session |
+| `/ping` | Health check |
+
+In the session manager (`Alt+S`), `Tab` toggles between the live and archived
+lists, `p` pins or unpins a session (pinned sessions sort to the top), and `a`
+archives or unarchives one.
 
 ## Models & accounts
 
 | Command | Description |
 |---|---|
-| `/models` | List and select models |
-| `/model` | Alias for `/models` |
-| `/account list` | List configured AI provider accounts |
-| `/account remove <name>` | Remove an AI provider account |
-| `/account <name>` | Set the session's AI provider account |
-| `Ctrl+M` | Open the model selector popup (falls back to `Ctrl+O` on terminals without the kitty keyboard protocol) |
+| `/model [model]` | Choose the session's model (opens the picker when omitted) |
+| `/account` | Open the accounts page (or `list`, `remove <name>`, `<name>` to set) |
+| `/refresh-models [--force]` | Refresh the models.dev catalog |
+| `/login <account> [--device]` | Sign in to an existing account's provider with OAuth (alias `/add-oauth`); `--device` selects the headless device-code flow |
 
-`Ctrl+A` opens the accounts page — list accounts, remove with `r`, set an API
+`Alt+A` opens the accounts page — list accounts, remove with `r`, set an API
 key with `c`, or start the new-account wizard with `n`.
 
 ## Reasoning
 
 | Command | Description |
 |---|---|
-| `/reasoning` | Show current reasoning effort slug |
-| `/reasoning <slug>` | Set reasoning effort (e.g. `off`, `low`, `medium`, `high`, `on`, `xhigh`, `max`) |
-| `Ctrl+R` | Cycle reasoning effort through available slugs for the attached model |
+| `/reasoning` | Cycle the reasoning effort |
+| `/reasoning list` | List the available reasoning levels |
+| `/reasoning <level>` | Set reasoning effort (e.g. `off`, `low`, `medium`, `high`, `on`, `xhigh`, `max`) |
 
 ## Access control
 
 | Command | Description |
 |---|---|
-| `/acl add` | Enroll the current locally-connected client in the daemon's allow-list |
+| `/acl add <base64-pubkey>` | Enroll a client in the daemon's allow-list |
 
 Client allow-listing is stored in `authorized_clients.toml` and hot-reloaded
 from disk. See [Security](@/agent/docs/security.md#client-trust-access-control).
 
-## Lifecycle & editing
+## MCP servers
 
 | Command | Description |
 |---|---|
-| `/ping` | Health check |
-| `/cancel <request-id>` | Cancel a running request |
-| `/stop` | Cancel whatever request is active on the attached session |
-| `/continue` | Continue a stopped/idle session ("Please continue.") |
-| `/undo` | Undo the most recent user turn and its entire assistant response subtree |
-| `/redo` | Redo the most recently undone turn |
-| `/unlock [key]` | Unlock the daemon — uses the stored per-daemon key, or records `key` on an already-bound daemon |
-| `/lock` | Lock the daemon, clearing credentials from memory |
+| `/mcp` | Show every MCP server visible to the session (daemon + project tiers), with transport, auth state, connected state, tool count, or last error — plus the project root's trust state |
+| `/mcp reconnect <slug>` | Rebuild every connection with that slug on the running daemon and refresh its tools |
+| `/mcp reload` | Re-read the config on the running daemon — connect added servers, drop removed ones, rebuild changed ones — without a restart |
+| `/mcp login <slug>` | Run a PKCE OAuth sign-in for a server that declares an `oauth` block; the grant is stored in the keystore and the server reconnects itself |
+| `/mcp logout <slug>` | Remove that server's stored OAuth grant |
+| `/mcp trust` | Trust the session's project MCP root so its servers connect |
+| `/mcp untrust` | Revoke trust for that root; its project servers stop |
+| `/mcp trust list` | List the trusted project roots |
+
+Offline management lives in the `choreographr mcp` CLI (`list`, `add`,
+`remove`, `reconnect`, `reload`). See the
+[tools reference](@/agent/docs/tools/_index.md) for how MCP servers are
+configured.
 
 ## Credentials
 
 | Command | Description |
 |---|---|
-| `/add-key <service> <api_key> [unlock]` | Add an API key credential |
-| `/add-x <service> <key> <secret> <token> <token_secret> [bearer] [unlock]` | Add an X credential |
-| `/remove-key <service>` | Remove a credential |
+| `/add-key <service> <api_key>` | Store an API-key credential |
+| `/add-x <service> <key> <secret> <token> <token_secret> <bearer>` | Store an X/Twitter credential |
+| `/login <account>` | Sign in with OAuth instead of an API key (see [models & accounts](#models-accounts)) |
+| `/remove-key <service>` | Remove a stored credential |
+
+## Locking
+
+| Command | Description |
+|---|---|
+| `/unlock [base64-key]` | Unlock the daemon — uses the stored per-daemon key, or records `key` on an already-bound daemon |
+| `/lock` | Lock the daemon, clearing credentials from memory |
+
+## Client
+
+| Command | Description |
+|---|---|
+| `/quit` | Exit the TUI |
 
 Any other input is sent to the attached session as a prompt. In `choreo-tui`,
 `Ctrl+C` exits the local client and disconnects from the daemon without
 requesting daemon shutdown.
+
+## Keyboard shortcuts
+
+Command shortcuts use `Alt+` — the `Ctrl+<letter>` space is reserved for
+readline editing keys.
+
+| Shortcut | Action |
+|---|---|
+| `Alt+A` | Accounts page |
+| `Alt+S` | Session manager |
+| `Alt+M` | Model selector |
+| `Alt+R` | Cycle reasoning effort |
+| `Alt+H` | Toggle the keybinding help overlay |
+| `Alt+Up` / `Alt+Down` | Undo / redo |
+| `Alt+Enter` | Continue |
+| `Alt+Q` | Quit |
 
 
 ## Terminal client
@@ -618,26 +787,36 @@ streaming are O(1), so history stays smooth even on very long sessions.
 
 - **Markdown** — headings, lists, code blocks, tables, links, blockquotes,
   emphasis, inline code, and LaTeX math rendered as pretty Unicode, all wrapped
-  to the terminal width.
-- **Syntax highlighting** — code in tool output is highlighted with syntect
-  themes.
+  to the terminal width. Fenced code blocks render as **bordered code panels**
+  with the language tag, block quotes get a bar gutter and italic text, tables
+  use rounded nushell-style frames, and ordered lists keep the **source
+  numbers** from the document (right-aligned) instead of renumbering from one.
+- **Syntax highlighting** — code is highlighted with the
+  `base16-eighties.dark` syntect theme.
 - **Images** — when the agent calls `display_image` (PNG, JPEG, or SVG) — or
-  generates one with `generate_image` — the image appears **inline in the chat
-  history** at half the viewport height. Click an image to open it fullscreen;
-  press `Esc` to dismiss.
+  generates or edits one with `generate_image` / `edit_image` — the image
+  appears **inline in the chat history** at half the viewport height. Click an
+  image to open it fullscreen; press `Esc` to dismiss.
 - **Status bar** — the attached session's account slug, model, reasoning effort,
-  and live token estimates. A session that is not idle is marked, and the client
-  refuses to submit a new prompt until it is idle again (rejected text stays in
-  the input bar).
-- **Tool results** — streaming execution descriptions, collapsible per-result
-  bodies, and live token estimates in the status bar.
+  live token estimates, and the **phase** the request is in: `sending` (request
+  dispatched) → `waiting` (the provider accepted it, awaiting the first token)
+  → `reasoning` → `responding`. A session that is not idle is marked, and the
+  client refuses to submit a new prompt until it is idle again (rejected text
+  stays in the input bar).
+- **Tool results** — streaming execution descriptions and collapsible
+  per-result bodies; bulky, machine-oriented results (`list_sessions`, the
+  shell/exec family, `grep`, `retrieve_webpage`, `spawn_subsession`) start
+  **collapsed** (one click from the full body), while errors stay expanded.
 - **Selection & copy** — drag with the mouse to select text in the history pane
   and copy it via OSC 52 (a cross-terminal clipboard escape). Selection follows
   the cursor while scrolling, stays anchored to the text mid-gesture, and is
   copied as unwrapped text.
-- **Per-session drafts** — an unsent prompt is kept per session, so switching
-  sessions and returning preserves what you were typing; `Ctrl+Backspace` clears
-  the draft.
+- **Per-session drafts & scroll** — an unsent prompt is kept per session, so
+  switching sessions and returning preserves what you were typing
+  (`Ctrl+Backspace` clears the draft); the history pane also reopens at the
+  scroll position you left.
+- **Live streaming** — a streaming response stays **pinned to the top of the
+  viewport** while it grows, so its first line never scrolls out of view.
 
 ## Image rendering
 
@@ -654,15 +833,57 @@ The terminal protocol is auto-detected at startup and falls back gracefully:
 | Sixel | terminals with sixel support (e.g. xterm-sixel, mlterm) |
 | Universal fallback | any other terminal |
 
+## Terminal integration
+
+`choreo-tui` tells the terminal what it is doing, over escape sequences the
+emulator already understands:
+
+- **Window title** (OSC 2) — `choreo-tui` at startup, then
+  `choreo-tui — <session title>` once a session is attached. Emitted only on
+  change, cleared on job-control suspend and at exit.
+- **Program status** (OSC 7501) — each session reports idle/working from its
+  live status, plus a `done` / `error` outcome that survives the prompt which
+  follows it, so a background agent that just finished keeps its record after
+  dropping back to idle. Every report is a per-session **child** record, so a
+  terminal that maps a progress bar onto the status *root* record cannot wipe a
+  real report.
+
+Both fields are stripped of control characters and bidirectional-formatting
+overrides and capped to the protocol's limits, so an LLM-derived session title
+cannot spoof or reorder them. Selection copy uses **OSC 52**, which is why it
+works over SSH and tmux and is a silent no-op in terminals that lack it.
+
+## Input & keybindings
+
+Typing `/` on an empty prompt opens the **command palette** — a floating list
+of commands above the input. `Enter` runs the highlighted command, `Tab`
+completes the name, `↑`/`↓` move the selection, and `Esc` returns to the
+prompt. Commands resolve through one shared catalog, so the palette and the
+parser never disagree.
+
+Command shortcuts use `Alt+` (the `Ctrl+<letter>` space is reserved for
+editing): `Alt+A` accounts, `Alt+S` sessions, `Alt+M` models, `Alt+R`
+reasoning, `Alt+H` help, `Alt+Q` quit, `Alt+Up`/`Alt+Down` undo/redo, and
+`Alt+Enter` continue.
+
+Every text field honours shell-style **readline editing keys**:
+`Ctrl+A`/`Ctrl+E` (start/end of line), `Ctrl+B`/`Ctrl+F` (one char),
+`Alt+B`/`Alt+F` (one word), `Ctrl+D`/`Ctrl+H` (delete), `Ctrl+K` (kill to end),
+`Ctrl+T` (transpose), `Ctrl+W`/`Alt+D`/`Alt+Backspace` (word kills), and
+`Ctrl+P`/`Ctrl+N` (previous/next history).
+
 ## Managing sessions
 
-- `Ctrl+S` — session manager: list, switch, create, and delete sessions
-- `Ctrl+A` — accounts page: add, remove, and select AI provider accounts
-- `Ctrl+M` — model selector (falls back to `Ctrl+O` on terminals without the
-  kitty keyboard protocol)
-- `Ctrl+R` — cycle the reasoning effort
-- `Ctrl+H` — toggle the keybinding help overlay
-- `Ctrl+Q` — quit the client
+- `Alt+S` — session manager: list, switch, create, and delete sessions
+- `Alt+A` — accounts page: add, remove, and select AI provider accounts
+- `Alt+M` — model selector
+- `Alt+R` — cycle the reasoning effort
+- `Alt+H` — toggle the keybinding help overlay
+- `Alt+Q` — quit the client
+
+Inside the session manager, `Tab` toggles between the live and archived lists,
+`p` pins or unpins a session (pinned sessions sort to the top and show a
+pushpin), and `a` archives or unarchives one.
 
 The full command reference lives on the
 [slash commands](@/agent/docs/slash-commands.md) page.
@@ -692,6 +913,9 @@ and working directory. Sessions:
 - form a parent-child tree,
 - support multiple concurrent client attachments,
 - survive daemon restarts via the embedded `redb` database,
+- can be **pinned** (sorted to the top of the session list) or **archived**
+  (hidden from the live list) — both are daemon-owned flags broadcast to every
+  client,
 - are only "woken up" when a client connects to them.
 
 A **subsession** is a child session spawned by the `spawn_subsession` tool. It
@@ -711,9 +935,11 @@ See the [tools reference](@/agent/docs/tools/_index.md) for the complete, up-to-
 of every built-in tool and how to call it.
 
 Available tool groups include **core** (filesystem, HTTP, images, PDF
-classification, search, random, time, vision input, web-page rendering),
-**git**, **shell**, **vm**, **x**, **debug** (read-only diagnostics),
-**db**, **image** (image generation), and **blockchain**
+classification, search, random, time, vision input, web-page rendering,
+session reading), **git**, **shell**, **vm**, **x**, **debug** (read-only
+diagnostics), **db**, **image** (image generation), **mcp/<slug>** (the tools
+exposed by a configured MCP server, loaded with `load_tools`), and
+**blockchain**
 (EVM and Substrate/Polkadot queries, when the daemon is built with the
 `blockchain` feature). Only `core`, `git`, and `shell` are active by
 default; the rest are opt-in via `load_tools`.
@@ -824,18 +1050,19 @@ message passing** — an actor model, in the classic sense:
 - each session runs on its own thread and *owns* its state;
 - threads communicate through typed `crossbeam` channels rather than shared
   mutable state;
-- shared mutable state is the exception: the few `Arc<Mutex<…>>` instances —
-  the encrypted transport stream, the MCP client registry — are deliberate,
-  localized, and documented.
+- shared mutable state is the exception: a few deliberate, localized
+  `Arc<Mutex<…>>` instances — the encrypted transport stream, the MCP client
+  registry (on by default) — rather than the design's
+  backbone.
 
 This is only feasible because the Rust compiler *enforces* it: you cannot move
 a piece of state into two threads, or share it without synchronization, without
 the borrow checker stopping you. The result is a threading model that can be
 reasoned about — each thread owns its data — with none of the cancellation and
 `Send`-bound complexity that async runtimes impose. When a third-party library
-insists on async — the alloy/subxt clients behind the blockchain tools — a
-tokio runtime exists as a sidecar inside the optional `choreo-blockchain`
-crate; the daemon itself never needs one.
+insists on async — the alloy/subxt clients behind the optional `blockchain`
+and `content` tools — a tokio runtime exists as a sidecar inside those crates
+(`choreo-blockchain`, `choreo-content`); the daemon itself never needs one.
 
 ## Types that become the wire protocol
 
@@ -849,7 +1076,8 @@ via `schemars`. You declare:
 ```rust
 struct ReadFileArgs {
     path: String,
-    offset: Option<u32>,
+    start_line: Option<u32>,
+    max_lines: Option<u32>,
 }
 ```
 
@@ -968,7 +1196,7 @@ serially to preserve ordering.
 
 ## Workspace topology
 
-Eighteen crates in a single Cargo workspace (resolver = "3"). The two
+Nineteen crates in a single Cargo workspace (resolver = "3"). The two
 foundational crates — `choreo-proto` (the wire format) and `choreo-keystore`
 (credentials) — have no workspace dependencies; `choreo-transport` builds on
 `choreo-proto`, and `choreo-client-core` and the daemon sit on top, with the
@@ -983,6 +1211,7 @@ clients and bridges (`choreo-tui`, `choreo-gui`, `choreo-im`, `choreo-acp`,
 | `choreo-content` | Coordination Platform client — Substrate chain writes (subxt via a tokio sidecar), indexer reads, IPFS add/cat, and content encode/decode; pulled in by the daemon's `content` feature (off by default) |
 | `choreo-image` | Image decode surface — raster decode with EXIF orientation baked in, HEIC decode (with a decompression-bomb guard), and SVG rasterization |
 | `choreo-sanitize` | Shared string-safety leaf — output sanitization (control chars, truncation, fenced-output safety) used across tools |
+| `choreo-shared` | Shared binary-facing helpers — the release name, clap styles, and the unified `-v`/`-q` logging policy every CLI crate uses |
 | `choreo-proto` | Framed binary protocol (MessagePack + length prefix) shared between clients and daemon |
 | `choreo-keystore` | X25519 keypair + ECDH/AES-256-GCM crypto library for encrypted credentials, the per-daemon keystore binding, and shared config paths |
 | `choreo-transport` | Noise encrypted transport over TCP (IK + XX first-contact) with message fragmentation and per-chunk locking |
@@ -992,7 +1221,7 @@ clients and bridges (`choreo-tui`, `choreo-gui`, `choreo-im`, `choreo-acp`,
 | `choreo-gui` | Desktop GUI client (Dioxus) |
 | `choreo-im` | Instant-messaging bridge (Telegram, with more platforms planned) — chat with your agent on the go; its own binary, not part of the prebuilt releases (`cargo build -p choreo-im`) |
 | `choreo-acp` | ACP bridge — translates the Agent Communication Protocol (JSON-RPC over stdin/stdout) into daemon messages so ACP-compatible editors (Claude Code, Cline, …) can drive sessions; its own binary (`cargo build -p choreo-acp`) |
-| `choreo-mcp` | MCP (Model Context Protocol) client — spawns subprocess servers, discovers their tools, and dispatches calls over JSON-RPC stdio; library-only, linked via the daemon's `mcp` feature (off by default) |
+| `choreo-mcp` | MCP (Model Context Protocol) client, built on the official `rmcp` SDK — connects over a stdio subprocess or a remote Streamable HTTP endpoint, discovers their tools (with a live `subscriptions/listen` refresh), and dispatches deadline-bounded calls; library-only, linked via the daemon's `mcp` feature (on by default) |
 | `choreo-client-core` | Shared parsing, markdown, image assembly, and daemon-message dispatch for UI clients |
 | `choreo-markdown` | Markdown parser and HTML renderer (pulldown-cmark + ammonia) |
 
@@ -1001,10 +1230,15 @@ clients and bridges (`choreo-tui`, `choreo-gui`, `choreo-im`, `choreo-acp`,
 Client/daemon communication is a framed binary protocol (MessagePack + length
 prefix), defined in `choreo-proto`. Remote connections are wrapped in the
 Noise encrypted transport from `choreo-transport` (IK against a pinned server
-key; XX first-contact mode on the wire v5 handshake). The protocol is
-versioned: streaming is **lossless** — each client has an unbounded outbound
-queue with lag-based eviction, and an `Evicted` event informs a slow client of
-dropped state instead of silently truncating a session. Session history is
+key; XX first-contact mode on the current wire version — v9). Frames are capped
+at 64 MiB. The protocol is versioned: streaming is **lossless** — each client
+has an unbounded outbound queue with lag-based eviction, and an `Evicted` event
+informs a slow client of dropped state instead of silently truncating a
+session. Session snapshots carry only image **metadata**; displayed-image bytes
+are fetched on demand (`GetImage`/`Image`, protocol v6), sessions carry
+daemon-owned `pinned`/`archived` flags (v8) broadcast to every client, and live
+MCP config reload and trust queries (`McpReload`/`McpTrust*`, v9) let a running
+daemon pick up `mcp.json` edits without a restart. Session history is
 compressed with zstd (schema 1→2 migration) so long-running sessions stay
 compact on disk.
 
@@ -1096,6 +1330,41 @@ auto-binds immediately — a fresh daemon is never a dead end.
 Credentials are encrypted per-credential with the daemon's X25519 public key,
 so the encrypted blobs are useless without the private key.
 
+A credential enters through the daemon, never around it: the client sends a
+**typed** credential value (API key, X tokens, or OAuth grant) and the daemon
+encrypts it to its own binding public key before it touches disk, so no key
+material rides the add path. An add requires an already-unlocked keystore — a
+locked daemon refuses it rather than unlocking itself.
+
+## Owner-only local trust
+
+The Unix socket is the daemon's fully-trusted local domain: it carries no Noise
+handshake, so a peer that reaches it can read transcripts, retrieve credentials
+while the keystore is unlocked, run tools, and enroll other clients. It is
+created **`0600` inside a directory only its owner can traverse** — a
+`--base-dir`'s `run/`, or a per-uid `temp_dir()/choreographr-<uid>` when neither
+`$XDG_RUNTIME_DIR` nor a base dir is set, so parallel users on a shared `/tmp`
+neither collide nor share a parent.
+
+The `redb` store (plaintext transcripts and tool output), `known_servers.toml`
+(the per-daemon private unlock keys), and the log files are owner-only too, and
+the policy lives in one place (`choreo_shared::perm`) instead of three drifting
+copies. Two hardening details matter:
+
+- `known_servers.toml` is opened `O_NOFOLLOW` and owner-checked **before** it is
+  parsed. A `pubkey` pin steers the next Noise IK handshake, so a planted file
+  could otherwise pin an attacker's server and capture credentials. A refused
+  file degrades to the empty store (re-confirmed first contact).
+- A directory owned by another user is **refused outright** rather than warned
+  about and used anyway — a foreign-owned directory lets that user enumerate or
+  swap the socket and store files. Private modes are applied through an
+  `O_NOFOLLOW` directory descriptor (`fchmod`), not a path chmod.
+
+Logs are written as a pid-keyed file per binary, pruned **by age** (one week)
+rather than by count, and they never contain payloads: prompts, model output,
+tool arguments and results, and credentials are logged as ids, kinds, lengths,
+and counts instead.
+
 ## Client trust & access control
 
 Remote connections are mutually authenticated. On first contact — before the
@@ -1112,6 +1381,32 @@ hot-reloaded from disk. A client with no local access can be enrolled with
 daemon's own fingerprint. The TUI refuses to start against an unauthorized
 daemon and never crashes on a connection error.
 
+## MCP servers
+
+MCP (Model Context Protocol) servers are configured in two tiers: a
+daemon-wide `mcp.json` you wrote and trust unconditionally, and a project
+`.mcp.json` that travels with a checkout you may not have written. A project's
+servers are **gated behind trust** — read (so `/mcp status` can report what is
+ignored) but never spawned, and their `${VAR}` references never expanded, until
+you run `/mcp trust` for that project root (recorded in `trust.toml`, keyed on
+the exact root). Revoking trust drops that project's live connections
+immediately.
+
+A stdio server inherits the daemon's environment with the
+code-injection variables (`LD_*`, `DYLD_*`, `PYTHONPATH`, `PERL5LIB`,
+`RUBYLIB`) stripped, its `stderr` is captured to an owner-only per-server log,
+and its calls are deadline-bounded and concurrency-capped.
+
+A server that needs an interactive sign-in stores an OAuth grant in the same
+encrypted keystore as provider credentials, **keyed by the server's target**
+(`mcp:<slug>|<target-hash>`) so a same-slug server on a different endpoint keeps
+its own credential. Two things fail closed: a project server's sign-in is
+refused while that project root is untrusted (its `oauth` block is
+repo-controlled), and a stored grant whose issuer or resource no longer matches
+the configured server is treated as absent and surfaces a re-login. A
+confidential client's secret comes from an environment variable named by
+`clientSecretEnv`, never from the config file.
+
 ## RISC-V sandbox
 
 The `run_riscv` tool compiles Rust source (or accepts a pre-compiled RISC-V
@@ -1126,6 +1421,18 @@ ELF) and executes it inside an isolated `ckb-vm` machine with:
 The guest cannot access host memory, syscalls, or files outside the VM without
 going through registered tools. The VM respects the same credentials and
 working directory as the host agent.
+
+## Untrusted text on a terminal
+
+Model output, tool output, tool names, session titles, and pasted text are all
+potentially hostile strings, and a terminal is an escape-sequence interpreter.
+`choreo-tui` normalizes every displayed string at its widget sink — control
+characters and escape sequences are removed, so model output cannot emit
+terminal commands — and strips **bidirectional-formatting** controls
+(RLO/LRO, isolates, LRM/RLM/ALM) from the free-text fields it writes back out:
+the OSC 2 window title and the OSC 7501 program-status record, both of which
+would otherwise let a hostile session title reorder or spoof what you see.
+Zero-width joiners are kept, so emoji sequences still render.
 
 ## OS-level sandboxing (planned)
 
@@ -1190,6 +1497,8 @@ start with a clear error telling you to rebuild with `--features metrics`.
 | `choreo_connections_total` | Counter | — | Total connections accepted |
 | `choreo_turns_total` | Counter | `model` | Agent loop turns |
 | `choreo_evictions_total` | Counter | — | Lagging clients evicted (disconnected) for falling too far behind |
+| `choreo_cache_warm_attempts_total` | Counter | — | Prompt-cache warm pings actually sent |
+| `choreo_cache_warm_skips_total` | Counter | `reason` | Warm attempts skipped, by reason |
 | `choreo_request_duration_seconds` | Histogram | `status` | Request latency |
 | `choreo_tool_execution_duration_seconds` | Histogram | `tool` | Per-tool execution time |
 | `choreo_api_call_duration_seconds` | Histogram | `model`, `endpoint` | API round-trip time |
@@ -1232,7 +1541,7 @@ The repo builds on **nightly** Rust by default (`rust-toolchain.toml`), so every
 `cargo` command picks up fast per-profile `-Z` flags automatically; stable is a
 supported opt-out via the `just build-stable` / `test-stable` recipes.
 
-The workspace targets an MSRV of **1.94.1**, declared via `rust-version` in every
+The workspace targets an MSRV of **1.99.0**, declared via `rust-version` in every
 crate manifest (inherited from `[workspace.package]`). Keep code and dependencies
 within this floor.
 
@@ -1251,11 +1560,12 @@ See `ARCHITECTURE.md` for the test-runner and infrastructure details.
 
 ## Logs
 
-- `choreo-tui` writes its diagnostics to the platform temp directory
-  (`$TMPDIR/choreo-tui-<pid>.log`) — check there for client-side issues.
-- The daemon logs to stderr; use `-v`/`-vv` for more detail, or set
-  `RUST_LOG` (which takes precedence over the CLI flags). A TUI-autostarted
-  daemon logs to a per-process file (`$TMPDIR/choreo-daemon-<pid>.log`); pass
+- `choreo-tui` writes its diagnostics to
+  `$XDG_STATE_HOME/choreographr/tui-<pid>.log` (falling back to the platform temp
+  directory) — check there for client-side issues.
+- The daemon logs to stderr; use `-v`/`-vv` for more detail (CLI flags take
+  precedence over `RUST_LOG`). A TUI-autostarted daemon logs to a per-process
+  file (`$XDG_STATE_HOME/choreographr/daemon-<pid>.log`, else the temp dir); pass
   `--log-file <path>` to write logs elsewhere when starting it yourself.
 
 ## Common issues
@@ -1292,7 +1602,8 @@ allow-list (enroll a local client with `/acl add`).
 In Unix-socket mode `choreo-tui` starts a daemon automatically when it cannot
 reach one, and shows a status message while the daemon starts. If that fails,
 run `choreographr` in another terminal and inspect
-`$TMPDIR/choreo-daemon-<pid>.log`. A daemon that is already listening at the
+`$XDG_STATE_HOME/choreographr/daemon-<pid>.log`. A daemon that is already
+listening at the
 socket path is reported explicitly rather than being replaced.
 
 ## Getting help
@@ -2044,205 +2355,6 @@ Ready to give it a spin? The [quick start](@/agent/docs/quick-start.md) gets you
 your first prompt, and the
 [release notes](https://github.com/choreographr/choreographr/releases) cover
 what's in v0.1.0.
-
-We'd love your help — star the
-[repo](https://github.com/choreographr/choreographr), open
-[issues](https://github.com/choreographr/choreographr/issues), and join the
-[Telegram community](https://t.me/choreographr).
-
-
-## Choreographr v0.2 (Lindy) Released
-
-
-<!-- TODO: opening hook — what changed since v0.1.0 and why it matters. -->
-
-Choreographr v0.2 (Lindy) is out now. Here are the major new features:
-
-
-## Android Termux support
-
-By popular demand Choreographr is now available for Android Termux. The server and TUI client are available for 3 platforms:
-
-* MacOS on Apple Silicon and Intel (x86_64)
-* Linux on x86-64
-* Termux on Android 10+
-
-Follow the [Install Instructions](.)
-
-Here is `choreo-tui` running in Termux, working with an agent on a real codebase
-— fetching a profile picture from IPFS, analyzing a photo, coordinating via
-blockchain profile tools, reviewing code changes, auditing a workspace, and
-debugging a daemon startup problem:
-
-{% set imgs = [
-  ['termux-profile-picture.webp', 'choreo-tui on Termux: the agent displays a profile picture fetched from IPFS inline'],
-  ['termux-photo-analysis.webp', 'choreo-tui on Termux: analysis of the photo after read_image'],
-  ['termux-coord-profile.webp', 'choreo-tui on Termux: fetching an account profile with the coord tools'],
-  ['termux-code-diff.webp', 'choreo-tui on Termux: reviewing code changes side-by-side'],
-  ['termux-workspace-audit.webp', 'choreo-tui on Termux: a workspace-wide audit, reported in markdown'],
-  ['termux-debugging.webp', 'choreo-tui on Termux: debugging a wedged daemon shutdown'],
-] %}{% set base = '/blog/2026-09-08-choreographr-0-2-0/' %}
-<div class="grid grid-cols-1 sm:grid-cols-3 gap-2 my-6">
-{%- for img in imgs -%}
-  <figure class="m-0"><img src="{{ get_url(path=base ~ img[0], cachebust=true) | safe }}" alt="{{ img[1] }}" class="w-full h-auto rounded-lg border border-night-700" loading="lazy"></figure>
-{%- endfor -%}
-</div>
-Windows support is almost ready. The GUI app is also under development. It will be available for MacOS & iOS (with native tools and Apple Intelligence support), Linux, Android and Windows (with Copilot+ support).
-
-## Improved Image Support
-
-The images below show a `choreo-tui` session in which the image at
-`/home/jbrown/Images/ship.jpeg` is displayed inline with the `display_image` tool,
-then read with the new `read_image` tool so the model can analyze it:
-
-![choreo-tui: displaying an image inline with the display_image tool](/blog/2026-09-08-choreographr-0-2-0/tui-display-image.webp)
-
-![choreo-tui: the model analyzing the image after read_image](/blog/2026-09-08-choreographr-0-2-0/tui-read-image-analysis.webp)
-
-* New `read_image` tool for llm image vision.
-* images handled by `read_image` and `display_image` are now persisted in `session_attachments` db table.
-* supported image formats: JPEG, PNG, GIF, WebP, BMP, TIFF, TGA, DDS, ICO, PNM, HDR/Radiance, OpenEXR, Farbfeld, QOI, SVG, HEIC/HEIF. AVIF and JPEG-XL coming soon. Images are now automatically rotated based on EXIF data.
-
-### Image generation
-
-The new `generate_image` tool lets the model produce an image from a text prompt
-using the session's image-capable provider. The generated bytes re-enter the same
-inline display pipeline as `display_image`, so the image is shown in the TUI,
-persisted, and fed back to the model through vision — the model sees its own
-generation and can refine it.
-
-The screenshot below shows a `choreo-tui` session in which the model generates an
-image with the `generate_image` tool and displays it inline:
-
-![choreo-tui: an image generated by the model with the generate_image tool, rendered inline](/blog/2026-09-08-choreographr-0-2-0/tui-generate-image.webp)
-
-* New `generate_image` tool in a new `image` tool group (enable with `load_tools image`).
-* Provider-agnostic: OpenAI-compatible endpoints (`gpt-image-1`) and z.ai / Zhipu GLM (`glm-image`), with more providers to follow.
-* Model selection is catalog-driven — an explicit `model` argument always wins; otherwise the provider's verified image models are picked by priority. There is no guessed fallback model.
-* Knobs: `size` (`1024x1024`, `1024x1536`, `1536x1024`), `quality`, `output_format` (PNG/JPEG/WebP), `background` (opaque/transparent) and `alt` text.
-* The credential never reaches the tool: provider resolution runs through the daemon command loop, scoped to the requesting session so a cancel closes an in-flight generation too.
-
-## `retrieve_webpage` Tool
-
-In addition to the low-level `http_request` there is a new tool `retrieve_webpage` that uses the [headless_chrome](https://crates.io/crates/headless_chrome) Rust crate to load a webpage via a local headless Chromium/Chrome. It provides the webpage to the llm as text, screenshot or pdf.
-
-This has many addtional use-cases:
-
-* Reading JavaScript-rendered pages
-* Getting past bot protection / challenge pages, e.g. Cloudflare
-* When used in conjunction with the `read_image` tool, it enables the the LLM to "see" the page, not just the text content. This can be used for iterative web design by the LLM.
-* PDF generation from web pages - great for archiving.
-* Rendering local files (file://) - this can be a great way for the LLM to generate PDFs - write them as HTML/CSS and then render to PDF.
-* Surgical extraction with selector - specific components of the DOM can be extracted in isolation.
-* Element-scoped screenshots now render elements below the fold instead of a blank background.
-
-The screenshots below show a `choreo-tui` session in which `retrieve_webpage` is used
-to take a screenshot of a page — which is displayed inline in the TUI — and then read
-with `read_image` so the model can see it:
-
-![choreo-tui: the retrieve_webpage tool capturing a screenshot of the choreographr.com homepage, rendered inline](/blog/2026-09-08-choreographr-0-2-0/tui-retrieve-webpage-screenshot.webp)
-
-## Preliminary EVM / Polkadot tools enabled
-
-Giving an AI agent blockchain access is a core component of Choreographr. It now has read-only access.
-
-* EVM ([alloy](https://crates.io/crates/alloy)) & Substrate/Polkadot ([subxt](https://crates.io/crates/subxt)) query tools
-* Only tokio-dependent crate: daemon stays thread-only, calls sync execute_* that block_on a sidecar runtime
-* EVM: balance, ERC-20 balance, block, contract call, transaction, logs, nonce, gas, chain info, ENS resolution (real Universal-Resolver calls, replacing fabricated RPC methods)
-* Substrate: chain info, balance, decoded storage query, block
-
-The "content" tools to access the Choreographr blockchain (previously Acuity) are under development and currently disabled. They will be enabled in a future release.
-
-## TUI improvements
-
-* Modal account wizard with searchable provider picker
-
-![choreo-tui: the modal account wizard with the searchable provider picker](/blog/2026-09-08-choreographr-0-2-0/tui-provider-picker.webp)
-* Mouse support — select-to-copy , picker click-to-select + mouse wheel, click account/session rows to select and enter
-* Per-session unsent input drafts, Ctrl+Backspace clears the draft prompt
-* Model selector rebound to Ctrl+O for legacy terminals, that don't support Ctrl+M
-* Request failures reported in the UI with a wrapped transcript error block
-* Tool output margins removed
-* Account slug shown in the status bar (instead of the provider slug)
-* Prompts submitted while the attached session is busy are rejected with "Session is not idle, please wait before prompting." — the text stays in the input bar, and `/continue` and Alt+Enter are covered by the same guard
-* LaTeX math rendered as pretty Unicode
-
-![choreo-tui: LaTeX math rendered as pretty Unicode in the TUI](/blog/2026-09-08-choreographr-0-2-0/tui-latex-unicode.webp)
-
-## Daemon autostart
-
-`choreo-tui` can now start the daemon for you. If it cannot reach one, it spawns
-a sibling `choreographr` process as a detached child — no separate "start the
-server" step — and shows a status line while it waits for the socket. The
-connection is attempted directly first, so autostart only kicks in when the dial
-fails and never races or steals a live daemon's socket.
-
-* Autostarted daemons run with `--auto-exit` (shut down gracefully when the last
-  client disconnects) and `--log-file` (diagnostics to a per-process log under
-  the platform temp dir).
-* Manual start still works exactly as before — what you want for a long-lived or
-  remote daemon. TCP mode (`--tcp-addr`) never autostarts.
-* The daemon refuses to replace a socket a live daemon is still listening on,
-  and names the socket path in bind errors.
-
-## Cancellation & resilience
-
-* Per-session socket registries — cancelling a request now force-closes exactly
-  that session's provider sockets, unblocking a wedged reader without disturbing
-  other concurrent sessions (or their children).
-* Survives suspend/resume: the daemon listens for platform power events
-  (`choreo-power-events`) and force-closes sockets when the machine sleeps,
-  pruning dead connections on wake.
-* The new `choreo-sockreg` crate tracks live sockets (with TCP keepalive tuning)
-  so the single thread that decides a cancel can close exactly the right
-  connections.
-
-## Inference & provider improvements
-
-* Chat-completions `finish_reason` is now parsed: an output-limited response is
-  flagged with a visible "⚠ response truncated (length limit)" line, and
-  content-filter refusals and context-window overflow surface as clear,
-  non-retryable errors instead of empty or blank replies.
-* Cached prompt tokens (`prompt_tokens_details.cached_tokens`) are parsed and
-  shown in the TUI session detail as `(N cached)`.
-* GLM models: `reasoning_effort` slugs are mapped to z.ai's documented values,
-  and the `zai`/`zhipuai` slugs pin `max_tokens` (z.ai's API does not accept
-  `max_completion_tokens`); the `zai` provider is repinned to z.ai's standard
-  PaaS gateway.
-
-* Coordinated providers — the context window, reasoning capability, and
-  provider routing stay consistent while the keystore is locked, and switching
-  a session's account always dials the new provider
-
-## Simplified keystore sematics
-
-* Per-daemon keystore unlock keys with hardened per-daemon keystore state
-* Unlock UX rework — /unlock uses the stored key; /unlock <key> records it; identity.pk.enc removed entirely
-* BindKeystore as the sole binding path — Unlock/AddCredential are verify-only, fresh keys only for bind; frontend auto-bind: clients bind fresh unbound daemons and confirm on Bound; documented binding model + ordering invariant; shared auto-bind state machine
-* Client access-control & trust model — Noise XX first-contact mode with TCP wire v5 handshake preamble, fingerprint rendering + known_servers.toml pin store, pinned-mode trust flow with fingerprint confirmation, hot-reloaded client ACL from authorized_clients.toml, /acl add enrollment from a local connection, choreographr acl-add and fingerprint subcommands, tightened fingerprint compare + pinned-mode failure UX; trust model documented in ARCHITECTURE.md
-* TUI refuses to start unauthorized daemons and never crashes on connection errors
-
-## Other
-
-* Brotli response decompression in ureq HTTP
-* Tool-output safety: new choreo-sanitize crate fixing six tool-output safety gaps; harmonized sanitization and bounded streaming across all tools
-* Shell tools can raise the outer deadline above the 300s floor
-* Improved OpenCode gateway compatibility.
-* Choreographr user agent string on LLM requests.
-* Background model prefetch — model lists warmed on session join instead of at unlock, never blocking ListModels
-* glm-5.3-flash added to opencode overlay
-* zstd compression of session_turns database table
-* Provider & model catalog data is downloaded live from [models.dev](https://models.dev) — a bundled snapshot plus a policy overlay, refreshed at runtime — so new providers and models appear without a code change
-* Live config watching — edits to `accounts.toml` hot-reload, and only sessions bound to a changed or removed account rebuild their provider clients; the file watcher also rescans the directory after a kernel event-queue overflow, so changes are never missed
-
-## Upgrading
-
-Prebuilt binaries for macOS, Linux, and Android Termux as before — see the
-[installation guide](@/agent/docs/installation.md). If you're coming from
-v0.1.0, <!-- TODO: note any breaking changes or config migration steps, or say nothing changes -->.
-
-Full release notes: [v0.2.0](https://github.com/choreographr/choreographr/releases/tag/v0.2.0) and
-[v0.2.1](https://github.com/choreographr/choreographr/releases/tag/v0.2.1) on GitHub.
 
 We'd love your help — star the
 [repo](https://github.com/choreographr/choreographr), open

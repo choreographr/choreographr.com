@@ -49,7 +49,7 @@
   <link rel="preload" href="https://choreographr.com/fonts/jetbrains-mono.woff2" as="font" type="font/woff2" crossorigin>
 
   <link rel="icon" type="image/svg+xml" href="https://choreographr.com/favicon.svg">
-  <link rel="stylesheet" href="https://choreographr.com/css/main.css?h=522f5596923af2ef361c">
+  <link rel="stylesheet" href="https://choreographr.com/css/main.css?h=c8e54f75ecee9764056c">
 
   <!-- Firefox/Zen can paint a frame before this stylesheet has been
        applied if a layout flush happens while it loads (Bugzilla
@@ -398,7 +398,7 @@
     <li>
       <a href="https://choreographr.com/agent/docs/tools/image/"
          class="pl-5 text-night-300 hover:text-night-50">
-        Image generation
+        Image generation &amp; editing
       </a>
     </li>
     
@@ -521,18 +521,19 @@ message passing</strong> — an actor model, in the classic sense:</p>
 <li>each session runs on its own thread and <em>owns</em> its state;</li>
 <li>threads communicate through typed <code>crossbeam</code> channels rather than shared
 mutable state;</li>
-<li>shared mutable state is the exception: the few <code>Arc&lt;Mutex&lt;…&gt;&gt;</code> instances —
-the encrypted transport stream, the MCP client registry — are deliberate,
-localized, and documented.</li>
+<li>shared mutable state is the exception: a few deliberate, localized
+<code>Arc&lt;Mutex&lt;…&gt;&gt;</code> instances — the encrypted transport stream, the MCP client
+registry (on by default) — rather than the design's
+backbone.</li>
 </ul>
 <p>This is only feasible because the Rust compiler <em>enforces</em> it: you cannot move
 a piece of state into two threads, or share it without synchronization, without
 the borrow checker stopping you. The result is a threading model that can be
 reasoned about — each thread owns its data — with none of the cancellation and
 <code>Send</code>-bound complexity that async runtimes impose. When a third-party library
-insists on async — the alloy/subxt clients behind the blockchain tools — a
-tokio runtime exists as a sidecar inside the optional <code>choreo-blockchain</code>
-crate; the daemon itself never needs one.</p>
+insists on async — the alloy/subxt clients behind the optional <code>blockchain</code>
+and <code>content</code> tools — a tokio runtime exists as a sidecar inside those crates
+(<code>choreo-blockchain</code>, <code>choreo-content</code>); the daemon itself never needs one.</p>
 <h2 id="types-that-become-the-wire-protocol">Types that become the wire protocol
 <a class="zola-anchor" href="#types-that-become-the-wire-protocol" aria-label="Anchor link for: types-that-become-the-wire-protocol">
   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
@@ -545,7 +546,8 @@ process is a place where types can silently diverge from reality.</p>
 via <code>schemars</code>. You declare:</p>
 <pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;" ><code data-lang="rust"><span class="giallo-l"><span style="color: #CBA6F7;">struct</span><span style="color: #F9E2AF;font-style: italic;"> ReadFileArgs</span><span style="color: #9399B2;"> {</span></span>
 <span class="giallo-l"><span>    path</span><span style="color: #94E2D5;">:</span><span style="color: #F9E2AF;font-style: italic;"> String</span><span style="color: #9399B2;">,</span></span>
-<span class="giallo-l"><span>    offset</span><span style="color: #94E2D5;">:</span><span style="color: #F9E2AF;font-style: italic;"> Option</span><span style="color: #89DCEB;">&lt;</span><span style="color: #CBA6F7;">u32</span><span style="color: #89DCEB;">&gt;</span><span style="color: #9399B2;">,</span></span>
+<span class="giallo-l"><span>    start_line</span><span style="color: #94E2D5;">:</span><span style="color: #F9E2AF;font-style: italic;"> Option</span><span style="color: #89DCEB;">&lt;</span><span style="color: #CBA6F7;">u32</span><span style="color: #89DCEB;">&gt;</span><span style="color: #9399B2;">,</span></span>
+<span class="giallo-l"><span>    max_lines</span><span style="color: #94E2D5;">:</span><span style="color: #F9E2AF;font-style: italic;"> Option</span><span style="color: #89DCEB;">&lt;</span><span style="color: #CBA6F7;">u32</span><span style="color: #89DCEB;">&gt;</span><span style="color: #9399B2;">,</span></span>
 <span class="giallo-l"><span style="color: #9399B2;">}</span></span></code></pre>
 <p>…and you get the advertised schema, the argument deserialization, and
 compile-time field access for free. The schema sent to the model can <em>never</em>

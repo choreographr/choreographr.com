@@ -49,7 +49,7 @@
   <link rel="preload" href="https://choreographr.com/fonts/jetbrains-mono.woff2" as="font" type="font/woff2" crossorigin>
 
   <link rel="icon" type="image/svg+xml" href="https://choreographr.com/favicon.svg">
-  <link rel="stylesheet" href="https://choreographr.com/css/main.css?h=522f5596923af2ef361c">
+  <link rel="stylesheet" href="https://choreographr.com/css/main.css?h=c8e54f75ecee9764056c">
 
   <!-- Firefox/Zen can paint a frame before this stylesheet has been
        applied if a layout flush happens while it loads (Bugzilla
@@ -398,7 +398,7 @@
     <li>
       <a href="https://choreographr.com/agent/docs/tools/image/"
          class="pl-5 text-night-300 hover:text-night-50">
-        Image generation
+        Image generation &amp; editing
       </a>
     </li>
     
@@ -485,8 +485,9 @@
         /agent/docs/installation/
       </div>
       <p>Every release ships <strong>two prebuilt binaries</strong> — <code>choreographr</code> (the daemon)
-and <code>choreo-tui</code> (the terminal client) — for <strong>Linux x86_64</strong>, <strong>macOS (Apple
-Silicon)</strong>, and <strong>Android (Termux)</strong>. All install routes below use these
+and <code>choreo-tui</code> (the terminal client) — for <strong>Linux (x86_64 and arm64)</strong>,
+<strong>macOS (Apple Silicon and Intel)</strong>, and <strong>Android (Termux)</strong>. All install
+routes below use these
 binaries except the Cargo source build; none of them need a Rust toolchain at
 install time.</p>
 <h2 id="macos">macOS
@@ -512,9 +513,13 @@ the <code>brew trust</code> step is for.</p>
   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
 </a>
 </h3>
-<p><a rel="noopener external" target="_blank" href="https://github.com/choreographr/choreographr/releases/download/v0.2.0/choreographr-0.2.0-aarch64-apple-darwin.tar.gz">Download</a> the Apple Silicon tarball, or run:</p>
-<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;" ><code data-lang="shellscript"><span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">curl</span><span style="color: #A6E3A1;"> -fL -O https://github.com/choreographr/choreographr/releases/download/v0.2.0/choreographr-0.2.0-aarch64-apple-darwin.tar.gz</span></span>
-<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">tar</span><span style="color: #A6E3A1;"> xzf choreographr-0.2.0-aarch64-apple-darwin.tar.gz</span></span>
+<p><a rel="noopener external" target="_blank" href="https://github.com/choreographr/choreographr/releases/download/v0.2.4/choreographr-0.2.4-aarch64-apple-darwin.tar.gz">Download</a> the Apple Silicon tarball, or run:</p>
+<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;" ><code data-lang="shellscript"><span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">curl</span><span style="color: #A6E3A1;"> -fL -O https://github.com/choreographr/choreographr/releases/download/v0.2.4/choreographr-0.2.4-aarch64-apple-darwin.tar.gz</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">tar</span><span style="color: #A6E3A1;"> xzf choreographr-0.2.4-aarch64-apple-darwin.tar.gz</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">sudo</span><span style="color: #A6E3A1;"> cp choreographr choreo-tui /usr/local/bin/</span></span></code></pre>
+<p><a rel="noopener external" target="_blank" href="https://github.com/choreographr/choreographr/releases/download/v0.2.4/choreographr-0.2.4-x86_64-apple-darwin.tar.gz">Download</a> the Intel (x86_64) tarball, or run:</p>
+<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;" ><code data-lang="shellscript"><span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">curl</span><span style="color: #A6E3A1;"> -fL -O https://github.com/choreographr/choreographr/releases/download/v0.2.4/choreographr-0.2.4-x86_64-apple-darwin.tar.gz</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">tar</span><span style="color: #A6E3A1;"> xzf choreographr-0.2.4-x86_64-apple-darwin.tar.gz</span></span>
 <span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">sudo</span><span style="color: #A6E3A1;"> cp choreographr choreo-tui /usr/local/bin/</span></span></code></pre>
 <p>The binaries are unsigned, so Gatekeeper quarantines them — clear the
 attribute after extracting:</p>
@@ -528,16 +533,19 @@ attribute after extracting:</p>
   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
 </a>
 </h3>
-<p><a rel="noopener external" target="_blank" href="https://github.com/choreographr/choreographr/releases/download/v0.2.0/choreographr-0.2.0-x86_64.deb">Download</a> the package, or run:</p>
-<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;" ><code data-lang="shellscript"><span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">curl</span><span style="color: #A6E3A1;"> -fL -O https://github.com/choreographr/choreographr/releases/download/v0.2.0/choreographr-0.2.0-x86_64.deb</span></span>
-<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">sudo</span><span style="color: #A6E3A1;"> apt install ./choreographr-0.2.0-x86_64.deb</span></span></code></pre><h3 id="fedora-rhel-opensuse-rpm">Fedora / RHEL / openSUSE — .rpm
+<p><a rel="noopener external" target="_blank" href="https://github.com/choreographr/choreographr/releases/download/v0.2.4/choreographr-0.2.4-x86_64.deb">Download</a> the x86_64 package (or the <a rel="noopener external" target="_blank" href="https://github.com/choreographr/choreographr/releases/download/v0.2.4/choreographr-0.2.4-aarch64.deb">aarch64 package</a> on arm64), or run:</p>
+<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;" ><code data-lang="shellscript"><span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">curl</span><span style="color: #A6E3A1;"> -fL -O https://github.com/choreographr/choreographr/releases/download/v0.2.4/choreographr-0.2.4-x86_64.deb</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">sudo</span><span style="color: #A6E3A1;"> apt install ./choreographr-0.2.4-x86_64.deb</span></span></code></pre>
+<p>On an arm64 host, fetch <code>choreographr-0.2.4-aarch64.deb</code> instead.</p>
+<h3 id="fedora-rhel-opensuse-rpm">Fedora / RHEL / openSUSE — .rpm
 <a class="zola-anchor" href="#fedora-rhel-opensuse-rpm" aria-label="Anchor link for: fedora-rhel-opensuse-rpm">
   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
 </a>
 </h3>
-<p><a rel="noopener external" target="_blank" href="https://github.com/choreographr/choreographr/releases/download/v0.2.0/choreographr-0.2.0-x86_64.rpm">Download</a> the package, or run:</p>
-<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;" ><code data-lang="shellscript"><span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">curl</span><span style="color: #A6E3A1;"> -fL -O https://github.com/choreographr/choreographr/releases/download/v0.2.0/choreographr-0.2.0-x86_64.rpm</span></span>
-<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">sudo</span><span style="color: #A6E3A1;"> dnf install ./choreographr-0.2.0-x86_64.rpm</span></span></code></pre>
+<p><a rel="noopener external" target="_blank" href="https://github.com/choreographr/choreographr/releases/download/v0.2.4/choreographr-0.2.4-x86_64.rpm">Download</a> the x86_64 package (or the <a rel="noopener external" target="_blank" href="https://github.com/choreographr/choreographr/releases/download/v0.2.4/choreographr-0.2.4-aarch64.rpm">aarch64 package</a> on arm64), or run:</p>
+<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;" ><code data-lang="shellscript"><span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">curl</span><span style="color: #A6E3A1;"> -fL -O https://github.com/choreographr/choreographr/releases/download/v0.2.4/choreographr-0.2.4-x86_64.rpm</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">sudo</span><span style="color: #A6E3A1;"> dnf install ./choreographr-0.2.4-x86_64.rpm</span></span></code></pre>
+<p>On an arm64 host, fetch <code>choreographr-0.2.4-aarch64.rpm</code> instead.</p>
 <p>Both packages install the two binaries and the systemd user unit
 (<code>~/.config/systemd/user/choreographr.service</code>).</p>
 <h3 id="any-distro-manual-tarball">Any distro — manual tarball
@@ -546,18 +554,20 @@ attribute after extracting:</p>
 </a>
 </h3>
 <p>The Linux tarball is a <strong>fully static musl build</strong>, so one artifact runs on
-any Linux distribution regardless of glibc version. <a rel="noopener external" target="_blank" href="https://github.com/choreographr/choreographr/releases/download/v0.2.0/choreographr-0.2.0-x86_64-unknown-linux-musl.tar.gz">Download</a> it, or run:</p>
-<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;" ><code data-lang="shellscript"><span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">curl</span><span style="color: #A6E3A1;"> -fL -O https://github.com/choreographr/choreographr/releases/download/v0.2.0/choreographr-0.2.0-x86_64-unknown-linux-musl.tar.gz</span></span>
-<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">tar</span><span style="color: #A6E3A1;"> xzf choreographr-0.2.0-x86_64-unknown-linux-musl.tar.gz</span></span>
-<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">sudo</span><span style="color: #A6E3A1;"> cp choreographr choreo-tui /usr/local/bin/</span></span></code></pre><h2 id="android-termux">Android (Termux)
+any Linux distribution regardless of glibc version. <a rel="noopener external" target="_blank" href="https://github.com/choreographr/choreographr/releases/download/v0.2.4/choreographr-0.2.4-x86_64-unknown-linux-musl.tar.gz">Download</a> it, or run:</p>
+<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;" ><code data-lang="shellscript"><span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">curl</span><span style="color: #A6E3A1;"> -fL -O https://github.com/choreographr/choreographr/releases/download/v0.2.4/choreographr-0.2.4-x86_64-unknown-linux-musl.tar.gz</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">tar</span><span style="color: #A6E3A1;"> xzf choreographr-0.2.4-x86_64-unknown-linux-musl.tar.gz</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">sudo</span><span style="color: #A6E3A1;"> cp choreographr choreo-tui /usr/local/bin/</span></span></code></pre>
+<p>On arm64, fetch <code>choreographr-0.2.4-aarch64-unknown-linux-musl.tar.gz</code> instead.</p>
+<h2 id="android-termux">Android (Termux)
 <a class="zola-anchor" href="#android-termux" aria-label="Anchor link for: android-termux">
   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
 </a>
 </h2>
 <p>The daemon and TUI ship for <strong>Termux on Android 10+</strong> as a Termux-native
-<code>.deb</code>. <a rel="noopener external" target="_blank" href="https://github.com/choreographr/choreographr/releases/download/v0.2.0/choreographr-termux_0.2.0_aarch64.deb">Download</a> it, or install it inside a Termux shell with <code>pkg</code>:</p>
-<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;" ><code data-lang="shellscript"><span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">curl</span><span style="color: #A6E3A1;"> -fL -O https://github.com/choreographr/choreographr/releases/download/v0.2.0/choreographr-termux_0.2.0_aarch64.deb</span></span>
-<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">pkg</span><span style="color: #A6E3A1;"> install ./choreographr-termux_0.2.0_aarch64.deb</span></span></code></pre>
+<code>.deb</code>. <a rel="noopener external" target="_blank" href="https://github.com/choreographr/choreographr/releases/download/v0.2.4/choreographr-termux_0.2.4_aarch64.deb">Download</a> it, or install it inside a Termux shell with <code>pkg</code>:</p>
+<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;" ><code data-lang="shellscript"><span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">curl</span><span style="color: #A6E3A1;"> -fL -O https://github.com/choreographr/choreographr/releases/download/v0.2.4/choreographr-termux_0.2.4_aarch64.deb</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">pkg</span><span style="color: #A6E3A1;"> install ./choreographr-termux_0.2.4_aarch64.deb</span></span></code></pre>
 <p>It installs <code>choreographr</code> and <code>choreo-tui</code> under Termux's <code>$PREFIX</code>.</p>
 <h2 id="any-platform-cargo-binstall">Any platform — cargo-binstall
 <a class="zola-anchor" href="#any-platform-cargo-binstall" aria-label="Anchor link for: any-platform-cargo-binstall">
@@ -582,11 +592,11 @@ binary that crate provides.</p>
 <pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;" ><code data-lang="shellscript"><span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">cargo</span><span style="color: #A6E3A1;"> install choreographr choreo-tui --locked</span></span></code></pre>
 <p>This builds the daemon and the terminal client from crates.io.</p>
 <p>Requirements: a <a rel="noopener external" target="_blank" href="https://rustup.rs/">Rust toolchain</a> — minimum supported Rust
-version (MSRV) is <strong>1.94.1</strong> — and a <strong>Zig 0.16.0</strong> toolchain on your <code>PATH</code>.
+version (MSRV) is <strong>1.99.0</strong> — and a <strong>Zig</strong> toolchain on your <code>PATH</code>.
 Zig compiles the <a rel="noopener external" target="_blank" href="https://crates.io/crates/zlob"><code>zlob</code></a> crate, a
 SIMD-accelerated globbing and file-walking library that powers the agent's
 <code>find</code>, <code>grep</code>, and related file tools; its build script compiles Zig source
-at build time. Install Zig 0.16.0 from <a rel="noopener external" target="_blank" href="https://ziglang.org/download/">ziglang.org</a>
+at build time. Install Zig from <a rel="noopener external" target="_blank" href="https://ziglang.org/download/">ziglang.org</a>
 (or your package manager — e.g. <code>brew install zig</code>, <code>apt install zig</code>,
 <code>pacman -S zig</code>).</p>
 <h2 id="blockchain-tools">Blockchain tools

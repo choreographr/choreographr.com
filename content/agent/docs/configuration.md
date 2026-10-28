@@ -78,6 +78,19 @@ stored in the `redb` database. The daemon binds its keystore once; thereafter
 `/unlock` uses the stored per-daemon unlock key. See
 [Security](@/agent/docs/security.md) for details.
 
+## Logs
+
+Every binary writes its own **pid-keyed log file** —
+`$XDG_STATE_HOME/choreographr/<binary>-<pid>.log` (e.g. `tui-4242.log`), or
+`{base}/log/...` under `--base-dir`, else the platform temp dir. The daemon and
+the IM bridge also mirror to stderr; the GUI and ACP adapter mirror only when
+attached to a terminal. `--log-file <path>` overrides the destination.
+
+Log files are owner-only, pruned by **age** (one week), and never contain
+payloads: prompts, model output, tool arguments and results, and credentials are
+recorded as ids, kinds, lengths, and counts. Use `-v`/`-vv`/`-q` (which take
+precedence over `RUST_LOG`) to change what is recorded.
+
 ## Daemon flags
 
 | Flag | Purpose |

@@ -49,7 +49,7 @@
   <link rel="preload" href="https://choreographr.com/fonts/jetbrains-mono.woff2" as="font" type="font/woff2" crossorigin>
 
   <link rel="icon" type="image/svg+xml" href="https://choreographr.com/favicon.svg">
-  <link rel="stylesheet" href="https://choreographr.com/css/main.css?h=522f5596923af2ef361c">
+  <link rel="stylesheet" href="https://choreographr.com/css/main.css?h=c8e54f75ecee9764056c">
 
   <!-- Firefox/Zen can paint a frame before this stylesheet has been
        applied if a layout flush happens while it loads (Bugzilla
@@ -407,7 +407,7 @@
     <li>
       <a href="https://choreographr.com/agent/docs/tools/image/"
          class="pl-5 text-night-300 hover:text-night-50">
-        Image generation
+        Image generation &amp; editing
       </a>
     </li>
     
@@ -511,7 +511,7 @@ credentials and working directory — but inside an isolated single-hart VM with
 no host memory, syscalls, or filesystem access except through registered
 tools. Guests use the <code>choreo</code> convenience wrappers (which handle postcard
 encoding automatically):</p>
-<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;" ><code data-lang="rust"><span class="giallo-l"><span style="color: #F9E2AF;">choreo</span><span style="color: #94E2D5;">::</span><span style="color: #89B4FA;font-style: italic;">read_file</span><span style="color: #9399B2;">(</span><span>path</span><span style="color: #9399B2;">)</span><span style="color: #9399B2;font-style: italic;">                          // -&gt; String</span></span>
+<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;" ><code data-lang="rust"><span class="giallo-l"><span style="color: #F9E2AF;">choreo</span><span style="color: #94E2D5;">::</span><span style="color: #89B4FA;font-style: italic;">read_file</span><span style="color: #9399B2;">(</span><span>path</span><span style="color: #9399B2;">)</span><span style="color: #9399B2;font-style: italic;">                          // -&gt; String (numbered view)</span></span>
 <span class="giallo-l"><span style="color: #F9E2AF;">choreo</span><span style="color: #94E2D5;">::</span><span style="color: #89B4FA;font-style: italic;">write_file</span><span style="color: #9399B2;">(</span><span>path</span><span style="color: #9399B2;">,</span><span> content</span><span style="color: #9399B2;">,</span><span> overwrite</span><span style="color: #9399B2;">)</span></span>
 <span class="giallo-l"><span style="color: #F9E2AF;">choreo</span><span style="color: #94E2D5;">::</span><span style="color: #89B4FA;font-style: italic;">db_get</span><span style="color: #9399B2;">(</span><span>key</span><span style="color: #9399B2;">)</span><span style="color: #9399B2;font-style: italic;">                              // -&gt; Vec&lt;u8&gt;</span></span>
 <span class="giallo-l"><span style="color: #F9E2AF;">choreo</span><span style="color: #94E2D5;">::</span><span style="color: #89B4FA;font-style: italic;">db_set</span><span style="color: #9399B2;">(</span><span>key</span><span style="color: #9399B2;">,</span><span> value</span><span style="color: #9399B2;">)</span><span style="color: #9399B2;font-style: italic;">                       // value: &amp;[u8]</span></span>
@@ -526,7 +526,9 @@ encoding automatically):</p>
 <blockquote>
 <p>Notes: the A (atomic) extension is disabled, so guests must not use
 <code>core::sync::atomic</code> read-modify-write operations. For <code>grep</code>, set
-<code>regex: true</code> when using regex patterns (the default is literal matching).</p>
+<code>regex: true</code> when using regex patterns (the default is literal matching).
+<code>choreo::read_file</code> returns the same numbered view as the host tool — strip
+the header line and the <code>N | </code> gutter if the guest needs the bare file.</p>
 </blockquote>
 <p>To compile a <code>source</code> snippet, the daemon shells out to
 <code>rustc +stable --target riscv64imac-unknown-none-elf</code>, so the RISC-V

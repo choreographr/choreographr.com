@@ -49,7 +49,7 @@
   <link rel="preload" href="https://choreographr.com/fonts/jetbrains-mono.woff2" as="font" type="font/woff2" crossorigin>
 
   <link rel="icon" type="image/svg+xml" href="https://choreographr.com/favicon.svg">
-  <link rel="stylesheet" href="https://choreographr.com/css/main.css?h=522f5596923af2ef361c">
+  <link rel="stylesheet" href="https://choreographr.com/css/main.css?h=c8e54f75ecee9764056c">
 
   <!-- Firefox/Zen can paint a frame before this stylesheet has been
        applied if a layout flush happens while it loads (Bugzilla
@@ -407,7 +407,7 @@
     <li>
       <a href="https://choreographr.com/agent/docs/tools/image/"
          class="pl-5 text-night-300 hover:text-night-50">
-        Image generation
+        Image generation &amp; editing
       </a>
     </li>
     
@@ -497,8 +497,7 @@
 input, web-page rendering, PDFs, search, randomness, time, session management,
 and orchestration.</p>
 <table><thead><tr><th>Tool</th><th>What it does</th></tr></thead><tbody>
-<tr><td><code>read_file</code></td><td>Read a UTF-8 text file; rejects binary files; output is capped and truncation is reported</td></tr>
-<tr><td><code>read_file_range</code></td><td>Read a line range from a UTF-8 text file (max 500 lines per call)</td></tr>
+<tr><td><code>read_file</code></td><td>Read a UTF-8 text file as a numbered view (<code>start_line</code>/<code>max_lines</code>); rejects binary files; clipping is reported with a continuation marker</td></tr>
 <tr><td><code>list_files</code></td><td>List files in a directory with sizes, symlink targets, and subdirectory entry counts</td></tr>
 <tr><td><code>write_file</code></td><td>Write a UTF-8 text file to the workspace</td></tr>
 <tr><td><code>edit_file</code></td><td>Apply one or more exact text replacements to a file</td></tr>
@@ -507,7 +506,7 @@ and orchestration.</p>
 <tr><td><code>grep</code></td><td>Search file contents for a literal or regex pattern</td></tr>
 <tr><td><code>find</code></td><td>Find files and directories by name (substring or glob)</td></tr>
 <tr><td><code>http_request</code></td><td>Make an HTTP request; returns status, headers, and body text</td></tr>
-<tr><td><code>retrieve_webpage</code></td><td>Render a URL in a local headless browser and return HTML, text, a screenshot, or a PDF</td></tr>
+<tr><td><code>retrieve_webpage</code></td><td>Render a URL in a local headless browser and return HTML, text, a screenshot, or a PDF (opt-in <code>webgl</code> for canvas/3D pages)</td></tr>
 <tr><td><code>display_image</code></td><td>Display a PNG, JPEG, SVG, or HEIC image in the client UI</td></tr>
 <tr><td><code>read_image</code></td><td>Read an image file and feed it to a vision-capable model as image input</td></tr>
 <tr><td><code>pdf_classify</code></td><td>Classify a PDF as text, scanned, image-based, or mixed (fast, no OCR)</td></tr>
@@ -521,14 +520,15 @@ and orchestration.</p>
 <tr><td><code>set_session_title</code></td><td>Set the session's display title</td></tr>
 <tr><td><code>spawn_subsession</code></td><td>Spawn a child session to work autonomously on a task</td></tr>
 <tr><td><code>list_sessions</code></td><td>List all sessions known to the daemon</td></tr>
-<tr><td><code>get_session</code></td><td>Read the full message history of a session by ID</td></tr>
+<tr><td><code>get_session</code></td><td>Return a session's metadata summary by ID (title, model, turn count, parent, working directory, token usage — no message text)</td></tr>
+<tr><td><code>read_session</code></td><td>Read another session's conversation text (user messages, assistant responses, displayed reasoning) by ID</td></tr>
 </tbody></table>
 <h2 id="file-tools">File tools
 <a class="zola-anchor" href="#file-tools" aria-label="Anchor link for: file-tools">
   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
 </a>
 </h2>
-<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;" ><code data-lang="json"><span class="giallo-l"><span style="color: #9399B2;">{ &quot;</span><span style="color: #89B4FA;">name</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;read_file&quot;</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">arguments</span><span style="color: #9399B2;">&quot;: { &quot;</span><span style="color: #89B4FA;">path</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;src/main.rs&quot;</span><span style="color: #9399B2;"> } }</span></span>
+<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;" ><code data-lang="json"><span class="giallo-l"><span style="color: #9399B2;">{ &quot;</span><span style="color: #89B4FA;">name</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;read_file&quot;</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">arguments</span><span style="color: #9399B2;">&quot;: { &quot;</span><span style="color: #89B4FA;">path</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;src/main.rs&quot;</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">start_line</span><span style="color: #9399B2;">&quot;:</span><span style="color: #FAB387;"> 1</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">max_lines</span><span style="color: #9399B2;">&quot;:</span><span style="color: #FAB387;"> 200</span><span style="color: #9399B2;"> } }</span></span>
 <span class="giallo-l"><span style="color: #9399B2;">{ &quot;</span><span style="color: #89B4FA;">name</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;edit_file&quot;</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">arguments</span><span style="color: #9399B2;">&quot;: {</span></span>
 <span class="giallo-l"><span style="color: #9399B2;">    &quot;</span><span style="color: #89B4FA;">path</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;src/main.rs&quot;</span><span style="color: #9399B2;">,</span></span>
 <span class="giallo-l"><span style="color: #9399B2;">    &quot;</span><span style="color: #89B4FA;">edits</span><span style="color: #9399B2;">&quot;: [</span></span>
@@ -538,11 +538,19 @@ and orchestration.</p>
 <ul>
 <li><code>read_file</code> resolves relative paths against the session's working directory
 and streams output through a bounded reader, so memory use stays capped even
-for very large files. <code>read_file_range</code> reads a specific 1-based line range
-(<code>start_line</code>, <code>max_lines</code>) — the right tool for big files.</li>
+for very large files. It returns a numbered view — a <code>path:</code> / <code>lines: a-b of N</code> header followed by <code>N | content</code> lines — and takes optional <code>start_line</code>
+(1-based, default 1) and <code>max_lines</code> (default and cap 2000). When the window
+or the byte budget clips the output, a continuation marker
+(<code>...[more lines follow: showing A of B lines — continue with start_line=N]</code>)
+tells the caller how to resume, so a clipped view is never mistaken for the
+whole file.</li>
 <li><code>edit_file</code> takes a list of exact <code>old_text</code> → <code>new_text</code> replacements. Each
 edit must match at least once; edits without <code>replace_all</code> must match exactly
-once. This keeps the model from guessing at file contents.</li>
+once. Pass <code>near_line</code> (the line number <code>read_file</code> shows) to resolve a
+repeated <code>old_text</code> to the nearest occurrence; when a match is ambiguous or
+absent the tool reports the candidate lines. No-op edits are rejected, and
+matching runs on LF-normalized text so a CRLF file edits correctly (its
+original line endings are restored on write).</li>
 <li><code>delete_files</code> auto-detects glob patterns (<code>*</code>, <code>?</code>, <code>[</code>). Patterns without
 <code>/</code> match against the file's basename; patterns with <code>/</code> match full paths
 from the working directory.</li>
@@ -650,7 +658,21 @@ Accepted formats mirror the display surface — PNG, JPEG, WebP, SVG
 image is carried as a reference (path + metadata) rather than bytes in the
 conversation, and the normalized bytes are persisted durably in the
 <code>session_attachments</code> table so they survive restarts.</p>
-<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;" ><code data-lang="json"><span class="giallo-l"><span style="color: #9399B2;">{ &quot;</span><span style="color: #89B4FA;">name</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;read_image&quot;</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">arguments</span><span style="color: #9399B2;">&quot;: { &quot;</span><span style="color: #89B4FA;">path</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;report-figures/fig-1.jpg&quot;</span><span style="color: #9399B2;"> } }</span></span></code></pre><h2 id="pdf-tools">PDF tools
+<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;" ><code data-lang="json"><span class="giallo-l"><span style="color: #9399B2;">{ &quot;</span><span style="color: #89B4FA;">name</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;read_image&quot;</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">arguments</span><span style="color: #9399B2;">&quot;: { &quot;</span><span style="color: #89B4FA;">path</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;report-figures/fig-1.jpg&quot;</span><span style="color: #9399B2;"> } }</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">{ &quot;</span><span style="color: #89B4FA;">name</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;read_image&quot;</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">arguments</span><span style="color: #9399B2;">&quot;: {</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">    &quot;</span><span style="color: #89B4FA;">path</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;report-figures/fig-1.jpg&quot;</span><span style="color: #9399B2;">,</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">    &quot;</span><span style="color: #89B4FA;">region</span><span style="color: #9399B2;">&quot;: { &quot;</span><span style="color: #89B4FA;">x</span><span style="color: #9399B2;">&quot;:</span><span style="color: #FAB387;"> 0.0</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">y</span><span style="color: #9399B2;">&quot;:</span><span style="color: #FAB387;"> 0.0</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">width</span><span style="color: #9399B2;">&quot;:</span><span style="color: #FAB387;"> 0.5</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">height</span><span style="color: #9399B2;">&quot;:</span><span style="color: #FAB387;"> 0.5</span><span style="color: #9399B2;"> } } }</span></span></code></pre>
+<p>An optional <code>region</code> (fractions of the image) crops the image server-side
+before the bytes reach the model — a cheap way to zoom a vision model into part
+of a large figure. A bad region (<code>x</code>/<code>y</code> outside <code>[0, 1)</code>, non-positive or
+oversized <code>width</code>/<code>height</code>) fails fast before disk is touched.</p>
+<blockquote>
+<p><code>list_sessions</code> lists sessions; <code>get_session</code> returns a session's <em>metadata</em>;
+<code>read_session</code> returns the readable <em>text</em> of another session's turns (user
+messages, assistant responses, and displayed reasoning) — never tool inputs
+or results, and never the opaque reasoning artifacts.</p>
+</blockquote>
+<h2 id="pdf-tools">PDF tools
 <a class="zola-anchor" href="#pdf-tools" aria-label="Anchor link for: pdf-tools">
   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
 </a>
@@ -675,7 +697,7 @@ on the first error. Steps can reference earlier results with <code>{{step_1}}</c
 <code>{{step_2}}</code>, … inside their argument strings:</p>
 <pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;" ><code data-lang="json"><span class="giallo-l"><span style="color: #9399B2;">{ &quot;</span><span style="color: #89B4FA;">name</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;run_series&quot;</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">arguments</span><span style="color: #9399B2;">&quot;: { &quot;</span><span style="color: #89B4FA;">steps</span><span style="color: #9399B2;">&quot;: [</span></span>
 <span class="giallo-l"><span style="color: #9399B2;">    { &quot;</span><span style="color: #89B4FA;">tool</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;line_count&quot;</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">arguments</span><span style="color: #9399B2;">&quot;: { &quot;</span><span style="color: #89B4FA;">path</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;src/main.rs&quot;</span><span style="color: #9399B2;"> } },</span></span>
-<span class="giallo-l"><span style="color: #9399B2;">    { &quot;</span><span style="color: #89B4FA;">tool</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;read_file_range&quot;</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">arguments</span><span style="color: #9399B2;">&quot;: { &quot;</span><span style="color: #89B4FA;">path</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;src/main.rs&quot;</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">start_line</span><span style="color: #9399B2;">&quot;:</span><span style="color: #FAB387;"> 1</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">max_lines</span><span style="color: #9399B2;">&quot;:</span><span style="color: #FAB387;"> 20</span><span style="color: #9399B2;"> } }</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">    { &quot;</span><span style="color: #89B4FA;">tool</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;read_file&quot;</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">arguments</span><span style="color: #9399B2;">&quot;: { &quot;</span><span style="color: #89B4FA;">path</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;src/main.rs&quot;</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">start_line</span><span style="color: #9399B2;">&quot;:</span><span style="color: #FAB387;"> 1</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">max_lines</span><span style="color: #9399B2;">&quot;:</span><span style="color: #FAB387;"> 20</span><span style="color: #9399B2;"> } }</span></span>
 <span class="giallo-l"><span style="color: #9399B2;">] } }</span></span></code></pre>
 <p>This lets the model batch dependent operations into a single turn instead of
 round-tripping through the LLM for every step.</p>

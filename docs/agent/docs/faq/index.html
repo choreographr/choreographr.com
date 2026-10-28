@@ -49,7 +49,7 @@
   <link rel="preload" href="https://choreographr.com/fonts/jetbrains-mono.woff2" as="font" type="font/woff2" crossorigin>
 
   <link rel="icon" type="image/svg+xml" href="https://choreographr.com/favicon.svg">
-  <link rel="stylesheet" href="https://choreographr.com/css/main.css?h=522f5596923af2ef361c">
+  <link rel="stylesheet" href="https://choreographr.com/css/main.css?h=c8e54f75ecee9764056c">
 
   <!-- Firefox/Zen can paint a frame before this stylesheet has been
        applied if a layout flush happens while it loads (Bugzilla
@@ -143,6 +143,15 @@
     
     {
       "@type": "Question",
+      "name": "Can it use MCP servers?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes — Choreographr is an MCP (Model Context Protocol) client. Daemon-wide servers live in mcp.json and project servers in a trusted .mcp.json, over a stdio subprocess or a remote Streamable HTTP endpoint. Their tools appear under an mcp/&lt;slug&gt; group. Manage them with /mcp in the TUI or the choreographr mcp CLI. See Tools.\n"
+      }
+    },
+    
+    {
+      "@type": "Question",
       "name": "Can it talk to blockchains?",
       "acceptedAnswer": {
         "@type": "Answer",
@@ -155,7 +164,7 @@
       "name": "Can it generate images?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Yes — the image group's generate_image tool produces an image from a text prompt through the session's image-capable provider (OpenAI Images or z.ai/Zhipu GLM), and the result renders inline in the terminal like any other image. Activate it with load_tools image. See Image generation.\n"
+        "text": "Yes — the image group's generate_image tool produces an image from a text prompt through the session's image-capable provider (OpenAI Images, z.ai/Zhipu GLM, or fal.ai), and the result renders inline in the terminal like any other image. Activate it with load_tools image. See Image generation.\n"
       }
     },
     
@@ -173,7 +182,7 @@
       "name": "What's the minimum supported Rust version?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "1.94.1.\n"
+        "text": "1.99.0.\n"
       }
     },
     
@@ -182,7 +191,7 @@
       "name": "What else do I need to build it?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "A Zig 0.16.0 toolchain in addition to Rust. The zlob dependency — a fast globbing and file-walking library written in Zig — is compiled from Zig source at build time, so zig must be on your PATH. Choreographr uses zlob for the glob matching and gitignore-aware walking behind the find and grep tools.\n"
+        "text": "A Zig toolchain in addition to Rust. The zlob dependency — a fast globbing and file-walking library written in Zig — is compiled from Zig source at build time, so zig must be on your PATH. Choreographr uses zlob for the glob matching and gitignore-aware walking behind the find and grep tools.\n"
       }
     },
     
@@ -516,7 +525,7 @@
     <li>
       <a href="https://choreographr.com/agent/docs/tools/image/"
          class="pl-5 text-night-300 hover:text-night-50">
-        Image generation
+        Image generation &amp; editing
       </a>
     </li>
     
@@ -643,6 +652,12 @@
         </section>
         
         <section>
+          <h2 class="text-2xl font-semibold text-night-50 tracking-tight">Can it use MCP servers?</h2>
+          <div class="mt-2 text-night-300"><p>Yes — Choreographr is an MCP (Model Context Protocol) client. Daemon-wide servers live in <code>mcp.json</code> and project servers in a trusted <code>.mcp.json</code>, over a stdio subprocess or a remote Streamable HTTP endpoint. Their tools appear under an <code>mcp/&lt;slug&gt;</code> group. Manage them with <code>/mcp</code> in the TUI or the <code>choreographr mcp</code> CLI. See <a href="https://choreographr.com/agent/docs/tools/">Tools</a>.</p>
+</div>
+        </section>
+        
+        <section>
           <h2 class="text-2xl font-semibold text-night-50 tracking-tight">Can it talk to blockchains?</h2>
           <div class="mt-2 text-night-300"><p>Yes — the <code>blockchain</code> tool group adds read-only EVM and Substrate/Polkadot tools (balances, blocks, transactions, contract calls, ENS, storage queries). It's compiled in when the daemon is built with the <code>blockchain</code> cargo feature (enabled in the release binaries) and activated per session with <code>load_tools blockchain</code>. See the <a href="https://choreographr.com/agent/docs/tools/blockchain/">tools reference</a>.</p>
 </div>
@@ -650,7 +665,7 @@
         
         <section>
           <h2 class="text-2xl font-semibold text-night-50 tracking-tight">Can it generate images?</h2>
-          <div class="mt-2 text-night-300"><p>Yes — the <code>image</code> group's <code>generate_image</code> tool produces an image from a text prompt through the session's image-capable provider (OpenAI Images or z.ai/Zhipu GLM), and the result renders inline in the terminal like any other image. Activate it with <code>load_tools image</code>. See <a href="https://choreographr.com/agent/docs/tools/image/">Image generation</a>.</p>
+          <div class="mt-2 text-night-300"><p>Yes — the <code>image</code> group's <code>generate_image</code> tool produces an image from a text prompt through the session's image-capable provider (OpenAI Images, z.ai/Zhipu GLM, or fal.ai), and the result renders inline in the terminal like any other image. Activate it with <code>load_tools image</code>. See <a href="https://choreographr.com/agent/docs/tools/image/">Image generation</a>.</p>
 </div>
         </section>
         
@@ -662,13 +677,13 @@
         
         <section>
           <h2 class="text-2xl font-semibold text-night-50 tracking-tight">What&#39;s the minimum supported Rust version?</h2>
-          <div class="mt-2 text-night-300"><p>1.94.1.</p>
+          <div class="mt-2 text-night-300"><p>1.99.0.</p>
 </div>
         </section>
         
         <section>
           <h2 class="text-2xl font-semibold text-night-50 tracking-tight">What else do I need to build it?</h2>
-          <div class="mt-2 text-night-300"><p>A <strong>Zig 0.16.0</strong> toolchain in addition to Rust. The <a rel="noopener external" target="_blank" href="https://crates.io/crates/zlob"><code>zlob</code></a> dependency — a fast globbing and file-walking library written in Zig — is compiled from Zig source at build time, so <code>zig</code> must be on your <code>PATH</code>. Choreographr uses zlob for the glob matching and gitignore-aware walking behind the <code>find</code> and <code>grep</code> tools.</p>
+          <div class="mt-2 text-night-300"><p>A <strong>Zig</strong> toolchain in addition to Rust. The <a rel="noopener external" target="_blank" href="https://crates.io/crates/zlob"><code>zlob</code></a> dependency — a fast globbing and file-walking library written in Zig — is compiled from Zig source at build time, so <code>zig</code> must be on your <code>PATH</code>. Choreographr uses zlob for the glob matching and gitignore-aware walking behind the <code>find</code> and <code>grep</code> tools.</p>
 </div>
         </section>
         

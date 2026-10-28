@@ -60,6 +60,41 @@ auto-binds immediately — a fresh daemon is never a dead end.
 Credentials are encrypted per-credential with the daemon's X25519 public key,
 so the encrypted blobs are useless without the private key.
 
+A credential enters through the daemon, never around it: the client sends a
+**typed** credential value (API key, X tokens, or OAuth grant) and the daemon
+encrypts it to its own binding public key before it touches disk, so no key
+material rides the add path. An add requires an already-unlocked keystore — a
+locked daemon refuses it rather than unlocking itself.
+
+## Owner-only local trust
+
+The Unix socket is the daemon's fully-trusted local domain: it carries no Noise
+handshake, so a peer that reaches it can read transcripts, retrieve credentials
+while the keystore is unlocked, run tools, and enroll other clients. It is
+created **`0600` inside a directory only its owner can traverse** — a
+`--base-dir`'s `run/`, or a per-uid `temp_dir()/choreographr-<uid>` when neither
+`$XDG_RUNTIME_DIR` nor a base dir is set, so parallel users on a shared `/tmp`
+neither collide nor share a parent.
+
+The `redb` store (plaintext transcripts and tool output), `known_servers.toml`
+(the per-daemon private unlock keys), and the log files are owner-only too, and
+the policy lives in one place (`choreo_shared::perm`) instead of three drifting
+copies. Two hardening details matter:
+
+- `known_servers.toml` is opened `O_NOFOLLOW` and owner-checked **before** it is
+  parsed. A `pubkey` pin steers the next Noise IK handshake, so a planted file
+  could otherwise pin an attacker's server and capture credentials. A refused
+  file degrades to the empty store (re-confirmed first contact).
+- A directory owned by another user is **refused outright** rather than warned
+  about and used anyway — a foreign-owned directory lets that user enumerate or
+  swap the socket and store files. Private modes are applied through an
+  `O_NOFOLLOW` directory descriptor (`fchmod`), not a path chmod.
+
+Logs are written as a pid-keyed file per binary, pruned **by age** (one week)
+rather than by count, and they never contain payloads: prompts, model output,
+tool arguments and results, and credentials are logged as ids, kinds, lengths,
+and counts instead.
+
 ## Client trust & access control
 
 Remote connections are mutually authenticated. On first contact — before the
@@ -84,10 +119,23 @@ daemon-wide `mcp.json` you wrote and trust unconditionally, and a project
 servers are **gated behind trust** — read (so `/mcp status` can report what is
 ignored) but never spawned, and their `${VAR}` references never expanded, until
 you run `/mcp trust` for that project root (recorded in `trust.toml`, keyed on
-the exact root). A stdio server inherits the daemon's environment with the
+the exact root). Revoking trust drops that project's live connections
+immediately.
+
+A stdio server inherits the daemon's environment with the
 code-injection variables (`LD_*`, `DYLD_*`, `PYTHONPATH`, `PERL5LIB`,
 `RUBYLIB`) stripped, its `stderr` is captured to an owner-only per-server log,
 and its calls are deadline-bounded and concurrency-capped.
+
+A server that needs an interactive sign-in stores an OAuth grant in the same
+encrypted keystore as provider credentials, **keyed by the server's target**
+(`mcp:<slug>|<target-hash>`) so a same-slug server on a different endpoint keeps
+its own credential. Two things fail closed: a project server's sign-in is
+refused while that project root is untrusted (its `oauth` block is
+repo-controlled), and a stored grant whose issuer or resource no longer matches
+the configured server is treated as absent and surfaces a re-login. A
+confidential client's secret comes from an environment variable named by
+`clientSecretEnv`, never from the config file.
 
 ## RISC-V sandbox
 
@@ -103,6 +151,18 @@ ELF) and executes it inside an isolated `ckb-vm` machine with:
 The guest cannot access host memory, syscalls, or files outside the VM without
 going through registered tools. The VM respects the same credentials and
 working directory as the host agent.
+
+## Untrusted text on a terminal
+
+Model output, tool output, tool names, session titles, and pasted text are all
+potentially hostile strings, and a terminal is an escape-sequence interpreter.
+`choreo-tui` normalizes every displayed string at its widget sink — control
+characters and escape sequences are removed, so model output cannot emit
+terminal commands — and strips **bidirectional-formatting** controls
+(RLO/LRO, isolates, LRM/RLM/ALM) from the free-text fields it writes back out:
+the OSC 2 window title and the OSC 7501 program-status record, both of which
+would otherwise let a hostile session title reorder or spoof what you see.
+Zero-width joiners are kept, so emoji sequences still render.
 
 ## OS-level sandboxing (planned)
 

@@ -49,7 +49,7 @@
   <link rel="preload" href="https://choreographr.com/fonts/jetbrains-mono.woff2" as="font" type="font/woff2" crossorigin>
 
   <link rel="icon" type="image/svg+xml" href="https://choreographr.com/favicon.svg">
-  <link rel="stylesheet" href="https://choreographr.com/css/main.css?h=522f5596923af2ef361c">
+  <link rel="stylesheet" href="https://choreographr.com/css/main.css?h=c8e54f75ecee9764056c">
 
   <!-- Firefox/Zen can paint a frame before this stylesheet has been
        applied if a layout flush happens while it loads (Bugzilla
@@ -398,7 +398,7 @@
     <li>
       <a href="https://choreographr.com/agent/docs/tools/image/"
          class="pl-5 text-night-300 hover:text-night-50">
-        Image generation
+        Image generation &amp; editing
       </a>
     </li>
     
@@ -509,6 +509,9 @@ and working directory. Sessions:</p>
 <li>form a parent-child tree,</li>
 <li>support multiple concurrent client attachments,</li>
 <li>survive daemon restarts via the embedded <code>redb</code> database,</li>
+<li>can be <strong>pinned</strong> (sorted to the top of the session list) or <strong>archived</strong>
+(hidden from the live list) — both are daemon-owned flags broadcast to every
+client,</li>
 <li>are only "woken up" when a client connects to them.</li>
 </ul>
 <p>A <strong>subsession</strong> is a child session spawned by the <code>spawn_subsession</code> tool. It
@@ -528,9 +531,11 @@ Every tool also provides a human-readable invocation description.</p>
 <p>See the <a href="https://choreographr.com/agent/docs/tools/">tools reference</a> for the complete, up-to-date list
 of every built-in tool and how to call it.</p>
 <p>Available tool groups include <strong>core</strong> (filesystem, HTTP, images, PDF
-classification, search, random, time, vision input, web-page rendering),
-<strong>git</strong>, <strong>shell</strong>, <strong>vm</strong>, <strong>x</strong>, <strong>debug</strong> (read-only diagnostics),
-<strong>db</strong>, <strong>image</strong> (image generation), and <strong>blockchain</strong>
+classification, search, random, time, vision input, web-page rendering,
+session reading), <strong>git</strong>, <strong>shell</strong>, <strong>vm</strong>, <strong>x</strong>, <strong>debug</strong> (read-only
+diagnostics), <strong>db</strong>, <strong>image</strong> (image generation), <strong>mcp/<slug></strong> (the tools
+exposed by a configured MCP server, loaded with <code>load_tools</code>), and
+<strong>blockchain</strong>
 (EVM and Substrate/Polkadot queries, when the daemon is built with the
 <code>blockchain</code> feature). Only <code>core</code>, <code>git</code>, and <code>shell</code> are active by
 default; the rest are opt-in via <code>load_tools</code>.</p>

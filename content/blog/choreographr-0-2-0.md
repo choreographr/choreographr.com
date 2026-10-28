@@ -1,6 +1,6 @@
 +++
 title = "Choreographr v0.2 (Lindy) Released"
-description = "Choreographr v0.2 (Lindy) — now at v0.2.4 — adds MCP server support, prompt-cache warming, cross-session reading and image crops, XDG paths, and a richer terminal client, on top of arm64 Linux, a command palette and readline keybindings, unified file tools, session pin/archive, on-demand image loading, and a hardened keystore and trust model."
+description = "Choreographr v0.2 (Lindy) — now at v0.2.4 — adds OAuth sign-in for model providers and MCP servers, MCP client support, prompt-cache affinity and warming, image generation and editing, first-run onboarding, cross-session reading and image crops, XDG paths, and an owner-only local trust model, on top of arm64 Linux, a command palette and readline keybindings, unified file tools, session pin/archive, on-demand image loading, and a hardened keystore."
 date = 2026-09-24
 # Draft until the post is finished — remove this line to publish.
 draft = true
@@ -13,10 +13,36 @@ tags = ["announcement", "rust"]
 authors = ["Jonathan Brown"]
 +++
 
-<!-- TODO: opening hook — what changed since v0.1.0 and why it matters. -->
+Choreographr v0.2 (Lindy) is out now. v0.1 was a working agent on one machine. v0.2 is
+where it becomes something you can point at real work: it **signs in with OAuth**
+instead of asking for an API key, **plugs in MCP servers**, **edits images** as well
+as generating them, **reads across sessions**, and from the first keystroke **walks
+you through setup**. It also closes the local-trust gaps a single-user tool could
+previously get away with.
 
-Choreographr v0.2 (Lindy) is out now. Here are the major new features:
+Here are the major new features:
 
+
+## First-run onboarding
+
+An empty session is no longer a blank prompt. It shows a **welcome checklist**
+that ticks itself off as you go, naming the keys for each step:
+
+1. **Add an account** — `Alt+A`, then `n`. The provider list puts the common ones
+   first and filters as you type, and the account name is **pre-filled** from the
+   provider slug, so the usual case is one `Enter`. Paste the key, or create the
+   account and run `/login <account>` for a provider that signs in with OAuth.
+2. **Use it in this session** — automatic for a session that has no account yet:
+   once the daemon confirms the credential, the TUI selects the account for you.
+   A session that *already* has an account keeps it, so adding a second key never
+   silently switches what an in-use session talks to.
+3. **Choose a model** — the picker opens on its own after step 2, and fills in as
+   the daemon fetches the new account's model list.
+
+Each step waits for the daemon's confirmation rather than firing optimistically —
+selecting an account whose key the daemon rejected would only produce a second
+error. If the TUI cannot reach or start the daemon it now **exits immediately and
+prints the reason**, instead of retrying into a blank screen.
 
 ## Android Termux support
 
@@ -81,6 +107,29 @@ image with the `generate_image` tool and displays it inline:
 * Knobs: `size` (`1024x1024`, `1024x1536`, `1536x1024`), `quality`, `output_format` (PNG/JPEG/WebP), `background` (opaque/transparent) and `alt` text.
 * The credential never reaches the tool: provider resolution runs through the daemon command loop, scoped to the requesting session so a cancel closes an in-flight generation too.
 
+### Image editing
+
+`edit_image` is the other half of the `image` group: it modifies one or more
+existing images from a text prompt (image-to-image). Each input is either a local
+file path or a **session reference** to an image already in the conversation —
+`@last` for the most recent one, or `@display:<turn>:<index>` /
+`@result:<turn>:<call_id>` for an explicit one — so "make that darker" works on the
+image the model just produced or the one you just shared, with no path juggling.
+
+* Four adapters: OpenAI Images, **xAI** `grok-imagine` (OpenAI-protocol generation,
+  a JSON body on `/images/edits` for editing), **Google Gemini** image models
+  (generate and edit through `generateContent`, inputs sent as `inlineData`), and
+  **fal.ai**. z.ai / Zhipu is generation-only, and Anthropic has no image backend.
+* `mask` support (a PNG path whose **transparent** region is the area regenerated,
+  the opaque region preserved) on the models that can inpaint.
+* Model selection is catalog-driven, like generation: an explicit `model` wins,
+  otherwise the provider's *edit-capable* models are picked by priority. Edit
+  capability is overlay-only policy, and `edit_image` **fails closed** when the
+  resolved provider pins no edit-capable model.
+* Output re-enters the same pipeline as `display_image` — displayed inline,
+  persisted, and fed back through vision — so the model can inspect its own edit
+  and take another pass.
+
 ## `retrieve_webpage` Tool
 
 In addition to the low-level `http_request` there is a new tool `retrieve_webpage` that uses the [headless_chrome](https://crates.io/crates/headless_chrome) Rust crate to load a webpage via a local headless Chromium/Chrome. It provides the webpage to the llm as text, screenshot or pdf.
@@ -128,6 +177,27 @@ The "content" tools to access the Choreographr blockchain (previously Acuity) ar
 
 ![choreo-tui: LaTeX math rendered as pretty Unicode in the TUI](/blog/2026-09-08-choreographr-0-2-0/tui-latex-unicode.webp)
 
+* **The status bar names the phase you are in** — `sending` → `waiting` →
+  `reasoning` → `responding` — so a multi-second wait for the model's first
+  token no longer looks like a stalled upload.
+* **The model picker opens instantly.** It paints from the daemon's cache (or
+  the local catalog's curated ids) and refreshes in place when the live list
+  lands, keeping the row you are on and labelling itself `provisional` until the
+  real list arrives.
+* **The terminal knows what is going on.** The client sets the window/tab title
+  (OSC 2) to `choreo-tui — <session title>`, and reports each session's state
+  through the terminal's **Program Status Protocol** (OSC 7501), so a tab shows
+  working/idle and a background agent that just finished keeps its `done` or
+  `error` record after its status drops back to idle.
+* **A streaming response stays pinned** to the top of the viewport while it
+  grows, instead of scrolling its first line out of view.
+* Ordered lists keep the **source numbers** from the document and right-align
+  them, rather than renumbering from one.
+* **Every displayed string is normalized at the widget sink** — control
+  characters, escape sequences, and bidirectional-formatting overrides are
+  stripped from model output, tool names, identifiers, and pasted text, and tabs
+  are expanded before markdown rendering so a code box's frame stays aligned.
+
 ## Daemon autostart
 
 `choreo-tui` can now start the daemon for you. If it cannot reach one, it spawns
@@ -155,6 +225,10 @@ fails and never races or steals a live daemon's socket.
 * The new `choreo-sockreg` crate tracks live sockets (with TCP keepalive tuning)
   so the single thread that decides a cancel can close exactly the right
   connections.
+* **Each turn is persisted at the agent loop's iteration boundary**, so a crash
+  (or a killed daemon) loses at most the iteration that was in flight rather
+  than every tool call since the last checkpoint — and a checkpointed turn is
+  written once, not rewritten per event.
 
 ## Inference & provider improvements
 
@@ -171,6 +245,21 @@ fails and never races or steals a live daemon's socket.
 * Coordinated providers — the context window, reasoning capability, and
   provider routing stay consistent while the keystore is locked, and switching
   a session's account always dials the new provider.
+* **Structured reasoning is replayed verbatim.** Chat-completions routes that
+  carry reasoning as a `reasoning_details` array (the OpenRouter resellers,
+  Ollama Cloud, and other gateways — 14 catalog models) now capture it,
+  normalize it (adjacent text/summary entries merge, encrypted entries stay
+  discrete, unrecognised types drop, the payload is capped per turn), and send it
+  back exactly as produced, so multi-turn tool loops no longer lose the
+  signature a provider expects.
+* **Request bodies are compressed** on providers that can decompress them: a
+  `request_compression = "gzip"` (or `"zstd"`) provider scalar in the catalog
+  overlay, opt-in because the server has to decode it. Compression runs once per
+  request and is reused across retries, and a provider that answers `415` is
+  downgraded to identity in place and remembered for the rest of the process.
+* Model listing was restored for the opencode gateways, and transient
+  gateway `400`s that are really message-content complaints are retried
+  instead of failing the turn.
 
 ## Simplified keystore semantics
 
@@ -178,7 +267,59 @@ fails and never races or steals a live daemon's socket.
 * Unlock UX rework — /unlock uses the stored key; /unlock <key> records it; identity.pk.enc removed entirely
 * BindKeystore as the sole binding path — Unlock/AddCredential are verify-only, fresh keys only for bind; frontend auto-bind: clients bind fresh unbound daemons and confirm on Bound; documented binding model + ordering invariant; shared auto-bind state machine
 * Client access-control & trust model — Noise XX first-contact mode with a TCP wire handshake preamble, fingerprint rendering + known_servers.toml pin store, pinned-mode trust flow with fingerprint confirmation, hot-reloaded client ACL from authorized_clients.toml, /acl add enrollment from a local connection, choreographr acl-add and fingerprint subcommands, tightened fingerprint compare + pinned-mode failure UX; trust model documented in ARCHITECTURE.md
+* Credential adds now carry a **typed** credential (API key, X tokens, OAuth
+  grant) rather than a client-encrypted blob, so no key material rides the add
+  path; the daemon encrypts each credential to its own binding key before
+  storing it, and a locked daemon refuses the add instead of implicitly
+  unlocking.
 * TUI refuses to start unauthorized daemons and never crashes on connection errors
+
+## Sign in with OAuth
+
+API keys are no longer the only way in. Choreographr is now an **OAuth client**,
+for model providers and for MCP servers — one code path, one credential store.
+
+**Providers.** A provider whose catalog entry carries an OAuth profile (such as
+`chatgpt`, for a ChatGPT/Codex subscription) signs in with
+`/login <account>` — alias `/add-oauth` — which opens the provider's consent
+screen through a loopback callback. Pass `--device` for the headless
+device-code flow on a remote or SSH host. The durable grant (refresh token,
+client registration, identity claim) is encrypted at rest in the keystore; the
+short-lived access token lives in daemon memory only and is refreshed and
+rotated transparently — proactively before it expires, and force-once on a
+`401` — with a terminal rejection surfacing a re-login notice instead of a dead
+session. An account holds **one** credential, so signing in replaces an existing
+key (and vice versa).
+
+**MCP servers.** A remote server that needs an interactive sign-in declares an
+`oauth` block in `mcp.json` (all fields optional: `clientId`, `callbackPort`,
+`scopes`, `authorizationServer`, and `clientSecretEnv` — the *name* of an
+environment variable holding a confidential client's secret, never the secret
+itself), and `/mcp login <slug>` runs the PKCE sign-in:
+
+* **Discovery** starts from the authorization challenge: an unauthenticated
+  request's `WWW-Authenticate` header names the protected-resource metadata URL;
+  failing that, RFC 9728 metadata → RFC 8414 or OpenID Connect Discovery, or the
+  explicit `authorizationServer`. A client is registered dynamically when no
+  `clientId` is configured. There is a paste-URL fallback for headless hosts
+  (MCP's flow has no device-code mode).
+* **Confidential clients** are supported, with the secret sent to the token
+  endpoint as HTTP Basic — or `client_secret_post` when the server advertises
+  only that — and stored in the grant so a connect-time refresh can
+  re-authenticate. The authorization response's `iss` is validated against the
+  discovered issuer when the server advertises RFC 9207 support.
+* **Grants are keyed by target**, not slug (`mcp:<slug>|<target-hash>`), so a
+  same-named server on a different endpoint keeps its own credential. A stored
+  grant whose issuer or resource no longer matches the configured server is
+  treated as absent (fail-closed) and surfaces a re-login, and a project server's
+  sign-in is refused while that project root is untrusted.
+* **Sign-in finishes the job**: the daemon brings the server up as soon as the
+  grant is stored, so no `/mcp reconnect` is needed. A server that issues no
+  refresh token (e.g. GitHub's remote MCP behind an OAuth App) still works — its
+  long-lived access token is stored, so it survives a restart.
+
+`/mcp logout <slug>` removes the grant, and `/mcp` shows each server's auth state
+alongside its transport, tool count, and last error.
 
 ## Other
 
@@ -261,6 +402,22 @@ and the TUI's runaway trace-level file log is fixed.
   before asserting them — prioritising anything time-sensitive,
   location-specific, contested, or specialised — and to flag uncertainty rather
   than present an unverified claim as settled.
+* It also asks for **correctness over convenience**: prefer the correct solution
+  even when it is more work, treat simplicity as a goal rather than an excuse to
+  cut corners, and don't quietly simplify the problem to make it easy.
+* **Emphasis guidance** — bold the few words that carry the point (key names,
+  numbers, verdicts, warnings), at most one or two per paragraph, never inside
+  code or headings, and reach for a list or table instead when most of a
+  paragraph would be bold.
+* **Effort estimates in steps, not human-days** — wall-clock time is modelled in
+  tool calls, tokens, and build/test latency, with the genuinely slow parts
+  (builds, CI, rate limits) called out honestly.
+* Models are asked to **tag fenced code blocks with a language** (the renderer
+  styles them with it) and to describe the present in code comments rather than
+  narrating the change history.
+* The `random` tool description was expanded with the cases it is actually for —
+  picking among interchangeable options, A/B buckets, fixtures and placeholder
+  data, fuzz inputs — instead of leaving the model to invent constants.
 * The minimum supported Rust version is now **1.99** (building from source).
 
 ## MCP servers
@@ -289,6 +446,27 @@ local subprocess or remote — and its tools appear to the model like native one
   concurrency-capped per server. MCP support is built into the default release
   binaries; a server's tools live under an `mcp/<slug>` group you activate with
   `load_tools`.
+* **Resources, progress, and the MRTR loop** — a server that declares resources
+  has them exposed to the model as list/read wrapper tools, its progress
+  notifications stream into the TUI as live output, and the model's
+  `input_required` retry loop is driven for you instead of stalling a call.
+* **Trust is revocable at runtime.** `/mcp untrust` drops that project's live
+  connections immediately rather than waiting for a restart, and a project
+  server that changes its tool list propagates into every live session's
+  overlay. The daemon-tier `mcp.json` and `trust.toml` hot-reload through the
+  config watcher, and a `shared = false` daemon server keeps one connection per
+  session instead of one for the whole daemon.
+
+```text
+# in choreo-tui
+/mcp                           # every server, its transport, auth state, and tool count
+/mcp login shopify             # PKCE sign-in; the grant lands in the keystore
+/mcp logout shopify            # drop the grant
+
+# offline / from a shell
+choreographr mcp list          # configured servers
+choreographr mcp reload        # reconcile the config on a running daemon
+```
 
 ## Prompt-cache warming
 
@@ -302,14 +480,50 @@ a ping burns quota, so it is not free everywhere. Enable it with
 call is blocking. Anthropic prompt caching is also enabled, and cache-read and
 cache-write tokens are reported in the session detail.
 
-## Image generation: more providers, and a seed
+Three things make the warm cache more likely to be *your* cache:
+
+* **Per-session cache affinity.** Each request carries the conversation's real
+  session id in the affinity field its provider documents — OpenAI and Venice
+  take `prompt_cache_key`, OpenRouter prefers its own `session_id` — so a
+  session's turns route to a backend whose prefix cache is warm. It is always the
+  real session id, never a constant, which would pin every session to one routing
+  bucket. Override per account with `prompt_cache_affinity = true`.
+* **Extended retention, per model.** The request field that asks for a longer
+  cache differs by model generation (a top-level `prompt_cache_retention = "24h"`
+  on pre-GPT-5.6 OpenAI models, a nested `prompt_cache_options.ttl = "12h"` on the
+  Responses API for GPT-5.6+), so it is a per-model overlay scalar rather than a
+  provider setting — the spelling is never inferred from a model id, and it is
+  emitted only when the model also declares a long cache tier. Warming now
+  schedules against the **lifetime the request actually asked for** instead of
+  always assuming the minutes-long tier. The selector ships dormant — no bundled
+  model is seeded with it yet — so it is there for whoever needs it.
+* **Rejection memory.** A provider that answers a prompt-cache field with a `400`
+  has that field withheld for that provider and model from then on, rather than
+  re-sent on every later turn and failing that model until the daemon restarts —
+  and the detector looks at **every** cache field the body carried, since an
+  account-level affinity override can put two of them on the same request.
+
+Cache hits are now reported for **DeepSeek, the OpenAI Responses API, and
+Gemini** as well, alongside the Anthropic and chat-completions paths, and
+cache-write tokens are accumulated into the session's billing totals.
+
+## Images: more providers, editing, and crops
 
 `generate_image` gained a **fal.ai** adapter alongside OpenAI Images and
 z.ai / Zhipu GLM, plus a `seed` argument for reproducible fal generations.
+`edit_image` adds **xAI** and **Google Gemini** editing on top of OpenAI Images
+and fal.ai, with session references (`@last`) and a `mask` for inpainting.
 
 `read_image` gained a **`region`** argument (fractions of the image) that crops
 server-side before the bytes reach the model — a cheap way to zoom a vision
-model into part of a large figure.
+model into part of a large figure. The normalized image the model saw is now
+also what the client renders, so crops and EXIF-rotated frames display exactly
+as the model receives them.
+
+Also landed in the provider layer this cycle, though not yet exposed as a tool: a
+**fal.ai video-generation client** over its queue API (submit a job, poll it to
+completion, fetch the finished artifact) with a job-wide deadline and best-effort
+cancel.
 
 ## Reading across sessions
 
@@ -339,6 +553,33 @@ to re-pair.
 
 ## Security & robustness
 
+* **The local domain is owner-only.** The Unix socket — which carries no Noise
+  handshake, so anything that reaches it is fully trusted — is created `0600`
+  inside a directory only its owner can traverse. With no `--base-dir` and no
+  `$XDG_RUNTIME_DIR`, that directory is a per-uid
+  `temp_dir()/choreographr-<uid>`, so parallel users on a shared `/tmp` neither
+  collide nor share a parent. The `redb` store (plaintext transcripts and tool
+  output), `known_servers.toml` (the private unlock keys), and the log files are
+  owner-only too, and `known_servers.toml` is now opened `O_NOFOLLOW` and
+  owner-checked **before** it is parsed — a planted pin would otherwise steer
+  the next Noise IK handshake. A directory owned by someone else is refused
+  outright rather than warned about.
+* **Logs never contain payloads.** Prompts, model output, tool arguments and
+  results, and credentials are gone from every log and error path — replaced by
+  ids, kinds, lengths, and counts — and log files are pruned by age (one week)
+  rather than by count, so a quiet install keeps its history.
+* **Model output cannot rewrite your terminal.** Every displayed string is
+  filtered at its widget sink, and bidirectional-formatting controls are
+  stripped from the free-text fields the client writes back out (the OSC 2
+  window title and the OSC 7501 status record), so a hostile session title
+  cannot visually reorder or spoof them.
+* `git_push` no longer lets model input be parsed as git options — a remote or
+  branch beginning with `-` could inject `--upload-pack` and friends; everything
+  after a literal `--` is now positional.
+* OAuth endpoints pass one shared policy: userinfo endpoints are rejected, the
+  authorize URL is vetted, redirects are pinned and bounded, remote MCP
+  discovery refuses loopback targets, and secrets stay out of non-zeroizing
+  buffers.
 * Provider-CDN downloads no longer follow redirects past the SSRF guard.
 * The image decode path is bounded by **total pixels**, not just per-side
   dimensions, against decompression bombs.

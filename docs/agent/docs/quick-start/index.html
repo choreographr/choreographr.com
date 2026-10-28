@@ -49,7 +49,7 @@
   <link rel="preload" href="https://choreographr.com/fonts/jetbrains-mono.woff2" as="font" type="font/woff2" crossorigin>
 
   <link rel="icon" type="image/svg+xml" href="https://choreographr.com/favicon.svg">
-  <link rel="stylesheet" href="https://choreographr.com/css/main.css?h=522f5596923af2ef361c">
+  <link rel="stylesheet" href="https://choreographr.com/css/main.css?h=c8e54f75ecee9764056c">
 
   <!-- Firefox/Zen can paint a frame before this stylesheet has been
        applied if a layout flush happens while it loads (Bugzilla
@@ -398,7 +398,7 @@
     <li>
       <a href="https://choreographr.com/agent/docs/tools/image/"
          class="pl-5 text-night-300 hover:text-night-50">
-        Image generation
+        Image generation &amp; editing
       </a>
     </li>
     
@@ -501,7 +501,8 @@ lifetime and logs:</p>
 <span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">choreographr</span><span style="color: #A6E3A1;"> -v</span><span style="color: #9399B2;font-style: italic;">               # debug</span></span>
 <span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">choreographr</span><span style="color: #A6E3A1;"> -vv</span><span style="color: #9399B2;font-style: italic;">              # trace</span></span>
 <span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">choreographr</span><span style="color: #A6E3A1;"> -q</span><span style="color: #9399B2;font-style: italic;">               # warnings only</span></span></code></pre>
-<p><code>RUST_LOG</code> takes precedence over the CLI flags:</p>
+<p>CLI flags take precedence over <code>RUST_LOG</code> (use <code>RUST_LOG</code> for a finer
+per-target filter):</p>
 <pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;" ><code data-lang="shellscript"><span class="giallo-l"><span>RUST_LOG</span><span style="color: #94E2D5;">=</span><span style="color: #A6E3A1;">debug</span><span style="color: #89B4FA;font-style: italic;"> choreographr</span></span></code></pre><h2 id="2-attach-a-client">2. Attach a client
 <a class="zola-anchor" href="#2-attach-a-client" aria-label="Anchor link for: 2-attach-a-client">
   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
@@ -513,19 +514,31 @@ lifetime and logs:</p>
   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
 </a>
 </h2>
-<p>Accounts are managed right in the TUI — no config files needed.</p>
+<p>Accounts are managed right in the TUI — no config files needed. An empty session
+shows a <strong>welcome checklist</strong> that ticks itself off as you go:</p>
 <ol>
-<li>Press <code>Ctrl+A</code> to open the <strong>accounts</strong> page.</li>
-<li>Press <code>n</code> to start a new account.</li>
-<li>Select a provider and press <code>Enter</code>.</li>
-<li>Enter a custom name for the account and press <code>Enter</code>.</li>
-<li>Paste the API credential and press <code>Enter</code>.</li>
-<li>Press <code>Esc</code> (or <code>q</code>) to go back to the chat.</li>
-<li>Select the account with <code>/account &lt;name&gt;</code>.</li>
-<li>Press <code>Ctrl+M</code> (falls back to <code>Ctrl+O</code> on terminals without the kitty keyboard protocol) to select the model.</li>
-<li>Press <code>Ctrl+R</code> to select the reasoning effort.</li>
-<li>Send your first prompt!</li>
+<li>
+<p><strong>Add an account</strong> — press <code>Alt+A</code> to open the accounts page, then <code>n</code> to
+start the new-account wizard. Pick a provider (type to filter; the common ones
+are listed first), keep the suggested account name or type your own, and paste
+the API credential.</p>
+<p>A provider that signs in with OAuth instead of an API key (for example
+<code>chatgpt</code>) takes no key: create the account, then run <code>/login &lt;account&gt;</code> —
+add <code>--device</code> on a remote or SSH host.</p>
+</li>
+<li>
+<p><strong>Use it in this session</strong> — automatic when the session has no account yet:
+as soon as the daemon confirms the credential, the TUI selects the account for
+you. Otherwise select the account on the <code>Alt+A</code> page and press <code>Enter</code>, or run
+<code>/account &lt;name&gt;</code>.</p>
+</li>
+<li>
+<p><strong>Choose a model</strong> — the picker opens for you after step 2 (<code>Alt+M</code> opens it
+any time). The list fills in as soon as the daemon has the account's models.</p>
+</li>
 </ol>
+<p>Press <code>Alt+R</code> to pick a reasoning effort if the model supports it, then send your
+first prompt.</p>
 <p>That's it — you're chatting with your agent.</p>
 <h2 id="see-an-image-inline">See an image inline
 <a class="zola-anchor" href="#see-an-image-inline" aria-label="Anchor link for: see-an-image-inline">

@@ -49,7 +49,7 @@
   <link rel="preload" href="https://choreographr.com/fonts/jetbrains-mono.woff2" as="font" type="font/woff2" crossorigin>
 
   <link rel="icon" type="image/svg+xml" href="https://choreographr.com/favicon.svg">
-  <link rel="stylesheet" href="https://choreographr.com/css/main.css?h=522f5596923af2ef361c">
+  <link rel="stylesheet" href="https://choreographr.com/css/main.css?h=c8e54f75ecee9764056c">
 
   <!-- Firefox/Zen can paint a frame before this stylesheet has been
        applied if a layout flush happens while it loads (Bugzilla
@@ -313,7 +313,7 @@
             <p class="text-xs text-night-400">native clients</p>
           </div>
           <div>
-            <p class="text-2xl font-bold text-night-50 font-mono">75</p>
+            <p class="text-2xl font-bold text-night-50 font-mono">76</p>
             <p class="text-xs text-night-400">built-in tools</p>
           </div>
         </div>
@@ -361,7 +361,7 @@
         <div class="card-body">
           <div class="text-2xl text-brand-500">🧠</div>
           <h3 class="card-title text-night-50 text-lg">200+ model providers</h3>
-          <p class="text-sm text-night-300">OpenAI-compatible, Anthropic Messages and Google Gemini — OpenAI, Anthropic, Mistral, DeepSeek, xAI, Groq, Ollama, OpenRouter and many more.</p>
+          <p class="text-sm text-night-300">OpenAI-compatible, Anthropic Messages and Google Gemini — OpenAI, Anthropic, Mistral, DeepSeek, xAI, Groq, Ollama, OpenRouter and many more. Sign in with an API key or <span class="font-mono text-brand-300">OAuth</span>.</p>
         </div>
       </div>
 
@@ -391,6 +391,14 @@
 
       <div class="card bg-night-900 border border-night-700 hover:border-brand-500/40 transition-colors">
         <div class="card-body">
+          <div class="text-2xl text-brand-500">🔌</div>
+          <h3 class="card-title text-night-50 text-lg">MCP servers</h3>
+          <p class="text-sm text-night-300">An <span class="font-mono text-brand-300">MCP</span> (Model Context Protocol) client — plug in local or remote servers and their tools appear to the model like native ones, listed live, gated behind project trust, and signed in with OAuth where the server requires it.</p>
+        </div>
+      </div>
+
+      <div class="card bg-night-900 border border-night-700 hover:border-brand-500/40 transition-colors">
+        <div class="card-body">
           <div class="text-2xl text-brand-500">⛓️</div>
           <h3 class="card-title text-night-50 text-lg">Blockchain tools</h3>
           <p class="text-sm text-night-300">Read-only EVM and Substrate/Polkadot queries built in — balances, blocks, storage, contract calls, and ENS resolution — with no extra setup.</p>
@@ -408,8 +416,8 @@
       <div class="card bg-night-900 border border-night-700 hover:border-brand-500/40 transition-colors">
         <div class="card-body">
           <div class="text-2xl text-brand-500">🎨</div>
-          <h3 class="card-title text-night-50 text-lg">Image generation</h3>
-          <p class="text-sm text-night-300">The <span class="font-mono text-brand-300">generate_image</span> tool turns a prompt into an image (OpenAI Images or z.ai / Zhipu GLM), renders it inline, and feeds it back to the model through vision so it can refine its own work.</p>
+          <h3 class="card-title text-night-50 text-lg">Image generation & editing</h3>
+          <p class="text-sm text-night-300">The <span class="font-mono text-brand-300">generate_image</span> tool turns a prompt into an image (OpenAI Images, xAI, Google Gemini, z.ai / Zhipu GLM, or fal.ai) and <span class="font-mono text-brand-300">edit_image</span> changes one — including an image already in the session — with optional masks. Both render inline and feed back through vision so the model can refine its own work.</p>
         </div>
       </div>
 
@@ -438,20 +446,22 @@
     <div class="grid lg:grid-cols-2 gap-12 items-center">
       <div>
         <h2 class="text-3xl font-bold text-night-50 tracking-tight">
-          Generate images, <span class="text-brand-500">then reason about them</span>
+          Generate images, <span class="text-brand-500">edit them, then reason about them</span>
         </h2>
         <p class="mt-4 text-night-300 leading-relaxed">
-          The <span class="font-mono text-brand-300">generate_image</span> tool produces new images from a text prompt
-          through your provider, renders them inline in the terminal, and persists them — so the model can
-          <strong class="text-night-50">read its own output back</strong> and refine it.
+          The <span class="font-mono text-brand-300">generate_image</span> and <span class="font-mono text-brand-300">edit_image</span>
+          tools produce and modify images through your provider, render them inline in the terminal, and persist them — so
+          the model can <strong class="text-night-50">read its own output back</strong> and refine it. Edit the image the
+          model just made by referring to it as <span class="font-mono text-brand-300">@last</span>; no files to manage.
         </p>
         <ul class="mt-6 space-y-3 text-sm text-night-200">
-          <li class="flex gap-3"><span class="text-brand-500 font-mono">▸</span> Text-to-image via OpenAI Images or z.ai / Zhipu GLM</li>
+          <li class="flex gap-3"><span class="text-brand-500 font-mono">▸</span> Text-to-image and image-to-image via OpenAI Images, xAI, Google Gemini, z.ai / Zhipu GLM, or fal.ai</li>
+          <li class="flex gap-3"><span class="text-brand-500 font-mono">▸</span> Session image references and transparent-region masks for inpainting</li>
           <li class="flex gap-3"><span class="text-brand-500 font-mono">▸</span> Inline display, durable persistence, and a vision-feedback loop</li>
           <li class="flex gap-3"><span class="text-brand-500 font-mono">▸</span> Size, quality, format, and background controls</li>
         </ul>
         <div class="mt-8 flex flex-wrap gap-3">
-          <a href="https://choreographr.com/agent/docs/tools/image" class="btn btn-outline border-night-500 text-night-100 hover:border-brand-500 hover:text-brand-400">How image generation works</a>
+          <a href="https://choreographr.com/agent/docs/tools/image" class="btn btn-outline border-night-500 text-night-100 hover:border-brand-500 hover:text-brand-400">How image generation &amp; editing works</a>
         </div>
         <p class="mt-6 text-sm text-night-400">
           Rendered in the same chat history as everything else — no separate viewer.
@@ -470,6 +480,9 @@
 <span class="text-success">✓</span> generate_image · 1536×1024 · png
 <span class="text-night-400">  [rendered inline above]</span>
 
+<span class="text-brand-400">you</span><span class="text-night-400">&gt;</span> make the sky a sunset
+
+<span class="text-success">✓</span> edit_image · @last → 1536×1024 · png
 <span class="text-success">✓</span> read_image · analyzing the result…</pre>
       </div>
     </div>

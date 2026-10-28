@@ -15,6 +15,14 @@ strip_fm() {
        !skip && !/^\+\+\+/' "$1"
 }
 
+# True when the file's front matter sets `draft = true`. Drafts are not
+# published, so they must not appear here either — this file is served.
+is_draft() {
+  awk '/^\+\+\+$/{c++; if (c==2) exit}
+       c==1 && /^draft[[:space:]]*=[[:space:]]*true/{found=1}
+       END{exit found?0:1}' "$1"
+}
+
 # Extract `title = "..."` from the front matter.
 title_of() {
   awk '/^\+\+\+/{c++; next}
@@ -70,6 +78,7 @@ EOF
   echo
   for f in content/blog/*.md; do
     case "$f" in *_index.md) continue ;; esac
+    is_draft "$f" && continue
     echo "## $(title_of "$f")"
     echo
     strip_fm "$f"

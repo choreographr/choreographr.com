@@ -18,18 +18,21 @@ streaming are O(1), so history stays smooth even on very long sessions.
 - **Markdown** — headings, lists, code blocks, tables, links, blockquotes,
   emphasis, inline code, and LaTeX math rendered as pretty Unicode, all wrapped
   to the terminal width. Fenced code blocks render as **bordered code panels**
-  with the language tag, block quotes get a bar gutter and italic text, and
-  tables use rounded nushell-style frames.
+  with the language tag, block quotes get a bar gutter and italic text, tables
+  use rounded nushell-style frames, and ordered lists keep the **source
+  numbers** from the document (right-aligned) instead of renumbering from one.
 - **Syntax highlighting** — code is highlighted with the
   `base16-eighties.dark` syntect theme.
 - **Images** — when the agent calls `display_image` (PNG, JPEG, or SVG) — or
-  generates one with `generate_image` — the image appears **inline in the chat
-  history** at half the viewport height. Click an image to open it fullscreen;
-  press `Esc` to dismiss.
+  generates or edits one with `generate_image` / `edit_image` — the image
+  appears **inline in the chat history** at half the viewport height. Click an
+  image to open it fullscreen; press `Esc` to dismiss.
 - **Status bar** — the attached session's account slug, model, reasoning effort,
-  and live token estimates. A session that is not idle is marked, and the client
-  refuses to submit a new prompt until it is idle again (rejected text stays in
-  the input bar).
+  live token estimates, and the **phase** the request is in: `sending` (request
+  dispatched) → `waiting` (the provider accepted it, awaiting the first token)
+  → `reasoning` → `responding`. A session that is not idle is marked, and the
+  client refuses to submit a new prompt until it is idle again (rejected text
+  stays in the input bar).
 - **Tool results** — streaming execution descriptions and collapsible
   per-result bodies; bulky, machine-oriented results (`list_sessions`, the
   shell/exec family, `grep`, `retrieve_webpage`, `spawn_subsession`) start
@@ -42,6 +45,8 @@ streaming are O(1), so history stays smooth even on very long sessions.
   switching sessions and returning preserves what you were typing
   (`Ctrl+Backspace` clears the draft); the history pane also reopens at the
   scroll position you left.
+- **Live streaming** — a streaming response stays **pinned to the top of the
+  viewport** while it grows, so its first line never scrolls out of view.
 
 ## Image rendering
 
@@ -57,6 +62,26 @@ The terminal protocol is auto-detected at startup and falls back gracefully:
 | Kitty graphics | kitty, foot, wezterm, ghostty, and other kitty-graphics terminals |
 | Sixel | terminals with sixel support (e.g. xterm-sixel, mlterm) |
 | Universal fallback | any other terminal |
+
+## Terminal integration
+
+`choreo-tui` tells the terminal what it is doing, over escape sequences the
+emulator already understands:
+
+- **Window title** (OSC 2) — `choreo-tui` at startup, then
+  `choreo-tui — <session title>` once a session is attached. Emitted only on
+  change, cleared on job-control suspend and at exit.
+- **Program status** (OSC 7501) — each session reports idle/working from its
+  live status, plus a `done` / `error` outcome that survives the prompt which
+  follows it, so a background agent that just finished keeps its record after
+  dropping back to idle. Every report is a per-session **child** record, so a
+  terminal that maps a progress bar onto the status *root* record cannot wipe a
+  real report.
+
+Both fields are stripped of control characters and bidirectional-formatting
+overrides and capped to the protocol's limits, so an LLM-derived session title
+cannot spoof or reorder them. Selection copy uses **OSC 52**, which is why it
+works over SSH and tmux and is a silent no-op in terminals that lack it.
 
 ## Input & keybindings
 

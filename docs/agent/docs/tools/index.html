@@ -49,7 +49,7 @@
   <link rel="preload" href="https://choreographr.com/fonts/jetbrains-mono.woff2" as="font" type="font/woff2" crossorigin>
 
   <link rel="icon" type="image/svg+xml" href="https://choreographr.com/favicon.svg">
-  <link rel="stylesheet" href="https://choreographr.com/css/main.css?h=522f5596923af2ef361c">
+  <link rel="stylesheet" href="https://choreographr.com/css/main.css?h=c8e54f75ecee9764056c">
 
   <!-- Firefox/Zen can paint a frame before this stylesheet has been
        applied if a layout flush happens while it loads (Bugzilla
@@ -382,7 +382,7 @@
     <li>
       <a href="https://choreographr.com/agent/docs/tools/image/"
          class="pl-5 text-night-300 hover:text-night-50">
-        Image generation
+        Image generation &amp; editing
       </a>
     </li>
     
@@ -467,8 +467,8 @@
       <p>Tools are the functions the LLM — and the RISC-V VM — can call to interact
 with the outside world: reading and writing files, running shell commands,
 making HTTP requests, managing Git repositories, querying a persistent
-database, reading images into a vision model, browsing the web, generating
-images, posting to X, and more. This section
+database, reading images into a vision model, browsing the web, generating and
+editing images, posting to X, and more. This section
 is the complete reference: how tools work, how they are grouped, and what each
 one does.</p>
 <ul>
@@ -482,7 +482,8 @@ push, show.</li>
 <li><strong><a href="https://choreographr.com/agent/docs/tools/x/">X (Twitter) tools</a></strong> — post, search, user lookup.</li>
 <li><strong><a href="https://choreographr.com/agent/docs/tools/blockchain/">Blockchain tools</a></strong> — EVM and
 Substrate/Polkadot read-only queries.</li>
-<li><strong><a href="https://choreographr.com/agent/docs/tools/image/">Image tools</a></strong> — <code>generate_image</code> (text-to-image).</li>
+<li><strong><a href="https://choreographr.com/agent/docs/tools/image/">Image tools</a></strong> — <code>generate_image</code>
+(text-to-image) and <code>edit_image</code> (image-to-image).</li>
 <li><strong><a href="https://choreographr.com/agent/docs/tools/diagnostics/">Diagnostic tools</a></strong> — <code>session_inspect</code>.</li>
 <li><strong><a href="https://choreographr.com/agent/docs/tools/riscv/">RISC-V VM tool</a></strong> — <code>run_riscv</code>.</li>
 </ul>
@@ -533,22 +534,78 @@ always has access to all tools.</p>
 <tr><td><code>core</code></td><td>Filesystem, HTTP, images, display, PDF, web page rendering, vision (read_image), search, random, time, sessions, series</td><td>✅ always</td></tr>
 <tr><td><code>git</code></td><td>Local Git operations (status, diff, log, add, commit, push, show)</td><td>✅</td></tr>
 <tr><td><code>shell</code></td><td>Shell execution (bash, nushell, fish, exec)</td><td>✅</td></tr>
-<tr><td><code>image</code></td><td>Image generation (<code>generate_image</code>)</td><td>—</td></tr>
+<tr><td><code>image</code></td><td>Image generation and editing (<code>generate_image</code>, <code>edit_image</code>)</td><td>—</td></tr>
 <tr><td><code>db</code></td><td>Session-scoped key-value database (redb)</td><td>—</td></tr>
 <tr><td><code>x</code></td><td>X/Twitter API (post, search, user lookup)</td><td>—</td></tr>
 <tr><td><code>vm</code></td><td>RISC-V sandboxed code execution</td><td>—</td></tr>
 <tr><td><code>debug</code></td><td>Read-only diagnostics and request dry-runs (<code>session_inspect</code>)</td><td>—</td></tr>
+<tr><td><code>mcp/&lt;slug&gt;</code></td><td>Tools exposed by a configured MCP server (one group per server)</td><td>—</td></tr>
 <tr><td><code>blockchain</code></td><td>EVM and Substrate/Polkadot blockchain queries (alloy/subxt)</td><td>—</td></tr>
 </tbody></table>
 <blockquote>
-<p>The <code>image</code> group holds <code>generate_image</code> — it needs an account whose
-provider supports image generation (see
+<p>The <code>image</code> group holds <code>generate_image</code> and <code>edit_image</code> — both need an
+account whose provider supports image generation (see
 <a href="https://choreographr.com/agent/docs/accounts-and-providers/">Accounts &amp; providers</a>). The
+<code>mcp</code> groups are named per server (<code>mcp/&lt;slug&gt;</code>) and are loaded like any
+other group. The
 <code>blockchain</code> group exists only when the daemon is built with the
 <code>blockchain</code> cargo feature (the release binaries enable it). The tools live
 in the <code>choreo-blockchain</code> crate, which also owns the tokio sidecar runtime
 the alloy/subxt clients run on.</p>
 </blockquote>
+<h2 id="mcp-servers">MCP servers
+<a class="zola-anchor" href="#mcp-servers" aria-label="Anchor link for: mcp-servers">
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+</a>
+</h2>
+<p>Choreographr is an <strong>MCP (Model Context Protocol) client</strong>, built on the
+official <a rel="noopener external" target="_blank" href="https://crates.io/crates/rmcp"><code>rmcp</code></a> SDK. Each server's tools are
+exposed under an <code>mcp/&lt;slug&gt;</code> group — activate one with <code>load_tools</code> (MCP
+support is compiled into the default release binaries).</p>
+<p>Servers are configured in two tiers:</p>
+<ul>
+<li><strong>Daemon tier</strong> — <code>mcp.json</code> in the config directory, visible to every session.</li>
+<li><strong>Project tier</strong> — a <code>.mcp.json</code> at the project root (found by walking up from
+a session's working directory). Its servers are <strong>gated behind trust</strong>: they are
+read but never spawned until you run <code>/mcp trust</code>.</li>
+</ul>
+<p>Each entry is a named server under <code>mcpServers</code>. A stdio server sets <code>command</code>
+(plus optional <code>args</code>/<code>env</code>/<code>cwd</code>); a remote server sets <code>url</code> (plus optional
+<code>headers</code>), using the <strong>Streamable HTTP</strong> transport:</p>
+<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;" ><code data-lang="json"><span class="giallo-l"><span style="color: #9399B2;">{</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">  &quot;</span><span style="color: #89B4FA;">mcpServers</span><span style="color: #9399B2;">&quot;: {</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">    &quot;</span><span style="color: #89B4FA;">docs</span><span style="color: #9399B2;">&quot;: { &quot;</span><span style="color: #89B4FA;">command</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;npx&quot;</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">args</span><span style="color: #9399B2;">&quot;: [</span><span style="color: #A6E3A1;">&quot;-y&quot;</span><span style="color: #9399B2;">,</span><span style="color: #A6E3A1;"> &quot;@modelcontextprotocol/server-docs&quot;</span><span style="color: #9399B2;">] },</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">    &quot;</span><span style="color: #89B4FA;">remote</span><span style="color: #9399B2;">&quot;: { &quot;</span><span style="color: #89B4FA;">url</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;https://example.com/mcp&quot;</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">headers</span><span style="color: #9399B2;">&quot;: { &quot;</span><span style="color: #89B4FA;">Authorization</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;Bearer ${TOKEN}&quot;</span><span style="color: #9399B2;"> } }</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">  }</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">}</span></span></code></pre>
+<p>Manage them with the <code>choreographr mcp</code> CLI (<code>list</code>, <code>add</code>, <code>remove</code>,
+<code>reconnect</code>, <code>reload</code>) or the in-TUI <code>/mcp</code> commands (see
+<a href="https://choreographr.com/agent/docs/slash-commands/#mcp-servers">Slash commands</a>). A server that
+changes its tool list refreshes the daemon's catalogue live, with no restart.
+Activate a server's tools with <code>load_tools ["mcp/&lt;slug&gt;"]</code>.</p>
+<p>A server that needs credentials takes a static token in <code>headers</code>, or an
+interactive OAuth sign-in. Declare the latter with an <code>oauth</code> block — all fields
+optional:</p>
+<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;" ><code data-lang="json"><span class="giallo-l"><span style="color: #9399B2;">{</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">  &quot;</span><span style="color: #89B4FA;">mcpServers</span><span style="color: #9399B2;">&quot;: {</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">    &quot;</span><span style="color: #89B4FA;">shopify</span><span style="color: #9399B2;">&quot;: {</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">      &quot;</span><span style="color: #89B4FA;">url</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;https://example.com/mcp&quot;</span><span style="color: #9399B2;">,</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">      &quot;</span><span style="color: #89B4FA;">oauth</span><span style="color: #9399B2;">&quot;: {</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">        &quot;</span><span style="color: #89B4FA;">clientId</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;&lt;app-client-id&gt;&quot;</span><span style="color: #9399B2;">,</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">        &quot;</span><span style="color: #89B4FA;">authorizationServer</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;https://auth.example.com&quot;</span><span style="color: #9399B2;">,</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">        &quot;</span><span style="color: #89B4FA;">clientSecretEnv</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;SHOPIFY_MCP_SECRET&quot;</span><span style="color: #9399B2;">,</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">        &quot;</span><span style="color: #89B4FA;">scopes</span><span style="color: #9399B2;">&quot;: [</span><span style="color: #A6E3A1;">&quot;mcp.read&quot;</span><span style="color: #9399B2;">]</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">      }</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">    }</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">  }</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">}</span></span></code></pre>
+<p><code>clientSecretEnv</code> names an <strong>environment variable</strong> holding a confidential
+client's secret — never the secret itself, which must not sit in a
+repo-controlled file. <code>authorizationServer</code> names the issuer when the resource's
+well-known paths do not carry it. Then run <code>/mcp login &lt;slug&gt;</code>, and <code>/mcp logout &lt;slug&gt;</code> to drop the grant; <code>/mcp</code> shows each server's auth state. A project
+server's <code>oauth</code> block is repo-controlled, so signing in for it is refused while
+that project root is untrusted, and a stored grant whose issuer or resource no
+longer matches is treated as absent.</p>
 <p>Activate a group from the model side:</p>
 <pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;" ><code data-lang="json"><span class="giallo-l"><span style="color: #9399B2;">{ &quot;</span><span style="color: #89B4FA;">name</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;load_tools&quot;</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">arguments</span><span style="color: #9399B2;">&quot;: { &quot;</span><span style="color: #89B4FA;">groups</span><span style="color: #9399B2;">&quot;: [</span><span style="color: #A6E3A1;">&quot;db&quot;</span><span style="color: #9399B2;">,</span><span style="color: #A6E3A1;"> &quot;x&quot;</span><span style="color: #9399B2;">] } }</span></span></code></pre>
 <p>and deactivate it with <code>unload_tools</code>. Groups can also be passed to
@@ -588,7 +645,7 @@ the encrypted keystore — never from prompt context.</li>
         
         <li><a href="https://choreographr.com/agent/docs/tools/blockchain/">Blockchain tools</a></li>
         
-        <li><a href="https://choreographr.com/agent/docs/tools/image/">Image generation</a></li>
+        <li><a href="https://choreographr.com/agent/docs/tools/image/">Image generation &amp; editing</a></li>
         
         <li><a href="https://choreographr.com/agent/docs/tools/diagnostics/">Diagnostic tools</a></li>
         

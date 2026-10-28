@@ -2,7 +2,7 @@
 
 > An all-purpose, extensible AI agent written in Rust. A persistent daemon owns
 > your sessions; clients for terminal, desktop, Telegram and ACP editors come
-> and go. LLM-generated code runs in a sandboxed RISC-V VM, and 70+ model
+> and go. LLM-generated code runs in a sandboxed RISC-V VM, and 200+ model
 > providers work out of the box. Open source, Apache-2.0.
 
 ## What is Choreographr?
@@ -15,7 +15,7 @@ compiled to RISC-V and executed in an isolated `ckb-vm` sandbox: no host
 memory, no raw syscalls, no unlogged shell. Credentials are encrypted
 per-credential (X25519 ECDH + AES-256-GCM) and the daemon starts locked.
 Sessions, hierarchical subsessions and a persistent `redb` database come with
-per-session undo/redo. 70+ model providers are supported across
+per-session undo/redo. 200+ model providers are supported across
 OpenAI-compatible, Anthropic Messages and Google Gemini wire protocols,
 including OpenAI, Anthropic, Mistral, DeepSeek, xAI, Groq, Ollama and
 OpenRouter. Native EVM and Substrate/Polkadot blockchain tools are built in.
@@ -24,10 +24,11 @@ OpenRouter. Native EVM and Substrate/Polkadot blockchain tools are built in.
 
 - Daemon + multi-client architecture (terminal, desktop, Telegram, ACP editors)
 - Sandboxed RISC-V VM for LLM-generated code (a complete shell replacement)
-- 70+ model providers out of the box
+- 200+ model providers out of the box, with API keys or OAuth sign-in
 - Hierarchical subsessions with per-session undo/redo
 - Encrypted credential keystore (X25519 ECDH + HKDF + AES-256-GCM)
-- MCP client (Model Context Protocol)
+- MCP client (Model Context Protocol), including remote servers behind OAuth
+- Image generation and editing (OpenAI Images, xAI, Google Gemini, z.ai, fal.ai)
 - Native EVM + Polkadot/Substrate blockchain tools
 - Persistent session-scoped database (redb)
 - Written in Rust; Apache-2.0; runs locally or in the cloud
@@ -59,6 +60,6 @@ and AI training pages) is available as Markdown at
 ## Notes
 
 - License: Apache-2.0
-- Minimum supported Rust version: 1.91
-- Current release: v0.1.0 (early preview)
+- Minimum supported Rust version: 1.99
+- Current release: v0.2.4 (early preview)
 - Community: [GitHub](https://github.com/choreographr/choreographr), [Telegram](https://t.me/choreographr)

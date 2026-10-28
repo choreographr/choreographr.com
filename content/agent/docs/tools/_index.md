@@ -8,8 +8,8 @@ sort_by = "weight"
 Tools are the functions the LLM — and the RISC-V VM — can call to interact
 with the outside world: reading and writing files, running shell commands,
 making HTTP requests, managing Git repositories, querying a persistent
-database, reading images into a vision model, browsing the web, generating
-images, posting to X, and more. This section
+database, reading images into a vision model, browsing the web, generating and
+editing images, posting to X, and more. This section
 is the complete reference: how tools work, how they are grouped, and what each
 one does.
 
@@ -23,7 +23,8 @@ one does.
 - **[X (Twitter) tools](@/agent/docs/tools/x.md)** — post, search, user lookup.
 - **[Blockchain tools](@/agent/docs/tools/blockchain.md)** — EVM and
   Substrate/Polkadot read-only queries.
-- **[Image tools](@/agent/docs/tools/image.md)** — `generate_image` (text-to-image).
+- **[Image tools](@/agent/docs/tools/image.md)** — `generate_image`
+  (text-to-image) and `edit_image` (image-to-image).
 - **[Diagnostic tools](@/agent/docs/tools/diagnostics.md)** — `session_inspect`.
 - **[RISC-V VM tool](@/agent/docs/tools/riscv.md)** — `run_riscv`.
 
@@ -67,7 +68,7 @@ model can activate additional groups with `load_tools` and deactivate them with
 | `core` | Filesystem, HTTP, images, display, PDF, web page rendering, vision (read_image), search, random, time, sessions, series | ✅ always |
 | `git` | Local Git operations (status, diff, log, add, commit, push, show) | ✅ |
 | `shell` | Shell execution (bash, nushell, fish, exec) | ✅ |
-| `image` | Image generation (`generate_image`) | — |
+| `image` | Image generation and editing (`generate_image`, `edit_image`) | — |
 | `db` | Session-scoped key-value database (redb) | — |
 | `x` | X/Twitter API (post, search, user lookup) | — |
 | `vm` | RISC-V sandboxed code execution | — |
@@ -75,8 +76,8 @@ model can activate additional groups with `load_tools` and deactivate them with
 | `mcp/<slug>` | Tools exposed by a configured MCP server (one group per server) | — |
 | `blockchain` | EVM and Substrate/Polkadot blockchain queries (alloy/subxt) | — |
 
-> The `image` group holds `generate_image` — it needs an account whose
-> provider supports image generation (see
+> The `image` group holds `generate_image` and `edit_image` — both need an
+> account whose provider supports image generation (see
 > [Accounts & providers](@/agent/docs/accounts-and-providers.md)). The
 > `mcp` groups are named per server (`mcp/<slug>`) and are loaded like any
 > other group. The
@@ -117,6 +118,35 @@ Manage them with the `choreographr mcp` CLI (`list`, `add`, `remove`,
 [Slash commands](@/agent/docs/slash-commands.md#mcp-servers)). A server that
 changes its tool list refreshes the daemon's catalogue live, with no restart.
 Activate a server's tools with `load_tools ["mcp/<slug>"]`.
+
+A server that needs credentials takes a static token in `headers`, or an
+interactive OAuth sign-in. Declare the latter with an `oauth` block — all fields
+optional:
+
+```json
+{
+  "mcpServers": {
+    "shopify": {
+      "url": "https://example.com/mcp",
+      "oauth": {
+        "clientId": "<app-client-id>",
+        "authorizationServer": "https://auth.example.com",
+        "clientSecretEnv": "SHOPIFY_MCP_SECRET",
+        "scopes": ["mcp.read"]
+      }
+    }
+  }
+}
+```
+
+`clientSecretEnv` names an **environment variable** holding a confidential
+client's secret — never the secret itself, which must not sit in a
+repo-controlled file. `authorizationServer` names the issuer when the resource's
+well-known paths do not carry it. Then run `/mcp login <slug>`, and `/mcp logout
+<slug>` to drop the grant; `/mcp` shows each server's auth state. A project
+server's `oauth` block is repo-controlled, so signing in for it is refused while
+that project root is untrusted, and a stored grant whose issuer or resource no
+longer matches is treated as absent.
 
 Activate a group from the model side:
 

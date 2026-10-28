@@ -9,8 +9,8 @@
        unlike Chromium which defers first paint until the inline CSS exists. -->
   <meta name="color-scheme" content="dark">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Image generation — Choreographr</title>
-  <meta name="description" content="generate_image: text-to-image through the session&#39;s image-capable provider.">
+  <title>Image generation &amp; editing — Choreographr</title>
+  <meta name="description" content="generate_image and edit_image: text-to-image and image-to-image through the session&#39;s image-capable provider.">
   <meta name="theme-color" content="#06080b">
 
   
@@ -23,8 +23,8 @@
        per template so they always match the <title> and meta description. -->
   <meta property="og:site_name" content="Choreographr">
   <meta property="og:type" content="website">
-  <meta property="og:title" content="Image generation — Choreographr">
-  <meta property="og:description" content="generate_image: text-to-image through the session&#39;s image-capable provider.">
+  <meta property="og:title" content="Image generation &amp; editing — Choreographr">
+  <meta property="og:description" content="generate_image and edit_image: text-to-image and image-to-image through the session&#39;s image-capable provider.">
   <meta property="og:url" content="https://choreographr.com/agent/docs/tools/image/">
   
   <meta property="og:image" content="https://choreographr.com/og-image.png">
@@ -49,7 +49,7 @@
   <link rel="preload" href="https://choreographr.com/fonts/jetbrains-mono.woff2" as="font" type="font/woff2" crossorigin>
 
   <link rel="icon" type="image/svg+xml" href="https://choreographr.com/favicon.svg">
-  <link rel="stylesheet" href="https://choreographr.com/css/main.css?h=522f5596923af2ef361c">
+  <link rel="stylesheet" href="https://choreographr.com/css/main.css?h=c8e54f75ecee9764056c">
 
   <!-- Firefox/Zen can paint a frame before this stylesheet has been
        applied if a layout flush happens while it loads (Bugzilla
@@ -75,7 +75,7 @@
   "itemListElement": [
     { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://choreographr.com/" },
     { "@type": "ListItem", "position": 2, "name": "Agent docs", "item": "https://choreographr.com/agent/docs/" },
-    { "@type": "ListItem", "position": 3, "name": "Image generation" }
+    { "@type": "ListItem", "position": 3, "name": "Image generation & editing" }
   ]
 }
 </script>
@@ -407,7 +407,7 @@
     <li>
       <a href="https://choreographr.com/agent/docs/tools/image/"
          class="pl-5 text-brand-400 font-semibold">
-        Image generation
+        Image generation &amp; editing
       </a>
     </li>
     
@@ -489,18 +489,19 @@
       </div>
     </aside>
     <article class="prose min-w-0 flex-1 max-w-3xl">
-      <h1>Image generation</h1>
+      <h1>Image generation &amp; editing</h1>
       <div class="text-sm text-night-400 font-mono mb-6">
         /agent/docs/tools/image/
       </div>
-      <p>The <code>image</code> group contains <code>generate_image</code>, which produces a new image from a
-text prompt using the session's image-capable provider. It is not active by
-default — activate it with <code>load_tools image</code>.</p>
+      <p>The <code>image</code> group holds two tools: <code>generate_image</code> produces a new image from a
+text prompt, and <code>edit_image</code> modifies one or more existing images from a text
+prompt. Neither is active by default — activate both with <code>load_tools image</code>.</p>
 <table><thead><tr><th>Tool</th><th>What it does</th></tr></thead><tbody>
 <tr><td><code>generate_image</code></td><td>Generate an image from a text prompt; the result is displayed inline in the client exactly like <code>display_image</code></td></tr>
+<tr><td><code>edit_image</code></td><td>Edit one or more images from a text prompt (image-to-image), optionally masked</td></tr>
 </tbody></table>
-<h2 id="arguments">Arguments
-<a class="zola-anchor" href="#arguments" aria-label="Anchor link for: arguments">
+<h2 id="generate-image-arguments"><code>generate_image</code> arguments
+<a class="zola-anchor" href="#generate-image-arguments" aria-label="Anchor link for: generate-image-arguments">
   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
 </a>
 </h2>
@@ -512,37 +513,77 @@ default — activate it with <code>load_tools image</code>.</p>
 <tr><td><code>output_format</code></td><td>Encoded format of the returned image: <code>png</code>, <code>jpeg</code>, or <code>webp</code></td></tr>
 <tr><td><code>background</code></td><td><code>auto</code>, <code>opaque</code>, or <code>transparent</code> (transparent requires png/webp)</td></tr>
 <tr><td><code>alt</code></td><td>Alt text for the displayed image</td></tr>
+<tr><td><code>seed</code></td><td>Optional seed for reproducible generation (fal.ai only)</td></tr>
 </tbody></table>
-<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;" ><code data-lang="json"><span class="giallo-l"><span style="color: #9399B2;">{ &quot;</span><span style="color: #89B4FA;">name</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;generate_image&quot;</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">arguments</span><span style="color: #9399B2;">&quot;: { &quot;</span><span style="color: #89B4FA;">prompt</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;a lighthouse at dusk, 35mm film grain&quot;</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">size</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;1024x1024&quot;</span><span style="color: #9399B2;"> } }</span></span></code></pre><h2 id="providers-model-selection">Providers &amp; model selection
+<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;" ><code data-lang="json"><span class="giallo-l"><span style="color: #9399B2;">{</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">  &quot;</span><span style="color: #89B4FA;">name</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;generate_image&quot;</span><span style="color: #9399B2;">,</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">  &quot;</span><span style="color: #89B4FA;">arguments</span><span style="color: #9399B2;">&quot;: {</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">    &quot;</span><span style="color: #89B4FA;">prompt</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;a lighthouse at dusk, 35mm film grain&quot;</span><span style="color: #9399B2;">,</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">    &quot;</span><span style="color: #89B4FA;">size</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;1024x1024&quot;</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">  }</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">}</span></span></code></pre><h2 id="edit-image"><code>edit_image</code>
+<a class="zola-anchor" href="#edit-image" aria-label="Anchor link for: edit-image">
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+</a>
+</h2>
+<p><code>edit_image</code> takes the same prompt-and-model shape as <code>generate_image</code>, plus the
+images to work on. Each input is either a local file path or a <strong>session
+reference</strong> to an image already in the conversation:</p>
+<table><thead><tr><th>Reference</th><th>Meaning</th></tr></thead><tbody>
+<tr><td><code>@last</code></td><td>The most recent image in the session — one you just shared, or one <code>generate_image</code> / <code>edit_image</code> produced</td></tr>
+<tr><td><code>@display:&lt;turn&gt;:&lt;index&gt;</code></td><td>A specific displayed image, by turn and index within it</td></tr>
+<tr><td><code>@result:&lt;turn&gt;:&lt;call_id&gt;</code></td><td>A specific tool result's image, by turn and tool-call id</td></tr>
+</tbody></table>
+<table><thead><tr><th>Argument</th><th>Meaning</th></tr></thead><tbody>
+<tr><td><code>prompt</code></td><td>What to change (required). Describe the edit, not the whole image</td></tr>
+<tr><td><code>images</code></td><td>One or more inputs: local paths or the session references above (required, at least one)</td></tr>
+<tr><td><code>mask</code></td><td>Optional PNG path whose <strong>transparent</strong> region is the area regenerated; the opaque region is preserved (only on models that can inpaint)</td></tr>
+<tr><td><code>model</code></td><td>Explicit edit-capable model id. Optional — when omitted, the provider's catalog edit models are picked by priority</td></tr>
+<tr><td><code>size</code>, <code>quality</code>, <code>output_format</code>, <code>background</code>, <code>alt</code></td><td>The same output knobs as <code>generate_image</code></td></tr>
+</tbody></table>
+<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;" ><code data-lang="json"><span class="giallo-l"><span style="color: #9399B2;">{ &quot;</span><span style="color: #89B4FA;">name</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;edit_image&quot;</span><span style="color: #9399B2;">, &quot;</span><span style="color: #89B4FA;">arguments</span><span style="color: #9399B2;">&quot;: {</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">    &quot;</span><span style="color: #89B4FA;">prompt</span><span style="color: #9399B2;">&quot;:</span><span style="color: #A6E3A1;"> &quot;replace the sky with a sunset&quot;</span><span style="color: #9399B2;">,</span></span>
+<span class="giallo-l"><span style="color: #9399B2;">    &quot;</span><span style="color: #89B4FA;">images</span><span style="color: #9399B2;">&quot;: [</span><span style="color: #A6E3A1;">&quot;@last&quot;</span><span style="color: #9399B2;">] } }</span></span></code></pre>
+<p>Because <code>@last</code> resolves against the session, a refinement loop needs no file
+management at all: generate, look at the result, then edit it in place.</p>
+<h2 id="providers-model-selection">Providers &amp; model selection
 <a class="zola-anchor" href="#providers-model-selection" aria-label="Anchor link for: providers-model-selection">
   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
 </a>
 </h2>
-<p>Generation runs against the session's account. Two adapters are supported:</p>
+<p>Both tools run against the session's account.</p>
 <ul>
-<li><strong>OpenAI Images</strong> — OpenAI-compatible endpoints (<code>gpt-image-*</code>).</li>
-<li><strong>z.ai / Zhipu GLM</strong> — <code>glm-image</code>.</li>
+<li><strong><code>generate_image</code></strong> — OpenAI Images (<code>gpt-image-*</code>), z.ai / Zhipu GLM
+(<code>glm-image</code>), and fal.ai (flux and other hosted models, accepting <code>seed</code>).</li>
+<li><strong><code>edit_image</code></strong> — OpenAI Images, xAI (<code>grok-imagine</code>: OpenAI-protocol
+generation, but a JSON body on <code>/images/edits</code> for editing), Google Gemini
+(generation and editing through <code>generateContent</code>, inputs sent as <code>inlineData</code>
+parts), and fal.ai. z.ai / Zhipu is generation-only, and Anthropic has no
+image backend.</li>
 </ul>
 <p>Model selection is catalog-driven: an explicit <code>model</code> argument always wins;
-otherwise the provider's verified image models (<code>supports_image_output</code>) are
-picked by priority — <code>gpt-image</code> &gt; <code>imagen</code> &gt; <code>gemini-image</code> &gt; <code>flux</code> &gt;
-<code>dall-e</code>. There is no guessed fallback: if the provider has no image-output
-models in the catalog, the tool fails with guidance to pass <code>model</code> explicitly,
-or to add a <code>supports_image_output</code> overlay entry and run <code>/refresh-models</code>.</p>
+otherwise the provider's verified image-output models are picked by priority for
+generation (<code>gpt-image</code> &gt; <code>imagen</code> &gt; <code>gemini-image</code> &gt; <code>flux</code> &gt; <code>dall-e</code>), and its
+verified edit-capable models for editing. There is no guessed fallback: if the
+provider has no suitable models in the catalog, the tool fails with guidance to
+pass <code>model</code> explicitly, or to add an overlay entry and run <code>/refresh-models</code>.
+Edit capability is overlay-only policy, and <code>edit_image</code> fails closed when the
+resolved provider pins no edit-capable model.</p>
 <h2 id="the-result">The result
 <a class="zola-anchor" href="#the-result" aria-label="Anchor link for: the-result">
   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
 </a>
 </h2>
-<p>Generated bytes re-enter the same pipeline as <code>display_image</code>: the image is
-shown inline in the client, persisted durably in the <code>session_attachments</code>
-table, and can be read back with <code>read_image</code> — so the model sees its own
-generation and can refine it. The tool also reports the model that produced the
-image and, when the provider returns one, the provider's revised prompt.</p>
+<p>Generated and edited bytes re-enter the same pipeline as <code>display_image</code>: the
+image is shown inline in the client, persisted durably in the
+<code>session_attachments</code> table, and can be read back with <code>read_image</code> — so the
+model sees its own output and can refine it. Both tools also report the model
+that produced the image and, when the provider returns one, the provider's
+revised prompt.</p>
 <blockquote>
 <p>The credential never reaches the tool: provider resolution runs through the
 daemon command loop, scoped to the requesting session, so cancelling the
-session also aborts an in-flight generation.</p>
+session also aborts an in-flight generation or edit.</p>
 </blockquote>
 
       

@@ -49,7 +49,7 @@
   <link rel="preload" href="https://choreographr.com/fonts/jetbrains-mono.woff2" as="font" type="font/woff2" crossorigin>
 
   <link rel="icon" type="image/svg+xml" href="https://choreographr.com/favicon.svg">
-  <link rel="stylesheet" href="https://choreographr.com/css/main.css?h=522f5596923af2ef361c">
+  <link rel="stylesheet" href="https://choreographr.com/css/main.css?h=c8e54f75ecee9764056c">
 
   <!-- Firefox/Zen can paint a frame before this stylesheet has been
        applied if a layout flush happens while it loads (Bugzilla
@@ -398,7 +398,7 @@
     <li>
       <a href="https://choreographr.com/agent/docs/tools/image/"
          class="pl-5 text-night-300 hover:text-night-50">
-        Image generation
+        Image generation &amp; editing
       </a>
     </li>
     
@@ -490,7 +490,7 @@
 </a>
 </h2>
 <p>Accounts can be managed either in the TUI or via <code>~/.config/choreographr/accounts.toml</code>.</p>
-<p>In the TUI, press <code>Ctrl+A</code> to open the <strong>accounts</strong> page, then <code>n</code> to add an
+<p>In the TUI, press <code>Alt+A</code> to open the <strong>accounts</strong> page, then <code>n</code> to add an
 account (choose a provider, name it, and paste its API credential). See the
 <a href="https://choreographr.com/agent/docs/quick-start/">quick start</a> for the full walkthrough.</p>
 <p>If you prefer to edit the file directly, accounts are configured via
@@ -501,10 +501,17 @@ names must be lowercase alphanumeric with hyphens or underscores
 <pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;" ><code data-lang="toml"><span class="giallo-l"><span style="color: #9399B2;">[[</span><span>account</span><span style="color: #9399B2;">]]</span></span>
 <span class="giallo-l"><span>name</span><span style="color: #94E2D5;"> =</span><span style="color: #A6E3A1;"> &quot;main&quot;</span></span>
 <span class="giallo-l"><span>provider</span><span style="color: #94E2D5;"> =</span><span style="color: #A6E3A1;"> &quot;openai&quot;</span></span>
+<span class="giallo-l"><span>prompt_cache_affinity</span><span style="color: #94E2D5;"> =</span><span style="color: #FAB387;"> true</span><span style="color: #9399B2;font-style: italic;">   # force the per-session cache-affinity body field on/off</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #9399B2;">[[</span><span>account</span><span style="color: #9399B2;">]]</span></span>
+<span class="giallo-l"><span>name</span><span style="color: #94E2D5;"> =</span><span style="color: #A6E3A1;"> &quot;chatgpt&quot;</span></span>
+<span class="giallo-l"><span>provider</span><span style="color: #94E2D5;"> =</span><span style="color: #A6E3A1;"> &quot;chatgpt&quot;</span><span style="color: #9399B2;font-style: italic;">          # OAuth provider: create it, then `/login chatgpt`</span></span>
 <span class="giallo-l"></span>
 <span class="giallo-l"><span style="color: #9399B2;">[[</span><span>account</span><span style="color: #9399B2;">]]</span></span>
 <span class="giallo-l"><span>name</span><span style="color: #94E2D5;"> =</span><span style="color: #A6E3A1;"> &quot;claude&quot;</span></span>
 <span class="giallo-l"><span>provider</span><span style="color: #94E2D5;"> =</span><span style="color: #A6E3A1;"> &quot;anthropic&quot;</span></span>
+<span class="giallo-l"><span>meter</span><span style="color: #94E2D5;"> =</span><span style="color: #A6E3A1;"> &quot;payg&quot;</span><span style="color: #9399B2;font-style: italic;">                 # billing meter for the warm gate: payg|tokens|requests|flat|unknown</span></span>
+<span class="giallo-l"><span>cache_warming</span><span style="color: #94E2D5;"> =</span><span style="color: #A6E3A1;"> &quot;streaming&quot;</span><span style="color: #9399B2;font-style: italic;">    # override the global [cache_warming] mode</span></span>
 <span class="giallo-l"></span>
 <span class="giallo-l"><span style="color: #9399B2;">[[</span><span>account</span><span style="color: #9399B2;">]]</span></span>
 <span class="giallo-l"><span>name</span><span style="color: #94E2D5;"> =</span><span style="color: #A6E3A1;"> &quot;gemini&quot;</span></span>
@@ -515,19 +522,46 @@ names must be lowercase alphanumeric with hyphens or underscores
 <span class="giallo-l"><span>provider</span><span style="color: #94E2D5;"> =</span><span style="color: #A6E3A1;"> &quot;ollama&quot;</span></span>
 <span class="giallo-l"><span>base_url</span><span style="color: #94E2D5;"> =</span><span style="color: #A6E3A1;"> &quot;http://localhost:11434/v1&quot;</span></span>
 <span class="giallo-l"><span>streaming</span><span style="color: #94E2D5;"> =</span><span style="color: #FAB387;"> false</span></span>
-<span class="giallo-l"><span>retry_max_attempts</span><span style="color: #94E2D5;"> =</span><span style="color: #FAB387;"> 3</span></span></code></pre><h2 id="adding-api-keys">Adding API keys
-<a class="zola-anchor" href="#adding-api-keys" aria-label="Anchor link for: adding-api-keys">
+<span class="giallo-l"><span>retry_max_attempts</span><span style="color: #94E2D5;"> =</span><span style="color: #FAB387;"> 3</span></span></code></pre><h2 id="credentials-api-keys-and-oauth">Credentials: API keys and OAuth
+<a class="zola-anchor" href="#credentials-api-keys-and-oauth" aria-label="Anchor link for: credentials-api-keys-and-oauth">
   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
 </a>
 </h2>
-<p>Keys can be managed in the TUI — on the accounts page (<code>Ctrl+A</code>), select an
+<p>Keys can be managed in the TUI — on the accounts page (<code>Alt+A</code>), select an
 account and press <code>c</code> to enter its API credential.</p>
 <p>Alternatively, add a key for the service the account uses with the slash
 command:</p>
 <pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;" ><code data-lang="plain"><span class="giallo-l"><span>/add-key openai sk-...</span></span></code></pre>
-<p>Keys are encrypted per-credential with the daemon's public key before being
-stored. The daemon starts <strong>locked</strong> — use <code>/unlock</code> to decrypt credentials
-into memory, and <code>/lock</code> to clear them again.</p>
+<p>The credential travels to the daemon as a <strong>typed value</strong> (API key, X tokens, or
+OAuth grant) over the local socket or the Noise-encrypted TCP connection — no
+key material rides the add path — and the daemon encrypts it to its own binding
+public key before it reaches disk. The daemon starts <strong>locked</strong>, so an add is
+refused until you <code>/unlock</code>; <code>/lock</code> clears credentials from memory again.</p>
+<h3 id="oauth-sign-in">OAuth sign-in
+<a class="zola-anchor" href="#oauth-sign-in" aria-label="Anchor link for: oauth-sign-in">
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+</a>
+</h3>
+<p>Some providers authenticate with an account sign-in instead of an API key. When
+a provider's catalog entry carries an OAuth profile, the account takes no key:
+create it, then sign in.</p>
+<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;" ><code data-lang="plain"><span class="giallo-l"><span>/login chatgpt</span></span></code></pre>
+<p><code>/login &lt;account&gt;</code> (alias <code>/add-oauth</code>) opens the provider's consent screen
+through a loopback callback. On a remote or SSH host, pass <code>--device</code> for the
+headless device-code flow. What gets stored is the durable <strong>grant</strong> — refresh
+token, client registration, and identity claim — encrypted in the keystore like
+any other credential; the short-lived access token lives in daemon memory only
+and is refreshed and rotated for you, proactively before it expires and once on
+a <code>401</code>. If the provider rejects the grant outright, the session says so and
+asks you to sign in again instead of failing silently.</p>
+<p>An account holds <strong>one</strong> credential, so signing in replaces an existing key for
+that account — and adding a key replaces an OAuth grant.</p>
+<p>A provider the bundled catalog does not know can be given an OAuth profile in
+the <a href="https://choreographr.com/agent/docs/accounts-and-providers/#catalog-overlays">user overlay</a> with a <code>[provider.&lt;slug&gt;.oauth]</code> table
+(<code>issuer</code>, <code>authorize_path</code>, <code>token_path</code>, <code>scopes</code>, <code>redirect_ports</code>,
+<code>code_exchange_encoding</code>, <code>refresh_encoding</code>, <code>device_code</code>, and an optional
+public <code>client_id</code>). A partial block is warned about and skipped, leaving the
+provider's API-key behaviour in place.</p>
 <h2 id="providers">Providers
 <a class="zola-anchor" href="#providers" aria-label="Anchor link for: providers">
   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
@@ -588,6 +622,10 @@ ignored with a warning.</p>
 <tr><td><code>base_url</code></td><td>string</td><td>API base URL</td></tr>
 <tr><td><code>default_model</code></td><td>string</td><td>Model used when no account/session model is set</td></tr>
 <tr><td><code>display_name</code></td><td>string</td><td>Human-readable name (only needed for providers not in the base)</td></tr>
+<tr><td><code>prompt_cache_short</code></td><td>integer</td><td>Prompt-cache TTL of the default ephemeral tier, in seconds</td></tr>
+<tr><td><code>prompt_cache_long</code></td><td>integer</td><td>Prompt-cache TTL of the extended tier, in seconds</td></tr>
+<tr><td><code>request_compression</code></td><td>string</td><td><code>"gzip"</code>, <code>"zstd"</code>, or <code>"identity"</code> (default) — compress request bodies for endpoints that decode them. Opt-in: the server must decompress, so leave it off unless support is known. A provider that rejects the encoding with <code>415</code> is downgraded to identity for the process</td></tr>
+<tr><td><code>cache_affinity</code></td><td>string</td><td><code>"off"</code> (default), <code>"prompt-cache-key"</code>, or <code>"openrouter-session"</code> — which per-session cache-affinity field this provider accepts. The daemon fills it with the turn's <strong>real session id</strong>, never a constant</td></tr>
 </tbody></table>
 <p>Per-model keys (<code>[provider.&lt;slug&gt;.models."&lt;model-id&gt;"]</code>), all optional:</p>
 <table><thead><tr><th>Key</th><th>Type</th><th>Meaning</th></tr></thead><tbody>
@@ -597,11 +635,16 @@ ignored with a warning.</p>
 <tr><td><code>reasoning_levels</code></td><td>array of strings</td><td>Reasoning-effort slugs (e.g. <code>["off", "low", "high"]</code>)</td></tr>
 <tr><td><code>responses</code></td><td>boolean</td><td>Whether the model uses the OpenAI Responses API</td></tr>
 <tr><td><code>reasoning_passback</code></td><td>string</td><td>How reasoning is echoed between turns: <code>"none"</code>, <code>"tool_loop"</code>, <code>"all_turns"</code>, <code>"signature"</code>, or <code>"response_id"</code></td></tr>
-<tr><td><code>reasoning_content_required</code></td><td>boolean</td><td>Whether every request must carry a <code>reasoning_content</code> field (DeepSeek/GLM chat)</td></tr>
+<tr><td><code>reasoning_echo_field</code></td><td>string</td><td>The wire key replayed reasoning is shaped as (e.g. <code>"reasoning_content"</code>)</td></tr>
+<tr><td><code>reasoning_echo_required</code></td><td>boolean</td><td>Whether that key must be <strong>present</strong> on every assistant message, empty when there is nothing to echo</td></tr>
+<tr><td><code>reasoning_content_required</code></td><td>boolean</td><td>Legacy alias that sets both halves above (DeepSeek/GLM chat)</td></tr>
 <tr><td><code>supports_vision</code></td><td>boolean</td><td>Whether the model accepts image input</td></tr>
 <tr><td><code>supports_image_output</code></td><td>boolean</td><td>Whether the model generates images</td></tr>
 <tr><td><code>temperature</code></td><td>boolean</td><td>Whether the model accepts a <code>temperature</code> parameter</td></tr>
 <tr><td><code>deprecated</code></td><td>boolean</td><td>Lifecycle status</td></tr>
+<tr><td><code>prompt_cache_short</code></td><td>integer</td><td>Per-model override of the default cache TTL, in seconds</td></tr>
+<tr><td><code>prompt_cache_long</code></td><td>integer</td><td>Per-model override of the extended cache TTL, in seconds</td></tr>
+<tr><td><code>cache_retention</code></td><td>string</td><td><code>"prompt-cache-retention"</code> (pre-GPT-5.6 top-level <code>prompt_cache_retention = "24h"</code>) or <code>"prompt-cache-options"</code> (GPT-5.6+ nested <code>prompt_cache_options.ttl = "12h"</code>, Responses API only). <strong>Model-level only</strong> — the spelling depends on the model generation. Emitted only when the model also declares a long TTL tier</td></tr>
 </tbody></table>
 <h4 id="merge-semantics">Merge semantics
 <a class="zola-anchor" href="#merge-semantics" aria-label="Anchor link for: merge-semantics">
@@ -663,19 +706,31 @@ overridden per-account:</p>
 <tr><td><code>default_request_format</code></td><td>Request format: <code>"chat_completions"</code> or <code>"responses"</code></td></tr>
 <tr><td><code>programmatic_tool_calling</code></td><td>Enable programmatic tool calling (Responses API, gpt-5.6+)</td></tr>
 <tr><td><code>context_window</code></td><td>Default context window for all models</td></tr>
+<tr><td><code>meter</code></td><td>Billing meter for prompt-cache warming: <code>payg</code>, <code>tokens</code>, <code>requests</code>, <code>flat</code>, or <code>unknown</code></td></tr>
+<tr><td><code>cache_warming</code></td><td>Per-account override of the global <code>[cache_warming]</code> mode</td></tr>
+<tr><td><code>prompt_cache_affinity</code></td><td>Force the per-session cache-affinity body field on or off for this account (omitted = follow the provider catalog's capability)</td></tr>
 </tbody></table>
 <p>The Responses API is fully supported — including tool use, streaming, reasoning
 effort slugs, multi-turn chaining via <code>previous_response_id</code>, and
 <strong>programmatic tool calling</strong> (gpt-5.6+ models).</p>
-<h2 id="image-generation">Image generation
-<a class="zola-anchor" href="#image-generation" aria-label="Anchor link for: image-generation">
+<h2 id="image-generation-and-editing">Image generation and editing
+<a class="zola-anchor" href="#image-generation-and-editing" aria-label="Anchor link for: image-generation-and-editing">
   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
 </a>
 </h2>
-<p>The <a href="https://choreographr.com/agent/docs/tools/image/"><code>generate_image</code></a> tool resolves its provider
-from the session's account. OpenAI-compatible accounts use the OpenAI Images
-adapter (<code>gpt-image-*</code>), and z.ai / Zhipu accounts use <code>glm-image</code>; the model is
-chosen from the provider's catalog image-output entries.</p>
+<p>Both <a href="https://choreographr.com/agent/docs/tools/image/">image tools</a> resolve their provider from the
+session's account:</p>
+<ul>
+<li><code>generate_image</code> — OpenAI-compatible accounts use the OpenAI Images adapter
+(<code>gpt-image-*</code>), z.ai / Zhipu accounts use <code>glm-image</code>, and fal.ai accounts use
+their hosted image models (with an optional <code>seed</code>).</li>
+<li><code>edit_image</code> — OpenAI Images, xAI (<code>grok-imagine</code>), and Google Gemini (which
+generates and edits through <code>generateContent</code>), plus fal.ai. z.ai / Zhipu is
+generation-only, and Anthropic has no image backend.</li>
+</ul>
+<p>The model is chosen from the provider's catalog entries — image-output models
+for generation, edit-capable models for editing — and can always be overridden
+by passing <code>model</code> explicitly.</p>
 
       
     </article>

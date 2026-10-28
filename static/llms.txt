@@ -24,10 +24,11 @@ OpenRouter. Native EVM and Substrate/Polkadot blockchain tools are built in.
 
 - Daemon + multi-client architecture (terminal, desktop, Telegram, ACP editors)
 - Sandboxed RISC-V VM for LLM-generated code (a complete shell replacement)
-- 200+ model providers out of the box
+- 200+ model providers out of the box, with API keys or OAuth sign-in
 - Hierarchical subsessions with per-session undo/redo
 - Encrypted credential keystore (X25519 ECDH + HKDF + AES-256-GCM)
-- MCP client (Model Context Protocol)
+- MCP client (Model Context Protocol), including remote servers behind OAuth
+- Image generation and editing (OpenAI Images, xAI, Google Gemini, z.ai, fal.ai)
 - Native EVM + Polkadot/Substrate blockchain tools
 - Persistent session-scoped database (redb)
 - Written in Rust; Apache-2.0; runs locally or in the cloud

@@ -34,6 +34,7 @@ archives or unarchives one.
 | `/model [model]` | Choose the session's model (opens the picker when omitted) |
 | `/account` | Open the accounts page (or `list`, `remove <name>`, `<name>` to set) |
 | `/refresh-models [--force]` | Refresh the models.dev catalog |
+| `/login <account> [--device]` | Sign in to an existing account's provider with OAuth (alias `/add-oauth`); `--device` selects the headless device-code flow |
 
 `Alt+A` opens the accounts page — list accounts, remove with `r`, set an API
 key with `c`, or start the new-account wizard with `n`.
@@ -59,9 +60,11 @@ from disk. See [Security](@/agent/docs/security.md#client-trust-access-control).
 
 | Command | Description |
 |---|---|
-| `/mcp` | Show every MCP server visible to the session (daemon + project tiers), with transport, connected state, tool count, or last error — plus the project root's trust state |
+| `/mcp` | Show every MCP server visible to the session (daemon + project tiers), with transport, auth state, connected state, tool count, or last error — plus the project root's trust state |
 | `/mcp reconnect <slug>` | Rebuild every connection with that slug on the running daemon and refresh its tools |
 | `/mcp reload` | Re-read the config on the running daemon — connect added servers, drop removed ones, rebuild changed ones — without a restart |
+| `/mcp login <slug>` | Run a PKCE OAuth sign-in for a server that declares an `oauth` block; the grant is stored in the keystore and the server reconnects itself |
+| `/mcp logout <slug>` | Remove that server's stored OAuth grant |
 | `/mcp trust` | Trust the session's project MCP root so its servers connect |
 | `/mcp untrust` | Revoke trust for that root; its project servers stop |
 | `/mcp trust list` | List the trusted project roots |
@@ -77,6 +80,7 @@ configured.
 |---|---|
 | `/add-key <service> <api_key>` | Store an API-key credential |
 | `/add-x <service> <key> <secret> <token> <token_secret> <bearer>` | Store an X/Twitter credential |
+| `/login <account>` | Sign in with OAuth instead of an API key (see [models & accounts](#models-accounts)) |
 | `/remove-key <service>` | Remove a stored credential |
 
 ## Locking
